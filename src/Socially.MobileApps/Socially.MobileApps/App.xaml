@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ext="clr-namespace:Socially.MobileApps.Extensions"
+             mc:Ignorable="d"
+             x:Class="Socially.MobileApps.App">
+    <Application.Resources>
+
+        
+        
+        <!--#region colors -->
+        
+        <Color x:Key="LoginBackground">Orange</Color>
+        
+        <Color x:Key="LoginInputColor">#f59736</Color>
+        
+        <!--#endregion-->
+
+        <!--#region Styles -->
+        
+        <Style TargetType="Button">
+            <Setter Property="Visual" Value="Material" />
+        </Style>
+        
+        <Style TargetType="Entry">
+            <Setter Property="Visual" Value="Material" />
+        </Style>
+        
+        <Style TargetType="Entry" x:Key="loginInput">
+            <Setter Property="PlaceholderColor" Value="White" />
+            <Setter Property="BackgroundColor" Value="{StaticResource LoginInputColor}" />
+        </Style>
+
+        <!--#endregion-->
+
+
+    </Application.Resources>
+</Application>
