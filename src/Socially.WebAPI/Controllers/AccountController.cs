@@ -39,8 +39,7 @@ namespace Socially.WebAPI.Controllers
                                     Email = model.Email,
                                     UserName = model.UserName
                                 }, model.Password);
-            if (result.Succeeded)
-                return Ok();
+            if (result.Succeeded) return Ok();
             else return BadRequest(new Dictionary<string, IEnumerable<string>> {
                 { string.Empty, result.Errors.Select(r => r.Description) }
             });
@@ -50,8 +49,7 @@ namespace Socially.WebAPI.Controllers
         public async Task<IActionResult> Login(LoginModel model)
         {
             var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
-            if (result.Succeeded)
-                return Ok();
+            if (result.Succeeded) return Ok();
             else return BadRequest();
         }
 
