@@ -28,7 +28,5 @@ namespace Socially.Server.Managers
             return _dbContext.Users.AnyAsync(u => u.UserName == userName, cancellationToken);
         }
 
-
-
     }
 }
