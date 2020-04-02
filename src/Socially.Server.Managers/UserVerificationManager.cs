@@ -1,4 +1,6 @@
-﻿using Socially.Server.DataAccess;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+using Socially.Server.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,10 +18,17 @@ namespace Socially.Server.Managers
             _dbContext = dbContext;
         }
 
-        public async Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken = default)
+        public Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken = default)
         {
-            await 
+            return _dbContext.Users.AnyAsync(u => u.Email == email, cancellationToken);
         }
+
+        public Task<bool> UserNameExistsAsync(string userName, CancellationToken cancellationToken = default)
+        {
+            return _dbContext.Users.AnyAsync(u => u.UserName == userName, cancellationToken);
+        }
+
+
 
     }
 }
