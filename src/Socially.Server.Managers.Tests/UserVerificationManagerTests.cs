@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Socially.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,7 +36,8 @@ namespace Socially.Server.Managers.Tests
         {
             // ARRANGE
             SetupManager();
-            await DbContext.Users.AddAsync(new Core.User { 
+            await DbContext.Users.AddAsync(new User
+            { 
                 Email = "something@valid.com"
             });
             await DbContext.SaveChangesAsync();
@@ -52,7 +54,7 @@ namespace Socially.Server.Managers.Tests
         {
             // ARRANGE
             SetupManager();
-            await DbContext.Users.AddAsync(new Core.User
+            await DbContext.Users.AddAsync(new User
             {
                 Email = "something@valid.com"
             });
@@ -84,7 +86,8 @@ namespace Socially.Server.Managers.Tests
         {
             // ARRANGE
             SetupManager();
-            await DbContext.Users.AddAsync(new Core.User { 
+            await DbContext.Users.AddAsync(new User
+            { 
                 UserName = "myUser"
             });
             await DbContext.SaveChangesAsync();
@@ -101,7 +104,7 @@ namespace Socially.Server.Managers.Tests
         {
             // ARRANGE
             SetupManager();
-            await DbContext.Users.AddAsync(new Core.User
+            await DbContext.Users.AddAsync(new User
             {
                 UserName = "myUser"
             });

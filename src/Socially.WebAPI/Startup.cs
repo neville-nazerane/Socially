@@ -11,8 +11,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Socially.Core;
+using Socially.Core.Entities;
 using Socially.Server.DataAccess;
+using Socially.Server.Managers;
 
 namespace Socially.WebAPI
 {
@@ -34,6 +35,10 @@ namespace Socially.WebAPI
             services.AddIdentity<User, UserRole>()
                     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddSwaggerDocument();
+
+            services.AddTransient<IUserVerificationManager, UserVerificationManager>();
+
             services.AddControllers();
         }
 
@@ -49,12 +54,15 @@ namespace Socially.WebAPI
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            if (env.IsDevelopment())
+            {
+                app.UseOpenApi();
+            }
 
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                                
                 endpoints.MapControllers();
             });
         }

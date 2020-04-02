@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Socially.Server.Managers
 {
-    public class UserVerificationManager
+    public class UserVerificationManager : IUserVerificationManager
     {
         private readonly ApplicationDbContext _dbContext;
 
