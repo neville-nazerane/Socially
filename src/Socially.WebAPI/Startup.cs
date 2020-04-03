@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -63,6 +64,9 @@ namespace Socially.WebAPI
 
             app.UseEndpoints(endpoints =>
             {
+
+                endpoints.MapGet("/", c => c.Response.WriteAsync("Hello to the social world"));
+
                 endpoints.MapControllers();
             });
         }
