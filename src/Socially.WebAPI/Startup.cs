@@ -20,12 +20,14 @@ namespace Socially.WebAPI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment Env)
         {
             Configuration = configuration;
+            this.Env = Env;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Env { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -44,9 +46,9 @@ namespace Socially.WebAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
+            if (Env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -55,7 +57,7 @@ namespace Socially.WebAPI
 
             app.UseRouting();
 
-            if (env.IsDevelopment())
+            if (Env.IsDevelopment())
             {
                 app.UseOpenApi();
             }
