@@ -25,8 +25,8 @@ steps:
   inputs:
     command: 'test'
     projects: |
-      Socially.Server.Managers.Tests
-      Socially.WebAPI.IntegrationTests
+      Socially.Server.Managers.Tests/*.csproj
+      Socially.WebAPI.IntegrationTests/*.csproj
     arguments: '-c Release'
 
 - task: DotNetCoreCLI@2
@@ -34,7 +34,7 @@ steps:
   displayName: 'Build API'
   inputs:
     command: 'build'
-    projects: 'src/Socially.WebAPI'
+    projects: 'src/Socially.WebAPI/*.csproj'
     arguments: '-c Release -o $(Build.ArtifactStagingDirectory)'
 
 - task: PublishBuildArtifacts@1
