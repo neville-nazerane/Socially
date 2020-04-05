@@ -19,6 +19,8 @@ pool:
 
 steps:
 
+- script: snap install dotnet-sdk --channel=5.0/beta --classic
+
 - task: DotNetCoreCLI@1
   name: 'test'
   displayName: 'Tests for API'
