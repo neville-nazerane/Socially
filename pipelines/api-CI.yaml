@@ -41,7 +41,6 @@ steps:
 
 
 - task: PublishBuildArtifacts@1
-  name: 'drop'
   displayName: 'Prep for release'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
