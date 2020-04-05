@@ -21,7 +21,6 @@ pool:
 steps:
 
 - task: UseDotNet@2
-  name: 'dotnet'
   displayName: 'Use .NET Core sdk'
   inputs:
     packageType: sdk
@@ -29,7 +28,6 @@ steps:
     installationPath: $(Agent.ToolsDirectory)/dotnet
 
 - task: DotNetCoreCLI@1
-  name: 'test'
   displayName: 'Tests for API'
   inputs:
     command: 'test'
@@ -39,7 +37,6 @@ steps:
     arguments: '-c Release'
 
 - script: 'dotnet publish src/Socially.WebAPI -c Release -o $(Build.ArtifactStagingDirectory)'
-  name: 'publish'
   displayName: 'Publish API'
 
 
