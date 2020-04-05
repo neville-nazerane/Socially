@@ -38,16 +38,10 @@ steps:
       src/Socially.WebAPI.IntegrationTests
     arguments: '-c Release'
 
-- task: DotNetCoreCLI@2
+- script: 'dotnet publish -p src/Socially.WebAPI -c Release -o $(Build.ArtifactStagingDirectory)'
   name: 'publish'
   displayName: 'Publish API'
-  inputs:
-    command: 'publish'
-    publishWebProjects: false
-    projects: 'src/Socially.WebAPI/*.csproj'
-    arguments: '-c Release -o $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: false
-    modifyOutputPath: false
+
 
 - task: PublishBuildArtifacts@1
   name: 'drop'
