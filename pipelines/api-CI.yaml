@@ -39,6 +39,8 @@ steps:
     arguments: '-c Release'
 
 - task: DotNetCoreCLI@2
+  name: 'publish'
+  displayName: 'Publish API'
   inputs:
     command: 'publish'
     publishWebProjects: false
@@ -49,7 +51,7 @@ steps:
 
 - task: PublishBuildArtifacts@1
   name: 'drop'
-  displayName: 'Publish for release'
+  displayName: 'Prep for release'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
