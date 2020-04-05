@@ -27,8 +27,8 @@ steps:
   inputs:
     command: 'test'
     projects: |
-      Socially.Server.Managers.Tests/*.csproj
-      Socially.WebAPI.IntegrationTests/*.csproj
+      src/Socially.Server.Managers.Tests
+      src/Socially.WebAPI.IntegrationTests/*.csproj
     arguments: '-c Release'
 
 - task: DotNetCoreCLI@2
