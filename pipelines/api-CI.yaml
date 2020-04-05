@@ -19,8 +19,13 @@ pool:
 
 steps:
 
-- script: sudo snap install dotnet-sdk --channel=5.0/beta --classic
-- script: sudo snap alias dotnet-sdk.dotnet dotnet
+- task: UseDotNet@2
+  name: 'dotnet'
+  displayName: 'Use .NET Core sdk'
+  inputs:
+    packageType: sdk
+    version: 5.0.100-preview.2.20176.6
+    installationPath: $(Agent.ToolsDirectory)/dotnet
 
 - task: DotNetCoreCLI@1
   name: 'test'
