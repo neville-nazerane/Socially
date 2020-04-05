@@ -1,0 +1,46 @@
+# ASP.NET
+# Build and test ASP.NET projects.
+# Add steps that publish symbols, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - src/Socially.Core
+      - src/Socially.Server.DataAccess
+      - src/Socially.Server.Services
+      - src/Socially.WebAPI
+
+pool:
+  vmImage: 'ubuntu-18.04'
+
+steps:
+
+- task: DotNetCoreCLI@1
+  name: 'test'
+  displayName: 'Tests for API'
+  inputs:
+    command: 'test'
+    projects: |
+      Socially.Server.Managers.Tests
+      Socially.WebAPI.IntegrationTests
+    arguments: '-c Release'
+
+- task: DotNetCoreCLI@2
+  name: 'build'
+  displayName: 'Build API'
+  inputs:
+    command: 'build'
+    projects: 'src/Socially.WebAPI'
+    arguments: '-c Release -o $(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  name: 'drop'
+  displayName: 'Publish for release'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
