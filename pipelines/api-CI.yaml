@@ -20,8 +20,7 @@ pool:
 steps:
 
 - script: sudo snap install dotnet-sdk --channel=5.0/beta --classic
-- script: dotnet --version
-- script: dotnet-sdk --version
+- script: dotnet --list-sdks
 
 - task: DotNetCoreCLI@1
   name: 'test'
