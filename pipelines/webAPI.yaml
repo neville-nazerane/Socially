@@ -1,0 +1,50 @@
+
+pool:
+  vmImage: 'ubuntu-18.04'
+
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - src/Socially.Core
+      - src/Socially.Server.DataAccess
+      - src/Socially.Server.Services
+      - src/Socially.WebAPI
+    
+
+stages:
+  - stage: CI
+    jobs:
+      - job: DotNet
+        steps:
+          -  task: UseDotNet@2
+             displayName: 'Use .NET Core sdk'
+             inputs:
+                packageType: sdk
+                version: 5.0.100-preview.2.20176.6
+                installationPath: $(Agent.ToolsDirectory)/dotnet
+          
+      - job: Test
+        steps:
+        - task: DotNetCoreCLI@1
+          displayName: 'Tests for API'
+          inputs:
+            command: 'test'
+            projects: |
+              src/Socially.Server.Managers.Tests
+              src/Socially.WebAPI.IntegrationTests
+            arguments: '-c Release'
+
+      - job: Publish
+        steps:
+          - script: 'dotnet publish src/Socially.WebAPI -c Release -o $(Build.ArtifactStagingDirectory)'
+            displayName: 'Publish API'
+
+          - task: PublishBuildArtifacts@1
+            displayName: 'Prep for release'
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
