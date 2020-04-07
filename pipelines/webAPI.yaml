@@ -34,41 +34,9 @@ stages:
         - task: DotNetCoreCLI@2
           inputs:
             command: 'publish'
-            publishWebProjects: false
             zipAfterPublish: true
             projects: 'src/Socially.WebAPI'
-            arguments: '-o $(Build.ArtifactStagingDirectory)'
-          
-
-        - task: PublishBuildArtifacts@1
-          displayName: 'Prep for release'
-          inputs:
-            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-            ArtifactName: 'drop'
-            publishLocation: 'Container'
-
-  - stage: Copy
-    jobs:
-      - job: DotNet
-        steps:
-        - task: UseDotNet@2
-          displayName: 'Use .NET Core sdk'
-          inputs:
-            packageType: sdk
-            version: 5.0.100-preview.2.20176.6
-            installationPath: $(Agent.ToolsDirectory)/dotnet
-          
-        - task: DotNetCoreCLI@1
-          displayName: 'Tests for API'
-          inputs:
-            command: 'test'
-            projects: |
-              src/Socially.Server.Managers.Tests
-              src/Socially.WebAPI.IntegrationTests
-            arguments: '-c Release'
-
-        - script: 'dotnet publish src/Socially.WebAPI -c Release -o $(Build.ArtifactStagingDirectory)'
-          displayName: 'Publish API'
+            arguments: '-o $(Build.ArtifactStagingDirectory)/Web'
 
         - task: PublishBuildArtifacts@1
           displayName: 'Prep for release'
