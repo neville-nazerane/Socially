@@ -26,17 +26,20 @@ stages:
             version: 5.0.100-preview.2.20176.6
             installationPath: $(Agent.ToolsDirectory)/dotnet
           
-        - task: DotNetCoreCLI@1
-          displayName: 'Tests for API'
-          inputs:
-            command: 'test'
-            projects: |
-              src/Socially.Server.Managers.Tests
-              src/Socially.WebAPI.IntegrationTests
-            arguments: '-c Release'
+        - script: 'dotnet test src/Socially.Server.Managers.Tests -c release'
+          displayName: 'Unit Test - Managers'
+
+        - script: 'dotnet test src/Socially.WebAPI.IntegrationTests -c release'
 
         - script: 'dotnet publish src/Socially.WebAPI -c Release -o $(Build.ArtifactStagingDirectory)'
           displayName: 'Publish API'
+
+        - task: DotNetCoreCLI@2
+          inputs:
+            command: 'publish'
+            publishWebProjects: false
+            zipAfterPublish: true
+            projects: 'src/Socially.WebAPI'
 
         - task: PublishBuildArtifacts@1
           displayName: 'Prep for release'
