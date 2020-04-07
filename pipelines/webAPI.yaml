@@ -31,15 +31,14 @@ stages:
 
         - script: 'dotnet test src/Socially.WebAPI.IntegrationTests -c release'
 
-        - script: 'dotnet publish src/Socially.WebAPI -c Release -o $(Build.ArtifactStagingDirectory)'
-          displayName: 'Publish API'
-
         - task: DotNetCoreCLI@2
           inputs:
             command: 'publish'
             publishWebProjects: false
             zipAfterPublish: true
             projects: 'src/Socially.WebAPI'
+            arguments: '-o $(Build.ArtifactStagingDirectory)'
+          
 
         - task: PublishBuildArtifacts@1
           displayName: 'Prep for release'
