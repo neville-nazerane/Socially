@@ -36,7 +36,7 @@ stages:
             command: 'publish'
             zipAfterPublish: true
             projects: 'src/Socially.WebAPI'
-            arguments: '-o $(Build.ArtifactStagingDirectory)/Web'
+            arguments: '-o $(Build.ArtifactStagingDirectory)/web'
 
         - task: PublishBuildArtifacts@1
           displayName: 'Prep for release'
@@ -45,4 +45,15 @@ stages:
             ArtifactName: 'drop'
             publishLocation: 'Container'
 
-  - stage: Two
+  - stage: Development
+    jobs:
+      - job: Files
+        steps:
+          - task: CopyFilesOverSSH@0
+            inputs:
+              sshEndpoint: 'websites'
+              sourceFolder: 'web'
+              contents: '**'
+              targetFolder: 'sociallyTemp'
+              readyTimeout: '20000'
+              failOnEmptySource: true
