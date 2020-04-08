@@ -45,15 +45,15 @@ stages:
             ArtifactName: 'drop'
             publishLocation: 'Container'
 
-  - stage: Development
+  - stage: DeployDev
+    displayName: 'Deploy to Development'
     jobs:
-      - job: Files
-        steps:
-          - task: CopyFilesOverSSH@0
-            inputs:
-              sshEndpoint: 'websites'
-              sourceFolder: 'web'
-              contents: '**'
-              targetFolder: 'sociallyTemp'
-              readyTimeout: '20000'
-              failOnEmptySource: true
+      - deployment: UploadWeb
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - script: 'ls $(Pipeline.Workspace)'
+
+    
+    
