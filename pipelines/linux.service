@@ -1,0 +1,17 @@
+[Unit]
+Description=Nuget documentations
+
+[Service]
+WorkingDirectory=/var/www/docs
+ExecStart=/usr/bin/dotnet /var/www/docs/Docs.Website.dll --urls http://localhost:#{url.port}#
+Restart=always
+# Restart service after 10 seconds if the dotnet service crashes:
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=docs
+User=www-data
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=connectionStrings__sqlDb='#{confg.sqlDb}#'
+
+[Install]
+WantedBy=multi-user.target
