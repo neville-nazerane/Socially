@@ -62,5 +62,12 @@ stages:
               steps:
                 - script: 'ls $(Pipeline.Workspace)/drop'
 
+      - deployment: ShowConfig
+        environment: 'Development'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - script: 'cat $(Pipeline.Workspace)/config/linux.service'
     
     
