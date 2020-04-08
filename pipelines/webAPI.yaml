@@ -55,7 +55,7 @@ stages:
           runOnce:
             deploy:
               steps:
-                - script: 'ls $(Pipeline.Workspace)'
+                - script: 'ls $(Pipeline.Workspace)/drop'
 
     
     
