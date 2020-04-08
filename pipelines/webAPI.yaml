@@ -47,6 +47,8 @@ stages:
 
   - stage: DeployDev
     displayName: 'Deploy to Development'
+    pool:
+      vmimage: 'ubuntu-18.04'
     jobs:
       - deployment: UploadWeb
         strategy:
