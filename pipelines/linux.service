@@ -2,8 +2,8 @@
 Description=Nuget documentations
 
 [Service]
-WorkingDirectory=/var/www/docs
-ExecStart=/usr/bin/dotnet /var/www/docs/Docs.Website.dll --urls http://localhost:#{url.port}#
+WorkingDirectory=/var/www/socially
+ExecStart=/usr/bin/dotnet /var/www/socially/Socially.WebAPI.dll --urls http://localhost:#{url.port}#
 Restart=always
 # Restart service after 10 seconds if the dotnet service crashes:
 RestartSec=10
