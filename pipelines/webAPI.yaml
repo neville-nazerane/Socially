@@ -40,6 +40,7 @@ stages:
 
         - task: CopyFiles@2
           inputs:
+            SourceFolder: 'pipelines'
             Contents: 'linux.service'
             TargetFolder: '$(Build.ArtifactStagingDirectory)/config'
 
