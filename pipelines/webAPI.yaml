@@ -50,8 +50,7 @@ stages:
 
     jobs:
       - deployment: UploadWeb
-        pool:
-          vmimage: 'ubuntu-18.04'
+        environment: 'Development'
         strategy:
           runOnce:
             deploy:
