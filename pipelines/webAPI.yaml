@@ -1,10 +1,14 @@
 
 variables:
   url.port: '5050'
-  service:
-    port: '5052'
-    directory: '/var/www/socially'
-    dll: 'Socially.WebAPI.dll'
+
+parameters:
+  - name: service
+    type: object
+    default: 
+      port: '5052'
+      directory: '/var/www/socially'
+      dll: 'Socially.WebAPI.dll'
 
 pool:
   vmImage: 'ubuntu-18.04'
