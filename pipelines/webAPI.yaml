@@ -76,7 +76,7 @@ stages:
             deploy:
               steps:
                 - script: 'ls $(Pipeline.Workspace)/drop/toDeploy'
-                  displayName: 'sample'
+                  displayName: 'Whats going to deploy'
 
       - deployment: ShowConfig
         environment: 'Development'
@@ -85,5 +85,6 @@ stages:
             deploy:
               steps:
                 - script: 'cat $(Pipeline.Workspace)/drop/toDeploy/linux.service'
+                  displayName: 'Whats the service?'
     
     
