@@ -61,7 +61,8 @@ stages:
           runOnce:
             deploy:
               steps:
-                - script: 'ls $(Pipeline.Workspace)/drop'
+                - script: 'ls $(Pipeline.Workspace)/drop/toDeploy'
+                  displayName: 'what is being deployed?'
 
       - deployment: ShowConfig
         environment: 'Development'
@@ -70,5 +71,6 @@ stages:
             deploy:
               steps:
                 - script: 'cat $(Pipeline.Workspace)/drop/toDeploy/linux.service'
+                  displayName: 'checkout the service'
     
     
