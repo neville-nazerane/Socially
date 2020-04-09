@@ -36,13 +36,13 @@ stages:
             command: 'publish'
             zipAfterPublish: true
             projects: 'src/Socially.WebAPI'
-            arguments: '-o $(Build.ArtifactStagingDirectory)/web'
+            arguments: '-o $(Build.ArtifactStagingDirectory)/toDeploy'
 
         - task: CopyFiles@2
           inputs:
             SourceFolder: 'pipelines'
             Contents: 'linux.service'
-            TargetFolder: '$(Build.ArtifactStagingDirectory)/config'
+            TargetFolder: '$(Build.ArtifactStagingDirectory)/toDeploy'
 
         - task: PublishBuildArtifacts@1
           displayName: 'Prep for release'
@@ -69,6 +69,6 @@ stages:
           runOnce:
             deploy:
               steps:
-                - script: 'cat $(Pipeline.Workspace)/config/linux.service'
+                - script: 'cat $(Pipeline.Workspace)/drop/toDeploy/linux.service'
     
     
