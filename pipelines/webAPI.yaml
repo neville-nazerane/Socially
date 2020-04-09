@@ -53,7 +53,7 @@ stages:
             targetFiles: 'linux.service'
             encoding: 'auto'
             writeBOM: true
-            actionOnMissing: 'fail'
+            actionOnMissing: warn
             keepToken: false
             tokenPrefix: '#{'
             tokenSuffix: '}#'
