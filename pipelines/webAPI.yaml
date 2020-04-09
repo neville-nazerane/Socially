@@ -76,6 +76,7 @@ stages:
             deploy:
               steps:
                 - script: 'ls $(Pipeline.Workspace)/drop/toDeploy'
+                  displayName: 'sample'
 
       - deployment: ShowConfig
         environment: 'Development'
