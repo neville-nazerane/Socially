@@ -4,7 +4,7 @@ variables:
   service:
     port: '5052'
     directory: '/var/www/socially'
-    dll: Socially.WebAPI.dll
+    dll: 'Socially.WebAPI.dll'
 
 pool:
   vmImage: 'ubuntu-18.04'
