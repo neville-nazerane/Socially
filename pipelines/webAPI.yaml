@@ -51,7 +51,7 @@ stages:
           inputs:
             rootDirectory: '$(Build.ArtifactStagingDirectory)/toDeploy'
             targetFiles: 'linux.service'
-            encoding: 'auto'
+            encoding: auto
             writeBOM: true
             actionOnMissing: warn
             keepToken: false
