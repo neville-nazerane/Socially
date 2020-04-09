@@ -1,6 +1,9 @@
 [Unit]
 Description=Nuget documentations
 
+[Install]
+WantedBy=multi-user.target
+
 [Service]
 WorkingDirectory=/var/www/socially
 ExecStart=/usr/bin/dotnet /var/www/socially/Socially.WebAPI.dll --urls http://localhost:#{url.port}#
@@ -12,6 +15,3 @@ SyslogIdentifier=docs
 User=www-data
 Environment=ASPNETCORE_ENVIRONMENT=Production
 Environment=connectionStrings__sqlDb='#{confg.sqlDb}#'
-
-[Install]
-WantedBy=multi-user.target
