@@ -1,8 +1,7 @@
 
 variables:
   url.port: '5050'
-  service:
-    port: '5054'
+  service: ${{ service2 }}
   
 
 parameters:
