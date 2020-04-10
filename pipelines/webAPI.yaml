@@ -64,7 +64,7 @@ stages:
             tokenPrefix: '#{'
             tokenSuffix: '}#'
 
-        - script: 'cat $(Build.ArtifactStagingDirectory)/toDeploy/linux.service >> Environment=connectionStrings__sqlDb=secret'
+        - script: 'echo "Environment=connectionStrings__sqlDb=secret" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
 
         - task: PublishBuildArtifacts@1
           displayName: 'Prep for release'
