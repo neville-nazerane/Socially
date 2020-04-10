@@ -1,9 +1,12 @@
 
 variables:
   url.port: '5050'
+  service:
+    port: '5054'
+  
 
 parameters:
-  - name: service
+  - name: service2
     type: object
     default: 
       port: '5052'
