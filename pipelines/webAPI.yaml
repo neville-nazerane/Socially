@@ -54,16 +54,9 @@ stages:
             projects: 'src/Socially.WebAPI'
             arguments: '-o $(Build.ArtifactStagingDirectory)/toDeploy'
 
-        - task: CopyFiles@2
-          inputs:
-            SourceFolder: 'pipelines'
-            Contents: 'linux.service'
-            TargetFolder: '$(Build.ArtifactStagingDirectory)/toDeploy'
-
         - task: replacetokens@3
           inputs:
-            rootDirectory: '$(Build.ArtifactStagingDirectory)/toDeploy'
-            targetFiles: 'linux.service'
+            targetFiles: 'pipelines/linux.service => $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
             encoding: auto
             writeBOM: true
             actionOnMissing: warn
