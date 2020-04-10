@@ -1,7 +1,10 @@
 
 variables:
   url.port: '5050'
-  service: ${{ service2 }}
+  
+  service.port: '5080'
+  service.directory: '/var/www/socially'
+  service.dll: 'Socially.WebAPI.dll'
   
 
 parameters:
