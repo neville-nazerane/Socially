@@ -68,7 +68,7 @@ stages:
             tokenSuffix: '}#'
 
         - script: 'echo "Environment=connectionStrings__sqlDb=secret" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
-        - script: 'echo "${{ stuffing }}" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
+        - script: 'echo "${{ parameters.stuffing }}" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
 
         - task: PublishBuildArtifacts@1
           displayName: 'Prep for release'
