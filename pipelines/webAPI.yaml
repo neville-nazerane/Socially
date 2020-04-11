@@ -14,6 +14,9 @@ parameters:
       port: '5052'
       directory: '/var/www/socially'
       dll: 'Socially.WebAPI.dll'
+  - name: stuffing
+    type: string
+    default: 'na na na na'
 
 pool:
   vmImage: 'ubuntu-18.04'
@@ -65,6 +68,7 @@ stages:
             tokenSuffix: '}#'
 
         - script: 'echo "Environment=connectionStrings__sqlDb=secret" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
+        - script: 'echo "${{ stuffing }}" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
 
         - task: PublishBuildArtifacts@1
           displayName: 'Prep for release'
