@@ -17,6 +17,13 @@ parameters:
   - name: stuffing
     type: string
     default: 'na na na na'
+  - name: configs
+    type: object
+    default: 
+      - name: 'red hood'
+        value: 'jason'
+      - name: 'red robin'
+        value: 'tim'
 
 pool:
   vmImage: 'ubuntu-18.04'
