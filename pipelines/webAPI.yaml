@@ -79,7 +79,7 @@ stages:
         - script: 'echo "${{ parameters.stuffing }}" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
 
         - ${{ each config in parameters.configs }}:
-          script: 'echo "${{ config.name }}" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
+          - script: 'echo "${{ config.name }}" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
 
         - task: PublishBuildArtifacts@1
           displayName: 'Prep for release'
