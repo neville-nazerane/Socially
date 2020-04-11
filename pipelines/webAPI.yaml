@@ -62,7 +62,7 @@ stages:
             projects: 'src/Socially.WebAPI'
             arguments: '-o $(Build.ArtifactStagingDirectory)/toDeploy'
 
-        - script: 'sed "s/#{service.port}#/$(service.port)" pipelines/linux.service > $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
+        - script: 'sed "s/#{service.port}#/$(service.port)/" pipelines/linux.service > $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
 
         - script: 'echo "Environment=connectionStrings__sqlDb=secret" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
         - script: 'echo "${{ parameters.stuffing }}" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
