@@ -75,7 +75,7 @@ stages:
         - script: 'echo "Environment=connectionStrings__sqlDb=secret" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
         - script: 'echo "${{ parameters.stuffing }}" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
 
-        - ${{ each config in parameters.configs }}:
+        - ${{ each config in variables.service }}:
           - script: 'echo "Environment=${{ config }}" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
 
         - task: PublishBuildArtifacts@1
