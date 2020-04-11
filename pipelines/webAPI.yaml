@@ -63,7 +63,7 @@ stages:
             projects: 'src/Socially.WebAPI'
             arguments: '-o $(Build.ArtifactStagingDirectory)/toDeploy'
 
-        - script: 'cp pipelines/linux.service $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
+        - script: 'cp pipelines/linux.service $(Build.ArtifactStagingDirectory)/toDeploy'
   
         - task: ShellScript@2
           inputs:
