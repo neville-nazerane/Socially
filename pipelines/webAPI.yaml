@@ -54,13 +54,9 @@ stages:
           displayName: 'Unit Test - Managers'
 
         - script: 'dotnet test src/Socially.WebAPI.IntegrationTests -c release'
+          displayName: 'Integration Tests'
 
-        - task: DotNetCoreCLI@2
-          inputs:
-            command: 'publish'
-            zipAfterPublish: true
-            projects: 'src/Socially.WebAPI'
-            arguments: '-o $(Build.ArtifactStagingDirectory)/toDeploy'
+        - script: 'cp pipelines/linux.service $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
 
         - task: ShellScript@2
           inputs:
