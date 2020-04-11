@@ -54,7 +54,8 @@ stages:
           displayName: 'Unit Test - Managers'
 
         - script: 'dotnet test src/Socially.WebAPI.IntegrationTests -c release'
-
+          displayName: 'Integration Tests'
+        
         - task: DotNetCoreCLI@2
           inputs:
             command: 'publish'
@@ -62,13 +63,12 @@ stages:
             projects: 'src/Socially.WebAPI'
             arguments: '-o $(Build.ArtifactStagingDirectory)/toDeploy'
 
-        
-
-        - script: 'echo "Environment=connectionStrings__sqlDb=secret" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
-        - script: 'echo "${{ parameters.stuffing }}" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
-
-        - ${{ each config in variables.service }}:
-          - script: 'echo "Environment=${{ config }}" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
+        - script: 'cp pipelines/linux.service $(Build.ArtifactStagingDirectory)/toDeploy'
+  
+        - task: ShellScript@2
+          inputs:
+            scriptPath: 'pipelines/update-service.sh'
+            failOnStandardError: true
 
         - task: PublishBuildArtifacts@1
           displayName: 'Prep for release'
