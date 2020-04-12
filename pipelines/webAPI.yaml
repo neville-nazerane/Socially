@@ -20,10 +20,10 @@ parameters:
   - name: configs
     type: object
     default:
-      - name: Jason
-        value: todd
-      - name: Tim
-        value: Drake
+      - title: Jason
+        val: todd
+      - title: Tim
+        val: Drake
 
 
 pool:
@@ -74,7 +74,7 @@ stages:
           displayName: 'Linux Service Setup'
 
         - ${{ each config in parameters.configs }}:
-          - script: 'echo "Environment=${{ config.name }}=${{ config.value }}" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
+          - script: 'echo "Environment=${{ config.title }}=${{ config.val }}" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
           displayName: 'Setting up configurations'
         - task: PublishBuildArtifacts@1
           displayName: 'Prep for release'
