@@ -19,9 +19,12 @@ parameters:
     default: 'na na na na'
   - name: configs
     type: object
-    default: 
-      - game=hello
-      - dame=world
+    default:
+      - name: Jason
+        value: todd
+      - name: Tim
+        value: Drake
+
 
 pool:
   vmImage: 'ubuntu-18.04'
@@ -70,6 +73,9 @@ stages:
             sed -i 's/#{service.directory}#/$(service.directory)/g' $(Build.ArtifactStagingDirectory)/toDeploy/linux.service
           displayName: 'Linux Service Setup'
 
+        - ${{ each config in parameters.config }}:
+          - script: 'echo "Environment=${{ config.name }}=${{ config.value }}" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
+          displayName: 'Setting up configurations'
         - task: PublishBuildArtifacts@1
           displayName: 'Prep for release'
           inputs:
