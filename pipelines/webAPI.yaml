@@ -4,9 +4,7 @@ variables:
   serviceName: 'kestrel-socially'
   tempFolder: 'sociallyTemp'
 
-  url.port: '5050'
-  
-  service.port: '5080'
+  service.port: '5030'
   service.directory: '\/var\/www\/socially'
   service.dll: 'Socially.WebAPI.dll'
   
