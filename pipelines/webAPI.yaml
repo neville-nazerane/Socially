@@ -116,5 +116,13 @@ stages:
                     targetFolder: 'sociallyTemp'
                     cleanTargetFolder: true
                     readyTimeout: '20000'
+
+                - task: SSH@0
+                  inputs:
+                    sshEndpoint: 'websites'
+                    scriptPath: 'sociallyTemp'
+                    inline: |
+                      rm -rf $(service.directory)
+                      unzip Socially.WebAPI.zip -d $(service.directory)
     
     
