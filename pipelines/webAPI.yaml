@@ -123,7 +123,7 @@ stages:
                       sudo rm -rf $(service.directory)
                       sudo unzip Socially.WebAPI.zip -d $(service.directory)
 
-                      sudo mv $(tempFolder)/linux.service /etc/systemd/system/$(serviceName).service -f
+                      sudo mv linux.service /etc/systemd/system/$(serviceName).service -f
 
                       sudo systemctl enable $(serviceName).service 
                       sudo systemctl stop $(serviceName).service 
