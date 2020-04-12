@@ -122,8 +122,11 @@ stages:
                     sshEndpoint: 'websites'
                     runOptions: 'inline'
                     inline: |
+                      cd sociallyTemp
                       rm -rf $(service.directory)
                       unzip Socially.WebAPI.zip -d $(service.directory)
+                      cd ..
+                      rm -rf sociallyTemp
                     readyTimeout: '20000'
     
     
