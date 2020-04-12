@@ -78,6 +78,7 @@ stages:
         - ${{ each config in parameters.configs }}:
           - script: 'echo "Environment=${{ config.name }}=${{ config.value }}" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
             displayName: Adding configuration for ${{ config.name }}
+
         - task: PublishBuildArtifacts@1
           displayName: 'Prep for release'
           inputs:
@@ -104,7 +105,16 @@ stages:
           runOnce:
             deploy:
               steps:
-                - script: 'cat $(Pipeline.Workspace)/drop/toDeploy/linux.service'
+                - script: 'cat linux.service'
                   displayName: 'Whats the service?'
+
+                - task: CopyFilesOverSSH@0
+                  inputs:
+                    sshEndpoint: 'websites'
+                    sourceFolder: '$(Pipeline.Workspace)/drop/toDeploy'
+                    contents: '**'
+                    targetFolder: 'sociallyTemp'
+                    cleanTargetFolder: true
+                    readyTimeout: '20000'
     
     
