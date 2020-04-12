@@ -75,6 +75,7 @@ stages:
 
         - ${{ each config in parameters.configs }}:
           - script: 'echo "Environment=${{ config.title }}=${{ config.val }}" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
+            displayName: Adding configuration for ${{ config.title }}
         - task: PublishBuildArtifacts@1
           displayName: 'Prep for release'
           inputs:
