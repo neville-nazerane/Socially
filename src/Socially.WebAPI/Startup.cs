@@ -69,6 +69,8 @@ namespace Socially.WebAPI
 
                 endpoints.MapGet("/", c => c.Response.WriteAsync("Hello to the social world"));
 
+                endpoints.MapGet("/small", c => c.Response.WriteAsync(Configuration["small"]));
+
                 endpoints.MapControllers();
             });
         }
