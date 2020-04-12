@@ -1,5 +1,9 @@
 
 variables:
+
+  serviceName: 'kestrel-socially'
+  tempFolder: 'sociallyTemp'
+
   url.port: '5050'
   
   service.port: '5080'
@@ -90,43 +94,41 @@ stages:
     displayName: 'Deploy to Development'
 
     jobs:
-      - deployment: UploadWeb
-        environment: 'Development'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - script: 'ls $(Pipeline.Workspace)/drop/toDeploy'
-                  displayName: 'Whats going to deploy'
-
       - deployment: ShowConfig
         environment: 'Development'
         strategy:
           runOnce:
             deploy:
               steps:
-                - script: 'cat $(Pipeline.Workspace)/drop/toDeploy/linux.service'
-                  displayName: 'Whats the service?'
 
                 - task: CopyFilesOverSSH@0
+                  displayName: 'Upload files to server'
                   inputs:
                     sshEndpoint: 'websites'
                     sourceFolder: '$(Pipeline.Workspace)/drop/toDeploy'
                     contents: '**'
-                    targetFolder: 'sociallyTemp'
+                    targetFolder: $(tempFolder)
                     cleanTargetFolder: true
                     readyTimeout: '20000'
 
                 - task: SSH@0
+                  displayName: 'SSH in and setup website'
                   inputs:
                     sshEndpoint: 'websites'
                     runOptions: 'inline'
                     inline: |
-                      cd sociallyTemp
+                      cd $(tempFolder)
                       sudo rm -rf $(service.directory)
                       sudo unzip Socially.WebAPI.zip -d $(service.directory)
+
+                      sudo mv $(tempFolder)/linux.service /etc/systemd/system/kestrel-$(serviceName).service -f
+
+                      sudo systemctl enable $(serviceName).service 
+                      sudo systemctl stop $(serviceName).service 
+                      sudo systemctl start $(serviceName).service
+
                       cd ..
-                      rm -rf sociallyTemp
+                      rm -rf $(tempFolder)
                     readyTimeout: '20000'
     
     
