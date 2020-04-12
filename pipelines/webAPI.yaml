@@ -64,10 +64,6 @@ stages:
             arguments: '-o $(Build.ArtifactStagingDirectory)/toDeploy'
 
         - script: 'cp pipelines/linux.service $(Build.ArtifactStagingDirectory)/toDeploy'
-  
-        - task: ShellScript@2
-          inputs:
-            scriptPath: 'pipelines/update-service.sh'
 
         - task: PublishBuildArtifacts@1
           displayName: 'Prep for release'
