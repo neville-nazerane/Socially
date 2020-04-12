@@ -65,7 +65,6 @@ stages:
 
         - script: |
             'cp pipelines/linux.service $(Build.ArtifactStagingDirectory)/toDeploy'
-            'sed "s/#{service.port}#/$(service.port)/" $(Build.ArtifactStagingDirectory)/toDeploy'
           displayName: 'Setting up service'
 
         - task: PublishBuildArtifacts@1
