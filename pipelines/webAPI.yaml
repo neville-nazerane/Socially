@@ -24,6 +24,8 @@ parameters:
         value: todd
       - name: Tim
         value: Drake
+      - name: Secure
+        value: $(safeKey)
 
 
 pool:
