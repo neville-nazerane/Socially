@@ -1,1 +1,0 @@
-sed "s/#{service.port}#/$service.port/" pipelines/linux.service > $Build.ArtifactStagingDirectory/toDeploy

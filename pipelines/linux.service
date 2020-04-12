@@ -1,5 +1,5 @@
 [Unit]
-Description=Nuget documentations
+Description=Socially API
 
 [Install]
 WantedBy=multi-user.target
@@ -11,7 +11,6 @@ Restart=always
 # Restart service after 10 seconds if the dotnet service crashes:
 RestartSec=10
 KillSignal=SIGINT
-SyslogIdentifier=docs
+SyslogIdentifier=sociallyAPI
 User=www-data
 Environment=ASPNETCORE_ENVIRONMENT=Production
-Environment=connectionStrings__sqlDb='#{confg.sqlDb}#'

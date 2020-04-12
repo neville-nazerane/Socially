@@ -30,6 +30,8 @@ parameters:
         value: Drake
       - name: Secure
         value: $(safeKey)
+      - name: Secure2
+        value: $(safeKey2)
 
 
 pool:
