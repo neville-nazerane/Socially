@@ -73,7 +73,7 @@ stages:
             sed -i 's/#{service.directory}#/$(service.directory)/g' $(Build.ArtifactStagingDirectory)/toDeploy/linux.service
           displayName: 'Linux Service Setup'
 
-        - ${{ each config in parameters.config }}:
+        - ${{ each config in parameters.configs }}:
           - script: 'echo "Environment=${{ config.name }}=${{ config.value }}" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
           displayName: 'Setting up configurations'
         - task: PublishBuildArtifacts@1
