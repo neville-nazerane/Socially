@@ -130,7 +130,6 @@ stages:
                       sudo systemctl start $(serviceName).service
 
                       cd ..
-                      rm -rf $(tempFolder)
                     readyTimeout: '20000'
             
     
