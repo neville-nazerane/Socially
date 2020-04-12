@@ -64,7 +64,7 @@ stages:
             arguments: '-o $(Build.ArtifactStagingDirectory)/toDeploy'
 
         - script: |
-            'cp pipelines/linux.service $(Build.ArtifactStagingDirectory)/toDeploy'
+            cp pipelines/linux.service $(Build.ArtifactStagingDirectory)/toDeploy
 
         - task: PublishBuildArtifacts@1
           displayName: 'Prep for release'
