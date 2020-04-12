@@ -105,7 +105,7 @@ stages:
           runOnce:
             deploy:
               steps:
-                - script: 'cat linux.service'
+                - script: 'cat $(Pipeline.Workspace)/drop/toDeploy/linux.service'
                   displayName: 'Whats the service?'
 
                 - task: CopyFilesOverSSH@0
