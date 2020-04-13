@@ -124,6 +124,9 @@ stages:
                       sed -i 's/#{service.dll}#/$(service.dll)/' linux.service
                       sed -i 's/#{service.directory}#/$(service.directory)/g' linux.service
 
+                      ${{ each config in parameters.configs }}:
+                        - echo "Environment=${{ config.name }}=${{ config.value }}" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service
+
                       sudo mv linux.service /etc/systemd/system/$(serviceName).service -f
 
                       sudo systemctl enable $(serviceName).service 
