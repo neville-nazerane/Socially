@@ -76,9 +76,6 @@ stages:
 
         - script: |
             cp pipelines/linux.service $(Build.ArtifactStagingDirectory)/toDeploy
-            sed -i 's/#{service.port}#/$(service.port)/' $(Build.ArtifactStagingDirectory)/toDeploy/linux.service
-            sed -i 's/#{service.dll}#/$(service.dll)/' $(Build.ArtifactStagingDirectory)/toDeploy/linux.service
-            sed -i 's/#{service.directory}#/$(service.directory)/g' $(Build.ArtifactStagingDirectory)/toDeploy/linux.service
           displayName: 'Linux Service Setup'
 
         - ${{ each config in parameters.configs }}:
@@ -122,6 +119,10 @@ stages:
                       cd $(tempFolder)
                       sudo rm -rf $(service.directory)
                       sudo unzip Socially.WebAPI.zip -d $(service.directory)
+
+                      sed -i 's/#{service.port}#/$(service.port)/' linux.service
+                      sed -i 's/#{service.dll}#/$(service.dll)/' linux.service
+                      sed -i 's/#{service.directory}#/$(service.directory)/g' linux.service
 
                       sudo mv linux.service /etc/systemd/system/$(serviceName).service -f
 
