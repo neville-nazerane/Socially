@@ -34,15 +34,15 @@ namespace Socially.WebAPI
         {
 
             services.AddDbContext<ApplicationDbContext>(c => c.UseSqlServer(Configuration.GetConnectionString("db")));
-
             services.AddIdentity<User, UserRole>()
                     .AddEntityFrameworkStores<ApplicationDbContext>();
-
+            services.AddHealthChecks()
+                    .AddDbContextCheck<ApplicationDbContext>();
+            services.AddControllers();
+            
             services.AddSwaggerDocument();
-
             services.AddTransient<IUserVerificationManager, UserVerificationManager>();
 
-            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,7 +69,7 @@ namespace Socially.WebAPI
 
                 endpoints.MapGet("/", c => c.Response.WriteAsync("Hello to the social world"));
 
-                endpoints.MapGet("/small", c => c.Response.WriteAsync(Configuration["Secure2"]));
+                endpoints.MapHealthChecks("/health");
 
                 endpoints.MapControllers();
             });
