@@ -22,16 +22,8 @@ parameters:
   - name: configs
     type: object
     default:
-      - name: Jason
-        value: todd
-      - name: Tim
-        value: Drake
-      - name: Secure
-        value: $(safeKey)
-      - name: Secure2
-        value: $(safeKey2)
-      - name: small
-        value: 'just_ice'
+      - name: connectionStrings__db
+        value: $(Secrets.Db)
 
 
 pool:
