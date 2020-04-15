@@ -100,7 +100,7 @@ stages:
                   displayName: Copy service file
                 
                 - ${{ each config in parameters.configs }}:
-                  - script: 'echo "Environment=${{ config.name }}='${{ config.value }}''" >> $(Pipeline.Workspace)/prep/linux.service'
+                  - script: 'echo "Environment=${{ config.name }}='''${{ config.value }}''''" >> $(Pipeline.Workspace)/prep/linux.service'
                     displayName: Adding configuration for ${{ config.name }}
 
                 - task: CopyFilesOverSSH@0
