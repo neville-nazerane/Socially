@@ -76,11 +76,9 @@ stages:
 
         - script: |
             cp pipelines/linux.service $(Build.ArtifactStagingDirectory)/toDeploy
-          displayName: 'Linux Service Setup'
+          displayName: 'Copy Linux Service'
 
-        - ${{ each config in parameters.configs }}:
-          - script: 'echo "Environment=${{ config.name }}=${{ config.value }}" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service'
-            displayName: Adding configuration for ${{ config.name }}
+        
 
         - task: PublishBuildArtifacts@1
           displayName: 'Prep for release'
@@ -105,10 +103,22 @@ stages:
                   inputs:
                     sshEndpoint: 'websites'
                     sourceFolder: '$(Pipeline.Workspace)/drop/toDeploy'
-                    contents: '**'
+                    contents: '*.zip'
                     targetFolder: $(tempFolder)
                     cleanTargetFolder: true
                     readyTimeout: '20000'
+
+                - script: |
+                    cp $(Pipeline.Workspace)/drop/toDeploy/linux.service $(Pipeline.Workspace)/prep
+                    cd $(Pipeline.Workspace)/prep
+                    sed -i 's/#{service.port}#/$(service.port)/' linux.service
+                    sed -i 's/#{service.dll}#/$(service.dll)/' linux.service
+                    sed -i 's/#{service.directory}#/$(service.directory)/g' linux.service
+                  displayName: Copy service file
+
+                - ${{ each config in parameters.configs }}:
+                  - script: 'echo "Environment=${{ config.name }}=${{ config.value }}" >> $(Pipeline.Workspace)/prep/linux.service'
+                    displayName: Adding configuration for ${{ config.name }}
 
                 - task: SSH@0
                   displayName: 'SSH in and setup website'
@@ -120,13 +130,6 @@ stages:
                       sudo rm -rf $(service.directory)
                       sudo unzip Socially.WebAPI.zip -d $(service.directory)
 
-                      sed -i 's/#{service.port}#/$(service.port)/' linux.service
-                      sed -i 's/#{service.dll}#/$(service.dll)/' linux.service
-                      sed -i 's/#{service.directory}#/$(service.directory)/g' linux.service
-
-                      ${{ each config in parameters.configs }}:
-                        - echo "Environment=${{ config.name }}=${{ config.value }}" >> $(Build.ArtifactStagingDirectory)/toDeploy/linux.service
-
                       sudo mv linux.service /etc/systemd/system/$(serviceName).service -f
 
                       sudo systemctl enable $(serviceName).service 
@@ -135,5 +138,9 @@ stages:
 
                       cd ..
                     readyTimeout: '20000'
+
+                - script: rm -rf $(Pipeline.Workspace)/prep
+                  displayName: Removing Prep
+                
             
     
