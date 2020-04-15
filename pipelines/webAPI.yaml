@@ -31,7 +31,7 @@ parameters:
       - name: Secure2
         value: $(safeKey2)
       - name: small
-        value: 'justice'
+        value: 'just_ice'
 
 
 pool:
