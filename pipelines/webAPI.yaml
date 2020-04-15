@@ -109,6 +109,7 @@ stages:
                     readyTimeout: '20000'
 
                 - script: |
+                    mkdir $(Pipeline.Workspace)/prep
                     cp $(Pipeline.Workspace)/drop/toDeploy/linux.service $(Pipeline.Workspace)/prep
                     cd $(Pipeline.Workspace)/prep
                     sed -i 's/#{service.port}#/$(service.port)/' linux.service
