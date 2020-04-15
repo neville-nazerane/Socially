@@ -98,28 +98,28 @@ stages:
             deploy:
               steps:
 
-                - task: CopyFilesOverSSH@0
-                  displayName: 'Upload files to server'
-                  inputs:
-                    sshEndpoint: 'websites'
-                    sourceFolder: '$(Pipeline.Workspace)/drop/toDeploy'
-                    contents: '*.zip'
-                    targetFolder: $(tempFolder)
-                    cleanTargetFolder: true
-                    readyTimeout: '20000'
-
                 - script: |
                     mkdir $(Pipeline.Workspace)/prep
-                    cp $(Pipeline.Workspace)/drop/toDeploy/linux.service $(Pipeline.Workspace)/prep
+                    cp -a $(Pipeline.Workspace)/drop/toDeploy/. $(Pipeline.Workspace)/prep
                     cd $(Pipeline.Workspace)/prep
                     sed -i 's/#{service.port}#/$(service.port)/' linux.service
                     sed -i 's/#{service.dll}#/$(service.dll)/' linux.service
                     sed -i 's/#{service.directory}#/$(service.directory)/g' linux.service
                   displayName: Copy service file
-
+                
                 - ${{ each config in parameters.configs }}:
                   - script: 'echo "Environment=${{ config.name }}=${{ config.value }}" >> $(Pipeline.Workspace)/prep/linux.service'
                     displayName: Adding configuration for ${{ config.name }}
+
+                - task: CopyFilesOverSSH@0
+                  displayName: 'Upload files to server'
+                  inputs:
+                    sshEndpoint: 'websites'
+                    sourceFolder: '$(Pipeline.Workspace)/prep'
+                    contents: '**'
+                    targetFolder: $(tempFolder)
+                    cleanTargetFolder: true
+                    readyTimeout: '20000'
 
                 - task: SSH@0
                   displayName: 'SSH in and setup website'
