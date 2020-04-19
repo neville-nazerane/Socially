@@ -1,6 +1,5 @@
 
 variables:
-
   serviceName: 'kestrel-socially'
   tempFolder: 'sociallyTemp'
 
@@ -10,20 +9,11 @@ variables:
   
 
 parameters:
-  - name: service2
-    type: object
-    default: 
-      port: '5052'
-      directory: '/var/www/socially'
-      dll: 'Socially.WebAPI.dll'
-  - name: stuffing
-    type: string
-    default: 'na na na na'
   - name: configs
     type: object
     default:
       - name: ASPNETCORE_ENVIRONMENT
-        value: Development
+        value: Production
       - name: connectionStrings__db
         value: $(Secrets.Db)
 
@@ -41,6 +31,8 @@ trigger:
       - src/Socially.Server.DataAccess
       - src/Socially.Server.Services
       - src/Socially.WebAPI
+      - pipelines/webAPI.yaml
+      - pipelines/linux.service
     
 
 stages:
