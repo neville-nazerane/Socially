@@ -1,5 +1,6 @@
 ﻿using Socially.MobileApps.Pages;
 using System;
+using Xamarin.FluentInjector;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -11,7 +12,11 @@ namespace Socially.MobileApps
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            this.StartInjecting()
+                .SetDefaultPage(new MainPage())
+                .Build();
+
+            //MainPage = new MainPage();
         }
 
         protected override void OnStart()

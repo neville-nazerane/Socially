@@ -28,6 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\nugets\Xamarin.FluentInjector\src\Xamarin.FluentInjector\Xamarin.FluentInjector.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Pages\SignUpPage.xaml.cs">
       <DependentUpon>SignUpPage.xaml</DependentUpon>
     </Compile>
