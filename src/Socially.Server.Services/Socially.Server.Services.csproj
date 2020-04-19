@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="5.0.0-preview.4.20202.13" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="5.0.0-preview.4.20218.5" />
   </ItemGroup>
 
   <ItemGroup>
