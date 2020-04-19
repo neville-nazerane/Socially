@@ -22,6 +22,8 @@ parameters:
   - name: configs
     type: object
     default:
+      - name: ASPNETCORE_ENVIRONMENT
+        value: Development
       - name: connectionStrings__db
         value: $(Secrets.Db)
 
