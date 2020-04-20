@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace Socially.WebAPI.Controllers
 {
 
-    [ApiController]
+    [ApiController, Route("api/[Controller]")]
     public class AccountController : Controller
     {
         private readonly SignInManager<User> _signInManager;

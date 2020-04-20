@@ -10,6 +10,9 @@ namespace Socially.WebAPI.IntegrationTests
 {
     public class AccountTests : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
+
+        const string path = "api/account";
+
         private readonly CustomWebApplicationFactory<Startup> _factory;
 
         public AccountTests(CustomWebApplicationFactory<Startup> factory)
@@ -26,8 +29,8 @@ namespace Socially.WebAPI.IntegrationTests
             const string testUsername = "username";
             const string testPassword = "pasSword!2";
 
-            bool emailExists = bool.Parse(await client.GetStringAsync($"verifyEmail/{testEmail}"));
-            bool userExists = bool.Parse(await client.GetStringAsync($"verifyUsername/{testUsername}"));
+            bool emailExists = bool.Parse(await client.GetStringAsync($"{path}/verifyEmail/{testEmail}"));
+            bool userExists = bool.Parse(await client.GetStringAsync($"{path}/verifyUsername/{testUsername}"));
 
             Assert.False(emailExists);
             Assert.False(userExists);
@@ -38,7 +41,7 @@ namespace Socially.WebAPI.IntegrationTests
                 Password = testPassword
             };
 
-            var loginResult = await client.PostAsJsonAsync("login", loginModel);
+            var loginResult = await client.PostAsJsonAsync($"{path}/login", loginModel);
 
             Assert.Equal(400, (int)loginResult.StatusCode);
 
@@ -51,18 +54,18 @@ namespace Socially.WebAPI.IntegrationTests
                 ConfirmPassword = testPassword
             };
 
-            var signinRes = await client.PostAsJsonAsync("signup", signupModel);
+            var signinRes = await client.PostAsJsonAsync($"{path}/signup", signupModel);
             Assert.True(signinRes.IsSuccessStatusCode,
                                 $"Sign up had error code {signinRes.StatusCode} saying '{await signinRes.Content.ReadAsStringAsync()}'");
 
 
-            emailExists = bool.Parse(await client.GetStringAsync($"verifyEmail/{testEmail}"));
-            userExists = bool.Parse(await client.GetStringAsync($"verifyUsername/{testUsername}"));
+            emailExists = bool.Parse(await client.GetStringAsync($"{path}/verifyEmail/{testEmail}"));
+            userExists = bool.Parse(await client.GetStringAsync($"{path}/verifyUsername/{testUsername}"));
 
             Assert.True(emailExists);
             Assert.True(userExists);
 
-            loginResult = await client.PostAsJsonAsync("login", loginModel);
+            loginResult = await client.PostAsJsonAsync($"{path}/login", loginModel);
 
             Assert.True(loginResult.IsSuccessStatusCode,
                                $"Sign in had error code {loginResult.StatusCode} saying '{await loginResult.Content.ReadAsStringAsync()}'");
