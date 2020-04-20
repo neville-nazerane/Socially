@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using Socially.Core.Entities;
 using Socially.Server.DataAccess;
 using Socially.Server.Managers;
+using Socially.Server.Services;
 
 namespace Socially.WebAPI
 {
@@ -41,7 +42,10 @@ namespace Socially.WebAPI
             services.AddControllers();
             
             services.AddSwaggerDocument();
+
+            // managers
             services.AddTransient<IUserVerificationManager, UserVerificationManager>();
+            services.AddTransient<IUserService, UserService>();
 
         }
 

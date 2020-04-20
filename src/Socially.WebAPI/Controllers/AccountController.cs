@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Socially.Core.Entities;
 using Socially.Core.Models;
 using Socially.Server.Managers;
+using Socially.Server.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,30 +16,25 @@ namespace Socially.WebAPI.Controllers
     [ApiController, Route("api/[Controller]")]
     public class AccountController : Controller
     {
-        private readonly SignInManager<User> _signInManager;
-        private readonly IUserVerificationManager _userVerificationManager;
+        private readonly IUserService _userService;
 
-        public AccountController(SignInManager<User> signInManager, IUserVerificationManager userVerificationManager)
+        public AccountController(IUserService userService)
         {
-            _signInManager = signInManager;
-            _userVerificationManager = userVerificationManager;
+            _userService = userService;
         }
 
         [HttpGet("verifyEmail/{email}")]
         public Task<bool> VerifyEmail(string email, CancellationToken cancellationToken = default)
-            => _userVerificationManager.EmailExistsAsync(email, cancellationToken);
+            => _userService.VerifyEmailAsync(email, cancellationToken);
 
         [HttpGet("verifyUsername/{userName}")]
         public Task<bool> VerifyUsername(string userName, CancellationToken cancellationToken = default) 
-            => _userVerificationManager.UserNameExistsAsync(userName, cancellationToken);
+            => _userService.VerifyUsernameAsync(userName, cancellationToken);
 
         [HttpPost("signup")]
         public async Task<IActionResult> SignUp(SignUpModel model)
         {
-            var result = await _signInManager.UserManager.CreateAsync(new User { 
-                                    Email = model.Email,
-                                    UserName = model.UserName
-                                }, model.Password);
+            var result = await _userService.SignUpAsync(model);
             if (result.Succeeded) return Ok();
             else return BadRequest(new Dictionary<string, IEnumerable<string>> {
                 { string.Empty, result.Errors.Select(r => r.Description) }
@@ -48,7 +44,7 @@ namespace Socially.WebAPI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginModel model)
         {
-            var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
+            var result = await _userService.LoginAsync(model);
             if (result.Succeeded) return Ok();
             else return BadRequest();
         }
