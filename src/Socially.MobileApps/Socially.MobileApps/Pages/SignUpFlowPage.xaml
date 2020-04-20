@@ -3,15 +3,37 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="clr-namespace:Socially.MobileApps.Models;assembly=Socially.MobileApps.Models"
              xmlns:vm="clr-namespace:Socially.MobileApps.ViewModels;assembly=Socially.MobileApps.ViewModels"
              mc:Ignorable="d"
              x:DataType="vm:SignUpFlowPageViewModel"
              x:Class="Socially.MobileApps.Pages.SignUpFlowPage">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="{Binding Title}"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
-    </ContentPage.Content>
+
+    <CarouselView ItemsSource="{Binding Inputs}">
+        <CarouselView.ItemTemplate>
+            <DataTemplate x:DataType="m:SignUpInputContext">
+                <StackLayout>
+
+                    <Label Text="{Binding Title}"
+                           FontSize="Title" />
+
+                    <Label Text="{Binding Instructions}"
+                           FontSize="Caption" />
+
+                    <Entry Text="{Binding Text}"
+                           IsPassword="{Binding IsPassword}" />
+
+
+                    <Label Text="{Binding ErrorMessage}"
+                           FontSize="Caption"
+                           TextColor="Red" />
+
+                    <Button Text="Next" 
+                            Command="{Binding NextCommand}" />
+
+                </StackLayout>
+            </DataTemplate>
+        </CarouselView.ItemTemplate>
+    </CarouselView>
+    
 </ContentPage>
