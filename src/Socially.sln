@@ -34,6 +34,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Socially.WebAPI.IntegrationTests", "Socially.WebAPI.IntegrationTests\Socially.WebAPI.IntegrationTests.csproj", "{D488BA30-9D7B-42F4-BCA3-3962352ACDFF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socially.MobileApps.Services", "Socially.MobileApps.Services\Socially.MobileApps.Services.csproj", "{5D7C719D-747D-473B-AE6D-5541AABE0838}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.FluentInjector", "..\..\..\nugets\Xamarin.FluentInjector\src\Xamarin.FluentInjector\Xamarin.FluentInjector.csproj", "{7683332F-86A0-4D7B-ACA2-1803DC995785}"
 EndProject
 Global
