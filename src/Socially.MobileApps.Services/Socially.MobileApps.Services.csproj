@@ -8,4 +8,8 @@
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0-preview.4.20218.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Socially.Core\Socially.Core.csproj" />
+  </ItemGroup>
+
 </Project>
