@@ -1,4 +1,5 @@
 ﻿using Socially.MobileApps.Pages;
+using Socially.MobileApps.ViewModels;
 using System;
 using Xamarin.FluentInjector;
 using Xamarin.Forms;
@@ -14,6 +15,7 @@ namespace Socially.MobileApps
 
             this.StartInjecting()
                 .SetDefaultPage(new MainPage())
+                .SetViewModelAssembly(typeof(ViewModelBase).Assembly)
                 .Build();
 
             //MainPage = new MainPage();

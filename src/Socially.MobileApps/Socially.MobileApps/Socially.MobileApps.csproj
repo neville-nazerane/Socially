@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\nugets\Xamarin.FluentInjector\src\Xamarin.FluentInjector\Xamarin.FluentInjector.csproj" />
+    <ProjectReference Include="..\..\Socially.MobileApps.ViewModels\Socially.MobileApps.ViewModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>
