@@ -11,7 +11,7 @@ namespace Socially.MobileApps.Components
         public static readonly BindableProperty CommandParameterProperty = BindableProperty.Create(nameof(CommandParameter), typeof(object), typeof(ActivityIndicatorForCommand));
 
 
-        public Command CommandToTrack { get; set; }
+        public Command CommandToTrack { get => (Command) GetValue(CommandToTrackProperty); set => SetCommand(value); }
 
         public object CommandParameter { get; set; }
 
@@ -28,6 +28,15 @@ namespace Socially.MobileApps.Components
                 if (CommandToTrack != null)
                     CommandToTrack.CanExecuteChanged += CommandToTrack_CanExecuteChanged;
             }
+        }
+
+        private void SetCommand(Command command)
+        {
+            if (CommandToTrack != null)
+            {
+                CommandToTrack.CanExecuteChanged += CommandToTrack_CanExecuteChanged;
+            }
+            SetValue(CommandToTrackProperty, command);
         }
 
         private void CommandToTrack_CanExecuteChanged(object sender, EventArgs e)
