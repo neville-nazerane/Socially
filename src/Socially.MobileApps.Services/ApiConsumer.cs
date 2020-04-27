@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Socially.MobileApps.Services
 {
-    public class ApiConsumer
+    public class ApiConsumer : IApiConsumer
     {
         private readonly HttpClient _client;
 

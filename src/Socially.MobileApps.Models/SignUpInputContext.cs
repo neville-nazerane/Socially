@@ -24,5 +24,10 @@ namespace Socially.MobileApps.Models
 
         public bool IsEnabled { get => _isEnabled; set => SetProperty(ref _isEnabled, value); }
 
+        public SignUpInputContext()
+        {
+            IsEnabled = true;
+        }
+
     }
 }

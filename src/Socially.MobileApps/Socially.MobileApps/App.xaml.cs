@@ -1,4 +1,5 @@
 ﻿using Socially.MobileApps.Pages;
+using Socially.MobileApps.Services;
 using Socially.MobileApps.ViewModels;
 using System;
 using Xamarin.FluentInjector;
@@ -14,8 +15,13 @@ namespace Socially.MobileApps
             InitializeComponent();
 
             this.StartInjecting()
+                
+                
                 .SetDefaultPage(new MainPage())
                 .SetViewModelAssembly(typeof(ViewModelBase).Assembly)
+
+                .AddHttpClient<IApiConsumer, ApiConsumer>(c => c.BaseAddress = new Uri("https://socially.nevillenazerane.com"))
+
                 .Build();
 
             //MainPage = new MainPage();

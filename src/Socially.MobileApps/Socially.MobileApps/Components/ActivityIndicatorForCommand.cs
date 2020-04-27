@@ -13,7 +13,7 @@ namespace Socially.MobileApps.Components
 
         public Command CommandToTrack { get => (Command) GetValue(CommandToTrackProperty); set => SetCommand(value); }
 
-        public object CommandParameter { get; set; }
+        public object CommandParameter { get => GetValue(CommandParameterProperty); set => SetValue(CommandParameterProperty, value); }
 
         protected override void OnParentSet()
         {
@@ -33,10 +33,11 @@ namespace Socially.MobileApps.Components
         private void SetCommand(Command command)
         {
             if (CommandToTrack != null)
-            {
-                CommandToTrack.CanExecuteChanged += CommandToTrack_CanExecuteChanged;
-            }
+                CommandToTrack.CanExecuteChanged -= CommandToTrack_CanExecuteChanged;
+
             SetValue(CommandToTrackProperty, command);
+            if (Parent != null)
+                CommandToTrack.CanExecuteChanged -= CommandToTrack_CanExecuteChanged;
         }
 
         private void CommandToTrack_CanExecuteChanged(object sender, EventArgs e)

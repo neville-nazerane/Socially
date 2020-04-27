@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Socially.MobileApps.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.FluentInjector;
 using Xamarin.Forms;
 
 namespace Socially.MobileApps.Pages
@@ -25,7 +27,7 @@ namespace Socially.MobileApps.Pages
 
         private async void Signup_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushModalAsync(new SignUpPage());
+            await Navigation.PushModalAsync(InjectionControl.ResolvePage<SignUpFlowViewModel>());
         }
 
     }

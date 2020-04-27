@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Socially.MobileApps.Models\Socially.MobileApps.Models.csproj" />
+    <ProjectReference Include="..\Socially.MobileApps.Services\Socially.MobileApps.Services.csproj" />
   </ItemGroup>
 
 </Project>
