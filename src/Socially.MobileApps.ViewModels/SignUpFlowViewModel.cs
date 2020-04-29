@@ -19,16 +19,12 @@ namespace Socially.MobileApps.ViewModels
         private const string confPasswordTitle = "Confirm Password";
         private readonly IApiConsumer _apiConsumer;
 
-        public SignUpModel SignUpData { get; set; }
-
         public ObservableCollection<SignUpInputContext> Inputs { get; set; }
 
         public SignUpFlowViewModel(IApiConsumer apiConsumer)
         {
             Inputs = new ObservableCollection<SignUpInputContext> { BuildEmailContext() };
             _apiConsumer = apiConsumer;
-
-            SignUpData = new SignUpModel();
         }
 
         private SignUpInputContext BuildEmailContext()
@@ -78,20 +74,20 @@ namespace Socially.MobileApps.ViewModels
 
         private async Task VerifyEmailAsync(SignUpInputContext context)
         {
+            context.Text = context.Text.Trim();
             if (string.IsNullOrWhiteSpace(context.Text))
             {
                 context.ErrorMessage = "Enter your email";
                 return;
             }
 
-            bool exists = await _apiConsumer.VerifyAccountEmailAsync(context.Text.Trim());
+            bool exists = await _apiConsumer.VerifyAccountEmailAsync(context.Text);
             if (exists)
             {
                 context.ErrorMessage = "There is already an account registered with this account";
             }
             else
             {
-                SignUpData.Email = context.Text;
                 if (!Inputs.Any(i => i.Title == usernameTitle))
                     Inputs.Add(BuildUsernameContext());
             }
@@ -99,20 +95,20 @@ namespace Socially.MobileApps.ViewModels
 
         private async Task VerifyUsernameAsync(SignUpInputContext context)
         {
+            context.Text = context.Text.Trim();
             if (string.IsNullOrWhiteSpace(context.Text))
             {
                 context.ErrorMessage = "Enter a username";
                 return;
             }
 
-            bool exists = await _apiConsumer.VerifyAccountUsernameAsync(context.Text.Trim());
+            bool exists = await _apiConsumer.VerifyAccountUsernameAsync(context.Text);
             if (exists)
             {
                 context.ErrorMessage = "Username is taken!";
             }
             else
             {
-                SignUpData.UserName = context.Text;
                 if (!Inputs.Any(i => i.Title == passwordTitle))
                     Inputs.Add(BuildPasswordContext());
             }
@@ -126,7 +122,6 @@ namespace Socially.MobileApps.ViewModels
                 return;
             }
 
-            SignUpData.Password = context.Text;
 
             if (!Inputs.Any(i => i.Title == confPasswordTitle))
                 Inputs.Add(BuildConfPasswordContext());
@@ -134,7 +129,7 @@ namespace Socially.MobileApps.ViewModels
 
         private async Task ConfirmPasswordAsync(SignUpInputContext context)
         {
-            if (context.Text != SignUpData.Password)
+            if (context.Text != GetText(passwordTitle))
             {
                 context.ErrorMessage = "Passwords don't match";
                 return;
@@ -142,6 +137,8 @@ namespace Socially.MobileApps.ViewModels
             else
                 context.ErrorMessage = null;
         }
+
+        private string GetText(string title) => Inputs.SingleOrDefault(i => i.Title == title).Text;
 
         private Command<SignUpInputContext> BuildCommand(Func<SignUpInputContext, Task> action)
         {
@@ -151,6 +148,7 @@ namespace Socially.MobileApps.ViewModels
                 triggerEnabledChange();
                 try
                 {
+                    await Task.Delay(2000);
                     await action(context);
                 }
                 catch (Exception e)
