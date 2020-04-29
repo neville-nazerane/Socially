@@ -18,6 +18,8 @@ namespace Socially.MobileApps.Models
 
         public string Title { get; set; }
 
+        public string ButtonText { get; set; }
+
         public string Instructions { get; set; }
 
         public string ErrorMessage { get => _errorMessage; set => SetProperty(ref _errorMessage, value); }

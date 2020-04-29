@@ -5,37 +5,54 @@
              xmlns:comp="clr-namespace:Socially.MobileApps.Components"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="clr-namespace:Socially.MobileApps.Models;assembly=Socially.MobileApps.Models"
+             xmlns:ext="clr-namespace:Socially.MobileApps.Extensions"
              xmlns:vm="clr-namespace:Socially.MobileApps.ViewModels;assembly=Socially.MobileApps.ViewModels"
              mc:Ignorable="d"
              x:DataType="vm:SignUpFlowViewModel"
-             x:Class="Socially.MobileApps.Pages.SignUpFlowPage">
+             x:Class="Socially.MobileApps.Pages.SignUpFlowPage"
+             BackgroundColor="{StaticResource LoginBackground}">
 
-    <comp:InputsFlow ItemsSource="{Binding Inputs}" >
-        <comp:InputsFlow.ItemTemplate>
-            <DataTemplate x:DataType="m:SignUpInputContext">
-                <StackLayout>
+    <AbsoluteLayout>
 
-                    <Label Text="{Binding Title}"
-                           FontSize="Title" />
+        <Image Source="{ext:Image 'insta.png'}"
+                   AbsoluteLayout.LayoutBounds="0, .01, 1, .4"
+                   AbsoluteLayout.LayoutFlags="YProportional, SizeProportional"/>
 
-                    <Label Text="{Binding Instructions}"
-                           FontSize="Caption" />
+        <comp:InputsFlow ItemsSource="{Binding Inputs}" 
+                         AbsoluteLayout.LayoutBounds="0, .4, 1, .5">
+            <comp:InputsFlow.ItemTemplate>
+                <DataTemplate x:DataType="m:SignUpInputContext">
+                    <Frame CornerRadius="20" BorderColor="Blue">
+                        <AbsoluteLayout>
 
-                    <Entry Text="{Binding Text}"
-                           IsPassword="{Binding IsPassword}" />
+                            <Label Text="{Binding Title}"
+                                   FontSize="Title"
+                                    />
+
+                            <Label Text="{Binding Instructions}"
+                               FontSize="Caption"/>
+
+                            <Entry Text="{Binding Text}"
+                               IsPassword="{Binding IsPassword}"/>
 
 
-                    <Label Text="{Binding ErrorMessage}"
-                           FontSize="Caption"
-                           TextColor="Red" />
+                            <Label Text="{Binding ErrorMessage}"
+                               FontSize="Caption"
+                               TextColor="Red"/>
 
-                    <Button Text="Next" 
-                            CommandParameter="{Binding}"
-                            Command="{Binding NextCommand}" />
+                            <Button Text="{Binding ButtonText, FallbackValue='Next'}" 
+                                CommandParameter="{Binding}"
+                                Command="{Binding NextCommand}"
+                                BackgroundColor="{StaticResource LoginInputColor}"
+                                FontSize="Title"
+                                Margin="0, 0, 0, 40"
+                                CornerRadius="8" />
 
-                </StackLayout>
-            </DataTemplate>
-        </comp:InputsFlow.ItemTemplate>
-    </comp:InputsFlow>
+                        </AbsoluteLayout>
+                    </Frame>
+                </DataTemplate>
+            </comp:InputsFlow.ItemTemplate>
+        </comp:InputsFlow>
     
+    </AbsoluteLayout>
 </ContentPage>
