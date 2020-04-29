@@ -43,7 +43,8 @@ namespace Socially.MobileApps.Components
 
         private void CurrentItemSource_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            ScrollTo(e.NewStartingIndex, position: ScrollToPosition.Start);
+            if (e.Action == NotifyCollectionChangedAction.Add)
+                ScrollTo(e.NewStartingIndex, position: ScrollToPosition.Start);
         }
     }
 }

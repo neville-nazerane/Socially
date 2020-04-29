@@ -72,7 +72,7 @@ namespace Socially.MobileApps.ViewModels
                 Title = confPasswordTitle,
                 IsPassword = true,
                 Instructions = "What's that password again?",
-                NextCommand = BuildCommand(VerifyUsernameAsync)
+                NextCommand = BuildCommand(ConfirmPasswordAsync)
             };
         }
 
