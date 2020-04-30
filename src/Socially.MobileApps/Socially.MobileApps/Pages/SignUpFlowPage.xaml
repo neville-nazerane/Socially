@@ -60,6 +60,11 @@
                                     CornerRadius="8"
                                     Grid.Column="0" Grid.Row="4" />
 
+                            <comp:ActivityIndicatorForCommand
+                                    CommandToTrack="{Binding NextCommand}"
+                                    CommandParameter="{Binding}" 
+                                    Grid.Column="0" Grid.Row="5" />
+
                         </Grid>
                     </Frame>
                 </DataTemplate>

@@ -7,8 +7,14 @@ namespace Socially.MobileApps.Components
 {
     public class ActivityIndicatorForCommand : ActivityIndicator
     {
-        public static readonly BindableProperty CommandToTrackProperty = BindableProperty.Create(nameof(CommandToTrack), typeof(Command), typeof(ActivityIndicatorForCommand));
-        public static readonly BindableProperty CommandParameterProperty = BindableProperty.Create(nameof(CommandParameter), typeof(object), typeof(ActivityIndicatorForCommand));
+        public static readonly BindableProperty CommandToTrackProperty = BindableProperty.Create(nameof(CommandToTrack),
+                                                                                                 typeof(Command),
+                                                                                                 typeof(ActivityIndicatorForCommand),
+                                                                                                 propertyChanged: CommandToTrackChanged);
+        public static readonly BindableProperty CommandParameterProperty = BindableProperty.Create(nameof(CommandParameter),
+                                                                                                   typeof(object),
+                                                                                                   typeof(ActivityIndicatorForCommand),
+                                                                                                   propertyChanged: CommandParameterChanged);
 
 
         public Command CommandToTrack { get => (Command) GetValue(CommandToTrackProperty); set => SetCommand(value); }
@@ -37,7 +43,7 @@ namespace Socially.MobileApps.Components
 
             SetValue(CommandToTrackProperty, command);
             if (Parent != null)
-                CommandToTrack.CanExecuteChanged -= CommandToTrack_CanExecuteChanged;
+                CommandToTrack.CanExecuteChanged += CommandToTrack_CanExecuteChanged;
         }
 
         private void CommandToTrack_CanExecuteChanged(object sender, EventArgs e)
@@ -50,12 +56,23 @@ namespace Socially.MobileApps.Components
 
         private void UpdateBasedOnCanExecute()
         {
-            bool canExecute = CommandToTrack.CanExecute(CommandParameter);
+            bool needsToRun = !CommandToTrack.CanExecute(CommandParameter);
 
-            IsVisible = canExecute;
-            IsEnabled = canExecute;
-            IsRunning = canExecute;
+            IsVisible = needsToRun;
+            IsEnabled = needsToRun;
+            IsRunning = needsToRun;
         }
 
+        private static void CommandToTrackChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            var comp = (ActivityIndicatorForCommand)bindable;
+            comp.CommandToTrack = (Command)newValue;
+        }
+
+        private static void CommandParameterChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            var comp = (ActivityIndicatorForCommand)bindable;
+            comp.CommandParameter = newValue;
+        }
     }
 }
