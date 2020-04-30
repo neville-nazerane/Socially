@@ -22,9 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.7.0.546-nightly" />
+    <PackageReference Include="Xamarin.Forms" Version="4.7.0.688-nightly" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.2" />
-    <PackageReference Include="Xamarin.Forms.Visual.Material" Version="4.7.0.546-nightly" />
+    <PackageReference Include="Xamarin.Forms.Visual.Material" Version="4.7.0.688-nightly" />
   </ItemGroup>
 
   <ItemGroup>

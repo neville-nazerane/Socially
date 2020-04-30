@@ -16,7 +16,6 @@ namespace Socially.MobileApps
 
             this.StartInjecting()
                 
-                
                 .SetDefaultPage(new MainPage())
                 .SetViewModelAssembly(typeof(ViewModelBase).Assembly)
 

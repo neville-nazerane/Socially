@@ -25,7 +25,10 @@
                          AbsoluteLayout.LayoutFlags="YProportional, SizeProportional" >
 
             <comp:InputsFlow.ItemsLayout>
-                <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
+                <LinearItemsLayout Orientation="Horizontal" 
+                                   SnapPointsType="MandatorySingle"
+                                   SnapPointsAlignment="Start"
+                                   ItemSpacing="10" />
             </comp:InputsFlow.ItemsLayout>
             
             <comp:InputsFlow.ItemTemplate>

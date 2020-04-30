@@ -19,7 +19,9 @@ namespace Socially.MobileApps.Components
             if (Parent is null)
                 PropertyChanged -= PropertyChnaged;
             else
+            {
                 PropertyChanged += PropertyChnaged;
+            }
 
             base.OnParentSet();
         }

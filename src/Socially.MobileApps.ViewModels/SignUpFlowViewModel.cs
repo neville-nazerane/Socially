@@ -148,7 +148,6 @@ namespace Socially.MobileApps.ViewModels
                 triggerEnabledChange();
                 try
                 {
-                    await Task.Delay(2000);
                     await action(context);
                 }
                 catch (Exception e)
