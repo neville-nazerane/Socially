@@ -16,10 +16,5 @@ namespace Socially.MobileApps.Pages
         {
             InitializeComponent();
         }
-
-        private void CarouselView_ChildAdded(object sender, ElementEventArgs e)
-        {
-
-        }
     }
 }
