@@ -1,4 +1,5 @@
-﻿using Socially.MobileApps.Pages;
+﻿using Socially.MobileApps.Config;
+using Socially.MobileApps.Pages;
 using Socially.MobileApps.Services;
 using Socially.MobileApps.ViewModels;
 using System;
@@ -12,8 +13,10 @@ namespace Socially.MobileApps
     {
         public App()
         {
-            InitializeComponent();
 
+            Device.SetFlags(new string[] { "AppTheme_Experimental" });
+            InitializeComponent();
+            new ThemeControl().Update();
             this.StartInjecting()
                 
                 .SetDefaultPage(new MainPage())
