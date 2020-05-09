@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace Socially.MobileApps.Themes
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ShatteredTheme : ResourceDictionary
+    public partial class MirrorTheme : ResourceDictionary
     {
-        public ShatteredTheme()
+        public MirrorTheme()
         {
             InitializeComponent();
         }

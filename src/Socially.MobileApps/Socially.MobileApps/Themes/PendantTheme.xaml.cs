@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace Socially.MobileApps.Themes
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class GuardianTheme : ResourceDictionary
+    public partial class PendantTheme : ResourceDictionary
     {
-        public GuardianTheme()
+        public PendantTheme()
         {
             InitializeComponent();
         }

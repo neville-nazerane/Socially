@@ -20,9 +20,9 @@ namespace Socially.MobileApps.Config
         static ThemeControl()
         {
             themes = new List<IContainer> { 
-                new Container<ShatteredTheme>(),
-                new Container<GuardianTheme>(),
-                new Container<IdentityTheme>(),
+                new Container<PendantTheme>(),
+                new Container<MirrorTheme>(),
+                new Container<WindyTheme>(),
             };
         }
 
@@ -37,7 +37,7 @@ namespace Socially.MobileApps.Config
         public void Update()
         {
             string selection = Preferences.Get(key, null);
-            if (selection is null)
+            if (selection is null || !themes.Any(t => t.Name == selection))
             {
                 if (themes.Any())
                 {

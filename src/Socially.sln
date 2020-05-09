@@ -32,7 +32,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		nuget.config = nuget.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socially.WebAPI.IntegrationTests", "Socially.WebAPI.IntegrationTests\Socially.WebAPI.IntegrationTests.csproj", "{D488BA30-9D7B-42F4-BCA3-3962352ACDFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Socially.WebAPI.IntegrationTests", "Socially.WebAPI.IntegrationTests\Socially.WebAPI.IntegrationTests.csproj", "{D488BA30-9D7B-42F4-BCA3-3962352ACDFF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External Utils", "External Utils", "{64B6FBEE-B0D1-4345-AD10-08B1D2541E4B}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\js\theme-gen.js = ..\..\..\js\theme-gen.js
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -266,6 +271,7 @@ Global
 		{4D8DAD00-E60B-42F3-BD14-06C870DFDB2C} = {05C3142A-6BB0-4EFD-88A9-2F85FE1CDD2D}
 		{05EF0282-E903-4008-9CC5-0FAE94DE70AC} = {77B6C2FF-5CC7-4150-A584-7A8268221D26}
 		{D488BA30-9D7B-42F4-BCA3-3962352ACDFF} = {05C3142A-6BB0-4EFD-88A9-2F85FE1CDD2D}
+		{64B6FBEE-B0D1-4345-AD10-08B1D2541E4B} = {847180D1-A71D-4B43-91B0-25B659287DC3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {50127FD6-7CDB-47E4-AA15-B5E5503B7B81}

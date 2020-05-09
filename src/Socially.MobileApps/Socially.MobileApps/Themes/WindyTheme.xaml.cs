@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace Socially.MobileApps.Themes
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class IdentityTheme : ResourceDictionary
+    public partial class WindyTheme : ResourceDictionary
     {
-        public IdentityTheme()
+        public WindyTheme()
         {
             InitializeComponent();
         }
