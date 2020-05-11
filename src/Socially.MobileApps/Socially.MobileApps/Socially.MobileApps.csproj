@@ -22,13 +22,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Xamarin.FluentInjector" Version="0.0.391-master" />
     <PackageReference Include="Xamarin.Forms" Version="4.7.0.688-nightly" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.2" />
     <PackageReference Include="Xamarin.Forms.Visual.Material" Version="4.7.0.688-nightly" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\nugets\Xamarin.FluentInjector\src\Xamarin.FluentInjector\Xamarin.FluentInjector.csproj" />
     <ProjectReference Include="..\..\Socially.MobileApps.ViewModels\Socially.MobileApps.ViewModels.csproj" />
   </ItemGroup>
 

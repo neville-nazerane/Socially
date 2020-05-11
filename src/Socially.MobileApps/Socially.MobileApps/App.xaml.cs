@@ -18,7 +18,7 @@ namespace Socially.MobileApps
             InitializeComponent();
             new ThemeControl().Update();
             this.StartInjecting()
-                
+
                 .SetDefaultPage(new MainPage())
                 .SetViewModelAssembly(typeof(ViewModelBase).Assembly)
 
@@ -40,5 +40,6 @@ namespace Socially.MobileApps
         protected override void OnResume()
         {
         }
+
     }
 }

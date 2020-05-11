@@ -41,11 +41,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External Utils", "External 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Socially.MobileApps.Services", "Socially.MobileApps.Services\Socially.MobileApps.Services.csproj", "{5D7C719D-747D-473B-AE6D-5541AABE0838}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.FluentInjector", "..\..\..\nugets\Xamarin.FluentInjector\src\Xamarin.FluentInjector\Xamarin.FluentInjector.csproj", "{7683332F-86A0-4D7B-ACA2-1803DC995785}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Socially.MobileApps.ViewModels", "Socially.MobileApps.ViewModels\Socially.MobileApps.ViewModels.csproj", "{3FBE3C15-5117-4EC4-A352-EB106397C499}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socially.MobileApps.ViewModels", "Socially.MobileApps.ViewModels\Socially.MobileApps.ViewModels.csproj", "{3FBE3C15-5117-4EC4-A352-EB106397C499}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socially.MobileApps.Models", "Socially.MobileApps.Models\Socially.MobileApps.Models.csproj", "{AA392426-CC84-42FF-89D2-3D7923F9660E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Socially.MobileApps.Models", "Socially.MobileApps.Models\Socially.MobileApps.Models.csproj", "{AA392426-CC84-42FF-89D2-3D7923F9660E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -285,26 +283,6 @@ Global
 		{5D7C719D-747D-473B-AE6D-5541AABE0838}.Release|x64.Build.0 = Release|Any CPU
 		{5D7C719D-747D-473B-AE6D-5541AABE0838}.Release|x86.ActiveCfg = Release|Any CPU
 		{5D7C719D-747D-473B-AE6D-5541AABE0838}.Release|x86.Build.0 = Release|Any CPU
-		{7683332F-86A0-4D7B-ACA2-1803DC995785}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7683332F-86A0-4D7B-ACA2-1803DC995785}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7683332F-86A0-4D7B-ACA2-1803DC995785}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{7683332F-86A0-4D7B-ACA2-1803DC995785}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{7683332F-86A0-4D7B-ACA2-1803DC995785}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{7683332F-86A0-4D7B-ACA2-1803DC995785}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{7683332F-86A0-4D7B-ACA2-1803DC995785}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{7683332F-86A0-4D7B-ACA2-1803DC995785}.Debug|x64.Build.0 = Debug|Any CPU
-		{7683332F-86A0-4D7B-ACA2-1803DC995785}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7683332F-86A0-4D7B-ACA2-1803DC995785}.Debug|x86.Build.0 = Debug|Any CPU
-		{7683332F-86A0-4D7B-ACA2-1803DC995785}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7683332F-86A0-4D7B-ACA2-1803DC995785}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7683332F-86A0-4D7B-ACA2-1803DC995785}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{7683332F-86A0-4D7B-ACA2-1803DC995785}.Release|iPhone.Build.0 = Release|Any CPU
-		{7683332F-86A0-4D7B-ACA2-1803DC995785}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{7683332F-86A0-4D7B-ACA2-1803DC995785}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{7683332F-86A0-4D7B-ACA2-1803DC995785}.Release|x64.ActiveCfg = Release|Any CPU
-		{7683332F-86A0-4D7B-ACA2-1803DC995785}.Release|x64.Build.0 = Release|Any CPU
-		{7683332F-86A0-4D7B-ACA2-1803DC995785}.Release|x86.ActiveCfg = Release|Any CPU
-		{7683332F-86A0-4D7B-ACA2-1803DC995785}.Release|x86.Build.0 = Release|Any CPU
 		{3FBE3C15-5117-4EC4-A352-EB106397C499}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3FBE3C15-5117-4EC4-A352-EB106397C499}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FBE3C15-5117-4EC4-A352-EB106397C499}.Debug|iPhone.ActiveCfg = Debug|Any CPU
