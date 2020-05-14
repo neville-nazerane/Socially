@@ -24,22 +24,13 @@ namespace Socially.MobileApps
 
                 .AddHttpClient<IApiConsumer, ApiConsumer>(c => c.BaseAddress = new Uri("https://socially.nevillenazerane.com"))
 
+                .AddTransient<IThemeControl, ThemeControl>()
+
                 .Build();
 
             //MainPage = new MainPage();
         }
 
-        protected override void OnStart()
-        {
-        }
-
-        protected override void OnSleep()
-        {
-        }
-
-        protected override void OnResume()
-        {
-        }
 
     }
 }

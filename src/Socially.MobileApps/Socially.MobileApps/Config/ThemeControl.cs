@@ -10,7 +10,7 @@ using Xamarin.Forms.Internals;
 
 namespace Socially.MobileApps.Config
 {
-    class ThemeControl
+    class ThemeControl : IThemeControl
     {
 
         private const string key = "selectedTheme";
@@ -19,7 +19,7 @@ namespace Socially.MobileApps.Config
 
         static ThemeControl()
         {
-            themes = new List<IContainer> { 
+            themes = new List<IContainer> {
                 new Container<PendantTheme>(),
                 new Container<MirrorTheme>(),
                 new Container<WindyTheme>(),
