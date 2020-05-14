@@ -1,4 +1,5 @@
-﻿using Socially.MobileApps.Config;
+﻿using AP.MobileToolkit.Fonts;
+using Socially.MobileApps.Config;
 using Socially.MobileApps.Pages;
 using Socially.MobileApps.Services;
 using Socially.MobileApps.ViewModels;
@@ -15,8 +16,12 @@ namespace Socially.MobileApps
         {
 
             Device.SetFlags(new string[] { "AppTheme_Experimental" });
+            
             InitializeComponent();
+
             new ThemeControl().Update();
+            FontRegistry.RegisterFonts(FontAwesomeSolid.Font);
+
             this.StartInjecting()
 
                 .SetDefaultPage(new MainPage())

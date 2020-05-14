@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:font="http://avantipoint.com/mobiletoolkit"
              mc:Ignorable="d"
              x:Class="Socially.MobileApps.Pages.MainPage">
 
@@ -24,6 +25,16 @@
                FontSize="Large"
                AbsoluteLayout.LayoutBounds="0.5, .5, AutoSize, AutoSize"
                AbsoluteLayout.LayoutFlags="PositionProportional" />
+
+        <Label Text="{font:Icon 'fas fa-palette'}"
+               FontSize="Large"
+               TextColor="{DynamicResource themeNeutral}"
+               AbsoluteLayout.LayoutBounds="10, .95, 25, 25"
+               AbsoluteLayout.LayoutFlags="YProportional">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Tapped="ThemeTapped" />
+            </Label.GestureRecognizers>
+        </Label>
     </AbsoluteLayout>
 
 </ContentPage>

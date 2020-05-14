@@ -1,4 +1,5 @@
-﻿using Socially.MobileApps.ViewModels;
+﻿using Socially.MobileApps.Config;
+using Socially.MobileApps.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,6 +16,8 @@ namespace Socially.MobileApps.Pages
     [DesignTimeVisible(false)]
     public partial class MainPage : ContentPage
     {
+
+
         public MainPage()
         {
             InitializeComponent();
@@ -30,5 +33,15 @@ namespace Socially.MobileApps.Pages
             await Navigation.PushModalAsync(InjectionControl.ResolvePage<SignUpFlowViewModel>());
         }
 
+        private async void ThemeTapped(object sender, EventArgs e)
+        {
+            var themeControl = new ThemeControl();
+            var themes = themeControl.ThemeNames.ToArray();
+            var selected = await DisplayActionSheet("Pick a theme", "Go to hell", null, themes);
+            if (themes.Contains(selected))
+            {
+                themeControl.Update(selected);
+            }
+        }
     }
 }

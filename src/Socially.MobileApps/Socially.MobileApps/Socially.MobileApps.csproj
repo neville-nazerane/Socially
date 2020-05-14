@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AP.MobileToolkit.Forms.Fonts.FontAwesomeFree.Solid" Version="3.0.0.1540-pre" />
     <PackageReference Include="Xamarin.FluentInjector" Version="0.0.391-master" />
     <PackageReference Include="Xamarin.Forms" Version="4.7.0.688-nightly" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.2" />
