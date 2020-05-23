@@ -1,4 +1,7 @@
 
+pool:
+  vmImage: 'ubuntu-latest'
+
 resources:
   repositories:
     - repository: templates
