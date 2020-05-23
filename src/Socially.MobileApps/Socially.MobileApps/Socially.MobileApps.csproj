@@ -23,10 +23,10 @@
 
   <ItemGroup>
     <PackageReference Include="AP.MobileToolkit.Forms.Fonts.FontAwesomeFree.Solid" Version="3.0.0.1540-pre" />
-    <PackageReference Include="Xamarin.FluentInjector" Version="0.0.391-master" />
     <PackageReference Include="Xamarin.Forms" Version="4.7.0.688-nightly" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.2" />
     <PackageReference Include="Xamarin.Forms.Visual.Material" Version="4.7.0.688-nightly" />
+    <!--<PackageReference Include="Xamarin.FluentInjector" Version="0.0.391-master" />-->
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +36,9 @@
   <ItemGroup>
     <Compile Update="Pages\SignUpPage.xaml.cs">
       <DependentUpon>SignUpPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Themes\TearsTheme.xaml.cs">
+      <DependentUpon>TearsTheme.xaml</DependentUpon>
     </Compile>
     <Compile Update="Themes\PendantTheme.xaml.cs">
       <DependentUpon>PendantTheme.xaml</DependentUpon>

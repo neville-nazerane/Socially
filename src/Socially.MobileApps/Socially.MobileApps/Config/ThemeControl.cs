@@ -22,6 +22,7 @@ namespace Socially.MobileApps.Config
             themes = new List<IContainer> {
                 new Container<PendantTheme>(),
                 new Container<MirrorTheme>(),
+                new Container<TearsTheme>(),
                 new Container<WindyTheme>(),
             };
         }
