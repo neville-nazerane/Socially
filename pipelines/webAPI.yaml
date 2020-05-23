@@ -5,33 +5,6 @@ resources:
       type: github
       name: neville-nazerane/Common-Pipelines
 
-trigger:
-  branches:
-    include:
-      - master
-  paths:
-    include:
-      - src/Socially.Core
-      - src/Socially.Server.DataAccess
-      - src/Socially.Server.Services
-      - src/Socially.WebAPI
-      - pipelines/webAPI.yaml
-      - pipelines/linux.service
-
-extends:
-  template: Shared\netcore-ubuntu.yml@templates
-  parameters:
-    usePreRelease: true
-    projectPath: src/Socially.WebAPI
-    tempFolderName: sociallyTemp
-    service:
-      port: 5030
-      directory: '\/var\/www\/socially'
-      dll: Socially.WebAPI.dll
-    preBuildSteps:
-      - script: 'dotnet test src/Socially.Server.Managers.Tests -c release'
-        displayName: 'Unit Test - Managers'
-
-      - script: 'dotnet test src/Socially.WebAPI.IntegrationTests -c release'
-        displayName: 'Integration Tests'
+jobs:
+  - template: Shared\netcore-ubuntu.yml@templates
     
