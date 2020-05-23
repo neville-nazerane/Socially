@@ -4,7 +4,7 @@ resources:
     - repository: templates
       type: github
       name: neville-nazerane/Common-Pipelines
-      endpoint: GitHub
+      endpoint: github.com_neville-nazerane
       
 
 trigger:
