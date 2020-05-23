@@ -1,7 +1,7 @@
 
 resources:
   repositories:
-    - repository: shared
+    - repository: templates
       type: github
       name: neville-nazerane/Common-Pipelines
 
@@ -19,7 +19,7 @@ trigger:
       - pipelines/linux.service
 
 extends:
-  template: Shared\netcore-ubuntu.yml@shared
+  template: Shared\netcore-ubuntu.yml@templates
   parameters:
     usePreRelease: true
     projectPath: src/Socially.WebAPI
