@@ -29,8 +29,8 @@ extends:
     usePreRelease: true
     projectPath: src/Socially.WebAPI
     tempFolderName: sociallyTemp
-    serviceName: kestrel-socially
     service:
+      name: kestrel-socially
       port: 5030
       directory: '\/var\/www\/socially'
       dll: Socially.WebAPI.dll
