@@ -1,27 +1,14 @@
 
-
-variables:
-  serviceName: 'kestrel-socially'
-  tempFolder: 'sociallyTemp'
-
-  service.port: '5030'
-  service.directory: '\/var\/www\/socially'
-  service.dll: 'Socially.WebAPI.dll'
-  
-
-
-parameters:
-  - name: configs
-    type: object
-    default:
-      - name: ASPNETCORE_ENVIRONMENT
-        value: Production
-      - name: connectionStrings__db
-        value: $(Secrets.Db)
-
-
 pool:
-  vmImage: 'ubuntu-18.04'
+  vmImage: 'ubuntu-latest'
+
+resources:
+  repositories:
+    - repository: templates
+      type: github
+      name: neville-nazerane/Common-Pipelines
+      endpoint: github.com_neville-nazerane
+      
 
 trigger:
   branches:
@@ -35,101 +22,25 @@ trigger:
       - src/Socially.WebAPI
       - pipelines/webAPI.yaml
       - pipelines/linux.service
-    
 
-stages:
-  - stage: CI
-    jobs:
-      - job: DotNet
-        steps:
-        - task: UseDotNet@2
-          displayName: 'Use .NET Core sdk'
-          inputs:
-            packageType: sdk
-            version: 5.0.100-preview.2.20176.6
-            installationPath: $(Agent.ToolsDirectory)/dotnet
-          
-        - script: 'dotnet test src/Socially.Server.Managers.Tests -c release'
-          displayName: 'Unit Test - Managers'
+extends:
+  template: Shared\netcore-ubuntu.yml@templates
+  parameters:
+    usePreRelease: true
+    projectPath: src/Socially.WebAPI
+    tempFolderName: sociallyTemp
+    serviceName: kestrel-socially
+    service:
+      port: 5030
+      directory: '\/var\/www\/socially'
+      dll: Socially.WebAPI.dll
+    configs:
+      ASPNETCORE_ENVIRONMENT: Production
+      connectionStrings__db: $(Secrets.Db)
+    preBuildSteps:
+      - script: 'dotnet test src/Socially.Server.Managers.Tests -c release'
+        displayName: 'Unit Test - Managers'
 
-        - script: 'dotnet test src/Socially.WebAPI.IntegrationTests -c release'
-          displayName: 'Integration Tests'
-        
-        - task: DotNetCoreCLI@2
-          inputs:
-            command: 'publish'
-            zipAfterPublish: true
-            projects: 'src/Socially.WebAPI'
-            arguments: '-o $(Build.ArtifactStagingDirectory)/toDeploy'
-
-        - script: |
-            cp pipelines/linux.service $(Build.ArtifactStagingDirectory)/toDeploy
-          displayName: 'Copy Linux Service'
-
-        
-
-        - task: PublishBuildArtifacts@1
-          displayName: 'Prep for release'
-          inputs:
-            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-            ArtifactName: 'drop'
-            publishLocation: 'Container'
-
-  - stage: DeployDev
-    displayName: 'Deploy to Development'
-
-    jobs:
-      - deployment: ShowConfig
-        environment: 'Development'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-
-                - script: |
-                    mkdir $(Pipeline.Workspace)/prep
-                    cp -a $(Pipeline.Workspace)/drop/toDeploy/. $(Pipeline.Workspace)/prep
-                    cd $(Pipeline.Workspace)/prep
-                    sed -i 's/#{service.port}#/$(service.port)/' linux.service
-                    sed -i 's/#{service.dll}#/$(service.dll)/' linux.service
-                    sed -i 's/#{service.directory}#/$(service.directory)/g' linux.service
-                  displayName: Copy service file
-                
-                - ${{ each config in parameters.configs }}:
-                  - script: 'echo "Environment=${{ config.name }}=''${{ config.value }}''" >> $(Pipeline.Workspace)/prep/linux.service'
-                    displayName: Adding configuration for ${{ config.name }}
-
-                - task: CopyFilesOverSSH@0
-                  displayName: 'Upload files to server'
-                  inputs:
-                    sshEndpoint: 'websites'
-                    sourceFolder: '$(Pipeline.Workspace)/prep'
-                    contents: '**'
-                    targetFolder: $(tempFolder)
-                    cleanTargetFolder: true
-                    readyTimeout: '20000'
-
-                - task: SSH@0
-                  displayName: 'SSH in and setup website'
-                  inputs:
-                    sshEndpoint: 'websites'
-                    runOptions: 'inline'
-                    inline: |
-                      cd $(tempFolder)
-                      sudo rm -rf $(service.directory)
-                      sudo unzip Socially.WebAPI.zip -d $(service.directory)
-
-                      sudo mv linux.service /etc/systemd/system/$(serviceName).service -f
-
-                      sudo systemctl enable $(serviceName).service 
-                      sudo systemctl stop $(serviceName).service 
-                      sudo systemctl start $(serviceName).service
-
-                      cd ..
-                    readyTimeout: '20000'
-
-                - script: rm -rf $(Pipeline.Workspace)/prep
-                  displayName: Removing Prep
-                
-            
+      - script: 'dotnet test src/Socially.WebAPI.IntegrationTests -c release'
+        displayName: 'Integration Tests'
     
