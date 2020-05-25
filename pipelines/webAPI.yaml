@@ -28,7 +28,7 @@ extends:
     projectPath: src/Socially.WebAPI
     tempFolderName: sociallyTemp
     projectName: Socially.WebAPI
-    destDirectory: '\/var\/www\/socially'
+    destDirectory: \/var\/www\/socially
     port: 5030
 
     service:
