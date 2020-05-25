@@ -2,13 +2,6 @@
 pool:
   vmImage: 'ubuntu-latest'
 
-resources:
-  repositories:
-    - repository: templates
-      type: github
-      name: neville-nazerane/Common-Pipelines
-      endpoint: github.com_neville-nazerane
-
 trigger:
   branches:
     include:
@@ -21,12 +14,19 @@ trigger:
       - src/Socially.WebAPI
       - pipelines/webAPI.yaml
 
+resources:
+  repositories:
+    - repository: templates
+      type: github
+      name: neville-nazerane/Common-Pipelines
+      endpoint: github.com_neville-nazerane
+
+
 extends:
   template: Shared\netcore-ubuntu.yml@templates
   parameters:
     usePreRelease: true
     projectPath: src/Socially.WebAPI
-    tempFolderName: sociallyTemp
     projectName: Socially.WebAPI
     destDirectory: /var/www/socially
     port: 5030
