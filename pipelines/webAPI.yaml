@@ -8,7 +8,6 @@ resources:
       type: github
       name: neville-nazerane/Common-Pipelines
       endpoint: github.com_neville-nazerane
-      
 
 trigger:
   branches:
@@ -21,7 +20,6 @@ trigger:
       - src/Socially.Server.Services
       - src/Socially.WebAPI
       - pipelines/webAPI.yaml
-      - pipelines/linux.service
 
 extends:
   template: Shared\netcore-ubuntu.yml@templates
@@ -29,11 +27,14 @@ extends:
     usePreRelease: true
     projectPath: src/Socially.WebAPI
     tempFolderName: sociallyTemp
+    projectName: Socially.WebAPI
+    destDirectory: '\/var\/www\/socially'
+    port: 5030
+
     service:
+      description: Socially API
+      identifier: sociallyAPI
       name: kestrel-socially
-      port: 5030
-      directory: '\/var\/www\/socially'
-      dll: Socially.WebAPI.dll
     configs:
       ASPNETCORE_ENVIRONMENT: Production
       connectionStrings__db: $(Secrets.Db)
