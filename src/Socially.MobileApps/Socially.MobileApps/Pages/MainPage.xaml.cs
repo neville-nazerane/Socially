@@ -1,4 +1,5 @@
 ﻿using Socially.MobileApps.Config;
+using Socially.MobileApps.Contracts;
 using Socially.MobileApps.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,12 @@ namespace Socially.MobileApps.Pages
     [DesignTimeVisible(false)]
     public partial class MainPage : ContentPage
     {
+        private readonly IThemeControl _themeControl;
 
-
-        public MainPage()
+        public MainPage(IThemeControl themeControl)
         {
             InitializeComponent();
+            _themeControl = themeControl;
         }
 
         private async void Signin_Clicked(object sender, EventArgs e)
@@ -35,13 +37,14 @@ namespace Socially.MobileApps.Pages
 
         private async void ThemeTapped(object sender, EventArgs e)
         {
-            var themeControl = new ThemeControl();
-            var themes = themeControl.ThemeNames.ToArray();
-            var selected = await DisplayActionSheet("Pick a theme", "Go to hell", null, themes);
-            if (themes.Contains(selected))
-            {
-                themeControl.Update(selected);
-            }
+            await _themeControl.DisplayThemePickerAsync();
+            //var themeControl = new ThemeControl();
+            //var themes = themeControl.ThemeNames.ToArray(); 
+            //var selected = await DisplayActionSheet("Pick a theme", "Go to hell", null, themes);
+            //if (themes.Contains(selected))
+            //{
+            //    themeControl.Update(selected);
+            //}
         }
     }
 }

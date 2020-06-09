@@ -26,10 +26,17 @@
         
         <Style TargetType="Button">
             <Setter Property="Visual" Value="Material" />
+            <Setter Property="BackgroundColor" Value="{DynamicResource themeBackground2}" />
+            <Setter Property="TextColor" Value="{DynamicResource themeText2}" />
         </Style>
         
         <Style TargetType="Entry">
             <Setter Property="Visual" Value="Material" />
+        </Style>
+
+        <Style TargetType="Label">
+            <Setter Property="Visual" Value="Material" />
+            <Setter Property="TextColor" Value="{DynamicResource themeText}" />
         </Style>
         
         <Style TargetType="Entry" x:Key="loginInput">

@@ -1,4 +1,5 @@
 ﻿using Socially.Core.Models;
+using Socially.MobileApps.Contracts;
 using Socially.MobileApps.Models;
 using Socially.MobileApps.Services;
 using System;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Socially.MobileApps.ViewModels
@@ -18,13 +20,19 @@ namespace Socially.MobileApps.ViewModels
         private const string passwordTitle = "Password";
         private const string confPasswordTitle = "Confirm Password";
         private readonly IApiConsumer _apiConsumer;
+        private readonly IThemeControl _themeControl;
+
+        public string Title { get; set; }
+
+        public ICommand ThemeCommand => new Command(async () => await _themeControl.DisplayThemePickerAsync());
 
         public ObservableCollection<SignUpInputContext> Inputs { get; set; }
 
-        public SignUpFlowViewModel(IApiConsumer apiConsumer)
+        public SignUpFlowViewModel(IApiConsumer apiConsumer, IThemeControl themeControl)
         {
             Inputs = new ObservableCollection<SignUpInputContext> { BuildEmailContext() };
             _apiConsumer = apiConsumer;
+            _themeControl = themeControl;
         }
 
         private SignUpInputContext BuildEmailContext()

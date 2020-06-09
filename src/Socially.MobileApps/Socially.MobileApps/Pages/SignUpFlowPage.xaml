@@ -8,9 +8,10 @@
              xmlns:ext="clr-namespace:Socially.MobileApps.Extensions"
              xmlns:vm="clr-namespace:Socially.MobileApps.ViewModels;assembly=Socially.MobileApps.ViewModels"
              mc:Ignorable="d"
+             xmlns:font="http://avantipoint.com/mobiletoolkit"
              x:DataType="vm:SignUpFlowViewModel"
              x:Class="Socially.MobileApps.Pages.SignUpFlowPage"
-             BackgroundColor="#ff9d08">
+             Title="{Binding Title, FallbackValue='Nothing Snow'}" >
 
     <AbsoluteLayout>
 
@@ -34,7 +35,7 @@
             <comp:InputsFlow.ItemTemplate>
                 <DataTemplate x:DataType="m:SignUpInputContext">
                     <Frame CornerRadius="20" 
-                           BackgroundColor="#ffcd5e">
+                           BackgroundColor="{DynamicResource themeBackground2}">
                         <Grid RowSpacing="0">
 
                             <Label Text="{Binding Title}"
@@ -58,7 +59,6 @@
                             <Button Text="{Binding ButtonText, FallbackValue='Next'}" 
                                     CommandParameter="{Binding}"
                                     Command="{Binding NextCommand}"
-                                    BackgroundColor="#d85000"
                                     FontSize="Title"
                                     CornerRadius="8"
                                     Grid.Column="0" Grid.Row="4" />
@@ -73,6 +73,14 @@
                 </DataTemplate>
             </comp:InputsFlow.ItemTemplate>
         </comp:InputsFlow>
-    
+        <Label Text="{font:Icon 'fas fa-palette'}"
+               FontSize="Large"
+               TextColor="{DynamicResource themeNeutral}"
+               AbsoluteLayout.LayoutBounds="10, .95, 25, 25"
+               AbsoluteLayout.LayoutFlags="YProportional">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding ThemeCommand}" />
+            </Label.GestureRecognizers>
+        </Label>
     </AbsoluteLayout>
 </ContentPage>

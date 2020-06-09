@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Socially.MobileApps.Contracts\Socially.MobileApps.Contracts.csproj" />
     <ProjectReference Include="..\Socially.MobileApps.Models\Socially.MobileApps.Models.csproj" />
     <ProjectReference Include="..\Socially.MobileApps.Services\Socially.MobileApps.Services.csproj" />
   </ItemGroup>

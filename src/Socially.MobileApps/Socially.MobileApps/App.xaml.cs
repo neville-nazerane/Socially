@@ -1,5 +1,6 @@
 ﻿using AP.MobileToolkit.Fonts;
 using Socially.MobileApps.Config;
+using Socially.MobileApps.Contracts;
 using Socially.MobileApps.Pages;
 using Socially.MobileApps.Services;
 using Socially.MobileApps.ViewModels;
@@ -19,12 +20,12 @@ namespace Socially.MobileApps
             
             InitializeComponent();
 
-            new ThemeControl().Update();
+            new ThemeControl(null).Update();
             FontRegistry.RegisterFonts(FontAwesomeSolid.Font);
 
             this.StartInjecting()
 
-                .SetDefaultPage(new MainPage())
+                //.SetDefaultPage(new MainPage())
                 .SetViewModelAssembly(typeof(ViewModelBase).Assembly)
 
                 .AddHttpClient<IApiConsumer, ApiConsumer>(c => c.BaseAddress = new Uri("https://socially.nevillenazerane.com"))
