@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms"
+                    xmlns:util="clr-namespace:Socially.MobileApps.Utils"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Socially.MobileApps.Themes.WindyTheme">
-    <AppThemeColor x:Key="themeMainBackground" Default="#d8e365" Dark="#2e6874" />
-    <AppThemeColor x:Key="themeText" Default="#3d836b" Dark="#c3d877" />
-    <AppThemeColor x:Key="themeBackground" Default="#98ca74" Dark="#4f9765" />
-    <AppThemeColor x:Key="themeText2" Default="#4f9765" Dark="#98ca74" />
-    <AppThemeColor x:Key="themeBackground2" Default="#c3d877" Dark="#3d836b" />
-    <AppThemeColor x:Key="themeBold" Default="#2e6874" Dark="#d8e365" />
-    <AppThemeColor x:Key="themeNeutral" Default="#81bd6f" Dark="#64a960" />
+    <util:AppThemeColor x:Key="themeMainBackground" Default="#d8e365" Dark="#2e6874" />
+    <util:AppThemeColor x:Key="themeText" Default="#3d836b" Dark="#c3d877" />
+    <util:AppThemeColor x:Key="themeBackground" Default="#98ca74" Dark="#4f9765" />
+    <util:AppThemeColor x:Key="themeText2" Default="#4f9765" Dark="#98ca74" />
+    <util:AppThemeColor x:Key="themeBackground2" Default="#c3d877" Dark="#3d836b" />
+    <util:AppThemeColor x:Key="themeBold" Default="#2e6874" Dark="#d8e365" />
+    <util:AppThemeColor x:Key="themeNeutral" Default="#81bd6f" Dark="#64a960" />
 </ResourceDictionary>

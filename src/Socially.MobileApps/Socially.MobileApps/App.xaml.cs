@@ -17,7 +17,6 @@ namespace Socially.MobileApps
         {
 
             Device.SetFlags(new string[] { "AppTheme_Experimental" });
-            
             InitializeComponent();
 
             new ThemeControl(null).Update();
