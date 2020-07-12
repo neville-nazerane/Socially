@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.FluentInjector;
+using Xamarin.FluentInjector.Utilities;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 

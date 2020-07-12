@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.FluentInjector;
+using Xamarin.FluentInjector.Utilities;
 using Xamarin.Forms;
 
 namespace Socially.MobileApps.Pages
@@ -18,11 +19,15 @@ namespace Socially.MobileApps.Pages
     public partial class MainPage : ContentPage
     {
         private readonly IThemeControl _themeControl;
+        private readonly IPageControl _pageControl;
+        private readonly IInjectionControl _injectionControl;
 
-        public MainPage(IThemeControl themeControl)
+        public MainPage(IThemeControl themeControl, IPageControl pageControl, IInjectionControl injectionControl)
         {
             InitializeComponent();
             _themeControl = themeControl;
+            _pageControl = pageControl;
+            _injectionControl = injectionControl;
         }
 
         private async void Signin_Clicked(object sender, EventArgs e)
@@ -32,7 +37,7 @@ namespace Socially.MobileApps.Pages
 
         private async void Signup_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushModalAsync(InjectionControl.ResolvePage<SignUpFlowViewModel>());
+            await Navigation.PushModalAsync(_injectionControl.ResolvePage<SignUpFlowViewModel>());
         }
 
         private async void ThemeTapped(object sender, EventArgs e)

@@ -12,7 +12,7 @@
              x:DataType="vm:SignUpFlowViewModel"
              x:Class="Socially.MobileApps.Pages.SignUpFlowPage"
              Title="{Binding Title, FallbackValue='Nothing Snow'}" >
-
+ 
     <AbsoluteLayout>
 
         <Image Source="{ext:Image 'insta.png'}"

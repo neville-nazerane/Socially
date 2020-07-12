@@ -7,7 +7,6 @@ using Socially.MobileApps.ViewModels;
 using System;
 using Xamarin.FluentInjector;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace Socially.MobileApps
 {
@@ -24,7 +23,7 @@ namespace Socially.MobileApps
 
             this.StartInjecting()
 
-                //.SetDefaultPage(new MainPage())
+
                 .SetViewModelAssembly(typeof(ViewModelBase).Assembly)
 
                 .AddHttpClient<IApiConsumer, ApiConsumer>(c => c.BaseAddress = new Uri("https://socially.nevillenazerane.com"))
