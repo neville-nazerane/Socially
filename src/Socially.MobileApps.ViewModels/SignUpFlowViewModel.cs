@@ -28,7 +28,7 @@ namespace Socially.MobileApps.ViewModels
 
         public ObservableCollection<SignUpInputContext> Inputs { get; set; }
 
-        public SignUpFlowViewModel(IApiConsumer apiConsumer, IThemeControl themeControl)
+        public SignUpFlowViewModel(IApiConsumer apiConsumer, IThemeControl themeControl) 
         {
             Inputs = new ObservableCollection<SignUpInputContext> { BuildEmailContext() };
             _apiConsumer = apiConsumer;

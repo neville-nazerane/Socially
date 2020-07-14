@@ -37,7 +37,7 @@ namespace Socially.MobileApps.Pages
 
         private async void Signup_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushModalAsync(_injectionControl.ResolvePage<SignUpFlowViewModel>());
+            await Navigation.PushModalAsync(_injectionControl.ResolvePage<SignUpPage>());
         }
 
         private async void ThemeTapped(object sender, EventArgs e)

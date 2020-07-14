@@ -10,14 +10,6 @@
 
         <ResourceDictionary Source="Themes/MirrorTheme.xaml" />
 
-        <!--#region colors -->
-        
-        <Color x:Key="LoginBackground">Orange</Color>
-        
-        <Color x:Key="LoginInputColor">#f59736</Color>
-        
-        <!--#endregion-->
-
         <!--#region Styles -->
 
         <Style TargetType="Page" ApplyToDerivedTypes="True">
@@ -41,7 +33,6 @@
         
         <Style TargetType="Entry" x:Key="loginInput">
             <Setter Property="PlaceholderColor" Value="White" />
-            <Setter Property="BackgroundColor" Value="{StaticResource LoginInputColor}" />
         </Style>
 
         <!--#endregion-->

@@ -9,7 +9,7 @@
 
     <ContentPage.Content>
 
-        <AbsoluteLayout BackgroundColor="{StaticResource LoginBackground}">
+        <AbsoluteLayout>
 
             <Image Source="{ext:Image 'insta.png'}"
                    AbsoluteLayout.LayoutBounds="0, .01, 1, .4"
@@ -49,7 +49,6 @@
             <Button Text="Log in" 
                     AbsoluteLayout.LayoutBounds=".5, 1, .7, AutoSize"
                     AbsoluteLayout.LayoutFlags="PositionProportional, WidthProportional"  
-                    BackgroundColor="{StaticResource LoginInputColor}"
                     FontSize="Title"
                     Margin="0, 0, 0, 40"
                     CornerRadius="8" />
