@@ -14,7 +14,7 @@
 
     <ContentPage.Content>
 
-            <Grid RowDefinitions="50, 60"
+            <Grid RowDefinitions="50, 60, 60"
                   ColumnDefinitions="*, 80"
                   AbsoluteLayout.LayoutBounds=".4, .1, AutoSize, .8"
                   AbsoluteLayout.LayoutFlags="All">
@@ -40,7 +40,10 @@
                 </Label.Behaviors>
             </Label>-->
 
-            <comp:ActivityIndicatorForCommand IsVisible="True" CommandToTrack="{Binding SubmitCmd}" />
+
+            <comp:ActivityIndicatorForCommand IsVisible="True" 
+                                              CommandToTrack="{Binding SubmitCmd}"
+                                              Grid.Column="1" />
 
             <comp:BindingEntry Placeholder="{Binding EntryBinding}"
                                    Source="Model"
@@ -54,6 +57,11 @@
                         Command="{Binding SubmitCmd}"
                         Grid.Row="1" Grid.Column="1" />
 
+                <Button Text="{font:Icon 'fas fa-arrow-circle-left'}"
+                        FontSize="Large"
+                        Padding="0"
+                        Command="{Binding PreviousCmd}"
+                        Grid.Row="2" />
             </Grid>
         
         

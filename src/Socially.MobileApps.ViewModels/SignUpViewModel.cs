@@ -115,8 +115,7 @@ namespace Socially.MobileApps.ViewModels
         {
             if (Model.Password != Model.ConfirmPassword)
             {
-                ErrorMessage = "Passwords don't match";
-                SetUpPasswordInput();
+                ErrorMessage = "Passwords don't match"; 
             }
             else
             {
