@@ -1,10 +1,11 @@
-﻿using Socially.Core.Models;
+﻿using Socially.MobileApps.Models;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace Socially.MobileApps.Services
 {
@@ -31,9 +32,13 @@ namespace Socially.MobileApps.Services
             return bool.Parse(result);
         }
 
-        public Task SignUpAsync(SignUpModel model) => _client.PostAsJsonAsync($"{accountPath}/signup", model);
+        public async Task<ApiResponse<bool>> SignUpAsync(SignUpModel model)
+        {
+            var res = await _client.PostAsJsonAsync($"{accountPath}/signup", model);
+            return await res.CreateResponseAsync<bool>();
+        }
 
-        public Task LoginAsync(LoginModel model) => _client.PostAsJsonAsync($"{accountPath}/login", model);
+        //public Task LoginAsync(LoginModel model) => _client.PostAsJsonAsync($"{accountPath}/login", model);
 
     }
 }

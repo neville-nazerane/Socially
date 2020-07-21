@@ -7,66 +7,55 @@
              xmlns:vm="clr-namespace:Socially.MobileApps.ViewModels;assembly=Socially.MobileApps.ViewModels"
              xmlns:font="http://avantipoint.com/mobiletoolkit"
              xmlns:comp="clr-namespace:Socially.MobileApps.Components"
+             xmlns:control="clr-namespace:Socially.MobileApps.Controls"
              mc:Ignorable="d"
              x:DataType="vm:SignUpViewModel"
              x:Class="Socially.MobileApps.Pages.SignUpPage">
 
     <ContentPage.Content>
 
-        <AbsoluteLayout>
+            <Grid RowDefinitions="50, 60"
+                  ColumnDefinitions="*, 80"
+                  AbsoluteLayout.LayoutBounds=".4, .1, AutoSize, .8"
+                  AbsoluteLayout.LayoutFlags="All">
 
-            <Image Source="{ext:Image 'insta.png'}"
-                   AbsoluteLayout.LayoutBounds="0, .01, 1, .4"
-                   AbsoluteLayout.LayoutFlags="YProportional, SizeProportional" />
+                <!--<Image Source="{ext:Image 'insta.png'}"
+                       AbsoluteLayout.LayoutBounds="0, .01, 1, .4"
+                       AbsoluteLayout.LayoutFlags="YProportional, SizeProportional" />-->
 
-            <Label Text="{ext:FontIcon Icon=CloseCircleOutline}"
-                    Visual="Default"
-                    Margin="15"
-                    FontSize="Title"
-                    TextColor="DarkGray"
-                    FontFamily="{ext:MaterialFontFamily}"
-                    AbsoluteLayout.LayoutBounds="1, 0, AutoSize, AutoSize"
-                    AbsoluteLayout.LayoutFlags="PositionProportional" >
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="GoBack" />
-                </Label.GestureRecognizers>
+            <Label Text="{Binding ErrorMessage}"
+                       TextColor="Red"
+                       Grid.ColumnSpan="2" >
+                <Label.Behaviors>
+                    <control:CommandToVisibleBehavior 
+                                    OnlyString="manual" Command="{Binding SubmitCmd}" />
+                </Label.Behaviors>
             </Label>
 
-            <!--Form layout-->
-            <Grid AbsoluteLayout.LayoutBounds=".5, .6, .8, AutoSize"
-                  AbsoluteLayout.LayoutFlags="PositionProportional, WidthProportional"
-                  RowSpacing="20"
-                  ColumnDefinitions="*, auto"
-                  Padding="0">
-                <comp:BindingEntry Placeholder="{Binding EntryBinding}"
+            <!--<Label Text="Loading"
+                       TextColor="Green"
+                       Grid.ColumnSpan="2" >
+                <Label.Behaviors>
+                    <control:CommandToVisibleBehavior OnlyString="{Binding EntryBinding}" Command="{Binding SubmitCmd}" />
+                </Label.Behaviors>
+            </Label>-->
+
+            <comp:ActivityIndicatorForCommand IsVisible="True" CommandToTrack="{Binding SubmitCmd}" />
+
+            <comp:BindingEntry Placeholder="{Binding EntryBinding}"
                                    Source="Model"
+                                   Grid.Row="1"
+                                   IsPassword="{Binding IsPassword}"
                                    PropertyName="{Binding EntryBinding}" />
 
                 <Button Text="{font:Icon 'fas fa-arrow-circle-right'}"
                         FontSize="Large"
                         Padding="0"
                         Command="{Binding SubmitCmd}"
-                        Grid.Column="1" />
+                        Grid.Row="1" Grid.Column="1" />
 
             </Grid>
-
-            <Button Text="Sign up" 
-                    AbsoluteLayout.LayoutBounds=".5, 1, .7, AutoSize"
-                    AbsoluteLayout.LayoutFlags="PositionProportional, WidthProportional"  
-                    Command="{Binding SubmitCmd}"
-                    FontSize="Title"
-                    Margin="0, 0, 0, 40"
-                    CornerRadius="8" />
-
-            <Label Text="{font:Icon 'fas fa-palette'}"
-               FontSize="Large"
-               TextColor="{DynamicResource themeNeutral}"
-               AbsoluteLayout.LayoutBounds="10, .95, 25, 25"
-               AbsoluteLayout.LayoutFlags="YProportional">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ThemeCommand}" />
-                </Label.GestureRecognizers>
-            </Label>
-        </AbsoluteLayout>
+        
+        
     </ContentPage.Content>
 </ContentPage>

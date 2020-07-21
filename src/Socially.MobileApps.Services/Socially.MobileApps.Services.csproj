@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Socially.Core\Socially.Core.csproj" />
+    <ProjectReference Include="..\Socially.MobileApps.Models\Socially.MobileApps.Models.csproj" />
   </ItemGroup>
 
 </Project>

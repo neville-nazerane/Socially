@@ -27,7 +27,7 @@ namespace Socially.MobileApps.Components
 
         void Update()
         {
-            this.SetBinding(TextProperty, $"{Source}.{PropertyName}");
+            this.SetBinding(TextProperty, $"{Source}.{PropertyName}", BindingMode.TwoWay);
             Focus();
         }
 

@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Socially.MobileApps.Services\Socially.MobileApps.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Xamarin.FluentInjector" Version="0.0.521-all-injectable" />
+  </ItemGroup>
+
 </Project>

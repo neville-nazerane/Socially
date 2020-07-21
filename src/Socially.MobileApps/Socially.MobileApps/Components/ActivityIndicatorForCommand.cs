@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Socially.MobileApps.Components
@@ -8,16 +9,15 @@ namespace Socially.MobileApps.Components
     public class ActivityIndicatorForCommand : ActivityIndicator
     {
         public static readonly BindableProperty CommandToTrackProperty = BindableProperty.Create(nameof(CommandToTrack),
-                                                                                                 typeof(Command),
+                                                                                                 typeof(ICommand),
                                                                                                  typeof(ActivityIndicatorForCommand),
                                                                                                  propertyChanged: CommandToTrackChanged);
         public static readonly BindableProperty CommandParameterProperty = BindableProperty.Create(nameof(CommandParameter),
                                                                                                    typeof(object),
-                                                                                                   typeof(ActivityIndicatorForCommand),
-                                                                                                   propertyChanged: CommandParameterChanged);
+                                                                                                   typeof(ActivityIndicatorForCommand));
 
 
-        public Command CommandToTrack { get => (Command) GetValue(CommandToTrackProperty); set => SetCommand(value); }
+        public ICommand CommandToTrack { get => (ICommand) GetValue(CommandToTrackProperty); set => SetCommand(value); }
 
         public object CommandParameter { get => GetValue(CommandParameterProperty); set => SetValue(CommandParameterProperty, value); }
 
@@ -36,7 +36,7 @@ namespace Socially.MobileApps.Components
             }
         }
 
-        private void SetCommand(Command command)
+        private void SetCommand(ICommand command)
         {
             if (CommandToTrack != null)
                 CommandToTrack.CanExecuteChanged -= CommandToTrack_CanExecuteChanged;
@@ -48,17 +48,14 @@ namespace Socially.MobileApps.Components
 
         private void CommandToTrack_CanExecuteChanged(object sender, EventArgs e)
         {
-            if (CommandToTrack is null) return;
-
-            UpdateBasedOnCanExecute();
-            // check for generic type
+            UpdateEnabled();
         }
 
-        private void UpdateBasedOnCanExecute()
+        private void UpdateEnabled()
         {
             bool needsToRun = !CommandToTrack.CanExecute(CommandParameter);
 
-            IsVisible = needsToRun;
+            //IsVisible = needsToRun;
             IsEnabled = needsToRun;
             IsRunning = needsToRun;
         }
@@ -66,13 +63,8 @@ namespace Socially.MobileApps.Components
         private static void CommandToTrackChanged(BindableObject bindable, object oldValue, object newValue)
         {
             var comp = (ActivityIndicatorForCommand)bindable;
-            comp.CommandToTrack = (Command)newValue;
+            comp.SetCommand((ICommand)newValue);
         }
 
-        private static void CommandParameterChanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            var comp = (ActivityIndicatorForCommand)bindable;
-            comp.CommandParameter = newValue;
-        }
     }
 }
