@@ -39,25 +39,32 @@ namespace Socially.MobileApps.Controls
 
             if (newCommand != null)
                 newCommand.CanExecuteChanged += Command_CanExecuteChanged;
+            UpdateShown();
         }
 
         private void Command_CanExecuteChanged(object sender, EventArgs e)
         {
-            if (View != null)
-            {
-                bool canExecute = Command.CanExecute(CommandParameter); 
-                UpdateShown(!canExecute);
-            }
+            UpdateShown();
         }
 
-        private void UpdateShown(bool isShown)
+        private void UpdateShown()
         {
-            View.IsVisible = isShown;
-            if (View is ActivityIndicator indicator)
+
+            if (View != null)
             {
-                indicator.IsEnabled = isShown;
-                indicator.IsRunning = isShown;
+                bool canExecute = Command.CanExecute(CommandParameter);
+                bool isShown = !canExecute;
+
+                View.IsVisible = isShown;
+                if (View is ActivityIndicator indicator)
+                {
+                    indicator.IsEnabled = isShown;
+                    indicator.IsRunning = isShown;
+                }
             }
+
+
+
         }
 
         private static void CommandChanged(BindableObject bindable, object oldValue, object newValue)

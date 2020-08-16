@@ -19,31 +19,11 @@
                   AbsoluteLayout.LayoutBounds=".4, .1, AutoSize, .8"
                   AbsoluteLayout.LayoutFlags="All">
 
-                <!--<Image Source="{ext:Image 'insta.png'}"
-                       AbsoluteLayout.LayoutBounds="0, .01, 1, .4"
-                       AbsoluteLayout.LayoutFlags="YProportional, SizeProportional" />-->
-
-            <Label Text="{Binding ErrorMessage}"
-                       TextColor="Red"
-                       Grid.ColumnSpan="2" >
-                <Label.Behaviors>
-                    <control:CommandToVisibleBehavior 
-                                    OnlyString="manual" Command="{Binding SubmitCmd}" />
-                </Label.Behaviors>
-            </Label>
-
-            <Label Text="Loading"
-                       TextColor="Green"
-                       Grid.ColumnSpan="2" >
-                <Label.Behaviors>
-                    <control:CommandToVisibleBehavior OnlyString="{Binding EntryBinding}" Command="{Binding SubmitCmd}" />
-                </Label.Behaviors>
-            </Label>
-
-
-            <comp:ActivityIndicatorForCommand IsVisible="True" 
-                                              CommandToTrack="{Binding SubmitCmd}"
-                                              Grid.Column="1" />
+            <ActivityIndicator Grid.Column="1" >
+                <ActivityIndicator.Behaviors>
+                    <control:CommandToVisibleBehavior Command="{Binding SubmitCmd}" />
+                </ActivityIndicator.Behaviors>
+            </ActivityIndicator>
 
             <comp:BindingEntry Placeholder="{Binding EntryBinding}"
                                    Source="Model"
