@@ -32,13 +32,13 @@
                 </Label.Behaviors>
             </Label>
 
-            <!--<Label Text="Loading"
+            <Label Text="Loading"
                        TextColor="Green"
                        Grid.ColumnSpan="2" >
                 <Label.Behaviors>
                     <control:CommandToVisibleBehavior OnlyString="{Binding EntryBinding}" Command="{Binding SubmitCmd}" />
                 </Label.Behaviors>
-            </Label>-->
+            </Label>
 
 
             <comp:ActivityIndicatorForCommand IsVisible="True" 
