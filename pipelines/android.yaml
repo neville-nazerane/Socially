@@ -15,6 +15,7 @@ variables:
   outputDirectory: $(build.binariesDirectory)/$(buildConfiguration)
   apkPath: com.nevillenazerane.socially.apk
   solutionPath: src/Socially.sln
+  nugetConfigPath: src/nuget.config
   projectPath: src/Socially.MobileApps/Socially.MobileApps.Android
   configPath: src/Socially.MobileApps/Socially.MobileApps/Configs.nogit.cs
   artifactName: publishedApk
@@ -61,15 +62,14 @@ stages:
               filecontent: ${{ parameters.configFileContent }}
 
 
-
           - task: NuGetToolInstaller@1
-
           
           - task: NuGetCommand@2
             inputs:
               command: 'restore'
               restoreSolution: '$(solutionPath)'
               feedsToUse: 'config'
+              nugetConfigPath: $(nugetConfigPath)
           
           - task: android-manifest-version@1
             inputs:
