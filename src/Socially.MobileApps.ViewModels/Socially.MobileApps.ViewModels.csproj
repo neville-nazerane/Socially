@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.FluentInjector" Version="0.0.521-all-injectable" />
+    <PackageReference Include="Xamarin.FluentInjector" Version="0.0.553-httpClient" />
   </ItemGroup>
 
 </Project>

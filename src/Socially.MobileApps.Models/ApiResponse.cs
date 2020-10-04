@@ -4,11 +4,9 @@ using System.Text;
 
 namespace Socially.MobileApps.Models
 {
-    public class ApiResponse<T>
+
+    public class ApiResponse 
     {
-
-        public T Data { get; set; }
-
         public bool IsSuccess { get; set; }
 
         public int Status { get; set; }
@@ -16,4 +14,12 @@ namespace Socially.MobileApps.Models
         public Dictionary<string, IEnumerable<string>> Errors { get; set; }
 
     }
+
+    public class ApiResponse<T> : ApiResponse
+    {
+
+        public T Data { get; set; }
+
+    }
+
 }
