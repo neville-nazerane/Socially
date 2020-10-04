@@ -31,52 +31,62 @@ namespace Socially.MobileApps.ViewModels
 
         public bool IsPassword { get => _isPassword; set => SetProperty(ref _isPassword, value); }
 
-        public ICommand SubmitCmd { get => _submitCmd; set => SetProperty(ref _submitCmd, value); }
+        public ICommand SubmitCmd { get; set; }
 
-        public ICommand PreviousCmd { get => _previousCmd; set => SetProperty(ref _previousCmd, value); }
+        public ICommand PreviousCmd { get; set; }
 
         public SignUpModel Model { get; set; }
 
+        private int inputIndex;
+        private readonly InputContext[] inputContexts;
+
         public SignUpViewModel(IApiConsumer apiConsumer, IThemeControl themeControl, IPageControl pageControl) : base(themeControl)
         {
-            _apiConsumer = apiConsumer;
+            _apiConsumer = apiConsumer; 
             _pageControl = pageControl;
+            SubmitCmd = BuildCommand(NextAsync);
+            PreviousCmd = BuildCommand(Previous);
             Model = new SignUpModel();
-            SetUpEmailInput();
+
+            inputContexts = new InputContext[] {
+                new InputContext(nameof(SignUpModel.Email), VerifyEmailAsync),
+                new InputContext(nameof(SignUpModel.UserName), VerifyUserNameAsync),
+                new InputContext(nameof(SignUpModel.Password), isPassword: true),
+                new InputContext(nameof(SignUpModel.ConfirmPassword), "Confirm Password", VerifyConfPasswordAsync, true)
+            };
         }
 
-        private void SetUpEmailInput()
+        private async Task NextAsync()
         {
-            EntryBinding = LabelText = nameof(SignUpModel.Email);
-            SubmitCmd = BuildCommand(VerifyEmailAsync);
-            IsPassword = false;
+            var context = inputContexts[inputIndex];
+            if (context.SubmitAction is null || await context.SubmitAction())
+            {
+                inputIndex++;
+                if (inputIndex == inputContexts.Length) await CompleteAsync();
+                else SetupIndex();
+            }
         }
 
-        private void SetUpUserNameInput()
+        private void Previous()
         {
-            EntryBinding = LabelText = nameof(SignUpModel.UserName);
-            SubmitCmd = BuildCommand(VerifyUserNameAsync);
-            PreviousCmd = BuildCommand(SetUpEmailInput);
-            IsPassword = false;
+            inputIndex--;
+            SetupIndex();
         }
 
-        private void SetUpPasswordInput()
+        private void SetupIndex()
         {
-            EntryBinding = LabelText = nameof(SignUpModel.Password);
-            SubmitCmd = BuildCommand(VerifyPassword);
-            PreviousCmd = BuildCommand(SetUpUserNameInput);
-            IsPassword = true;
+            var context = inputContexts[inputIndex];
+            LabelText = context.LabelText;
+            IsPassword = context.IsPassword;
+            EntryBinding = context.EntryBinding;
         }
 
-        private void SetUpConfPasswordInput()
+        private Task CompleteAsync()
         {
-            EntryBinding = LabelText = nameof(SignUpModel.ConfirmPassword);
-            SubmitCmd = BuildCommand(VerifyConfPasswordAsync);
-            PreviousCmd = BuildCommand(SetUpPasswordInput);
-            IsPassword = true;
+            return _pageControl.DisplayAlert("DONE!", "You have signed up with the username " + Model.UserName, "Ok");
         }
 
-        private async Task VerifyEmailAsync()
+        private async Task<bool> VerifyEmailAsync()
         {
             Model.Email = Model.Email.Trim().ToLower();
             try
@@ -86,12 +96,12 @@ namespace Socially.MobileApps.ViewModels
             catch
             {
                 ErrorMessage = "Can't use this email";
-                return;
+                return false;
             }
-            SetUpUserNameInput();
+            return true;
         }
 
-        private async Task VerifyUserNameAsync()
+        private async Task<bool> VerifyUserNameAsync()
         {
             Model.UserName = Model.UserName.Trim().ToLower();
             try
@@ -101,30 +111,65 @@ namespace Socially.MobileApps.ViewModels
             catch
             {
                 ErrorMessage = "Can't do this username";
-                return;
+                return true;
             }
+            return true;
             SetUpPasswordInput();
         }
 
-        private void VerifyPassword()
-        {
-            SetUpConfPasswordInput();
-        }
-
-        private async Task VerifyConfPasswordAsync()
+        private async Task<bool> VerifyConfPasswordAsync()
         {
             if (Model.Password != Model.ConfirmPassword)
             {
-                ErrorMessage = "Passwords don't match"; 
+                ErrorMessage = "Passwords don't match";
+                return false;
             }
             else
             {
                 var res = await _apiConsumer.SignUpAsync(Model);
-                if (res.IsSuccess)
-                    await _pageControl.DisplayAlert("DONE!", "You have signed up with the username " + Model.UserName, "Ok");
+                if (res.IsSuccess) return true;
+                    
                 else
+                {
                     ErrorMessage = res.Errors.Select(e => $"{e.Key}: {e.Value.First()}").First();
+                    return false;
+                }
             }
+        }
+
+        private class InputContext
+        {
+
+            public InputContext()
+            {
+
+            }
+
+            public InputContext(string labelAndBinding,
+                                Func<Task<bool>> submitAction = null,
+                                bool isPassword = false) 
+                                        : this(labelAndBinding, labelAndBinding, submitAction, isPassword)
+            {
+
+            }
+
+            public InputContext(string labelText,
+                                string entryBinding,
+                                Func<Task<bool>> submitAction = null,
+                                bool isPassword = false)
+            {
+                LabelText = labelText;
+                EntryBinding = entryBinding;
+                SubmitAction = submitAction;
+                IsPassword = isPassword;
+            }
+
+            public string LabelText { get; set; }
+
+            public string EntryBinding { get; set; }
+
+            public Func<Task<bool>> SubmitAction { get; set; }
+            public bool IsPassword { get; internal set; }
         }
 
     }

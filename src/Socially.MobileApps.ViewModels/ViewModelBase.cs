@@ -31,7 +31,6 @@ namespace Socially.MobileApps.ViewModels
             {
                 canExecute = false;
                 cmd.ChangeCanExecute();
-                await Task.Delay(4000);
                 await asyncAction();
                 canExecute = true;
                 cmd.ChangeCanExecute();
