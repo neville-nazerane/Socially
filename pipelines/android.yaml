@@ -49,6 +49,8 @@ stages:
     displayName: Build App
     jobs:
 
+
+      
       - job: XamarinCompile
         displayName: Building xamarin android
 
@@ -61,6 +63,15 @@ stages:
               fileoverwrite: true
               filecontent: ${{ parameters.configFileContent }}
 
+
+          - task: UseDotNet@2
+            displayName: 'Use .NET Core sdk'
+            condition: ${{ parameters.usePreRelease }}
+            inputs:
+              packageType: sdk
+              includePreviewVersions: true
+              version: 5.0.100-rc.1.20452.10
+              installationPath: $(Agent.ToolsDirectory)/dotnet
 
           - task: NuGetToolInstaller@1
           
