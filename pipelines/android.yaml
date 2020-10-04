@@ -1,0 +1,121 @@
+
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - src
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: Release
+  outputDirectory: $(build.binariesDirectory)/$(buildConfiguration)
+  apkPath: com.nevillenazerane.socially.apk
+  solutionPath: src/Socially.sln
+  projectPath: src/Socially.MobileApps/Socially.MobileApps.Android
+  configPath: src/Socially.MobileApps/Socially.MobileApps/Configs.nogit.cs
+  artifactName: publishedApk
+  appCenterSlug: live.neville-live.com/Socially
+  appCenterGroup: 1c99cb88-6231-4a01-83d1-8f79ab0a4a28
+  keyStoreFile: socially.jks
+
+parameters:
+  - name: configFileContent
+    type: string
+    default: |
+      namespace Socially.MobileApps
+      {
+          static partial class Configs
+          {
+              static Config()
+              {
+                 // Endpoint = "$(secrets.endpoint)";
+                 // AppCenter = "$(secrets.appCenter)";
+              }
+          }
+      }
+
+# to be defined as secrets:
+  # keystore.password
+  # key.password
+
+
+stages:
+  - stage: Build
+    displayName: Build App
+    jobs:
+
+      - job: XamarinCompile
+        displayName: Building xamarin android
+
+        steps:
+
+          - task: file-creator@5
+            displayName: Create config file
+            inputs:
+              filepath: $(configPath)
+              fileoverwrite: true
+              filecontent: ${{ parameters.configFileContent }}
+
+
+
+          - task: NuGetToolInstaller@1
+
+          
+          - task: NuGetCommand@2
+            inputs:
+              command: 'restore'
+              restoreSolution: '$(solutionPath)'
+              feedsToUse: 'config'
+          
+          - task: android-manifest-version@1
+            inputs:
+              sourcePath: $(projectPath)/Properties/AndroidManifest.xml
+              printFile: true
+              versionCode: $(Build.BuildId)
+              versionName: 1.0.$(Build.BuildId)
+
+          - task: XamarinAndroid@1
+            inputs:
+              projectFile: $(projectPath)/*.csproj
+              outputDirectory: '$(outputDirectory)'
+              configuration: '$(buildConfiguration)'
+              msbuildVersionOption: 'latest'
+
+          - publish: $(outputDirectory)
+            artifact: $(artifactName)
+        
+
+  - stage: AppCenterDeploy
+    displayName: Deploy to App Center
+    jobs:
+
+      - job: AppCenter
+
+        steps:
+
+        - download: current
+          artifact: $(artifactName)
+
+        - task: AndroidSigning@3
+          inputs:
+            apkFiles: $(Pipeline.Workspace)/$(artifactName)/$(apkPath)
+            apksignerKeystoreFile: $(keyStoreFile)
+            apksignerKeystorePassword: '$(keystore.password)'
+            apksignerKeystoreAlias: 'key0'
+            apksignerKeyPassword: '$(key.password)'
+
+        - task: AppCenterDistribute@3
+          inputs:
+            serverEndpoint: 'My App Center'
+            appSlug: $(appCenterSlug)
+            appFile: $(Pipeline.Workspace)/$(artifactName)/$(apkPath)
+            symbolsOption: 'Android'
+            releaseNotesOption: 'input'
+            releaseNotesInput: 'The lazy developer hasn''t added any actual release notes.'
+            destinationType: 'groups'
+            distributionGroupId: $(appCenterGroup)
+          

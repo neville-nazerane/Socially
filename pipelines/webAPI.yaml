@@ -40,8 +40,8 @@ extends:
       connectionStrings__db: $(Secrets.Db)
     preBuildSteps:
       - script: 'dotnet test src/Socially.Server.Managers.Tests -c release'
-        displayName: 'Unit Test - Managers'
 
       - script: 'dotnet test src/Socially.WebAPI.IntegrationTests -c release'
         displayName: 'Integration Tests'
+
     
