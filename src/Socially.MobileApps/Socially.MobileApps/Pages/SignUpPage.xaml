@@ -25,6 +25,9 @@
                 </ActivityIndicator.Behaviors>
             </ActivityIndicator>
 
+            <Label Text="{Binding ErrorMessage}"
+                   TextColor="Red"/>
+
             <comp:BindingEntry Placeholder="{Binding EntryBinding}"
                                    Source="Model"
                                    Grid.Row="1"

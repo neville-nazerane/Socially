@@ -54,6 +54,7 @@ namespace Socially.MobileApps.ViewModels
                 new InputContext(nameof(SignUpModel.Password), isPassword: true),
                 new InputContext(nameof(SignUpModel.ConfirmPassword), "Confirm Password", VerifyConfPasswordAsync, true)
             };
+            SetupIndex();
         }
 
         private async Task NextAsync()
@@ -88,6 +89,7 @@ namespace Socially.MobileApps.ViewModels
 
         private async Task<bool> VerifyEmailAsync()
         {
+            if (string.IsNullOrWhiteSpace(Model.Email)) return false;
             Model.Email = Model.Email.Trim().ToLower();
             try
             {
@@ -103,6 +105,7 @@ namespace Socially.MobileApps.ViewModels
 
         private async Task<bool> VerifyUserNameAsync()
         {
+            if (string.IsNullOrWhiteSpace(Model.UserName)) return false;
             Model.UserName = Model.UserName.Trim().ToLower();
             try
             {
@@ -114,11 +117,11 @@ namespace Socially.MobileApps.ViewModels
                 return true;
             }
             return true;
-            SetUpPasswordInput();
         }
 
         private async Task<bool> VerifyConfPasswordAsync()
         {
+            if (string.IsNullOrWhiteSpace(Model.ConfirmPassword)) return false;
             if (Model.Password != Model.ConfirmPassword)
             {
                 ErrorMessage = "Passwords don't match";
