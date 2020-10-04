@@ -7,7 +7,9 @@ namespace Socially.MobileApps.Services
     public interface IApiConsumer
     {
         Task<ApiResponse<bool>> SignUpAsync(SignUpModel model);
-        Task<ApiResponse<bool>> VerifyAccountEmailAsync(string email);
-        Task<ApiResponse<bool>> VerifyAccountUsernameAsync(string userName);
+
+        //Task LoginAsync(LoginModel model);
+        Task<bool> VerifyAccountEmailAsync(string email);
+        Task<bool> VerifyAccountUsernameAsync(string userName);
     }
 }

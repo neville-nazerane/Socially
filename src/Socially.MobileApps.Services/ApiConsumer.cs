@@ -20,16 +20,16 @@ namespace Socially.MobileApps.Services
             _client = client;
         }
 
-        public async Task<ApiResponse<bool>> VerifyAccountEmailAsync(string email)
+        public async Task<bool> VerifyAccountEmailAsync(string email)
         {
-            var res = await _client.GetAsync($"{accountPath}/verifyEmail/{email}");
-            return await res.CreateResponseAsync<bool>();
+            string result = await _client.GetStringAsync($"{accountPath}/verifyEmail/{email}");
+            return bool.Parse(result);
         }
 
-        public async Task<ApiResponse<bool>> VerifyAccountUsernameAsync(string userName)
+        public async Task<bool> VerifyAccountUsernameAsync(string userName)
         {
-            var res = await _client.GetAsync($"{accountPath}/verifyUsername/{userName}");
-            return await res.CreateResponseAsync<bool>();
+            string result = await _client.GetStringAsync($"{accountPath}/verifyUsername/{userName}");
+            return bool.Parse(result);
         }
 
         public async Task<ApiResponse<bool>> SignUpAsync(SignUpModel model)
