@@ -11,3 +11,5 @@ A social media application
 
 Install app:
 https://install.appcenter.ms/users/live.neville-live.com/apps/socially/distribution_groups/public
+
+![android app](https://api.qrserver.com/v1/create-qr-code/?size=75x75&data=https://install.appcenter.ms/users/live.neville-live.com/apps/socially/distribution_groups/public)
