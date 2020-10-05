@@ -4,59 +4,49 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ext="clr-namespace:Socially.MobileApps.Extensions"
+             xmlns:vm="clr-namespace:Socially.MobileApps.ViewModels;assembly=Socially.MobileApps.ViewModels"
+             xmlns:font="http://avantipoint.com/mobiletoolkit"
+             xmlns:comp="clr-namespace:Socially.MobileApps.Components"
+             xmlns:control="clr-namespace:Socially.MobileApps.Controls"
              mc:Ignorable="d"
+             x:DataType="vm:SignUpViewModel"
              x:Class="Socially.MobileApps.Pages.SignUpPage">
+
     <ContentPage.Content>
 
-        <AbsoluteLayout BackgroundColor="{StaticResource LoginBackground}">
+            <Grid RowDefinitions="50, 60, 60"
+                  ColumnDefinitions="*, 80"
+                  AbsoluteLayout.LayoutBounds=".4, .1, AutoSize, .8"
+                  AbsoluteLayout.LayoutFlags="All">
 
-            <Image Source="{ext:Image 'insta.png'}"
-                   AbsoluteLayout.LayoutBounds="0, .01, 1, .4"
-                   AbsoluteLayout.LayoutFlags="YProportional, SizeProportional"/>
+            <ActivityIndicator Grid.Column="1" >
+                <ActivityIndicator.Behaviors>
+                    <control:CommandToVisibleBehavior Command="{Binding SubmitCmd}" />
+                </ActivityIndicator.Behaviors>
+            </ActivityIndicator>
 
-            <Label Text="{ext:FontIcon Icon=CloseCircleOutline}" 
-                    Visual="Default"
-                    Margin="15"
-                    FontSize="Title"
-                    TextColor="DarkGray"
-                    FontFamily="{ext:MaterialFontFamily}"
-                    AbsoluteLayout.LayoutBounds="1, 0, AutoSize, AutoSize"
-                    AbsoluteLayout.LayoutFlags="PositionProportional" >
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="GoBack" />
-                </Label.GestureRecognizers>
-            </Label>
+            <Label Text="{Binding ErrorMessage}"
+                   TextColor="Red"/>
 
-            <!--Form layout-->
-            <Grid AbsoluteLayout.LayoutBounds=".5, .6, .8, AutoSize"
-                  AbsoluteLayout.LayoutFlags="PositionProportional, WidthProportional"
-                  RowSpacing="20"
-                  Padding="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+            <comp:BindingEntry Placeholder="{Binding EntryBinding}"
+                                   Source="Model"
+                                   Grid.Row="1"
+                                   IsPassword="{Binding IsPassword}"
+                                   PropertyName="{Binding EntryBinding}" />
 
-                <Entry Placeholder="Username"
-                       Style="{StaticResource loginInput}"
-                       Grid.Row="0" Grid.Column="0" />
+                <Button Text="{font:Icon 'fas fa-arrow-circle-right'}"
+                        FontSize="Large"
+                        Padding="0"
+                        Command="{Binding SubmitCmd}"
+                        Grid.Row="1" Grid.Column="1" />
 
-                <Entry Placeholder="Password"
-                       Style="{StaticResource loginInput}"
-                       Grid.Row="1" Grid.Column="0" />
-                
-                <Entry Placeholder="Confirm Password"
-                       Style="{StaticResource loginInput}"
-                       Grid.Row="2" Grid.Column="0" />
+                <Button Text="{font:Icon 'fas fa-arrow-circle-left'}"
+                        FontSize="Large"
+                        Padding="0"
+                        Command="{Binding PreviousCmd}"
+                        Grid.Row="2" />
             </Grid>
-
-            <Button Text="Sign up" 
-                    AbsoluteLayout.LayoutBounds=".5, 1, .7, AutoSize"
-                    AbsoluteLayout.LayoutFlags="PositionProportional, WidthProportional"  
-                    BackgroundColor="{StaticResource LoginInputColor}"
-                    FontSize="Title"
-                    Margin="0, 0, 0, 40"
-                    CornerRadius="8" />
-
-        </AbsoluteLayout>
+        
+        
     </ContentPage.Content>
 </ContentPage>

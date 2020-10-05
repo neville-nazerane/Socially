@@ -22,14 +22,24 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.7.0.760-nightly" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.5.2" />
-    <PackageReference Include="Xamarin.Forms.Visual.Material" Version="4.7.0.760-nightly" />
+    <PackageReference Include="AP.MobileToolkit.Forms.Fonts.FontAwesomeFree.Solid" Version="3.0.0.1540-pre" />
+    <PackageReference Include="Xamarin.FluentInjector" Version="0.0.555-httpClient" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.1.1540-nightly" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.6.0-pre2" />
+    <PackageReference Include="Xamarin.Forms.Visual.Material" Version="5.0.1.1540-nightly" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Socially.MobileApps.Contracts\Socially.MobileApps.Contracts.csproj" />
+    <ProjectReference Include="..\..\Socially.MobileApps.ViewModels\Socially.MobileApps.ViewModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Update="Pages\SignUpPage.xaml.cs">
       <DependentUpon>SignUpPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Themes\TearsTheme.xaml.cs">
+      <DependentUpon>TearsTheme.xaml</DependentUpon>
     </Compile>
     <Compile Update="Themes\PendantTheme.xaml.cs">
       <DependentUpon>PendantTheme.xaml</DependentUpon>
@@ -44,6 +54,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Pages\LoginPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Pages\SignUpFlowPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Pages\SignUpPage.xaml">

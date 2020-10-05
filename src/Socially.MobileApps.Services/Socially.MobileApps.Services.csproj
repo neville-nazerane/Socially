@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Net.Http.Json" Version="6.0.0-alpha.1.20420.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Socially.Core\Socially.Core.csproj" />
+    <ProjectReference Include="..\Socially.MobileApps.Models\Socially.MobileApps.Models.csproj" />
+  </ItemGroup>
+
+</Project>
