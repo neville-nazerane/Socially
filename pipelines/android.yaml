@@ -14,7 +14,7 @@ variables:
   buildConfiguration: Release
   outputDirectory: $(build.binariesDirectory)/$(buildConfiguration)
   apkPath: com.nevillenazerane.socially.apk
-  solutionPath: src/Socially.sln
+  solutionPath: src/Socially Apps.sln.sln
   nugetConfigPath: src/nuget.config
   projectPath: src/Socially.MobileApps/Socially.MobileApps.Android
   configPath: src/Socially.MobileApps/Socially.MobileApps/Configs.nogit.cs
@@ -62,15 +62,6 @@ stages:
               filepath: $(configPath)
               fileoverwrite: true
               filecontent: ${{ parameters.configFileContent }}
-
-
-          - task: UseDotNet@2
-            displayName: 'Use .NET Core sdk'
-            inputs:
-              packageType: sdk
-              includePreviewVersions: true
-              version: 5.0.100-rc.1.20452.10
-              installationPath: $(Agent.ToolsDirectory)/dotnet
 
           - task: NuGetToolInstaller@1
           
