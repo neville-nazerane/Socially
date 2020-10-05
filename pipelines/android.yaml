@@ -31,7 +31,7 @@ parameters:
       {
           static partial class Configs
           {
-              static Config()
+              static Configs()
               {
                  // Endpoint = "$(secrets.endpoint)";
                  // AppCenter = "$(secrets.appCenter)";
