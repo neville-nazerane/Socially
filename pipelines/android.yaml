@@ -14,7 +14,7 @@ variables:
   buildConfiguration: Release
   outputDirectory: $(build.binariesDirectory)/$(buildConfiguration)
   apkPath: com.nevillenazerane.socially.apk
-  solutionPath: src/Socially Apps.sln.sln
+  solutionPath: src/Socially Apps.sln
   nugetConfigPath: src/nuget.config
   projectPath: src/Socially.MobileApps/Socially.MobileApps.Android
   configPath: src/Socially.MobileApps/Socially.MobileApps/Configs.nogit.cs
