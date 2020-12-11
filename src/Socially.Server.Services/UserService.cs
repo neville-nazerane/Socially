@@ -12,20 +12,24 @@ namespace Socially.Server.Services
 {
     public class UserService : IUserService
     {
-        private readonly SignInManager<User> _signInManager;
         private readonly IUserVerificationManager _userVerificationManager;
+        private readonly UserManager<User> _userManager;
 
-        public UserService(SignInManager<User> signInManager, IUserVerificationManager userVerificationManager)
+        public UserService(UserManager<User> userManager, IUserVerificationManager userVerificationManager)
         {
-            _signInManager = signInManager;
+            _userManager = userManager;
             _userVerificationManager = userVerificationManager;
         }
 
-        public async Task<SignInResult> LoginAsync(LoginModel model)
-            => await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
+        public async Task<bool> LoginAsync(LoginModel model)
+        {
+            var user = await _userManager.FindByNameAsync(model.UserName);
+            if (user is null) return false;
+            return await _userManager.CheckPasswordAsync(user, model.Password);
+        }
 
         public async Task<IdentityResult> SignUpAsync(SignUpModel model)
-            => await _signInManager.UserManager.CreateAsync(new User
+            => await _userManager.CreateAsync(new User
             {
                 Email = model.Email,
                 UserName = model.UserName

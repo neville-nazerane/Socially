@@ -45,7 +45,7 @@ namespace Socially.WebAPI.Controllers
         public async Task<IActionResult> Login(LoginModel model)
         {
             var result = await _userService.LoginAsync(model);
-            if (result.Succeeded) return Ok();
+            if (result) return Ok();
             else return BadRequest();
         }
 
