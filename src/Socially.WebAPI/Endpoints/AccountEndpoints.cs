@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Socially.Core.Models;
+using Socially.Server.Services;
 using Socially.WebAPI.EndpointUtils;
 using System;
 using System.Collections.Generic;
@@ -16,9 +17,15 @@ namespace Socially.WebAPI.Endpoints
         {
             return new EndpointMultiConvention {
 
-                endpoints.MapPost("/batman", async context =>
-                    await context.Response.WriteAsJsonAsync(
-                                await context.TryValidateModelAsync<SignUpModel>(null)))
+                endpoints.MapGet("verifyEmail/{email}", context
+                    => context.Service<IUserService>()
+                               .VerifyEmailAsync(context.GetRouteString("email"),
+                                                 context.RequestAborted)),
+
+                endpoints.MapGet("verifyUsername/{userName}", context
+                     => context.Service<IUserService>()
+                               .VerifyUsernameAsync(context.GetRouteString("userName"),
+                                                    context.RequestAborted)),
 
             };
         }
