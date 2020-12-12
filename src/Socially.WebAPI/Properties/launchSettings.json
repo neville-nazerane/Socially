@@ -18,7 +18,7 @@
     },
     "Socially.WebAPI": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "applicationUrl": "https://localhost:44366;http://localhost:37872",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
