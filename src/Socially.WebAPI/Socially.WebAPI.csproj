@@ -4,11 +4,7 @@
     <TargetFramework>netcoreapp5.0</TargetFramework>
     <UserSecretsId>Socially.WebAPI</UserSecretsId>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="EndpointUtils\EndpointsBase.cs" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0-alpha.1.20417.8">
       <PrivateAssets>all</PrivateAssets>
@@ -24,5 +20,6 @@
     <ProjectReference Include="..\Socially.Server.Services\Socially.Server.Services.csproj" />
   </ItemGroup>
 
+  
 
 </Project>

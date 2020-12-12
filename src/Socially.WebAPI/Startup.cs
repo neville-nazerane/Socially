@@ -16,6 +16,8 @@ using Socially.Core.Entities;
 using Socially.Server.DataAccess;
 using Socially.Server.Managers;
 using Socially.Server.Services;
+using Socially.WebAPI.Endpoints;
+using Socially.WebAPI.EndpointUtils;
 
 namespace Socially.WebAPI
 {
@@ -70,6 +72,8 @@ namespace Socially.WebAPI
 
             app.UseEndpoints(endpoints =>
             {
+
+                endpoints.MapCustom<AccountEndpoints>();
 
                 endpoints.MapGet("/", c => c.Response.WriteAsync("Hello to the social world"));
 
