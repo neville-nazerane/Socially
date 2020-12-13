@@ -17,15 +17,18 @@ namespace Socially.WebAPI.Endpoints
         {
             return new EndpointMultiConvention {
 
-                endpoints.MapGet("verifyEmail/{email}", context
+                endpoints.MapGet($"{Path}/verifyEmail/{{email}}", context
                     => context.Service<IUserService>()
                                .VerifyEmailAsync(context.GetRouteString("email"),
                                                  context.RequestAborted)),
 
-                endpoints.MapGet("verifyUsername/{userName}", context
+                endpoints.MapGet($"{Path}/verifyUsername/{{userName}}", context
                      => context.Service<IUserService>()
                                .VerifyUsernameAsync(context.GetRouteString("userName"),
                                                     context.RequestAborted)),
+
+                //endpoints.MapPost($"{Path}/signup", async context 
+                //    => await context.TryValidateModelAsync()),
 
             };
         }

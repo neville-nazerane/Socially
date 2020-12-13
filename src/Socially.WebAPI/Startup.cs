@@ -18,6 +18,7 @@ using Socially.Server.Managers;
 using Socially.Server.Services;
 using Socially.WebAPI.Endpoints;
 using Socially.WebAPI.EndpointUtils;
+using Socially.WebAPI.Middlewares;
 
 namespace Socially.WebAPI
 {
@@ -57,16 +58,17 @@ namespace Socially.WebAPI
             if (Env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseExceptionHandler(new CustomExceptionHandler());
             }
 
             //app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            if (Env.IsDevelopment())
-            {
-                app.UseOpenApi();
-            }
+            //if (Env.IsDevelopment())
+            //{
+            //    app.UseOpenApi();
+            //}
 
             app.UseAuthorization();
 
@@ -81,6 +83,7 @@ namespace Socially.WebAPI
 
                 endpoints.MapControllers();
             });
+
         }
     }
 }
