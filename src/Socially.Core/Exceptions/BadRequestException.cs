@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Socially.Core.Models;
+﻿using Socially.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Socially.WebAPI.Exceptions
+namespace Socially.Core.Exceptions
 {
     public class BadRequestException : Exception
     {
@@ -19,7 +18,7 @@ namespace Socially.WebAPI.Exceptions
             model.Errors.Add(errorMessage);
             Errors = new[] { model };
         }
-        
+
         public BadRequestException(string[] errorMessages, string message = defaultMessage) : base(message)
         {
             var model = new ErrorModel();

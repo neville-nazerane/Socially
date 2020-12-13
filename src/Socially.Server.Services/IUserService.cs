@@ -8,7 +8,7 @@ namespace Socially.Server.Services
     public interface IUserService
     {
         Task<bool> LoginAsync(LoginModel model);
-        Task<IdentityResult> SignUpAsync(SignUpModel model);
+        Task SignUpAsync(SignUpModel model);
         Task<bool> VerifyEmailAsync(string email, CancellationToken cancellationToken = default);
         Task<bool> VerifyUsernameAsync(string userName, CancellationToken cancellationToken = default);
     }

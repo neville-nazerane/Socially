@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Socially.Core.Exceptions;
 using Socially.WebAPI.EndpointUtils;
-using Socially.WebAPI.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

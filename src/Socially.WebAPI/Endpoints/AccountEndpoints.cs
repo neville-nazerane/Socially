@@ -27,8 +27,18 @@ namespace Socially.WebAPI.Endpoints
                                .VerifyUsernameAsync(context.GetRouteString("userName"),
                                                     context.RequestAborted)),
 
-                //endpoints.MapPost($"{Path}/signup", async context 
-                //    => await context.TryValidateModelAsync()),
+                endpoints.MapPost($"{Path}/signup", async context
+                    => await context.TryValidateModelAsync<SignUpModel>(
+                                m => context.Service<IUserService>()
+                                            .SignUpAsync(m))),
+
+                endpoints.MapPost($"{Path}/login", async context
+                    => await context.TryValidateModelAsync<LoginModel>(async m 
+                                => context.Response.StatusCode =
+                                        (await context.Service<IUserService>()
+                                                     .LoginAsync(m)) 
+                                                      ? StatusCodes.Status200OK 
+                                                      : StatusCodes.Status400BadRequest )),
 
             };
         }

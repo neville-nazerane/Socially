@@ -11,7 +11,8 @@ namespace Socially.WebAPI.EndpointUtils
     public static class HttpContextModelExtensions
     {
 
-        public static async Task<bool> TryValidateModelAsync<TModel>(this HttpContext context, Func<TModel, Task> onValid)
+        public static async Task<bool> TryValidateModelAsync<TModel>(this HttpContext context, 
+                                                                     Func<TModel, Task> onValid)
         {
             var validationResults = new List<ValidationResult>();
 
