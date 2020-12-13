@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace Socially.WebAPI.Controllers
 {
 
-    [NonController, Route("api/[Controller]")]
+    [ApiController, Route("api/[Controller]")]
     public class AccountController : Controller
     {
         private readonly IUserService _userService;
