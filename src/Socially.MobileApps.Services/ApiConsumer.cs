@@ -13,7 +13,7 @@ namespace Socially.MobileApps.Services
     {
         private readonly HttpClient _client;
 
-        private const string accountPath = "api/account";
+        private const string accountPath = "account";
 
         public ApiConsumer(HttpClient client)
         {
@@ -37,8 +37,6 @@ namespace Socially.MobileApps.Services
             var res = await _client.PostAsJsonAsync($"{accountPath}/signup", model);
             return await res.CreateResponseAsync<bool>();
         }
-
-        //public Task LoginAsync(LoginModel model) => _client.PostAsJsonAsync($"{accountPath}/login", model);
 
     }
 }

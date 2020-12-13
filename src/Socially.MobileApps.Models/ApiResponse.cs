@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Socially.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,7 +14,7 @@ namespace Socially.MobileApps.Models
 
         public int Status { get; set; }
 
-        public Dictionary<string, IEnumerable<string>> Errors { get; set; }
+        public IEnumerable<ErrorModel> Errors { get; set; }
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using Socially.MobileApps.Models;
+﻿using Socially.Core.Models;
+using Socially.MobileApps.Models;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -26,7 +27,8 @@ namespace System.Net.Http
             }
             else if (message.StatusCode == HttpStatusCode.BadRequest)
             {
-                response.Errors = await message.Content.ReadFromJsonAsync<Dictionary<string, IEnumerable<string>>>();
+                response.Errors = await message.Content
+                                               .ReadFromJsonAsync<IEnumerable<ErrorModel>>();
             }
 
             return response;

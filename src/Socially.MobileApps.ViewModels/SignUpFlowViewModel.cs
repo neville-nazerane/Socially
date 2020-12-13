@@ -135,15 +135,15 @@ namespace Socially.MobileApps.ViewModels
                 Inputs.Add(BuildConfPasswordContext());
         }
 
-        private async Task ConfirmPasswordAsync(SignUpInputContext context)
+        private Task ConfirmPasswordAsync(SignUpInputContext context)
         {
             if (context.Text != GetText(passwordTitle))
             {
                 context.ErrorMessage = "Passwords don't match";
-                return;
             }
             else
                 context.ErrorMessage = null;
+            return Task.CompletedTask;
         }
 
         private string GetText(string title) => Inputs.SingleOrDefault(i => i.Title == title).Text;
@@ -158,7 +158,7 @@ namespace Socially.MobileApps.ViewModels
                 {
                     await action(context);
                 }
-                catch (Exception e)
+                catch
                 {
                     context.ErrorMessage = "You messed up";
                     // after errors are serialized right, the errors go in here

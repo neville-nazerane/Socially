@@ -134,7 +134,7 @@ namespace Socially.MobileApps.ViewModels
                     
                 else
                 {
-                    ErrorMessage = res.Errors.Select(e => $"{e.Key}: {e.Value.First()}").First();
+                    ErrorMessage = res.Errors.Select(e => $"{e.Field}: {e.Errors.First()}").First();
                     return false;
                 }
             }
