@@ -11,9 +11,9 @@ namespace Socially.WebAPI.EndpointUtils
 
         protected string Path { get; private set; }
 
-        public abstract EndpointMultiConvention Setup(IEndpointRouteBuilder endpoints);
+        public abstract MultiEndpointConventionBuilder Setup(IEndpointRouteBuilder endpoints);
 
-        public EndpointMultiConvention Setup(IEndpointRouteBuilder endpoints, string path)
+        public MultiEndpointConventionBuilder Setup(IEndpointRouteBuilder endpoints, string path)
         {
             Path = path;
             return Setup(endpoints);

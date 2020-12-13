@@ -55,33 +55,19 @@ namespace Socially.WebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)
         {
-            if (Env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseExceptionHandler(new CustomExceptionHandler());
-            }
-
-            //app.UseHttpsRedirection();
+            app.UseExceptionHandler(new CustomExceptionHandler());
 
             app.UseRouting();
-
-            //if (Env.IsDevelopment())
-            //{
-            //    app.UseOpenApi();
-            //}
 
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGet("/", c => c.Response.WriteAsync("Hello to the social world"));
+                endpoints.MapHealthChecks("/health");
 
                 endpoints.MapCustom<AccountEndpoints>("/account");
 
-                endpoints.MapGet("/", c => c.Response.WriteAsync("Hello to the social world"));
-
-                endpoints.MapHealthChecks("/health");
-
-                endpoints.MapControllers();
             });
 
         }

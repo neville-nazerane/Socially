@@ -13,9 +13,10 @@ namespace Socially.WebAPI.Endpoints
 {
     public class AccountEndpoints : EndpointsBase
     {
-        public override EndpointMultiConvention Setup(IEndpointRouteBuilder endpoints)
+        public override MultiEndpointConventionBuilder Setup(IEndpointRouteBuilder endpoints)
         {
-            return new EndpointMultiConvention {
+
+            return new MultiEndpointConventionBuilder {
 
                 endpoints.MapGet($"{Path}/verifyEmail/{{email}}", async context
                     => await context.WriteAsync( 

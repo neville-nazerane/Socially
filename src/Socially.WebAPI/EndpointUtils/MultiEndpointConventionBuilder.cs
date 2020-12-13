@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Socially.WebAPI.EndpointUtils
 {
-    public class EndpointMultiConvention : List<IEndpointConventionBuilder>, IEndpointConventionBuilder
+    public class MultiEndpointConventionBuilder : List<IEndpointConventionBuilder>, IEndpointConventionBuilder
     {
 
         public void Add(Action<EndpointBuilder> convention)
