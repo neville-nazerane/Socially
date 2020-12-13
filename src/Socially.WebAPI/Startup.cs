@@ -75,7 +75,7 @@ namespace Socially.WebAPI
             app.UseEndpoints(endpoints =>
             {
 
-                endpoints.MapCustom<AccountEndpoints>();
+                endpoints.MapCustom<AccountEndpoints>("/account");
 
                 endpoints.MapGet("/", c => c.Response.WriteAsync("Hello to the social world"));
 

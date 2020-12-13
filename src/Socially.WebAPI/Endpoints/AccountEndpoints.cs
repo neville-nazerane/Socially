@@ -17,15 +17,19 @@ namespace Socially.WebAPI.Endpoints
         {
             return new EndpointMultiConvention {
 
-                endpoints.MapGet($"{Path}/verifyEmail/{{email}}", context
-                    => context.Service<IUserService>()
-                               .VerifyEmailAsync(context.GetRouteString("email"),
-                                                 context.RequestAborted)),
+                endpoints.MapGet($"{Path}/verifyEmail/{{email}}", async context
+                    => await context.WriteAsync( 
+                                await context.Service<IUserService>()
+                                             .VerifyEmailAsync(context.GetRouteString("email"),
+                                                               context.RequestAborted), 
+                                context.RequestAborted)),
 
-                endpoints.MapGet($"{Path}/verifyUsername/{{userName}}", context
-                     => context.Service<IUserService>()
-                               .VerifyUsernameAsync(context.GetRouteString("userName"),
-                                                    context.RequestAborted)),
+                endpoints.MapGet($"{Path}/verifyUsername/{{userName}}", async context
+                     => await context.WriteAsync(
+                                await context.Service<IUserService>()
+                                             .VerifyUsernameAsync(context.GetRouteString("userName"),
+                                                                  context.RequestAborted),
+                                context.RequestAborted)),
 
                 endpoints.MapPost($"{Path}/signup", async context
                     => await context.TryValidateModelAsync<SignUpModel>(
@@ -36,9 +40,9 @@ namespace Socially.WebAPI.Endpoints
                     => await context.TryValidateModelAsync<LoginModel>(async m 
                                 => context.Response.StatusCode =
                                         (await context.Service<IUserService>()
-                                                     .LoginAsync(m)) 
+                                                      .LoginAsync(m)) 
                                                       ? StatusCodes.Status200OK 
-                                                      : StatusCodes.Status400BadRequest )),
+                                                      : StatusCodes.Status400BadRequest))
 
             };
         }

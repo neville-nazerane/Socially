@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Socially.WebAPI.EndpointUtils
@@ -11,17 +12,18 @@ namespace Socially.WebAPI.EndpointUtils
     public static class HttpContextModelExtensions
     {
 
-        public static async Task<bool> TryValidateModelAsync<TModel>(this HttpContext context, 
-                                                                     Func<TModel, Task> onValid)
+        public static async Task<bool> TryValidateModelAsync<TModel>(this HttpContext context,
+                                                                     Func<TModel, CancellationToken, Task> onValid,
+                                                                     CancellationToken cancellationToken = default)
         {
             var validationResults = new List<ValidationResult>();
 
-            var model = await context.Request.ReadFromJsonAsync<TModel>();
+            var model = await context.Request.ReadFromJsonAsync<TModel>(cancellationToken);
             bool isValid = Validator.TryValidateObject(model, new ValidationContext(model), validationResults);
 
             if (isValid)
             {
-                if (onValid is not null) await onValid(model);
+                if (onValid is not null) await onValid(model, cancellationToken);
                 return true;
             }
             else
@@ -34,7 +36,7 @@ namespace Socially.WebAPI.EndpointUtils
                         var errorModel = errors.SingleOrDefault(e => e.Field == field);
                         if (errorModel is null)
                         {
-                            errorModel = new ErrorModel { 
+                            errorModel = new ErrorModel {
                                 Field = field
                             };
                         }
@@ -46,6 +48,13 @@ namespace Socially.WebAPI.EndpointUtils
                 return false;
             }
         }
+
+        public static Task<bool> TryValidateModelAsync<TModel>(this HttpContext context,
+                                                                    Func<TModel, Task> onValid,
+                                                                    CancellationToken cancellationToken = default)
+            => TryValidateModelAsync(context, (Func<TModel, CancellationToken, Task>)((m, c) 
+                    => onValid is not null ? onValid(m) : Task.CompletedTask),
+                    cancellationToken);
 
         public static Task<bool> TryValidateModelAsync<TModel>(this HttpContext context, Action<TModel> onValid)
             => TryValidateModelAsync(context, (Func<TModel,Task>) (model => {

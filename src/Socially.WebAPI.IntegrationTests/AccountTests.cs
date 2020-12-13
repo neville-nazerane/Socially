@@ -11,7 +11,7 @@ namespace Socially.WebAPI.IntegrationTests
     public class AccountTests : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
 
-        const string path = "api/account";
+        const string path = "account";
 
         private readonly CustomWebApplicationFactory<Startup> _factory;
 
