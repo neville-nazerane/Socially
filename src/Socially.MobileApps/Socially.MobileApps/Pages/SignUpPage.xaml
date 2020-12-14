@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:ext="clr-namespace:Socially.MobileApps.Extensions"
              xmlns:vm="clr-namespace:Socially.MobileApps.ViewModels;assembly=Socially.MobileApps.ViewModels"
              xmlns:font="http://avantipoint.com/mobiletoolkit"
              xmlns:comp="clr-namespace:Socially.MobileApps.Components"
@@ -14,39 +13,46 @@
 
     <ContentPage.Content>
 
-            <Grid RowDefinitions="50, 60, 60"
-                  ColumnDefinitions="*, 80"
-                  AbsoluteLayout.LayoutBounds=".4, .1, AutoSize, .8"
-                  AbsoluteLayout.LayoutFlags="All">
+        <Grid RowDefinitions="100, *, 50, 60, 60"
+              ColumnDefinitions="80, *"
+              Padding="25, 35, 25, 55"
+                AbsoluteLayout.LayoutBounds=".4, .1, AutoSize, .8"
+                AbsoluteLayout.LayoutFlags="All" >
 
-            <ActivityIndicator Grid.Column="1" >
+            <Image Source="logo" 
+                   Grid.ColumnSpan="2" />
+
+            <ActivityIndicator Grid.Row="2" Grid.Column="1" >
                 <ActivityIndicator.Behaviors>
                     <control:CommandToVisibleBehavior Command="{Binding SubmitCmd}" />
                 </ActivityIndicator.Behaviors>
             </ActivityIndicator>
 
             <Label Text="{Binding ErrorMessage}"
-                   TextColor="Red"/>
+                   TextColor="Red"
+                   Grid.Row="2" />
 
             <comp:BindingEntry Placeholder="{Binding EntryBinding}"
-                                   Source="Model"
-                                   Grid.Row="1"
-                                   IsPassword="{Binding IsPassword}"
-                                   PropertyName="{Binding EntryBinding}" />
+                                Source="Model"
+                                Grid.Row="3"
+                                Grid.ColumnSpan="2"
+                                IsPassword="{Binding IsPassword}"
+                                PropertyName="{Binding EntryBinding}" />
 
-                <Button Text="{font:Icon 'fas fa-arrow-circle-right'}"
-                        FontSize="Large"
-                        Padding="0"
-                        Command="{Binding SubmitCmd}"
-                        Grid.Row="1" Grid.Column="1" />
+            <Button Text="{font:Icon 'fas fa-arrow-circle-right'}"
+                    FontSize="Large"
+                    Padding="0"
+                    Command="{Binding SubmitCmd}"
+                    Grid.Row="4" Grid.Column="1" />
 
-                <Button Text="{font:Icon 'fas fa-arrow-circle-left'}"
-                        FontSize="Large"
-                        Padding="0"
-                        Command="{Binding PreviousCmd}"
-                        Grid.Row="2" />
-            </Grid>
-        
-        
+            <Button Text="{font:Icon 'fas fa-arrow-circle-left'}"
+                    FontSize="Large"
+                    Padding="0"
+                    Command="{Binding PreviousCmd}"
+                    Grid.Row="4" />
+
+        </Grid>
+
+
     </ContentPage.Content>
 </ContentPage>

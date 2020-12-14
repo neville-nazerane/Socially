@@ -7,6 +7,7 @@ using Socially.MobileApps.Pages;
 using Socially.MobileApps.Services;
 using Socially.MobileApps.ViewModels;
 using System;
+using Xamarin.Essentials;
 using Xamarin.FluentInjector;
 using Xamarin.Forms;
 
@@ -16,8 +17,7 @@ namespace Socially.MobileApps
     {
         public App()
         {
-
-            Device.SetFlags(new string[] { "AppTheme_Experimental" });
+            ExperimentalFeatures.Enable("AppTheme_Experimental", "Shapes_Experimental");
             InitializeComponent();
 
             Microsoft.AppCenter.AppCenter
