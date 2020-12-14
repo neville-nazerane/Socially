@@ -13,45 +13,51 @@
 
     <ContentPage.Content>
 
-        <Grid RowDefinitions="100, *, 50, 60, 60"
-              ColumnDefinitions="80, *"
-              Padding="25, 35, 25, 55"
-                AbsoluteLayout.LayoutBounds=".4, .1, AutoSize, .8"
-                AbsoluteLayout.LayoutFlags="All" >
-
-            <Image Source="logo" 
-                   Grid.ColumnSpan="2" />
-
-            <ActivityIndicator Grid.Row="2" Grid.Column="1" >
-                <ActivityIndicator.Behaviors>
-                    <control:CommandToVisibleBehavior Command="{Binding SubmitCmd}" />
-                </ActivityIndicator.Behaviors>
-            </ActivityIndicator>
-
-            <Label Text="{Binding ErrorMessage}"
-                   TextColor="Red"
-                   Grid.Row="2" />
-
-            <comp:BindingEntry Placeholder="{Binding EntryBinding}"
-                                Source="Model"
-                                Grid.Row="3"
-                                Grid.ColumnSpan="2"
-                                IsPassword="{Binding IsPassword}"
-                                PropertyName="{Binding EntryBinding}" />
-
-            <Button Text="{font:Icon 'fas fa-arrow-circle-right'}"
-                    FontSize="Large"
-                    Padding="0"
-                    Command="{Binding SubmitCmd}"
-                    Grid.Row="4" Grid.Column="1" />
+        <AbsoluteLayout>
 
             <Button Text="{font:Icon 'fas fa-arrow-circle-left'}"
                     FontSize="Large"
                     Padding="0"
                     Command="{Binding PreviousCmd}"
-                    Grid.Row="4" />
+                    AbsoluteLayout.LayoutBounds="5, 5, 40, 40" 
+                    AbsoluteLayout.LayoutFlags="None"/>
+            
+            <Grid RowDefinitions="100, *, 50, 55, *"
+                  ColumnDefinitions="*, 80"
+                  Padding="25, 35, 25, 55"
+                  AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                  AbsoluteLayout.LayoutFlags="SizeProportional">
 
-        </Grid>
+                <Image Source="logo" 
+                       Grid.ColumnSpan="2" />
+
+                <ActivityIndicator Grid.Row="2" Grid.Column="1" >
+                    <ActivityIndicator.Behaviors>
+                        <control:CommandToVisibleBehavior Command="{Binding SubmitCmd}" />
+                    </ActivityIndicator.Behaviors>
+                </ActivityIndicator>
+
+                <Label Text="{Binding ErrorMessage}"
+                       TextColor="Red"
+                       Grid.Row="2" />
+
+                <comp:BindingEntry Placeholder="{Binding EntryBinding}"
+                                    Source="Model"
+                                    Grid.Row="3"
+                                    Grid.ColumnSpan="2"
+                                    IsPassword="{Binding IsPassword}"
+                                    PropertyName="{Binding EntryBinding}" />
+
+                <Button Text="{font:Icon 'fas fa-arrow-circle-right'}"
+                        FontSize="Large"
+                        Padding="0"
+                        Command="{Binding SubmitCmd}"
+                        Grid.Row="3" Grid.Column="1" />
+
+                
+
+            </Grid>
+        </AbsoluteLayout>
 
 
     </ContentPage.Content>
