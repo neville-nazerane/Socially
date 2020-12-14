@@ -6,7 +6,7 @@ namespace Socially.MobileApps
 {
     static partial class Configs
     {
-
-
+        public static string Endpoint { get; }
+        public static string AppCenter { get; }
     }
 }

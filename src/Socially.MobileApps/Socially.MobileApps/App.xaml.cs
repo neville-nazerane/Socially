@@ -1,4 +1,6 @@
 ﻿using AP.MobileToolkit.Fonts;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using Socially.MobileApps.Config;
 using Socially.MobileApps.Contracts;
 using Socially.MobileApps.Pages;
@@ -18,6 +20,11 @@ namespace Socially.MobileApps
             Device.SetFlags(new string[] { "AppTheme_Experimental" });
             InitializeComponent();
 
+            Microsoft.AppCenter.AppCenter
+                            .Start(Configs.AppCenter, 
+                                    typeof(Analytics), 
+                                    typeof(Crashes));
+
             new ThemeControl(null).Update();
             FontRegistry.RegisterFonts(FontAwesomeSolid.Font);
 
@@ -26,7 +33,8 @@ namespace Socially.MobileApps
 
                 .SetViewModelAssembly(typeof(ViewModelBase).Assembly)
 
-                .AddHttpClient<IApiConsumer, ApiConsumer>(c => c.BaseAddress = new Uri("https://socially.nevillenazerane.com"))
+                .AddHttpClient<IApiConsumer, ApiConsumer>(c 
+                                    => c.BaseAddress = new Uri(Configs.Endpoint))
 
                 .AddTransient<IThemeControl, ThemeControl>()
 

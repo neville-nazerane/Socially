@@ -35,7 +35,8 @@ namespace Socially.WebAPI.Endpoints
                 endpoints.MapPost($"{Path}/signup", async context
                     => await context.TryValidateModelAsync<SignUpModel>(
                                 m => context.Service<IUserService>()
-                                            .SignUpAsync(m))),
+                                            .SignUpAsync(m),
+                                context.RequestAborted)),
 
                 endpoints.MapPost($"{Path}/login", async context
                     => await context.TryValidateModelAsync<LoginModel>(async m 
@@ -43,7 +44,8 @@ namespace Socially.WebAPI.Endpoints
                                         (await context.Service<IUserService>()
                                                       .LoginAsync(m)) 
                                                       ? StatusCodes.Status200OK 
-                                                      : StatusCodes.Status400BadRequest))
+                                                      : StatusCodes.Status400BadRequest,
+                                context.RequestAborted))
 
             };
         }

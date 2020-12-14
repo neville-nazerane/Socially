@@ -23,6 +23,14 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "Lap Lan": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "applicationUrl": "http://192.168.0.8:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   }
 }

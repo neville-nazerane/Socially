@@ -23,6 +23,8 @@ variables:
   appCenterGroup: 1c99cb88-6231-4a01-83d1-8f79ab0a4a28
   keyStoreFile: socially.jks
 
+  endpoint: https://socially.nevillenazerane.com
+
 parameters:
   - name: configFileContent
     type: string
@@ -33,8 +35,8 @@ parameters:
           {
               static Configs()
               {
-                 // Endpoint = "$(secrets.endpoint)";
-                 // AppCenter = "$(secrets.appCenter)";
+                  Endpoint = "$(endpoint)";
+                  AppCenter = "$(secrets.appCenter)";
               }
           }
       }
