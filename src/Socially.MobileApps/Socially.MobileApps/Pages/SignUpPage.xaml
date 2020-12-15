@@ -4,7 +4,6 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:Socially.MobileApps.ViewModels;assembly=Socially.MobileApps.ViewModels"
-             xmlns:font="http://avantipoint.com/mobiletoolkit"
              xmlns:comp="clr-namespace:Socially.MobileApps.Components"
              xmlns:control="clr-namespace:Socially.MobileApps.Controls"
              mc:Ignorable="d"
@@ -15,12 +14,21 @@
 
         <AbsoluteLayout>
 
-            <Button Text="{font:Icon 'fas fa-arrow-circle-left'}"
-                    FontSize="Large"
+            <!--<Button Text="{font:Icon 'fas fa-arrow-circle-left'}"
+                    
                     Padding="0"
                     Command="{Binding PreviousCmd}"
                     AbsoluteLayout.LayoutBounds="5, 5, 40, 40" 
-                    AbsoluteLayout.LayoutFlags="None"/>
+                    AbsoluteLayout.LayoutFlags="None"/>-->
+
+            <Path 
+                Data="M400 480H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48v352c0 26.51-21.49 48-48 48zM259.515 124.485l-123.03 123.03c-4.686 4.686-4.686 12.284 0 16.971l123.029 123.029c7.56 7.56 20.485 2.206 20.485-8.485V132.971c.001-10.691-12.925-16.045-20.484-8.486z"
+                AbsoluteLayout.LayoutBounds="5, 5, 40, 40" 
+                AbsoluteLayout.LayoutFlags="None">
+                <Path.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding PreviousCmd}" />
+                </Path.GestureRecognizers>
+            </Path>
             
             <Grid RowDefinitions="100, *, 50, 55, *"
                   ColumnDefinitions="*, 80"
@@ -30,7 +38,7 @@
 
                 <Image Source="logo" 
                        Grid.ColumnSpan="2" />
-
+                
                 <ActivityIndicator Grid.Row="2" Grid.Column="1" >
                     <ActivityIndicator.Behaviors>
                         <control:CommandToVisibleBehavior Command="{Binding SubmitCmd}" />
@@ -48,13 +56,10 @@
                                     IsPassword="{Binding IsPassword}"
                                     PropertyName="{Binding EntryBinding}" />
 
-                <Button Text="{font:Icon 'fas fa-arrow-circle-right'}"
-                        FontSize="Large"
+                <Button control:Fonts.Icon="Next"
                         Padding="0"
                         Command="{Binding SubmitCmd}"
                         Grid.Row="3" Grid.Column="1" />
-
-                
 
             </Grid>
         </AbsoluteLayout>

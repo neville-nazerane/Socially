@@ -3,10 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:shape="clr-namespace:Xamarin.Forms.Shapes;assembly=Xamarin.Forms.Core"
              xmlns:ext="clr-namespace:Socially.MobileApps.Extensions"
              mc:Ignorable="d"
              x:Class="Socially.MobileApps.App">
     <Application.Resources>
+        
+        <!--all svgs from-->
+        <!--https://fontawesome.com/license-->
+
+        <!--shape paths-->
+        <x:String x:Key="bat">batman</x:String>
 
         <ResourceDictionary Source="Themes/MirrorTheme.xaml" />
 
