@@ -1,5 +1,4 @@
-﻿using AP.MobileToolkit.Fonts;
-using Microsoft.AppCenter.Analytics;
+﻿using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Socially.MobileApps.Config;
 using Socially.MobileApps.Contracts;
@@ -26,7 +25,7 @@ namespace Socially.MobileApps
                                     typeof(Crashes));
 
             new ThemeControl(null).Update();
-            FontRegistry.RegisterFonts(FontAwesomeSolid.Font);
+            //FontRegistry.RegisterFonts(FontAwesomeSolid.Font);
 
             this.StartInjecting()
 

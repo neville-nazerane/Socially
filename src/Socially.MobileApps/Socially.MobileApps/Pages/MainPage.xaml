@@ -26,8 +26,8 @@
                AbsoluteLayout.LayoutBounds="0.5, .5, AutoSize, AutoSize"
                AbsoluteLayout.LayoutFlags="PositionProportional" />
 
-        <Label Text="{font:Icon 'fas fa-palette'}"
-               FontSize="Large"
+        <Label Text="Theme"
+                FontSize="Large"
                TextColor="{DynamicResource themeNeutral}"
                AbsoluteLayout.LayoutBounds="10, .95, 25, 25"
                AbsoluteLayout.LayoutFlags="YProportional">

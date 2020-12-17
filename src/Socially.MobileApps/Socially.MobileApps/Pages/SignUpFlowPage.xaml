@@ -73,8 +73,7 @@
                 </DataTemplate>
             </comp:InputsFlow.ItemTemplate>
         </comp:InputsFlow>
-        <Label Text="{font:Icon 'fas fa-palette'}"
-               FontSize="Large"
+        <Label FontSize="Large"
                TextColor="{DynamicResource themeNeutral}"
                AbsoluteLayout.LayoutBounds="10, .95, 25, 25"
                AbsoluteLayout.LayoutFlags="YProportional">
