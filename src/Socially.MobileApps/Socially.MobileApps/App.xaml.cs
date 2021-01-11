@@ -24,7 +24,7 @@ namespace Socially.MobileApps
                                     typeof(Analytics), 
                                     typeof(Crashes));
 
-            new ThemeControl(null).Update();
+            ThemeControl.Update();
             //FontRegistry.RegisterFonts(FontAwesomeSolid.Font);
 
             this.StartInjecting()

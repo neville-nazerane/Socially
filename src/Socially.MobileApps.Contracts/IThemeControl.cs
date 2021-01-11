@@ -8,7 +8,7 @@ namespace Socially.MobileApps.Contracts
         IEnumerable<string> ThemeNames { get; }
 
         Task DisplayThemePickerAsync();
-        void Update();
+        //void Update();
         void Update(string newTheme);
 
     }

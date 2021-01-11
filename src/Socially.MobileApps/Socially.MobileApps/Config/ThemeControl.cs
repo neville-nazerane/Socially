@@ -55,7 +55,7 @@ namespace Socially.MobileApps.Config
             }
         }
 
-        public void Update()
+        public static void Update()
         {
             string selection = Preferences.Get(key, null);
             if (selection is null || !themes.Any(t => t.Name == selection))
