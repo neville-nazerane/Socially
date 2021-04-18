@@ -43,8 +43,8 @@ namespace Socially.WebAPI.EndpointUtils
                         errorModel.Errors.Add(validation.ErrorMessage);
                     }
 
-                await context.Response.WriteAsJsonAsync(errors);
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                await context.Response.WriteAsJsonAsync(errors);
                 return false;
             }
         }
