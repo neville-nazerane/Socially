@@ -78,10 +78,10 @@
                 </Grid>
                 
                 
-                <!--<Button control:Fonts.Icon="Next"
+                <Button control:Fonts.Icon="Next"
                         Padding="0"
                         Command="{Binding SubmitCmd}"
-                        Grid.Row="3" Grid.Column="1" />-->
+                        Grid.Row="3" Grid.Column="1" />
 
             </Grid>
         </AbsoluteLayout>

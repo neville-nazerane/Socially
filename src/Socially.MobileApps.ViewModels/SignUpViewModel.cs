@@ -52,7 +52,7 @@ namespace Socially.MobileApps.ViewModels
                 new InputContext(nameof(SignUpModel.Email), VerifyEmailAsync),
                 new InputContext(nameof(SignUpModel.UserName), VerifyUserNameAsync),
                 new InputContext(nameof(SignUpModel.Password), isPassword: true),
-                new InputContext(nameof(SignUpModel.ConfirmPassword), "Confirm Password", VerifyConfPasswordAsync, true)
+                new InputContext("Confirm Password", nameof(SignUpModel.ConfirmPassword), VerifyConfPasswordAsync, true)
             };
             SetupIndex();
         }
@@ -93,14 +93,14 @@ namespace Socially.MobileApps.ViewModels
             Model.Email = Model.Email.Trim().ToLower();
             try
             {
-                await _apiConsumer.VerifyAccountEmailAsync(Model.Email);
+                return true;
+                //return ! await _apiConsumer.VerifyAccountEmailAsync(Model.Email);
             }
             catch
             {
                 ErrorMessage = "Can't use this email";
                 return false;
             }
-            return true;
         }
 
         private async Task<bool> VerifyUserNameAsync()
@@ -109,14 +109,14 @@ namespace Socially.MobileApps.ViewModels
             Model.UserName = Model.UserName.Trim().ToLower();
             try
             {
-                await _apiConsumer.VerifyAccountUsernameAsync(Model.UserName);
+                return true;
+                //return ! await _apiConsumer.VerifyAccountUsernameAsync(Model.UserName);
             }
             catch
             {
                 ErrorMessage = "Can't do this username";
                 return true;
             }
-            return true;
         }
 
         private async Task<bool> VerifyConfPasswordAsync()
@@ -129,12 +129,20 @@ namespace Socially.MobileApps.ViewModels
             }
             else
             {
-                var res = await _apiConsumer.SignUpAsync(Model);
-                if (res.IsSuccess) return true;
-                    
-                else
+                try
                 {
-                    ErrorMessage = res.Errors.Select(e => $"{e.Field}: {e.Errors.First()}").First();
+                    var res = await _apiConsumer.SignUpAsync(Model);
+                    if (res.IsSuccess) return true;
+
+                    else
+                    {
+                        ErrorMessage = res.Errors.Select(e => $"{e.Field}: {e.Errors.First()}").First();
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ErrorMessage = "Something funny just happened";
                     return false;
                 }
             }
