@@ -47,7 +47,7 @@ namespace Socially.WebAPI.IntegrationTests
 
             // singing up
             var signupModel = new SignUpModel
-            {
+            { 
                 Email = testEmail,
                 UserName = testUsername,
                 Password = testPassword,

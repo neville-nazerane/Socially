@@ -21,9 +21,10 @@ namespace Socially.Core.Exceptions
 
         public BadRequestException(string[] errorMessages, string message = defaultMessage) : base(message)
         {
-            var model = new ErrorModel();
-            foreach (var errorMessage in errorMessages)
-                model.Errors.Add(errorMessage);
+            var model = new ErrorModel
+            {
+                Errors = errorMessages.ToList()
+            };
             Errors = new[] { model };
         }
 

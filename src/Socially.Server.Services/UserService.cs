@@ -30,18 +30,70 @@ namespace Socially.Server.Services
             return await _userManager.CheckPasswordAsync(user, model.Password);
         }
 
-        public async Task SignUpAsync(SignUpModel model)
+        public async Task SignUpAsync(SignUpModel model, CancellationToken cancellationToken = default)
         {
+
+            var emailExists = await _userVerificationManager.EmailExistsAsync(model.Email, cancellationToken);
+
+            if (emailExists)
+            {
+                throw new BadRequestException(
+                                new ErrorModel(nameof(model.Email), 
+                                               "Email already exists"));
+            }
+
+            var usernameExists = await _userVerificationManager.UserNameExistsAsync(model.Email, cancellationToken);
+
+            if (usernameExists)
+            {
+                throw new BadRequestException(
+                                new ErrorModel(nameof(model.Email),
+                                               "Email already exists"));
+            }
+
+
             var result = await _userManager.CreateAsync(new User
             {
                 Email = model.Email,
                 UserName = model.UserName
             }, model.Password);
+
             if (!result.Succeeded)
+                throw new BadRequestException(GetErrorModel(result.Errors));
+
+        }
+
+        private IEnumerable<ErrorModel> GetErrorModel(IEnumerable<IdentityError> errors)
+        {
+            var result = new List<ErrorModel>();
+            string[] names = new string[]
+            { 
+                nameof(SignUpModel.UserName),  
+                nameof(SignUpModel.Password),  
+                nameof(SignUpModel.Email) 
+            };
+
+            foreach (var errorModel in errors)
             {
-                var errors = result.Errors.Select(e => e.Description).ToArray();
-                throw new BadRequestException(errors);
+                string fieldName = "";
+                foreach (var name in names)
+                    if (errorModel.Description.Contains(name))
+                        fieldName = name;
+                
+                var err = result.SingleOrDefault(e => e.Field == fieldName);
+                if (err is null)
+                {
+                    err = new ErrorModel
+                    {
+                        Field= fieldName,
+                        Errors = new List<string>()
+                    };
+                    result.Add(err);
+                }
+                err.Errors.Add(errorModel.Description);
             }
+
+            return result;
         }
 
         public Task<bool> VerifyEmailAsync(string email, CancellationToken cancellationToken = default)

@@ -42,6 +42,7 @@
                        Grid.Row="0" Grid.Column="0" />
                 
                 <Entry Placeholder="Password"
+                       IsPassword="True"
                        Style="{StaticResource loginInput}"
                        Grid.Row="1" Grid.Column="0" />
             </Grid>

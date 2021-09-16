@@ -16,5 +16,11 @@ namespace Socially.Core.Models
             Errors = new List<string>();
         }
 
+        public ErrorModel(string field, string error)
+        {
+            Field = field;
+            Errors = new string[] { error };
+        }
+
     }
 }
