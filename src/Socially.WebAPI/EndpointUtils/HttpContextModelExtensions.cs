@@ -31,6 +31,7 @@ namespace Socially.WebAPI.EndpointUtils
                 var errors = new List<ErrorModel>();
 
                 foreach (var validation in validationResults)
+                {
                     foreach (var field in validation.MemberNames)
                     {
                         var errorModel = errors.SingleOrDefault(e => e.Field == field);
@@ -39,12 +40,14 @@ namespace Socially.WebAPI.EndpointUtils
                             errorModel = new ErrorModel {
                                 Field = field
                             };
+                            errors.Add(errorModel);
                         }
                         errorModel.Errors.Add(validation.ErrorMessage);
                     }
+                }
 
-                await context.Response.WriteAsJsonAsync(errors);
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                await context.Response.WriteAsJsonAsync(errors, cancellationToken);
                 return false;
             }
         }
@@ -64,8 +67,8 @@ namespace Socially.WebAPI.EndpointUtils
 
         public static async Task BadRequestAsync(this HttpContext context, IEnumerable<ErrorModel> errors)
         {
-            await context.Response.WriteAsJsonAsync(errors);
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            await context.Response.WriteAsJsonAsync(errors);
         }
 
     }
