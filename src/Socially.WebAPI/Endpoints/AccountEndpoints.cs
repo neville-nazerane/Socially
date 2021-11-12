@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Socially.Core.Exceptions;
 using Socially.Core.Models;
 using Socially.Server.Services;
 using Socially.WebAPI.EndpointUtils;
@@ -40,14 +41,19 @@ namespace Socially.WebAPI.Endpoints
 
                 endpoints.MapPost($"{Path}/login", async context
                     => await context.TryValidateModelAsync<LoginModel>(async m 
-                                => context.Response.StatusCode =
-                                        (await context.Service<IUserService>()
-                                                      .LoginAsync(m)) 
-                                                      ? StatusCodes.Status200OK 
-                                                      : StatusCodes.Status400BadRequest,
-                                context.RequestAborted))
+                                => await LoginAsync(context, m), context.RequestAborted))
 
             };
         }
+    
+        private static async Task LoginAsync(HttpContext context, LoginModel model)
+        {
+            bool success = await context.Service<IUserService>().LoginAsync(model);
+            if (success)
+                context.Response.StatusCode = 200;
+            else
+                throw new BadRequestException("username or password was invalid");
+        }
+    
     }
 }

@@ -63,7 +63,7 @@ namespace Socially.Server.Services
 
         }
 
-        private IEnumerable<ErrorModel> GetErrorModel(IEnumerable<IdentityError> errors)
+        private static IEnumerable<ErrorModel> GetErrorModel(IEnumerable<IdentityError> errors)
         {
             var result = new List<ErrorModel>();
             string[] names = new string[]
