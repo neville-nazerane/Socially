@@ -42,13 +42,13 @@ namespace Socially.Server.Services
                                                "Email already exists"));
             }
 
-            var usernameExists = await _userVerificationManager.UserNameExistsAsync(model.Email, cancellationToken);
+            var usernameExists = await _userVerificationManager.UserNameExistsAsync(model.UserName, cancellationToken);
 
             if (usernameExists)
             {
                 throw new BadRequestException(
-                                new ErrorModel(nameof(model.Email),
-                                               "Email already exists"));
+                                new ErrorModel(nameof(model.UserName),
+                                               "Username already exists"));
             }
 
 
