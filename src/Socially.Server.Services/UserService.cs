@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using NetCore.Jwt;
 using Socially.Core.Entities;
 using Socially.Core.Exceptions;
 using Socially.Core.Models;
@@ -15,19 +16,21 @@ namespace Socially.Server.Services
     public class UserService : IUserService
     {
         private readonly IUserVerificationManager _userVerificationManager;
+        private readonly IBearerManager _bearerManager;
         private readonly UserManager<User> _userManager;
 
-        public UserService(UserManager<User> userManager, IUserVerificationManager userVerificationManager)
+        public UserService(UserManager<User> userManager, IUserVerificationManager userVerificationManager, IBearerManager bearerManager)
         {
             _userManager = userManager;
             _userVerificationManager = userVerificationManager;
+            _bearerManager = bearerManager;
         }
 
-        public async Task<bool> LoginAsync(LoginModel model)
+        public async Task<string> LoginAsync(LoginModel model)
         {
             var user = await _userManager.FindByNameAsync(model.UserName);
-            if (user is null) return false;
-            return await _userManager.CheckPasswordAsync(user, model.Password);
+            if (user is null) return null;
+            else return _bearerManager.Generate(model.UserName);
         }
 
         public async Task SignUpAsync(SignUpModel model, CancellationToken cancellationToken = default)

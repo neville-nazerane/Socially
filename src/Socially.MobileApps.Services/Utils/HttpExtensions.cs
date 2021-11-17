@@ -1,6 +1,5 @@
 ﻿using Socially.Core.Models;
 using Socially.MobileApps.Models;
-using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -8,7 +7,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace System.Net.Http
+namespace Socially.MobileApps.Services.Utils
 {
     static class HttpExtensions
     {
@@ -22,7 +21,7 @@ namespace System.Net.Http
             if (message.IsSuccessStatusCode)
             {
                 if (typeof(T) == typeof(string))
-                    response.Data = (T) (object) await message.Content.ReadAsStringAsync();
+                    response.Data = (T)(object)await message.Content.ReadAsStringAsync();
                 response.Data = await message.Content.ReadFromJsonAsync<T>();
             }
             else if (message.StatusCode == HttpStatusCode.BadRequest)

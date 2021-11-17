@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NetCore.Jwt;
 using Socially.Core.Entities;
 using Socially.Server.DataAccess;
 using Socially.Server.Managers;
@@ -42,9 +43,11 @@ namespace Socially.WebAPI
                     .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddHealthChecks()
                     .AddDbContextCheck<ApplicationDbContext>();
-            services.AddControllers();
-            
-            services.AddSwaggerDocument();
+            //services.AddControllers();
+
+            //services.AddSwaggerDocument();
+
+            services.AddAuthentication(NetCoreJwtDefaults.SchemeName).AddNetCoreJwt();
 
             // managers
             services.AddTransient<IUserVerificationManager, UserVerificationManager>();
@@ -60,6 +63,7 @@ namespace Socially.WebAPI
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

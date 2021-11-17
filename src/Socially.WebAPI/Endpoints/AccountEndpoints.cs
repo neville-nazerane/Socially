@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Socially.Core.Exceptions;
 using Socially.Core.Models;
@@ -48,11 +49,8 @@ namespace Socially.WebAPI.Endpoints
     
         private static async Task LoginAsync(HttpContext context, LoginModel model)
         {
-            bool success = await context.Service<IUserService>().LoginAsync(model);
-            if (success)
-                context.Response.StatusCode = 200;
-            else
-                throw new BadRequestException("username or password was invalid");
+            string token = await context.Service<IUserService>().LoginAsync(model);
+            await context.Response.WriteAsync(token);
         }
     
     }

@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Socially.MobileApps.Services
+namespace Socially.MobileApps.Services.HttpServices
 {
     public interface IApiConsumer
     {

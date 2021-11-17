@@ -1,4 +1,5 @@
-﻿using Socially.MobileApps.Models;
+﻿using Socially.Core.Models;
+using Socially.MobileApps.Models;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Socially.MobileApps.Services
+namespace Socially.MobileApps.Services.HttpServices
 {
     public class ApiConsumer : IApiConsumer
     {
@@ -36,6 +37,11 @@ namespace Socially.MobileApps.Services
         {
             var res = await _client.PostAsJsonAsync($"{accountPath}/signup", model);
             return await res.CreateResponseAsync<bool>();
+        }
+
+        public async Task LoginAsync(LoginModel model)
+        {
+
         }
 
     }

@@ -13,6 +13,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0-preview.7.21378.4" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="6.0.0-preview.7.21378.6" />
     <PackageReference Include="NSwag.AspNetCore" Version="13.13.2" />
+	<PackageReference Include="NetCore.Jwt" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
