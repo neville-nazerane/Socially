@@ -2,25 +2,85 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NetCore.Jwt;
+using Socially.Core.Entities;
+using Socially.Server.DataAccess;
+using Socially.Server.Managers;
+using Socially.Server.Services;
+using Socially.WebAPI.Endpoints;
+using Socially.WebAPI.EndpointUtils;
+using Socially.WebAPI.Middlewares;
 
-namespace Socially.WebAPI
+var builder = WebApplication.CreateBuilder(args);
+
+
+var services = builder.Services;
+var config = builder.Configuration;
+
+services.AddDbContext<ApplicationDbContext>(c => c.UseSqlServer(config.GetConnectionString("db")));
+services.AddIdentity<User, UserRole>()
+        .AddEntityFrameworkStores<ApplicationDbContext>();
+services.AddHealthChecks()
+        .AddDbContextCheck<ApplicationDbContext>();
+//services.AddControllers();
+
+//services.AddSwaggerDocument();
+services.AddAuthorization();
+services.AddAuthentication(NetCoreJwtDefaults.SchemeName).AddNetCoreJwt();
+
+// managers
+services.AddTransient<IUserVerificationManager, UserVerificationManager>();
+services.AddTransient<IUserService, UserService>();
+
+// SERVICES
+
+
+// MIDDLEWARES
+var app = builder.Build();
+
+app.UseExceptionHandler(new CustomExceptionHandler());
+
+app.UseRouting();
+
+app.UseAuthorization();
+app.UseAuthentication();
+
+app.UseEndpoints(endpoints =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+    endpoints.MapGet("/", c => c.Response.WriteAsync("Hello to the social world"));
+    endpoints.MapHealthChecks("/health");
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
-}
+    endpoints.MapCustom<AccountEndpoints>("/account");
+
+});
+
+
+await app.RunAsync();
+
+
+
+//namespace Socially.WebAPI
+//{
+//    public class Program
+//    {
+//        public static void Main(string[] args)
+//        {
+//            CreateHostBuilder(args).Build().Run();
+//        }
+
+//        public static IHostBuilder CreateHostBuilder(string[] args) =>
+//            Host.CreateDefaultBuilder(args)
+//                .ConfigureWebHostDefaults(webBuilder =>
+//                {
+//                    webBuilder.UseStartup<Startup>();
+//                });
+//    }
+//}

@@ -9,6 +9,7 @@ using Socially.WebAPI.EndpointUtils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Socially.WebAPI.Endpoints
@@ -20,38 +21,42 @@ namespace Socially.WebAPI.Endpoints
 
             return new MultiEndpointConventionBuilder {
 
-                endpoints.MapGet($"{Path}/verifyEmail/{{email}}", async context
-                    => await context.WriteAsync( 
-                                await context.Service<IUserService>()
-                                             .VerifyEmailAsync(context.GetRouteString("email"),
-                                                               context.RequestAborted), 
-                                context.RequestAborted)),
+                endpoints.MapGet("account/verifyEmail/{email}", VerifyEmailAsync),
 
-                endpoints.MapGet($"{Path}/verifyUsername/{{userName}}", async context
-                     => await context.WriteAsync(
-                                await context.Service<IUserService>()
-                                             .VerifyUsernameAsync(context.GetRouteString("userName"),
-                                                                  context.RequestAborted),
-                                context.RequestAborted)),
+                endpoints.MapGet("account/verifyUsername/{userName}", VerifyUsernameAsync),
 
-                endpoints.MapPost($"{Path}/signup", async context
-                    => await context.TryValidateModelAsync<SignUpModel>(
-                                m => context.Service<IUserService>()
-                                            .SignUpAsync(m),
-                                context.RequestAborted)),
+                endpoints.MapPost($"account/signup", SignupAsync),
 
-                endpoints.MapPost($"{Path}/login", async context
-                    => await context.TryValidateModelAsync<LoginModel>(async m 
-                                => await LoginAsync(context, m), context.RequestAborted))
+                endpoints.MapPost($"account/login", LoginAsync)
 
             };
         }
-    
-        private static async Task LoginAsync(HttpContext context, LoginModel model)
+
+
+        static Task<bool> VerifyEmailAsync(string email,
+                                     IUserService service,
+                                     CancellationToken cancellationToken = default)
+            => service.VerifyEmailAsync(email, cancellationToken);
+
+        static Task<bool> VerifyUsernameAsync(string userName, 
+                                        IUserService service, 
+                                        CancellationToken cancellationToken = default)
+            => service.VerifyUsernameAsync(userName, cancellationToken);
+
+        static Task SignupAsync(SignUpModel model,
+                                 IUserService userService,
+                                 CancellationToken cancellationToken = default)
+            => userService.SignUpAsync(model, cancellationToken);
+
+        static async Task<string> LoginAsync(LoginModel model,
+                                             IUserService service)
         {
-            string token = await context.Service<IUserService>().LoginAsync(model);
-            await context.Response.WriteAsync(token);
+            var res = await service.LoginAsync(model);
+            if (res == null)
+                throw new BadRequestException(string.Empty);
+
+            return res;
         }
-    
+
     }
 }

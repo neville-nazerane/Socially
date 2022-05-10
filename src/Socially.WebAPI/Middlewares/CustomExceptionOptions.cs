@@ -32,10 +32,16 @@ namespace Socially.WebAPI.Middlewares
             {
                 case BadRequestException badReq:
                     return context.BadRequestAsync(badReq.Errors);
+                case ArgumentException argumentException when argumentException.Message == "Value cannot be null. (Parameter 'text')":
+                    // handle meaningless exception
+                    context.Response.StatusCode = StatusCodes.Status200OK;
+                    break;
                 default:
                     context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                    return Task.CompletedTask;
+                    break;
             }
+
+            return Task.CompletedTask;
         }
 
     }
