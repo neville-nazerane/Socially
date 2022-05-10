@@ -2,6 +2,7 @@
 using Socially.MobileApps.Contracts;
 using Socially.MobileApps.Models;
 using Socially.MobileApps.Services;
+using Socially.MobileApps.Services.HttpServices;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

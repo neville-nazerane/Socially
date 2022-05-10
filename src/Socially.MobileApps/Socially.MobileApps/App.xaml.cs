@@ -1,9 +1,11 @@
 ﻿using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using Microsoft.Extensions.DependencyInjection;
 using Socially.MobileApps.Config;
 using Socially.MobileApps.Contracts;
 using Socially.MobileApps.Pages;
 using Socially.MobileApps.Services;
+using Socially.MobileApps.Services.HttpServices;
 using Socially.MobileApps.ViewModels;
 using System;
 using Xamarin.Essentials;
@@ -28,18 +30,20 @@ namespace Socially.MobileApps
             //FontRegistry.RegisterFonts(FontAwesomeSolid.Font);
 
             this.StartInjecting()
+                .SetInitialPage<SignUpPage>()
 
 
                 .SetViewModelAssembly(typeof(ViewModelBase).Assembly)
 
                 .AddHttpClient<IApiConsumer, ApiConsumer>(c 
-                                    => c.BaseAddress = new Uri(Configs.Endpoint))
+                                    => c.BaseAddress = new Uri(Configs.Endpoint),
+                                    builder => builder.ConfigurePrimaryHttpMessageHandler<ApiHttpHandler>())
 
+                .AddTransient<ApiHttpHandler>()
                 .AddTransient<IThemeControl, ThemeControl>()
 
                 .Build();
 
-            //MainPage = new MainPage();
         }
 
 

@@ -1,5 +1,6 @@
 ﻿using Socially.Core.Models;
 using Socially.MobileApps.Models;
+using Socially.MobileApps.Services.Utils;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -33,7 +34,7 @@ namespace Socially.MobileApps.Services.HttpServices
             return bool.Parse(result);
         }
 
-        public async Task<ApiResponse<bool>> SignUpAsync(SignUpModel model)
+        public async Task<ApiResponse<bool>> SignUpAsync(Models.SignUpModel model)
         {
             var res = await _client.PostAsJsonAsync($"{accountPath}/signup", model);
             return await res.CreateResponseAsync<bool>();
@@ -41,8 +42,7 @@ namespace Socially.MobileApps.Services.HttpServices
 
         public async Task LoginAsync(LoginModel model)
         {
-
+            await _client.PostAsJsonAsync($"{accountPath}/login", model);
         }
-
     }
 }

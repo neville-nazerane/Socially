@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 
-[assembly: ExportFont("fa-solid-900.ttf", Alias = "solid")]
+[assembly:  ExportFont("fa-solid-900.ttf", Alias = "solid")]
 //[assembly: ExportFont("fa-regular-400.ttf", Alias = "regular")]
 //[assembly: ExportFont("fa-brands-400.ttf", Alias = "brands")]
 namespace Socially.MobileApps.Controls
