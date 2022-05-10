@@ -32,8 +32,8 @@ namespace Socially.WebAPI.IntegrationTests
             bool emailExists = bool.Parse(await client.GetStringAsync($"{path}/verifyEmail/{testEmail}"));
             bool userExists = bool.Parse(await client.GetStringAsync($"{path}/verifyUsername/{testUsername}"));
 
-            Assert.False(emailExists);
-            Assert.False(userExists);
+            Assert.False(emailExists, "Validating absence of email");
+            Assert.False(userExists, "Validating absence of user");
 
             // attempt signin
             var loginModel = new LoginModel { 

@@ -46,7 +46,7 @@ namespace Socially.WebAPI
             //services.AddControllers();
 
             //services.AddSwaggerDocument();
-
+            services.AddAuthorization();
             services.AddAuthentication(NetCoreJwtDefaults.SchemeName).AddNetCoreJwt();
 
             // managers
