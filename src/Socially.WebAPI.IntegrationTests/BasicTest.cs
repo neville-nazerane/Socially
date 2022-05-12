@@ -10,11 +10,11 @@ using Xunit;
 
 namespace Socially.WebAPI.IntegrationTests
 {
-    public class BasicTest : IClassFixture<WebApplicationFactory<Startup>>
+    public class BasicTest : IClassFixture<CustomWebApplicationFactory>
     {
-        private readonly WebApplicationFactory<Startup> _factory;
+        private readonly CustomWebApplicationFactory _factory;
 
-        public BasicTest(WebApplicationFactory<Startup> factory)
+        public BasicTest(CustomWebApplicationFactory factory)
         {
             _factory = factory;
         }

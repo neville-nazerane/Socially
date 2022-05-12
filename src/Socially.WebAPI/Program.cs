@@ -21,8 +21,9 @@ using Socially.WebAPI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+// SERVICES
 var services = builder.Services;
+
 var config = builder.Configuration;
 
 services.AddDbContext<ApplicationDbContext>(c => c.UseSqlServer(config.GetConnectionString("db")));
@@ -40,11 +41,25 @@ services.AddAuthentication(NetCoreJwtDefaults.SchemeName).AddNetCoreJwt();
 services.AddTransient<IUserVerificationManager, UserVerificationManager>();
 services.AddTransient<IUserService, UserService>();
 
-// SERVICES
-
+// swagger
+services.AddEndpointsApiExplorer();
+//services.AddOpenApiDocument();
 
 // MIDDLEWARES
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseOpenApi();
+    app.UseSwaggerUi3();
+    //app.UseSwaggerUi3(c =>
+    //{
+    //    c.ServerUrl = ""
+    //});
+
+    //c.SwaggerEndpoint("/swagger/v1/swagger.json",
+    //                               $"{builder.Environment.ApplicationName} v1")
+}
 
 app.UseExceptionHandler(new CustomExceptionHandler());
 
@@ -84,3 +99,6 @@ await app.RunAsync();
 //                });
 //    }
 //}
+
+
+public partial class Program { }

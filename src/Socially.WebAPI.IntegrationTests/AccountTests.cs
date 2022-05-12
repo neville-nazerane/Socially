@@ -8,14 +8,14 @@ using System.Net.Http.Json;
 
 namespace Socially.WebAPI.IntegrationTests
 {
-    public class AccountTests : IClassFixture<CustomWebApplicationFactory<Startup>>
+    public class AccountTests : IClassFixture<CustomWebApplicationFactory>
     {
 
         const string path = "account";
 
-        private readonly CustomWebApplicationFactory<Startup> _factory;
+        private readonly CustomWebApplicationFactory _factory;
 
-        public AccountTests(CustomWebApplicationFactory<Startup> factory)
+        public AccountTests(CustomWebApplicationFactory factory)
         {
             _factory = factory;
         }
