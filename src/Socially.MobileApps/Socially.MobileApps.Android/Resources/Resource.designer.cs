@@ -153,6 +153,7 @@ namespace Socially.MobileApps.Droid
 			global::Xamarin.Essentials.Resource.Id.text2 = global::Socially.MobileApps.Droid.Resource.Id.text2;
 			global::Xamarin.Essentials.Resource.Id.time = global::Socially.MobileApps.Droid.Resource.Id.time;
 			global::Xamarin.Essentials.Resource.Id.title = global::Socially.MobileApps.Droid.Resource.Id.title;
+			global::Xamarin.Essentials.Resource.Id.view_tree_lifecycle_owner = global::Socially.MobileApps.Droid.Resource.Id.view_tree_lifecycle_owner;
 			global::Xamarin.Essentials.Resource.Integer.status_bar_notification_info_maxnum = global::Socially.MobileApps.Droid.Resource.Integer.status_bar_notification_info_maxnum;
 			global::Xamarin.Essentials.Resource.Layout.browser_actions_context_menu_page = global::Socially.MobileApps.Droid.Resource.Layout.browser_actions_context_menu_page;
 			global::Xamarin.Essentials.Resource.Layout.browser_actions_context_menu_row = global::Socially.MobileApps.Droid.Resource.Layout.browser_actions_context_menu_row;
@@ -12305,19 +12306,22 @@ namespace Socially.MobileApps.Droid
 			public const int view_offset_helper = 2131230968;
 			
 			// aapt resource value: 0x7F0800F9
-			public const int view_tree_saved_state_registry_owner = 2131230969;
+			public const int view_tree_lifecycle_owner = 2131230969;
 			
 			// aapt resource value: 0x7F0800FA
-			public const int visible = 2131230970;
+			public const int view_tree_saved_state_registry_owner = 2131230970;
 			
 			// aapt resource value: 0x7F0800FB
-			public const int visible_removing_fragment_view_tag = 2131230971;
+			public const int visible = 2131230971;
 			
 			// aapt resource value: 0x7F0800FC
-			public const int withText = 2131230972;
+			public const int visible_removing_fragment_view_tag = 2131230972;
 			
 			// aapt resource value: 0x7F0800FD
-			public const int wrap_content = 2131230973;
+			public const int withText = 2131230973;
+			
+			// aapt resource value: 0x7F0800FE
+			public const int wrap_content = 2131230974;
 			
 			static Id()
 			{
