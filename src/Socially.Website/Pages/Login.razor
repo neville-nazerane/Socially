@@ -1,0 +1,88 @@
+﻿@layout EmptyLayout
+@page "/login"
+
+<h1>THIS IS LOGIN!!</h1>
+
+@foreach (var error in errors)
+{
+    <h3 class="text-danger">@error</h3>
+}
+
+@if (isSignup)
+{
+    <EditForm OnValidSubmit=SignupAsync OnInvalidSubmit=CleanUp Model=signUpModel>
+
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+
+
+        <div class="mb-3">
+            @*<label for="login_username" class="form-label">UserName</label>*@
+            <InputText @bind-Value="signUpModel.UserName" class="form-control" id="login_username" placeholder="UserName" />
+        </div>
+
+        <div class="mb-3">
+            @*<label for="login_email" class="form-label">Email Address</label>*@
+            <InputText @bind-Value="signUpModel.Email" type="email" class="form-control" id="login_email" placeholder="Email Address" />
+        </div>
+
+        <div class="mb-3">
+            @*<label for="login_password" class="form-label">Password</label>*@
+            <InputText type="password" @bind-Value="signUpModel.Password" class="form-control" id="login_password" placeholder="Password" />
+        </div>
+
+
+        <div class="mb-3">
+            @*<label for="login_confPassword" class="form-label">Confirm Password</label>*@
+            <InputText type="password" @bind-Value="signUpModel.ConfirmPassword" class="form-control" id="login_confPassword" placeholder="Confirm Password" />
+        </div>
+
+        @* <InputText @bind-Value="signUpModel.UserName" />
+    <InputText @bind-Value="signUpModel.Email" />
+    <InputText type="password" @bind-Value="signUpModel.Password" />
+    <InputText type="password" @bind-Value="signUpModel.ConfirmPassword" />*@
+        <input type="submit" value="signup" class="btn btn-success" />
+        <input type="button" value="login" class="btn btn-primary" @onclick=@(e => isSignup = false) />
+    </EditForm>
+}
+else
+{
+    <EditForm OnValidSubmit=LoginAsync OnInvalidSubmit=CleanUp Model=loginModel>
+
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <InputText @bind-Value="loginModel.UserName" />
+        <InputText type="password" @bind-Value="loginModel.Password" />
+        <input type="submit" value="login" />
+        <input type="button" value="Sign up" @onclick=@(e => isSignup = true) />
+    </EditForm>
+
+}
+
+
+
+
+
+@*<DialogControl Access=dialog>
+
+    <div class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</DialogControl>*@

@@ -30,7 +30,9 @@ namespace Socially.Server.Services
         {
             var user = await _userManager.FindByNameAsync(model.UserName);
             if (user is null) return null;
-            else return _bearerManager.Generate(model.UserName);
+            bool valid = await _userManager.CheckPasswordAsync(user, model.Password);
+            if (!valid) return null;
+            return _bearerManager.Generate(model.UserName);
         }
 
         public async Task SignUpAsync(SignUpModel model, CancellationToken cancellationToken = default)

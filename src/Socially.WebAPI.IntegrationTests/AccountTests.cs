@@ -11,7 +11,7 @@ namespace Socially.WebAPI.IntegrationTests
     public class AccountTests : IClassFixture<CustomWebApplicationFactory>
     {
 
-        const string path = "account";
+        const string path = "";
 
         private readonly CustomWebApplicationFactory _factory;
 
@@ -29,11 +29,11 @@ namespace Socially.WebAPI.IntegrationTests
             const string testUsername = "username";
             const string testPassword = "pasSword!2";
 
-            bool emailExists = bool.Parse(await client.GetStringAsync($"{path}/verifyEmail/{testEmail}"));
-            bool userExists = bool.Parse(await client.GetStringAsync($"{path}/verifyUsername/{testUsername}"));
+            //bool emailExists = bool.Parse(await client.GetStringAsync($"{path}/verifyEmail/{testEmail}"));
+            //bool userExists = bool.Parse(await client.GetStringAsync($"{path}/verifyUsername/{testUsername}"));
 
-            Assert.False(emailExists, "Validating absence of email");
-            Assert.False(userExists, "Validating absence of user");
+            //Assert.False(emailExists, "Validating absence of email");
+            //Assert.False(userExists, "Validating absence of user");
 
             // attempt signin
             var loginModel = new LoginModel { 
@@ -59,11 +59,11 @@ namespace Socially.WebAPI.IntegrationTests
                                 $"Sign up had error code {signinRes.StatusCode} saying '{await signinRes.Content.ReadAsStringAsync()}'");
 
 
-            emailExists = bool.Parse(await client.GetStringAsync($"{path}/verifyEmail/{testEmail}"));
-            userExists = bool.Parse(await client.GetStringAsync($"{path}/verifyUsername/{testUsername}"));
+            //emailExists = bool.Parse(await client.GetStringAsync($"{path}/verifyEmail/{testEmail}"));
+            //userExists = bool.Parse(await client.GetStringAsync($"{path}/verifyUsername/{testUsername}"));
 
-            Assert.True(emailExists);
-            Assert.True(userExists);
+            //Assert.True(emailExists);
+            //Assert.True(userExists);
 
             loginResult = await client.PostAsJsonAsync($"{path}/login", loginModel);
 
@@ -71,6 +71,14 @@ namespace Socially.WebAPI.IntegrationTests
                                $"Sign in had error code {loginResult.StatusCode} saying '{await loginResult.Content.ReadAsStringAsync()}'");
 
 
+            var failedLoginResult = await client.PostAsJsonAsync($"{path}/login", new LoginModel
+            {
+                UserName = loginModel.UserName,
+                Password = "INVALID"
+            });
+
+
+            Assert.Equal(System.Net.HttpStatusCode.BadRequest, failedLoginResult.StatusCode);
         }
 
     }
