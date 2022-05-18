@@ -1,8 +1,15 @@
 ﻿@using Socially.Website.Pages
+
+<HeadContent>
+    <link href="css/social-theme/style.css" rel="stylesheet" />
+</HeadContent>
+
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
+
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        @*<FocusOnNavigate RouteData="@routeData" Selector="h1" />*@
+
     </Found>
     <NotFound>
         <PageTitle>Not found</PageTitle>
