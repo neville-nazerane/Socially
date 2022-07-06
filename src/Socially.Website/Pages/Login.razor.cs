@@ -17,6 +17,7 @@ namespace Socially.Website.Pages
         [Inject]
         public IApiConsumer Consumer { get; set; }
 
+        [Inject]
         public AuthService AuthService { get; set; }
 
         bool isSignup = false;
