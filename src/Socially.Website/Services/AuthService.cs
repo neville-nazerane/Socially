@@ -6,6 +6,10 @@ namespace Socially.Website.Services
     {
         private readonly UserData _data;
 
+        public event EventHandler<LoginEvent> LoginChanged;
+
+        public bool IsAuthenticated => _data.Token is not null;
+
         public AuthService()
         {
             _data = new UserData();
@@ -16,9 +20,10 @@ namespace Socially.Website.Services
             return ValueTask.FromResult(_data.Token);
         }
 
-        public Task SetAsync(string token)
+        public Task SetAsync(string token, CancellationToken cancellationToken = default)
         {
             _data.Token = token;
+            LoginChanged?.Invoke(this, new LoginEvent(_data));
             return Task.CompletedTask;
         }
 
