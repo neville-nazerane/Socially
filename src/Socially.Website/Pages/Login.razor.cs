@@ -2,6 +2,7 @@
 using Socially.Apps.Consumer.Exceptions;
 using Socially.Apps.Consumer.Services;
 using Socially.Core.Models;
+using Socially.Website.Services;
 
 namespace Socially.Website.Pages
 {
@@ -15,6 +16,8 @@ namespace Socially.Website.Pages
 
         [Inject]
         public IApiConsumer Consumer { get; set; }
+
+        public AuthService AuthService { get; set; }
 
         bool isSignup = false;
 
@@ -46,7 +49,7 @@ namespace Socially.Website.Pages
             try
             {
                 var res = await Consumer.LoginAsync(loginModel);
-                Console.WriteLine(res);
+                await AuthService.SetAsync(res);
             }
             catch (ErrorForClientException ex)
             {
