@@ -28,7 +28,7 @@ extends:
     projectPath: src/Socially.Website
     projectName: Socially.Website
     destDirectory: /var/www/sociallySite
-    port: 5030
+    port: 5075
 
     service:
       description: Socially Website
