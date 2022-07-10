@@ -21,13 +21,13 @@ namespace Socially.WebAPI.Endpoints
 
             return new MultiEndpointConventionBuilder {
 
-                endpoints.MapGet("account/verifyEmail/{email}", VerifyEmailAsync),
+                //endpoints.MapGet("account/verifyEmail/{email}", VerifyEmailAsync),
 
-                endpoints.MapGet("account/verifyUsername/{userName}", VerifyUsernameAsync),
+                //endpoints.MapGet("account/verifyUsername/{userName}", VerifyUsernameAsync),
 
-                endpoints.MapPost($"account/signup", SignupAsync),
+                endpoints.MapPost("signup", SignupAsync),
 
-                endpoints.MapPost($"account/login", LoginAsync)
+                endpoints.MapPost("login", LoginAsync)
 
             };
         }

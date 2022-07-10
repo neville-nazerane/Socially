@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socially.WebAPI", "Socially
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socially.Server.Services", "Socially.Server.Services\Socially.Server.Services.csproj", "{54B61E08-5E93-4800-AE4D-34E0863794C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socially.Apps.Consumer", "Socially.Apps.Consumer\Socially.Apps.Consumer.csproj", "{AE44B0FE-E666-46B9-8F8C-63AA2BA0C0BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -128,5 +130,17 @@ Global
 		{54B61E08-5E93-4800-AE4D-34E0863794C0}.Release|x64.Build.0 = Release|Any CPU
 		{54B61E08-5E93-4800-AE4D-34E0863794C0}.Release|x86.ActiveCfg = Release|Any CPU
 		{54B61E08-5E93-4800-AE4D-34E0863794C0}.Release|x86.Build.0 = Release|Any CPU
+		{AE44B0FE-E666-46B9-8F8C-63AA2BA0C0BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE44B0FE-E666-46B9-8F8C-63AA2BA0C0BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE44B0FE-E666-46B9-8F8C-63AA2BA0C0BD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{AE44B0FE-E666-46B9-8F8C-63AA2BA0C0BD}.Debug|x64.Build.0 = Debug|Any CPU
+		{AE44B0FE-E666-46B9-8F8C-63AA2BA0C0BD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AE44B0FE-E666-46B9-8F8C-63AA2BA0C0BD}.Debug|x86.Build.0 = Debug|Any CPU
+		{AE44B0FE-E666-46B9-8F8C-63AA2BA0C0BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE44B0FE-E666-46B9-8F8C-63AA2BA0C0BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE44B0FE-E666-46B9-8F8C-63AA2BA0C0BD}.Release|x64.ActiveCfg = Release|Any CPU
+		{AE44B0FE-E666-46B9-8F8C-63AA2BA0C0BD}.Release|x64.Build.0 = Release|Any CPU
+		{AE44B0FE-E666-46B9-8F8C-63AA2BA0C0BD}.Release|x86.ActiveCfg = Release|Any CPU
+		{AE44B0FE-E666-46B9-8F8C-63AA2BA0C0BD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

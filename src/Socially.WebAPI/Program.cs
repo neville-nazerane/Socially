@@ -26,6 +26,8 @@ var services = builder.Services;
 
 var config = builder.Configuration;
 
+services.AddCors();
+
 services.AddDbContext<ApplicationDbContext>(c => c.UseSqlServer(config.GetConnectionString("db")));
 services.AddIdentity<User, UserRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -63,6 +65,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseExceptionHandler(new CustomExceptionHandler());
 
+app.UseCors(x => x
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+
 app.UseRouting();
 
 app.UseAuthorization();
@@ -76,6 +83,8 @@ app.UseEndpoints(endpoints =>
     endpoints.MapCustom<AccountEndpoints>("/account");
 
 });
+
+
 
 
 await app.RunAsync();
