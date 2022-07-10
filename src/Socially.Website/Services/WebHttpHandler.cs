@@ -1,14 +1,15 @@
-﻿using Socially.Apps.Consumer.Utils;
+﻿using Microsoft.AspNetCore.Components.Authorization;
+using Socially.Apps.Consumer.Utils;
 
 namespace Socially.Website.Services
 {
     public class WebHttpHandler : ApiHttpHandler
     {
-        private readonly AuthService authService;
+        private readonly AuthProvider authService;
 
-        public WebHttpHandler(AuthService authService)
+        public WebHttpHandler(AuthenticationStateProvider authService)
         {
-            this.authService = authService;
+            this.authService = (AuthProvider) authService;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

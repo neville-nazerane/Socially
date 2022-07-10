@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Socially.Apps.Consumer.Exceptions;
 using Socially.Apps.Consumer.Services;
 using Socially.Core.Models;
@@ -18,7 +20,7 @@ namespace Socially.Website.Pages
         public IApiConsumer Consumer { get; set; }
 
         [Inject]
-        public AuthService AuthService { get; set; }
+        public AuthenticationStateProvider AuthProvider { get; set; }
 
         bool isSignup = false;
 
@@ -50,11 +52,21 @@ namespace Socially.Website.Pages
             try
             {
                 var res = await Consumer.LoginAsync(loginModel);
-                await AuthService.SetAsync(res);
+                await ((AuthProvider) AuthProvider).SetAsync(res);
+                //await AuthService.SetAsync(res);
             }
             catch (ErrorForClientException ex)
             {
                 errors = ex.Errors.SelectMany(e => e.Errors).ToList();
+                bool hasErrors = errors.Any(e => !string.IsNullOrWhiteSpace(e));
+                if (!hasErrors)
+                {
+                    errors = new string[] { "Invalid Login!" };
+                }
+            }
+            catch
+            {
+                errors = new string[] { "failed to connect to server!" };
             }
         }
 

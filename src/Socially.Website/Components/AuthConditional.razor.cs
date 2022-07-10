@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Socially.Website.Services;
 
 namespace Socially.Website.Components
@@ -17,16 +18,16 @@ namespace Socially.Website.Components
 
         bool isAuthenticated = false;
 
-        protected override void OnInitialized()
-        {
-            AuthService.LoginChanged += LoginChanged;
-            isAuthenticated = AuthService.IsAuthenticated;
-            base.OnInitialized();
-        }
+        //protected override void OnInitialized()
+        //{
+        //    AuthService.LoginChanged += LoginChanged;
+        //    isAuthenticated = AuthService.IsAuthenticated;
+        //    base.OnInitialized();
+        //}
 
-        private void LoginChanged(object sender, Models.LoginEvent e)
-        {
-            isAuthenticated = AuthService.IsAuthenticated;
-        }
+        //private void LoginChanged(object sender, Models.LoginEvent e)
+        //{
+        //    isAuthenticated = AuthService.IsAuthenticated;
+        //}
     }
 }

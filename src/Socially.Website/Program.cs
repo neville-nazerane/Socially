@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,5 +18,8 @@ builder.Services.AddScoped<IApiConsumer>(p => new ApiConsumer(p.GetService<HttpC
 builder.Services
        .AddTransient<WebHttpHandler>()
        .AddSingleton<AuthService>();
+
+builder.Services.AddAuthorizationCore().AddOptions();
+builder.Services.AddSingleton<AuthenticationStateProvider, AuthProvider>();
 
 await builder.Build().RunAsync();
