@@ -1,25 +1,23 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socially.Core", "Socially.Core\Socially.Core.csproj", "{108BE09A-DAE6-4A3E-86C9-0849D2EC20F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Socially.Core", "Socially.Core\Socially.Core.csproj", "{108BE09A-DAE6-4A3E-86C9-0849D2EC20F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socially.Server.DataAccess", "Socially.Server.DataAccess\Socially.Server.DataAccess.csproj", "{C9084BA6-ABF5-488B-A455-9A7E0D14AFCE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Socially.Server.DataAccess", "Socially.Server.DataAccess\Socially.Server.DataAccess.csproj", "{C9084BA6-ABF5-488B-A455-9A7E0D14AFCE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socially.Server.Managers", "Socially.Server.Managers\Socially.Server.Managers.csproj", "{6DAD68C5-368C-4AA0-8C80-2867A1783162}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Socially.Server.Managers", "Socially.Server.Managers\Socially.Server.Managers.csproj", "{6DAD68C5-368C-4AA0-8C80-2867A1783162}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socially.Server.Managers.Tests", "Socially.Server.Managers.Tests\Socially.Server.Managers.Tests.csproj", "{33A7BC5C-BB38-4D77-ADB6-072FDAB527DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Socially.Server.Managers.Tests", "Socially.Server.Managers.Tests\Socially.Server.Managers.Tests.csproj", "{33A7BC5C-BB38-4D77-ADB6-072FDAB527DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socially.MobileApps.Services", "Socially.MobileApps.Services\Socially.MobileApps.Services.csproj", "{00E0B383-C8D2-4981-B388-B8726E7F22D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Socially.WebAPI.IntegrationTests", "Socially.WebAPI.IntegrationTests\Socially.WebAPI.IntegrationTests.csproj", "{E7280839-0F71-4C2D-AE72-11B68902ADC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socially.WebAPI.IntegrationTests", "Socially.WebAPI.IntegrationTests\Socially.WebAPI.IntegrationTests.csproj", "{E7280839-0F71-4C2D-AE72-11B68902ADC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Socially.WebAPI", "Socially.WebAPI\Socially.WebAPI.csproj", "{6EF22E4F-F645-4FAA-BED6-E044A9CB59B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socially.WebAPI", "Socially.WebAPI\Socially.WebAPI.csproj", "{6EF22E4F-F645-4FAA-BED6-E044A9CB59B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Socially.Server.Services", "Socially.Server.Services\Socially.Server.Services.csproj", "{54B61E08-5E93-4800-AE4D-34E0863794C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socially.Server.Services", "Socially.Server.Services\Socially.Server.Services.csproj", "{54B61E08-5E93-4800-AE4D-34E0863794C0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socially.Apps.Consumer", "Socially.Apps.Consumer\Socially.Apps.Consumer.csproj", "{AE44B0FE-E666-46B9-8F8C-63AA2BA0C0BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Socially.Apps.Consumer", "Socially.Apps.Consumer\Socially.Apps.Consumer.csproj", "{AE44B0FE-E666-46B9-8F8C-63AA2BA0C0BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,9 +27,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{108BE09A-DAE6-4A3E-86C9-0849D2EC20F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -82,18 +77,6 @@ Global
 		{33A7BC5C-BB38-4D77-ADB6-072FDAB527DE}.Release|x64.Build.0 = Release|Any CPU
 		{33A7BC5C-BB38-4D77-ADB6-072FDAB527DE}.Release|x86.ActiveCfg = Release|Any CPU
 		{33A7BC5C-BB38-4D77-ADB6-072FDAB527DE}.Release|x86.Build.0 = Release|Any CPU
-		{00E0B383-C8D2-4981-B388-B8726E7F22D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{00E0B383-C8D2-4981-B388-B8726E7F22D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{00E0B383-C8D2-4981-B388-B8726E7F22D9}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{00E0B383-C8D2-4981-B388-B8726E7F22D9}.Debug|x64.Build.0 = Debug|Any CPU
-		{00E0B383-C8D2-4981-B388-B8726E7F22D9}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{00E0B383-C8D2-4981-B388-B8726E7F22D9}.Debug|x86.Build.0 = Debug|Any CPU
-		{00E0B383-C8D2-4981-B388-B8726E7F22D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{00E0B383-C8D2-4981-B388-B8726E7F22D9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{00E0B383-C8D2-4981-B388-B8726E7F22D9}.Release|x64.ActiveCfg = Release|Any CPU
-		{00E0B383-C8D2-4981-B388-B8726E7F22D9}.Release|x64.Build.0 = Release|Any CPU
-		{00E0B383-C8D2-4981-B388-B8726E7F22D9}.Release|x86.ActiveCfg = Release|Any CPU
-		{00E0B383-C8D2-4981-B388-B8726E7F22D9}.Release|x86.Build.0 = Release|Any CPU
 		{E7280839-0F71-4C2D-AE72-11B68902ADC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E7280839-0F71-4C2D-AE72-11B68902ADC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7280839-0F71-4C2D-AE72-11B68902ADC1}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -142,5 +125,11 @@ Global
 		{AE44B0FE-E666-46B9-8F8C-63AA2BA0C0BD}.Release|x64.Build.0 = Release|Any CPU
 		{AE44B0FE-E666-46B9-8F8C-63AA2BA0C0BD}.Release|x86.ActiveCfg = Release|Any CPU
 		{AE44B0FE-E666-46B9-8F8C-63AA2BA0C0BD}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {46991104-1916-42B5-A228-612D783A38F7}
 	EndGlobalSection
 EndGlobal
