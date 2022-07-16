@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.JSInterop;
 using Socially.Website.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -7,42 +8,45 @@ namespace Socially.Website.Services
 {
     public class AuthProvider : AuthenticationStateProvider
     {
-
-        private readonly UserData _data;
-        private ClaimsPrincipal _principle = null;
+        private string token;
+        private readonly IJSRuntime _jSRuntime;
 
         private static ClaimsPrincipal FailedLogin
             => new (new ClaimsIdentity(Array.Empty<Claim>(), string.Empty));
 
 
-        public AuthProvider()
+        public AuthProvider(IJSRuntime jSRuntime)
         {
-            _data = new();
+            _jSRuntime = jSRuntime;
         }
 
-
-        public override Task<AuthenticationState> GetAuthenticationStateAsync()
+        private async Task<ClaimsPrincipal> GetPrincipalAsync()
         {
-            var login = _principle ?? FailedLogin;
-            // verify if the user is logged in.
-            // if not:
-            return Task.FromResult(new AuthenticationState(login));
-        }
-
-        public ValueTask<string> GetTokenAsync(CancellationToken cancellationToken = default)
-        {
-            return ValueTask.FromResult(_data.Token);
-        }
-
-        public Task SetAsync(string jwt, CancellationToken cancellationToken = default)
-        {
-            _data.Token = jwt;
+            var tokenStr = await GetTokenAsync();
+            if (tokenStr is null) return null;
             var handler = new JwtSecurityTokenHandler();
-            var token = handler.ReadJwtToken(jwt);
-            _principle = new ClaimsPrincipal(new ClaimsIdentity(token.Claims, "local"));
-            var princi = Task.FromResult(new AuthenticationState(_principle));
-            NotifyAuthenticationStateChanged(princi);
-            return Task.CompletedTask;
+            var token = handler.ReadJwtToken(tokenStr);
+            var principle = new ClaimsPrincipal(new ClaimsIdentity(token.Claims, "local"));
+            return principle;
+        }
+
+        public override async Task<AuthenticationState> GetAuthenticationStateAsync()
+        {
+            var login = (await GetPrincipalAsync()) ?? FailedLogin;
+            return new AuthenticationState(login);
+        }
+
+        public async ValueTask<string> GetTokenAsync(CancellationToken cancellationToken = default)
+        {
+            if (token is null)
+                token = await _jSRuntime.InvokeAsync<string>("getData", "token");
+            return token;
+        }
+
+        public async Task SetAsync(string jwt, CancellationToken cancellationToken = default)
+        {
+            token = jwt;
+            await _jSRuntime.InvokeVoidAsync("setData", jwt);
         }
 
     }
