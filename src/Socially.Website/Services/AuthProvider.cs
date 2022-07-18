@@ -12,7 +12,7 @@ namespace Socially.Website.Services
         private readonly IJSRuntime _jSRuntime;
 
         private static ClaimsPrincipal FailedLogin
-            => new (new ClaimsIdentity(Array.Empty<Claim>(), "boo"));
+            => new (new ClaimsIdentity(Array.Empty<Claim>(), ""));
 
 
         public AuthProvider(IJSRuntime jSRuntime)
