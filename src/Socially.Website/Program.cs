@@ -21,6 +21,7 @@ builder.Services
        .AddSingleton<AuthService>();
 
 builder.Services.AddAuthorizationCore().AddOptions();
-builder.Services.AddSingleton<AuthenticationStateProvider, AuthProvider>();
+builder.Services.AddSingleton<AuthenticationStateProvider, AuthProvider>()
+                .AddSingleton(p => (AuthProvider) p.GetService<AuthenticationStateProvider>());
 
 await builder.Build().RunAsync();

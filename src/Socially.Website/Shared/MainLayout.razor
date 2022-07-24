@@ -1,18 +1,17 @@
 ﻿@inherits LayoutComponentBase
-
+@*
 <div class="container">
     @Body
-</div>
+</div>*@
 
 
-@*<div class="page">
+<div class="page">
     <div class="sidebar">
-        <NavMenu />
     </div>
 
     <main>
         <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            <a href="#" @onclick:preventDefault @onclick=LogoutAsync target="_blank">Logout</a>
         </div>
 
         <article class="content px-4">
@@ -20,4 +19,3 @@
         </article>
     </main>
 </div>
-*@
