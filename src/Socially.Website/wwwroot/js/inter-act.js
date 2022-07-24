@@ -1,5 +1,5 @@
 ﻿
-window.storeData = (key, value) => {
+window.setData = (key, value) => {
     localStorage.setItem(key, value);
 };
 

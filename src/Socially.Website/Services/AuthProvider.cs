@@ -23,7 +23,7 @@ namespace Socially.Website.Services
         private async Task<ClaimsPrincipal> GetPrincipalAsync()
         {
             var tokenStr = await GetTokenAsync();
-            if (tokenStr is null) return null;
+            if (string.IsNullOrEmpty(tokenStr)) return null;
             var handler = new JwtSecurityTokenHandler();
             var token = handler.ReadJwtToken(tokenStr);
             var principle = new ClaimsPrincipal(new ClaimsIdentity(token.Claims, "local"));
@@ -46,7 +46,8 @@ namespace Socially.Website.Services
         public async Task SetAsync(string jwt, CancellationToken cancellationToken = default)
         {
             token = jwt;
-            await _jSRuntime.InvokeVoidAsync("setData", jwt);
+            await _jSRuntime.InvokeVoidAsync("setData", "token", jwt);
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }
 
     }
