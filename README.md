@@ -5,8 +5,7 @@ A social media application
 [![Build Status](https://dev.azure.com/nevillenazerane/publishes/_apis/build/status/socially/Socially%20Website?repoName=neville-nazerane%2FSocially&branchName=master)](https://dev.azure.com/nevillenazerane/publishes/_build/latest?definitionId=62&repoName=neville-nazerane%2FSocially&branchName=master)
 
 ### Web API
-[![Build Status](https://dev.azure.com/nevillenazerane/publishes/_apis/build/status/Socially%20Web%20API?branchName=master)](https://dev.azure.com/nevillenazerane/publishes/_build/latest?definitionId=35&branchName=master)
-
+[![Build Status](https://dev.azure.com/nevillenazerane/publishes/_apis/build/status/socially/Socially%20Web%20API?repoName=neville-nazerane%2FSocially&branchName=refs%2Fpull%2F2%2Fmerge)](https://dev.azure.com/nevillenazerane/publishes/_build/latest?definitionId=35&repoName=neville-nazerane%2FSocially&branchName=refs%2Fpull%2F2%2Fmerge)
 
 ### Android
 
