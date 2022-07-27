@@ -37,6 +37,7 @@ namespace Socially.Website.Pages
 
         async Task SignupAsync()
         {
+            errors = Array.Empty<string>();
             try
             {
                 await Consumer.SignupAsync(signUpModel);
@@ -49,6 +50,7 @@ namespace Socially.Website.Pages
 
         async Task LoginAsync()
         {
+            errors = Array.Empty<string>();
             try
             {
                 var res = await Consumer.LoginAsync(loginModel);

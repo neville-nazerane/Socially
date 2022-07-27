@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Socially.Website.Services;
 
 namespace Socially.Website.Shared
@@ -13,6 +14,7 @@ namespace Socially.Website.Shared
         {
             return AuthProvider.SetAsync(string.Empty);
         }
+
 
     }
 }
