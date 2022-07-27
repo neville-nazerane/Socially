@@ -52,7 +52,6 @@
         <a class="dismiss">🗙</a>
     </div>
     <script src="js/inter-act.js"></script>
-    <script src="_framework/blazor.webassembly.js"></script>
 
     <!-- =======================
     JS libraries, plugins and custom scripts -->
@@ -69,8 +68,18 @@
     <script src="theme-vendor/dropzone/dist/min/dropzone.min.js"></script>
 
     <!-- Template Functions -->
-    <!--<script src="assets/js/functions.js"></script>-->
+    <script src="js/theme.js"></script>
 
+    <script src="_framework/blazor.webassembly.js"></script>
+
+    <script>
+
+
+        window.onBlazorLoaded = function () {
+            e.darkMode();
+
+        };
+    </script>
 </body>
 
 </html>
