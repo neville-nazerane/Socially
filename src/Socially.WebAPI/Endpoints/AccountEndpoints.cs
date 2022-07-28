@@ -18,6 +18,11 @@ namespace Socially.WebAPI.Endpoints
     public class AccountEndpoints : EndpointsBase
     {
 
+        public override IEndpointConventionBuilder Aggregate(RouteHandlerBuilder builder)
+        {
+            return builder.WithTags("Account stuff");
+        }
+
         public override IEnumerable<RouteHandlerBuilder> Setup(IEndpointRouteBuilder endpoints)
         {
             return new RouteHandlerBuilder[]
