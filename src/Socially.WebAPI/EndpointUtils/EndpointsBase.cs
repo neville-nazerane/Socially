@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Routing;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +10,9 @@ namespace Socially.WebAPI.EndpointUtils
     public abstract class EndpointsBase
     {
 
-        protected string Path { get; private set; }
+        public virtual IEndpointConventionBuilder Aggregate(RouteHandlerBuilder builder) => builder;
 
-        public abstract MultiEndpointConventionBuilder Setup(IEndpointRouteBuilder endpoints);
-
-        public MultiEndpointConventionBuilder Setup(IEndpointRouteBuilder endpoints, string path)
-        {
-            Path = path;
-            return Setup(endpoints);
-        }
+        public abstract IEnumerable<RouteHandlerBuilder> Setup(IEndpointRouteBuilder endpoints);
 
     }
 }

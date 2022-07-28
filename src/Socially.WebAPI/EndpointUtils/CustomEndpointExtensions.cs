@@ -13,12 +13,22 @@ namespace Socially.WebAPI.EndpointUtils
         public static IEndpointConventionBuilder MapCustom<TEndpoint>(
                                                 this IEndpointRouteBuilder endpoints)
             where TEndpoint : EndpointsBase, new()
-            => new TEndpoint().Setup(endpoints);
+        {
+            var ends = new TEndpoint();
+            var result = new MultiEndpointConventionBuilder();
+            foreach (var res in ends.Setup(endpoints))
+                result.Add(ends.Aggregate(res));
+            return result;
+        }
 
-        public static IEndpointConventionBuilder MapCustom<TEndpoint>(
-                                        this IEndpointRouteBuilder endpoints, string path)
-            where TEndpoint : EndpointsBase, new()
-            => new TEndpoint().Setup(endpoints, path);
+        class MultiEndpointConventionBuilder : List<IEndpointConventionBuilder>, IEndpointConventionBuilder
+        {
+
+            public void Add(Action<EndpointBuilder> convention)
+            {
+                foreach (var conv in this) conv.Add(convention);
+            }
+        }
 
     }
 }

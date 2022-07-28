@@ -45,22 +45,15 @@ services.AddTransient<IUserService, UserService>();
 
 // swagger
 services.AddEndpointsApiExplorer();
-//services.AddOpenApiDocument();
+services.AddSwaggerGen();
 
 // MIDDLEWARES
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseOpenApi();
-    app.UseSwaggerUi3();
-    //app.UseSwaggerUi3(c =>
-    //{
-    //    c.ServerUrl = ""
-    //});
-
-    //c.SwaggerEndpoint("/swagger/v1/swagger.json",
-    //                               $"{builder.Environment.ApplicationName} v1")
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseExceptionHandler(new CustomExceptionHandler());
@@ -80,7 +73,7 @@ app.UseEndpoints(endpoints =>
     endpoints.MapGet("/", c => c.Response.WriteAsync("Hello to the social world"));
     endpoints.MapHealthChecks("/health");
 
-    endpoints.MapCustom<AccountEndpoints>("/account");
+    endpoints.MapCustom<AccountEndpoints>();
 
 });
 

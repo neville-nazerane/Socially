@@ -14,16 +14,14 @@ using System.Threading.Tasks;
 
 namespace Socially.WebAPI.Endpoints
 {
+
     public class AccountEndpoints : EndpointsBase
     {
-        public override MultiEndpointConventionBuilder Setup(IEndpointRouteBuilder endpoints)
+
+        public override IEnumerable<RouteHandlerBuilder> Setup(IEndpointRouteBuilder endpoints)
         {
-
-            return new MultiEndpointConventionBuilder {
-
-                //endpoints.MapGet("account/verifyEmail/{email}", VerifyEmailAsync),
-
-                //endpoints.MapGet("account/verifyUsername/{userName}", VerifyUsernameAsync),
+            return new RouteHandlerBuilder[]
+            {
 
                 endpoints.MapPost("signup", SignupAsync),
 
@@ -31,17 +29,6 @@ namespace Socially.WebAPI.Endpoints
 
             };
         }
-
-
-        static Task<bool> VerifyEmailAsync(string email,
-                                     IUserService service,
-                                     CancellationToken cancellationToken = default)
-            => service.VerifyEmailAsync(email, cancellationToken);
-
-        static Task<bool> VerifyUsernameAsync(string userName, 
-                                        IUserService service, 
-                                        CancellationToken cancellationToken = default)
-            => service.VerifyUsernameAsync(userName, cancellationToken);
 
         static Task SignupAsync(SignUpModel model,
                                  IUserService userService,
