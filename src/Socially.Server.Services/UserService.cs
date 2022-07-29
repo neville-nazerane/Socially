@@ -60,7 +60,8 @@ namespace Socially.Server.Services
             var result = await _userManager.CreateAsync(new User
             {
                 Email = model.Email,
-                UserName = model.UserName
+                UserName = model.UserName,
+                CreatedOn = DateTime.UtcNow
             }, model.Password);
 
             if (!result.Succeeded)
