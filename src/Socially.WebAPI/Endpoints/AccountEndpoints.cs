@@ -29,11 +29,24 @@ namespace Socially.WebAPI.Endpoints
             {
 
                 endpoints.MapPost("signup", SignupAsync),
+                endpoints.MapPost("login", LoginAsync),
 
-                endpoints.MapPost("login", LoginAsync)
+                endpoints.MapPut("profile", UpdateProfileAsync),
+                endpoints.MapGet("profile", GetUpdatableProfileAsync)
 
             };
         }
+
+
+
+        static Task<ProfileUpdateModel> GetUpdatableProfileAsync(IUserService service,
+                                                                 CancellationToken cancellationToken = default)
+            => service.GetUpdatableProfileAsync(cancellationToken);
+
+        static Task UpdateProfileAsync(IUserService service,
+                                       ProfileUpdateModel model,
+                                       CancellationToken cancellation = default)
+            => service.UpdateProfileAsync(model, cancellation);
 
         static Task SignupAsync(SignUpModel model,
                                  IUserService userService,

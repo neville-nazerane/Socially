@@ -83,6 +83,9 @@ namespace Socially.WebAPI.Services
         public Task UpdateProfileAsync(ProfileUpdateModel model, CancellationToken cancellation = default)
             => _userProfileManager.UpdateAsync(_currentContext.UserId, model, cancellation);
 
+        public Task<ProfileUpdateModel> GetUpdatableProfileAsync(CancellationToken cancellationToken = default)
+            => _userProfileManager.GetUpdatableProfileAsync(_currentContext.UserId, cancellationToken);
+
         private static IEnumerable<ErrorModel> GetErrorModel(IEnumerable<IdentityError> errors)
         {
             var result = new List<ErrorModel>();
