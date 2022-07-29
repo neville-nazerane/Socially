@@ -8,14 +8,14 @@ using Xunit;
 
 namespace Socially.Server.Managers.Tests
 {
-    public class UserVerificationManagerTests : TestBase
+    public class UserProfileManagerTests : TestBase
     {
 
-        private UserVerificationManager manager;
+        private UserProfileManager manager;
 
         private void SetupManager()
         {
-            manager = new UserVerificationManager(DbContext);
+            manager = new UserProfileManager(DbContext);
         }
 
         [Fact]
@@ -37,7 +37,8 @@ namespace Socially.Server.Managers.Tests
             // ARRANGE
             SetupManager();
             await DbContext.Users.AddAsync(new User
-            { 
+            {
+                CreatedOn = DateTime.UtcNow,
                 Email = "something@valid.com"
             });
             await DbContext.SaveChangesAsync();
@@ -56,6 +57,7 @@ namespace Socially.Server.Managers.Tests
             SetupManager();
             await DbContext.Users.AddAsync(new User
             {
+                CreatedOn = DateTime.UtcNow,
                 Email = "something@valid.com"
             });
             await DbContext.SaveChangesAsync();
@@ -88,6 +90,7 @@ namespace Socially.Server.Managers.Tests
             SetupManager();
             await DbContext.Users.AddAsync(new User
             { 
+                CreatedOn = DateTime.UtcNow,
                 UserName = "myUser"
             });
             await DbContext.SaveChangesAsync();
@@ -106,6 +109,7 @@ namespace Socially.Server.Managers.Tests
             SetupManager();
             await DbContext.Users.AddAsync(new User
             {
+                CreatedOn = DateTime.UtcNow,
                 UserName = "myUser"
             });
             await DbContext.SaveChangesAsync();
@@ -117,6 +121,58 @@ namespace Socially.Server.Managers.Tests
             Assert.True(result);
         }
 
+        [Fact]
+        public async Task GetUpdatableProfile_EmptyRecords_ReturnsNull()
+        {
+            // ARRANGE
+            SetupManager();
+
+            // ACT
+            var profile = await manager.GetUpdatableProfileAsync(100);
+
+            // ASSERT
+            Assert.Null(profile);
+        }
+
+        [Fact]
+        public async Task GetUpdatableProfile_NonExistantId_ReturnsNull()
+        {
+
+            // ARRANGE
+            SetupManager();
+            DbContext.Users.Add(new User
+            {
+                UserName = "sampleUser",
+                Id = 40
+            });
+
+            // ACT
+            var profile = await manager.GetUpdatableProfileAsync(100);
+
+            // ASSERT
+            Assert.Null(profile);
+        }
+
+        [Fact]
+        public async Task GetUpdatableProfile_ValidId_ReturnsProfile()
+        {
+            // ARRANGE
+            SetupManager();
+            await DbContext.Users.AddAsync(new User
+            {
+                CreatedOn = DateTime.UtcNow,
+                FirstName = "sampleUser",
+                Id = 40
+            });
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            var profile = await manager.GetUpdatableProfileAsync(40);
+
+            // ASSERT
+            Assert.NotNull(profile);
+            Assert.Equal("sampleUser", profile.FirstName);
+        }
 
     }
 }

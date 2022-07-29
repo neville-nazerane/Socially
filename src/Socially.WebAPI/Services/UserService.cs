@@ -4,25 +4,32 @@ using Socially.Core.Entities;
 using Socially.Core.Exceptions;
 using Socially.Core.Models;
 using Socially.Server.Managers;
+using Socially.Server.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Socially.Server.Services
+namespace Socially.WebAPI.Services
 {
     public class UserService : IUserService
     {
-        private readonly IUserVerificationManager _userVerificationManager;
+        private readonly IUserProfileManager _userProfileManager;
+        private readonly CurrentContext _currentContext;
         private readonly IBearerManager _bearerManager;
         private readonly UserManager<User> _userManager;
 
-        public UserService(UserManager<User> userManager, IUserVerificationManager userVerificationManager, IBearerManager bearerManager)
+        public UserService(UserManager<User> userManager,
+                           IUserProfileManager userProfileManager,
+                           CurrentContext currentContext,
+                           IBearerManager bearerManager)
         {
             _userManager = userManager;
-            _userVerificationManager = userVerificationManager;
+            _userProfileManager = userProfileManager;
+            _currentContext = currentContext;
             _bearerManager = bearerManager;
         }
 
@@ -32,22 +39,26 @@ namespace Socially.Server.Services
             if (user is null) return null;
             bool valid = await _userManager.CheckPasswordAsync(user, model.Password);
             if (!valid) return null;
-            return _bearerManager.Generate(model.UserName);
+            return _bearerManager.Generate(new Claim[] {
+                new Claim(ClaimTypes.Name, model.UserName),
+                new Claim(ClaimTypes.GivenName, $"{user.FirstName} {user.LastName}"),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            });
         }
 
         public async Task SignUpAsync(SignUpModel model, CancellationToken cancellationToken = default)
         {
 
-            var emailExists = await _userVerificationManager.EmailExistsAsync(model.Email, cancellationToken);
+            var emailExists = await _userProfileManager.EmailExistsAsync(model.Email, cancellationToken);
 
             if (emailExists)
             {
                 throw new BadRequestException(
-                                new ErrorModel(nameof(model.Email), 
+                                new ErrorModel(nameof(model.Email),
                                                "Email already exists"));
             }
 
-            var usernameExists = await _userVerificationManager.UserNameExistsAsync(model.UserName, cancellationToken);
+            var usernameExists = await _userProfileManager.UserNameExistsAsync(model.UserName, cancellationToken);
 
             if (usernameExists)
             {
@@ -69,14 +80,17 @@ namespace Socially.Server.Services
 
         }
 
+        public Task UpdateProfileAsync(ProfileUpdateModel model, CancellationToken cancellation = default)
+            => _userProfileManager.UpdateAsync(_currentContext.UserId, model, cancellation);
+
         private static IEnumerable<ErrorModel> GetErrorModel(IEnumerable<IdentityError> errors)
         {
             var result = new List<ErrorModel>();
             string[] names = new string[]
-            { 
-                nameof(SignUpModel.UserName),  
-                nameof(SignUpModel.Password),  
-                nameof(SignUpModel.Email) 
+            {
+                nameof(SignUpModel.UserName),
+                nameof(SignUpModel.Password),
+                nameof(SignUpModel.Email)
             };
 
             foreach (var errorModel in errors)
@@ -85,13 +99,13 @@ namespace Socially.Server.Services
                 foreach (var name in names)
                     if (errorModel.Description.Contains(name))
                         fieldName = name;
-                
+
                 var err = result.SingleOrDefault(e => e.Field == fieldName);
                 if (err is null)
                 {
                     err = new ErrorModel
                     {
-                        Field= fieldName,
+                        Field = fieldName,
                         Errors = new List<string>()
                     };
                     result.Add(err);
@@ -103,10 +117,10 @@ namespace Socially.Server.Services
         }
 
         public Task<bool> VerifyEmailAsync(string email, CancellationToken cancellationToken = default)
-            => _userVerificationManager.EmailExistsAsync(email, cancellationToken);
+            => _userProfileManager.EmailExistsAsync(email, cancellationToken);
 
         public Task<bool> VerifyUsernameAsync(string userName, CancellationToken cancellationToken = default)
-            => _userVerificationManager.UserNameExistsAsync(userName, cancellationToken);
+            => _userProfileManager.UserNameExistsAsync(userName, cancellationToken);
 
     }
 }

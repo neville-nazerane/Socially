@@ -14,10 +14,12 @@ using NetCore.Jwt;
 using Socially.Core.Entities;
 using Socially.Server.DataAccess;
 using Socially.Server.Managers;
-using Socially.Server.Services;
+using Socially.Server.Services.Models;
 using Socially.WebAPI.Endpoints;
 using Socially.WebAPI.EndpointUtils;
 using Socially.WebAPI.Middlewares;
+using Socially.WebAPI.Services;
+using Socially.WebAPI.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,8 +42,11 @@ services.AddAuthorization();
 services.AddAuthentication(NetCoreJwtDefaults.SchemeName).AddNetCoreJwt();
 
 // managers
-services.AddTransient<IUserVerificationManager, UserVerificationManager>();
-services.AddTransient<IUserService, UserService>();
+services.AddTransient<IUserProfileManager, UserProfileManager>();
+
+// services
+services.AddTransient<IUserService, UserService>()
+        .AddScoped<CurrentContext>();
 
 // swagger
 services.AddEndpointsApiExplorer();
@@ -68,6 +73,8 @@ app.UseRouting();
 app.UseAuthorization();
 app.UseAuthentication();
 
+app.UseCurrentSetup();
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapGet("/", c => c.Response.WriteAsync("Hello to the social world"));
@@ -78,29 +85,6 @@ app.UseEndpoints(endpoints =>
 });
 
 
-
-
 await app.RunAsync();
-
-
-
-//namespace Socially.WebAPI
-//{
-//    public class Program
-//    {
-//        public static void Main(string[] args)
-//        {
-//            CreateHostBuilder(args).Build().Run();
-//        }
-
-//        public static IHostBuilder CreateHostBuilder(string[] args) =>
-//            Host.CreateDefaultBuilder(args)
-//                .ConfigureWebHostDefaults(webBuilder =>
-//                {
-//                    webBuilder.UseStartup<Startup>();
-//                });
-//    }
-//}
-
 
 public partial class Program { }

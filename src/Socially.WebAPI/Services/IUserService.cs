@@ -3,7 +3,7 @@ using Socially.Core.Models;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Socially.Server.Services
+namespace Socially.WebAPI.Services
 {
     public interface IUserService
     {
