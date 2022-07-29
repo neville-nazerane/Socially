@@ -23,7 +23,7 @@ namespace Socially.Server.Managers
         {
             if (model is null) throw new ArgumentNullException(nameof(model));
             var profile = await _dbContext.Users.FindAsync(new object[]{ userId }, cancellationToken: cancellationToken);
-            
+            if (profile is null) throw new NullReferenceException(nameof(profile));
             profile.FirstName = model.FirstName;
             profile.LastName = model.LastName;
             profile.DateOfBirth = model.DateOfBirth;
