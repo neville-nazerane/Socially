@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Socially.Core.Exceptions;
 using Socially.Core.Models;
-using Socially.WebAPI.EndpointUtils;
 using Socially.WebAPI.Services;
+using Socially.WebAPI.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,8 +32,8 @@ namespace Socially.WebAPI.Endpoints
                 endpoints.MapPost("signup", SignupAsync),
                 endpoints.MapPost("login", LoginAsync),
 
-                endpoints.MapPut("profile", UpdateProfileAsync),
-                endpoints.MapGet("profile", GetUpdatableProfileAsync)
+                endpoints.MapPut("profile", UpdateProfileAsync).RequireAuthorization(),
+                endpoints.MapGet("profile", GetUpdatableProfileAsync).RequireAuthorization()
 
             };
         }

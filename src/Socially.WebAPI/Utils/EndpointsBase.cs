@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Socially.WebAPI.EndpointUtils
+namespace Socially.WebAPI.Utils
 {
     public abstract class EndpointsBase
     {

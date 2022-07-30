@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,13 +13,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using NetCore.Jwt;
 using Socially.Core.Entities;
 using Socially.Server.DataAccess;
 using Socially.Server.Managers;
 using Socially.Server.Services.Models;
 using Socially.WebAPI.Endpoints;
-using Socially.WebAPI.EndpointUtils;
 using Socially.WebAPI.Middlewares;
 using Socially.WebAPI.Services;
 using Socially.WebAPI.Utils;
@@ -38,8 +41,16 @@ services.AddHealthChecks()
 //services.AddControllers();
 
 //services.AddSwaggerDocument();
+services.AddAuthentication(NetCoreJwtDefaults.SchemeName)
+        .AddJwtBearer(o =>
+        {
+            o.TokenValidationParameters = new TokenValidationParameters
+            { 
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("woskdjfalskdgh4yrwejoisdfugierjf"))
+            };
+        })
+        .AddNetCoreJwt();
 services.AddAuthorization();
-services.AddAuthentication(NetCoreJwtDefaults.SchemeName).AddNetCoreJwt();
 
 // managers
 services.AddTransient<IUserProfileManager, UserProfileManager>();
@@ -70,14 +81,17 @@ app.UseCors(x => x
 
 app.UseRouting();
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseCurrentSetup();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapGet("/", c => c.Response.WriteAsync("Hello to the social world"));
+    endpoints.MapGet("/", async c =>
+    {
+        var res = await c.GetTokenAsync("hello");
+    });
     endpoints.MapHealthChecks("/health");
 
     endpoints.MapCustom<AccountEndpoints>();
