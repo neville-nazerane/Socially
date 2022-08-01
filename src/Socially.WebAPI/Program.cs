@@ -42,7 +42,7 @@ services.AddHealthChecks()
 
 //services.AddSwaggerDocument();
 services.AddAuthentication(NetCoreJwtDefaults.SchemeName)
-        .AddJwtBearer(o =>
+        .AddJwtBearerCompletely(o =>
         {
             o.TokenValidationParameters = new TokenValidationParameters
             { 

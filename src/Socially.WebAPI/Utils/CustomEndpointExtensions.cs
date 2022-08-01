@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
+using Socially.WebAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

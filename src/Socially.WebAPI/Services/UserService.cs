@@ -5,6 +5,8 @@ using Socially.Core.Exceptions;
 using Socially.Core.Models;
 using Socially.Server.Managers;
 using Socially.Server.Services.Models;
+using Socially.WebAPI.Models;
+using Socially.WebAPI.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,17 +22,20 @@ namespace Socially.WebAPI.Services
         private readonly IUserProfileManager _userProfileManager;
         private readonly CurrentContext _currentContext;
         private readonly IBearerManager _bearerManager;
+        private readonly TokenInfo _tokenInfo;
         private readonly UserManager<User> _userManager;
 
         public UserService(UserManager<User> userManager,
                            IUserProfileManager userProfileManager,
                            CurrentContext currentContext,
-                           IBearerManager bearerManager)
+                           IBearerManager bearerManager,
+                           TokenInfo tokenInfo)
         {
             _userManager = userManager;
             _userProfileManager = userProfileManager;
             _currentContext = currentContext;
             _bearerManager = bearerManager;
+            _tokenInfo = tokenInfo;
         }
 
         public async Task<string> LoginAsync(LoginModel model)
@@ -39,11 +44,13 @@ namespace Socially.WebAPI.Services
             if (user is null) return null;
             bool valid = await _userManager.CheckPasswordAsync(user, model.Password);
             if (!valid) return null;
-            return _bearerManager.Generate(new Claim[] {
+            Claim[] claims = new Claim[] {
                 new Claim(ClaimTypes.Name, model.UserName),
                 new Claim(ClaimTypes.GivenName, $"{user.FirstName} {user.LastName}"),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            });
+            };
+            return _tokenInfo.GenerateToken(claims, TimeSpan.FromDays(2));
+            //return _bearerManager.Generate(claims);
         }
 
         public async Task SignUpAsync(SignUpModel model, CancellationToken cancellationToken = default)
