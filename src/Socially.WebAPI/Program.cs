@@ -100,7 +100,7 @@ app.UseEndpoints(endpoints =>
     endpoints.MapGet("/", async c =>
     {
         var res = await c.GetTokenAsync("hello");
-    }).RequireAuthorization();
+    });
     endpoints.MapHealthChecks("/health");
 
     endpoints.MapCustom<AccountEndpoints>();
