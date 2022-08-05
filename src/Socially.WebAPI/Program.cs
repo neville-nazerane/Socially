@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -41,16 +42,24 @@ services.AddHealthChecks()
 //services.AddControllers();
 
 //services.AddSwaggerDocument();
-services.AddAuthentication(NetCoreJwtDefaults.SchemeName)
+services.AddAuthentication("complete")
         .AddJwtBearerCompletely(o =>
         {
             o.TokenValidationParameters = new TokenValidationParameters
             { 
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                RequireExpirationTime = false,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("woskdjfalskdgh4yrwejoisdfugierjf"))
             };
-        })
-        .AddNetCoreJwt();
-services.AddAuthorization();
+        });
+services.AddAuthorization(o =>
+{
+    o.DefaultPolicy = new AuthorizationPolicyBuilder()
+                            .AddAuthenticationSchemes("complete")
+                            .RequireAuthenticatedUser()
+                            .Build();
+});
 
 // managers
 services.AddTransient<IUserProfileManager, UserProfileManager>();
@@ -91,7 +100,7 @@ app.UseEndpoints(endpoints =>
     endpoints.MapGet("/", async c =>
     {
         var res = await c.GetTokenAsync("hello");
-    });
+    }).RequireAuthorization();
     endpoints.MapHealthChecks("/health");
 
     endpoints.MapCustom<AccountEndpoints>();

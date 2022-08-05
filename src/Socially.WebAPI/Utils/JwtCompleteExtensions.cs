@@ -19,11 +19,8 @@ namespace Socially.WebAPI.Utils
         {
             var info = new TokenInfo();
             auth.Services.AddSingleton(info);
-            return auth.AddJwtBearer(o =>
-            {
-                configureOptions(o);
-                info.Options = o;
-            });
+            configureOptions(info.Options);
+            return auth.AddJwtBearer("complete", configureOptions);
         }
 
         public static string GenerateJwtToken(this HttpContext context, Claim[] claims, TimeSpan exipary)

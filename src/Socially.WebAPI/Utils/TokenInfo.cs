@@ -10,6 +10,11 @@ namespace Socially.WebAPI.Utils
     {
         public JwtBearerOptions Options { get; set; }
 
+        public TokenInfo()
+        {
+            Options = new JwtBearerOptions();
+        }
+
         public string GenerateToken(Claim[] claims, TimeSpan exipary)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

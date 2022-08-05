@@ -21,20 +21,17 @@ namespace Socially.WebAPI.Services
     {
         private readonly IUserProfileManager _userProfileManager;
         private readonly CurrentContext _currentContext;
-        private readonly IBearerManager _bearerManager;
         private readonly TokenInfo _tokenInfo;
         private readonly UserManager<User> _userManager;
 
         public UserService(UserManager<User> userManager,
                            IUserProfileManager userProfileManager,
                            CurrentContext currentContext,
-                           IBearerManager bearerManager,
                            TokenInfo tokenInfo)
         {
             _userManager = userManager;
             _userProfileManager = userProfileManager;
             _currentContext = currentContext;
-            _bearerManager = bearerManager;
             _tokenInfo = tokenInfo;
         }
 
