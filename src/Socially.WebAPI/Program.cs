@@ -45,7 +45,6 @@ services.AddHealthChecks()
 services.AddAuthentication("complete")
         .AddJwtBearerCompletely(o =>
         {
-            
             var configs = configuration.GetRequiredSection("authOptions");
             o.TokenValidationParameters = new TokenValidationParameters
             {
