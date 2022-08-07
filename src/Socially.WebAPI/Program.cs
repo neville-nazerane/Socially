@@ -30,11 +30,11 @@ var builder = WebApplication.CreateBuilder(args);
 // SERVICES
 var services = builder.Services;
 
-var config = builder.Configuration;
+var configuration = builder.Configuration;
 
 services.AddCors();
 
-services.AddDbContext<ApplicationDbContext>(c => c.UseSqlServer(config.GetConnectionString("db")));
+services.AddDbContext<ApplicationDbContext>(c => c.UseSqlServer(configuration.GetConnectionString("db")));
 services.AddIdentity<User, UserRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>();
 services.AddHealthChecks()
@@ -45,12 +45,14 @@ services.AddHealthChecks()
 services.AddAuthentication("complete")
         .AddJwtBearerCompletely(o =>
         {
+            
+            var configs = configuration.GetRequiredSection("authOptions");
             o.TokenValidationParameters = new TokenValidationParameters
-            { 
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                RequireExpirationTime = false,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("woskdjfalskdgh4yrwejoisdfugierjf"))
+            {
+                ValidIssuer = configs["issuer"],
+                ValidAudiences = configs["audiences"].Split(","),
+                RequireExpirationTime = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configs["secret"]))
             };
         });
 services.AddAuthorization(o =>
@@ -97,10 +99,7 @@ app.UseCurrentSetup();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapGet("/", async c =>
-    {
-        var res = await c.GetTokenAsync("hello");
-    });
+    endpoints.MapGet("/", () => "Hello from a socially app");
     endpoints.MapHealthChecks("/health");
 
     endpoints.MapCustom<AccountEndpoints>();

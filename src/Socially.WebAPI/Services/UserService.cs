@@ -46,7 +46,12 @@ namespace Socially.WebAPI.Services
                 new Claim(ClaimTypes.GivenName, $"{user.FirstName} {user.LastName}"),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             };
-            return _tokenInfo.GenerateToken(claims, TimeSpan.FromDays(2));
+            return _tokenInfo.GenerateToken(new TokenRequest
+            {
+                Claims = claims,
+                ExpireIn = TimeSpan.FromHours(2),
+                Audience = "website"
+            });
             //return _bearerManager.Generate(claims);
         }
 

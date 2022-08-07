@@ -38,6 +38,10 @@ extends:
     configs:
       ASPNETCORE_ENVIRONMENT: Production
       connectionStrings__db: $(Secrets.Db)
+      authOptions__secret: $(Secrets.AuthSecret)
+      authOptions__audiences: website
+      authOptions__issuer: https://api.sociallyconnections.com
+
     preBuildSteps:
       - script: 'dotnet test src/Socially.Server.Managers.Tests -c release'
         displayName: Testing Managers

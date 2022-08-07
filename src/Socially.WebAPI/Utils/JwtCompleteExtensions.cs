@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Socially.WebAPI.Models;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -18,13 +19,14 @@ namespace Socially.WebAPI.Utils
                                                                    Action<JwtBearerOptions> configureOptions)
         {
             var info = new TokenInfo();
-            auth.Services.AddSingleton(info);
             configureOptions(info.Options);
+            auth.Services.AddSingleton(info);
             return auth.AddJwtBearer("complete", configureOptions);
         }
 
-        public static string GenerateJwtToken(this HttpContext context, Claim[] claims, TimeSpan exipary)
-            => context.RequestServices.GetService<TokenInfo>().GenerateToken(claims, exipary);
+        public static string GenerateJwtToken(this HttpContext context,
+                                              TokenRequest request)
+            => context.RequestServices.GetService<TokenInfo>().GenerateToken(request);
 
     }
 }
