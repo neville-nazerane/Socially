@@ -42,11 +42,3 @@ extends:
       authOptions__audiences: website
       authOptions__issuer: https://api.sociallyconnections.com
 
-    preBuildSteps:
-      - script: 'dotnet test src/Socially.Server.Managers.Tests -c release'
-        displayName: Testing Managers
-
-      - script: 'dotnet test src/Socially.WebAPI.IntegrationTests -c release'
-        displayName: 'Integration Tests'
-
-    
