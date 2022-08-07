@@ -13,7 +13,6 @@ namespace Socially.WebAPI.IntegrationTests
     {
 
         const string path = "";
-
         private readonly CustomWebApplicationFactory _factory;
 
         public AccountTests(CustomWebApplicationFactory factory)
@@ -29,12 +28,14 @@ namespace Socially.WebAPI.IntegrationTests
             const string testEmail = "ya@goo.com";
             const string testUsername = "username";
             const string testPassword = "pasSword!2";
+            const string loginSource = "tester";
 
             // attempt signin
             var loginModel = new LoginModel
             {
                 UserName = testUsername,
-                Password = testPassword
+                Password = testPassword,
+                Source = loginSource
             };
 
             var loginResult = await client.PostAsJsonAsync($"{path}/login", loginModel);
@@ -63,7 +64,8 @@ namespace Socially.WebAPI.IntegrationTests
             var failedLoginResult = await client.PostAsJsonAsync($"{path}/login", new LoginModel
             {
                 UserName = loginModel.UserName,
-                Password = "INVALID"
+                Password = "INVALID",
+                Source = loginSource
             });
 
             Assert.Equal(System.Net.HttpStatusCode.BadRequest, failedLoginResult.StatusCode);

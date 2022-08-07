@@ -18,10 +18,12 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
         builder.ConfigureAppConfiguration(configBuilder =>
         {
+            configBuilder.Sources.Clear();
             configBuilder.AddInMemoryCollection(new Dictionary<string, string>
             {
-                { "sample", "sampled" },
-                {"authOptions__secret", "alskdfdkjaflsdkj" }
+                {"authOptions:secret", "ahyujnhgctufihopktgjuerwfdmklsfjerdf43ew435teygih68iuvyguhoijnklhjlskdfdkjaflsdkj" },
+                {"authOptions:audiences", "tester" },
+                {"authOptions:issuer", "integration_tests" }
             });
         });
 
