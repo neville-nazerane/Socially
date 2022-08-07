@@ -50,7 +50,7 @@ namespace Socially.WebAPI.Services
             {
                 Claims = claims,
                 ExpireIn = TimeSpan.FromHours(2),
-                Audience = "website"
+                Audience = model.Source
             });
             //return _bearerManager.Generate(claims);
         }

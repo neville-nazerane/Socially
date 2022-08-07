@@ -31,7 +31,10 @@ namespace Socially.Website.Pages
 
         public Login()
         {
-            loginModel = new LoginModel();
+            loginModel = new LoginModel
+            {
+                Source = "website"
+            };
             signUpModel = new SignUpModel();
         }
 
@@ -54,8 +57,7 @@ namespace Socially.Website.Pages
             try
             {
                 var res = await Consumer.LoginAsync(loginModel);
-                await ((AuthProvider) AuthProvider).SetAsync(res);
-                //await AuthService.SetAsync(res);
+                await ((AuthProvider)AuthProvider).SetAsync(res);
             }
             catch (ErrorForClientException ex)
             {
