@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,25 +14,27 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using NetCore.Jwt;
 using Socially.Core.Entities;
 using Socially.Server.DataAccess;
 using Socially.Server.Managers;
-using Socially.Server.Services;
+using Socially.Server.Services.Models;
 using Socially.WebAPI.Endpoints;
-using Socially.WebAPI.EndpointUtils;
 using Socially.WebAPI.Middlewares;
+using Socially.WebAPI.Services;
+using Socially.WebAPI.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // SERVICES
 var services = builder.Services;
 
-var config = builder.Configuration;
+var configuration = builder.Configuration;
 
 services.AddCors();
 
-services.AddDbContext<ApplicationDbContext>(c => c.UseSqlServer(config.GetConnectionString("db")));
+services.AddDbContext<ApplicationDbContext>(c => c.UseSqlServer(configuration.GetConnectionString("db")));
 services.AddIdentity<User, UserRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>();
 services.AddHealthChecks()
@@ -36,31 +42,45 @@ services.AddHealthChecks()
 //services.AddControllers();
 
 //services.AddSwaggerDocument();
-services.AddAuthorization();
-services.AddAuthentication(NetCoreJwtDefaults.SchemeName).AddNetCoreJwt();
+services.AddAuthentication("complete")
+        .AddJwtBearerCompletely(o =>
+        {
+            
+            var configs = configuration.GetRequiredSection("authOptions");
+            o.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidIssuer = configs["issuer"],
+                ValidAudiences = configs["audiences"].Split(","),
+                RequireExpirationTime = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configs["secret"]))
+            };
+        });
+services.AddAuthorization(o =>
+{
+    o.DefaultPolicy = new AuthorizationPolicyBuilder()
+                            .AddAuthenticationSchemes("complete")
+                            .RequireAuthenticatedUser()
+                            .Build();
+});
 
 // managers
-services.AddTransient<IUserVerificationManager, UserVerificationManager>();
-services.AddTransient<IUserService, UserService>();
+services.AddTransient<IUserProfileManager, UserProfileManager>();
+
+// services
+services.AddTransient<IUserService, UserService>()
+        .AddScoped<CurrentContext>();
 
 // swagger
 services.AddEndpointsApiExplorer();
-//services.AddOpenApiDocument();
+services.AddSwaggerGen();
 
 // MIDDLEWARES
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseOpenApi();
-    app.UseSwaggerUi3();
-    //app.UseSwaggerUi3(c =>
-    //{
-    //    c.ServerUrl = ""
-    //});
-
-    //c.SwaggerEndpoint("/swagger/v1/swagger.json",
-    //                               $"{builder.Environment.ApplicationName} v1")
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseExceptionHandler(new CustomExceptionHandler());
@@ -72,42 +92,21 @@ app.UseCors(x => x
 
 app.UseRouting();
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
+
+app.UseCurrentSetup();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapGet("/", c => c.Response.WriteAsync("Hello to the social world"));
+    endpoints.MapGet("/", () => "Hello from a socially app");
     endpoints.MapHealthChecks("/health");
 
-    endpoints.MapCustom<AccountEndpoints>("/account");
+    endpoints.MapCustom<AccountEndpoints>();
 
 });
 
 
-
-
 await app.RunAsync();
-
-
-
-//namespace Socially.WebAPI
-//{
-//    public class Program
-//    {
-//        public static void Main(string[] args)
-//        {
-//            CreateHostBuilder(args).Build().Run();
-//        }
-
-//        public static IHostBuilder CreateHostBuilder(string[] args) =>
-//            Host.CreateDefaultBuilder(args)
-//                .ConfigureWebHostDefaults(webBuilder =>
-//                {
-//                    webBuilder.UseStartup<Startup>();
-//                });
-//    }
-//}
-
 
 public partial class Program { }

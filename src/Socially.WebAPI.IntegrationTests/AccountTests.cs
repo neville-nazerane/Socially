@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Xunit;
 using Socially.Core.Models;
 using System.Net.Http.Json;
+using System.Net.Http.Headers;
 
 namespace Socially.WebAPI.IntegrationTests
 {
@@ -21,7 +22,7 @@ namespace Socially.WebAPI.IntegrationTests
         }
 
         [Fact]
-        public async Task SignupAndLogin()
+        public async Task AccountSetup()
         {
             var client = _factory.CreateClient();
 
@@ -29,14 +30,9 @@ namespace Socially.WebAPI.IntegrationTests
             const string testUsername = "username";
             const string testPassword = "pasSword!2";
 
-            //bool emailExists = bool.Parse(await client.GetStringAsync($"{path}/verifyEmail/{testEmail}"));
-            //bool userExists = bool.Parse(await client.GetStringAsync($"{path}/verifyUsername/{testUsername}"));
-
-            //Assert.False(emailExists, "Validating absence of email");
-            //Assert.False(userExists, "Validating absence of user");
-
             // attempt signin
-            var loginModel = new LoginModel { 
+            var loginModel = new LoginModel
+            {
                 UserName = testUsername,
                 Password = testPassword
             };
@@ -47,7 +43,7 @@ namespace Socially.WebAPI.IntegrationTests
 
             // singing up
             var signupModel = new SignUpModel
-            { 
+            {
                 Email = testEmail,
                 UserName = testUsername,
                 Password = testPassword,
@@ -57,13 +53,6 @@ namespace Socially.WebAPI.IntegrationTests
             var signinRes = await client.PostAsJsonAsync($"{path}/signup", signupModel);
             Assert.True(signinRes.IsSuccessStatusCode,
                                 $"Sign up had error code {signinRes.StatusCode} saying '{await signinRes.Content.ReadAsStringAsync()}'");
-
-
-            //emailExists = bool.Parse(await client.GetStringAsync($"{path}/verifyEmail/{testEmail}"));
-            //userExists = bool.Parse(await client.GetStringAsync($"{path}/verifyUsername/{testUsername}"));
-
-            //Assert.True(emailExists);
-            //Assert.True(userExists);
 
             loginResult = await client.PostAsJsonAsync($"{path}/login", loginModel);
 
@@ -77,9 +66,29 @@ namespace Socially.WebAPI.IntegrationTests
                 Password = "INVALID"
             });
 
-
             Assert.Equal(System.Net.HttpStatusCode.BadRequest, failedLoginResult.StatusCode);
+
+            string token = await loginResult.Content.ReadAsStringAsync();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+
+            var profile = await client.GetFromJsonAsync<ProfileUpdateModel>("profile");
+            
+            Assert.NotNull(profile);
+            Assert.Null(profile.FirstName);
+
+            profile.FirstName = "UpdatedName";
+            profile.LastName = "UpdatedLName";
+
+            await client.PutAsJsonAsync("profile", profile);
+
+            Assert.NotNull(profile.FirstName);
+            Assert.NotNull(profile.LastName);
+            Assert.Equal("UpdatedName", profile.FirstName);
+            Assert.Equal("UpdatedLName", profile.LastName);
+
         }
+
+
 
     }
 

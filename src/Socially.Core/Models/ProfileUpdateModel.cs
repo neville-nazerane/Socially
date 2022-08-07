@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Socially.Core.Entities
+namespace Socially.Core.Models
 {
-    public class User : IdentityUser<int>
+    public class ProfileUpdateModel
     {
 
         [MaxLength(100)]
@@ -15,11 +16,8 @@ namespace Socially.Core.Entities
         [MaxLength(100)]
         public string LastName { get; set; }
 
-        [DataType(DataType.Date)]
         public DateTime? DateOfBirth { get; set; }
 
-        [Required]
-        public DateTime? CreatedOn { get; set; }
 
     }
 }

@@ -11,10 +11,17 @@ namespace Socially.Server.DataAccess
     public class ApplicationDbContext : IdentityDbContext<User, UserRole, int>
     {
 
-
-
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<User>()
+                   .Property(u => u.CreatedOn)
+                   .HasDefaultValueSql("GETUTCDATE()");
+
+            base.OnModelCreating(builder);
         }
     }
 }

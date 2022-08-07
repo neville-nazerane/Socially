@@ -14,4 +14,8 @@
 		<ProjectReference Include="..\Socially.Server.Managers\Socially.Server.Managers.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Models\" />
+	</ItemGroup>
+
 </Project>

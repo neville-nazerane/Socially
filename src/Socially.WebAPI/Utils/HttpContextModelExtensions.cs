@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Socially.WebAPI.EndpointUtils
+namespace Socially.WebAPI.Utils
 {
     public static class HttpContextModelExtensions
     {
@@ -37,7 +37,8 @@ namespace Socially.WebAPI.EndpointUtils
                         var errorModel = errors.SingleOrDefault(e => e.Field == field);
                         if (errorModel is null)
                         {
-                            errorModel = new ErrorModel {
+                            errorModel = new ErrorModel
+                            {
                                 Field = field
                             };
                             errors.Add(errorModel);
@@ -55,12 +56,13 @@ namespace Socially.WebAPI.EndpointUtils
         public static Task<bool> TryValidateModelAsync<TModel>(this HttpContext context,
                                                                     Func<TModel, Task> onValid,
                                                                     CancellationToken cancellationToken = default)
-            => TryValidateModelAsync(context, (Func<TModel, CancellationToken, Task>)((m, c) 
+            => context.TryValidateModelAsync((Func<TModel, CancellationToken, Task>)((m, c)
                     => onValid is not null ? onValid(m) : Task.CompletedTask),
                     cancellationToken);
 
         public static Task<bool> TryValidateModelAsync<TModel>(this HttpContext context, Action<TModel> onValid)
-            => TryValidateModelAsync(context, (Func<TModel,Task>) (model => {
+            => context.TryValidateModelAsync((Func<TModel, Task>)(model =>
+            {
                 onValid(model);
                 return Task.CompletedTask;
             }));
