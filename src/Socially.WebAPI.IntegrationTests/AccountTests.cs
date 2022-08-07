@@ -28,7 +28,7 @@ namespace Socially.WebAPI.IntegrationTests
             const string testEmail = "ya@goo.com";
             const string testUsername = "username";
             const string testPassword = "pasSword!2";
-            const string loginSource = "tester2";
+            const string loginSource = "testerfake";
 
             // attempt signin
             var loginModel = new LoginModel
