@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -15,7 +16,14 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
 
-
+        builder.ConfigureAppConfiguration(configBuilder =>
+        {
+            configBuilder.AddInMemoryCollection(new Dictionary<string, string>
+            {
+                { "sample", "sampled" },
+                {"authOptions__secret", "alskdfdkjaflsdkj" }
+            });
+        });
 
         builder.ConfigureServices(services =>
         {

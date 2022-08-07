@@ -50,8 +50,8 @@ namespace Socially.WebAPI.Endpoints
             => service.UpdateProfileAsync(model, cancellation);
 
         static Task SignupAsync(SignUpModel model,
-                                 IUserService userService,
-                                 CancellationToken cancellationToken = default)
+                                IUserService userService,
+                                CancellationToken cancellationToken = default)
             => userService.SignUpAsync(model, cancellationToken);
 
         static async Task<string> LoginAsync(LoginModel model,

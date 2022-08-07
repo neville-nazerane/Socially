@@ -19,6 +19,17 @@ namespace Socially.Server.Managers
             _dbContext = dbContext;
         }
 
+        public Task<ProfileSummary> GetSummaryAsync(int userId, CancellationToken cancellationToken = default)
+            => _dbContext.Users
+                         .Where(u => u.Id == userId)
+                         .Select(u => new ProfileSummary
+                         {
+                             Id = u.Id,
+                             UserName = u.UserName,
+                             FullName = $"{u.FirstName} {u.LastName}"
+                         })
+                         .SingleOrDefaultAsync(cancellationToken);
+
         public async Task UpdateAsync(int userId, ProfileUpdateModel model, CancellationToken cancellationToken = default)
         {
             if (model is null) throw new ArgumentNullException(nameof(model));

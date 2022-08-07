@@ -18,10 +18,13 @@ namespace Socially.WebAPI.Utils
         public static AuthenticationBuilder AddJwtBearerCompletely(this AuthenticationBuilder auth,
                                                                    Action<JwtBearerOptions> configureOptions)
         {
-            var info = new TokenInfo();
-            configureOptions(info.Options);
-            auth.Services.AddSingleton(info);
-            return auth.AddJwtBearer("complete", configureOptions);
+            auth.Services.AddSingleton(p =>
+            {
+                var info = new TokenInfo();
+                configureOptions(info.Options);
+                return info;
+            });
+            return auth.AddJwtBearer("complete", o => configureOptions(o));
         }
 
         public static string GenerateJwtToken(this HttpContext context,
