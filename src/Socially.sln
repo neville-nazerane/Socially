@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External Utils", "External 
 		..\..\..\js\theme-gen.js = ..\..\..\js\theme-gen.js
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{FCF98376-A6B4-4AB1-A194-1673CBE7E641}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client Apps", "Client Apps", "{FCF98376-A6B4-4AB1-A194-1673CBE7E641}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Socially.Apps.Consumer", "Socially.Apps.Consumer\Socially.Apps.Consumer.csproj", "{5D773567-BE8A-44E5-A5FD-81F5FABB78F0}"
 EndProject

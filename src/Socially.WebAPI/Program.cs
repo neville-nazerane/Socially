@@ -33,7 +33,10 @@ var services = builder.Services;
 var configuration = builder.Configuration;
 
 services.AddCors();
-
+services.AddApplicationInsightsTelemetry(o =>
+{
+    o.ConnectionString = configuration["appinsights"];
+});
 services.AddDbContext<ApplicationDbContext>(c => c.UseSqlServer(configuration.GetConnectionString("db")));
 services.AddIdentity<User, UserRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>();
