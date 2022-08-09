@@ -1,22 +1,11 @@
 ﻿@page "/login"
 
-<Socially.Website.Components.AuthConditional>
-
-    <Authorized>
-        <h2>YOU'RE IN!</h2>
-    </Authorized>
-
-</Socially.Website.Components.AuthConditional>
-
 <div class="row justify-content-center align-items-center vh-100 py-5">
     <!-- Main content START -->
     <div class="col-sm-10 col-md-8 col-lg-7 col-xl-6 col-xxl-5">
         <!-- Sign in START -->
         <div class="card card-body text-center p-4 p-sm-5">
-            @foreach (var error in errors)
-            {
-                <small class="text-danger">@error</small>
-            }
+
             @if (isSignup)
             {
                 <div class="text-center">
@@ -26,7 +15,10 @@
                 </div>
                 <!-- Form START -->
                 <EditForm Model=signUpModel OnValidSubmit=SignupAsync OnInvalidSubmit=CleanUp class="mt-4">
-
+                    @foreach (var error in errors)
+                    {
+                        <small class="text-danger">@error</small>
+                    }
                     <DataAnnotationsValidator />
                     <ValidationSummary />
 
@@ -36,7 +28,7 @@
                     </div>
                     <!-- Email -->
                     <div class="mb-3 input-group-lg">
-                        <InputText @bind-value=signUpModel.Email type="email" class="form-control" placeholder="Enter email" />
+                        <InputText @bind-Value=signUpModel.Email type="email" class="form-control" placeholder="Enter email" />
                         @*<small>We'll never share your email with anyone else.</small>*@
                     </div>
                     <!-- New password -->
@@ -71,7 +63,15 @@
                         <label class="form-check-label" for="keepsingnedCheck"> Keep me signed in</label>
                     </div>
                     <!-- Button -->
-                    <div class="d-grid"><button type="submit" class="btn btn-lg btn-primary">Sign me up</button></div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-lg btn-primary">
+                            @if (isSigningUp)
+                            {
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            }
+                            Sign me up
+                        </button>
+                    </div>
                     <!-- Copyright -->
                     <p class="mb-0 mt-3 text-center">©2022 <a target="_blank" href="https://www.webestica.com/">Webestica.</a> All rights reserved</p>
                 </EditForm>
@@ -87,6 +87,10 @@
 
                     <DataAnnotationsValidator />
                     <ValidationSummary />
+                    @foreach (var error in errors)
+                    {
+                        <small class="text-danger">@error</small>
+                    }
 
                     <!-- Email -->
                     <div class="mb-3 input-group-lg">
@@ -122,7 +126,15 @@
                         <a href="forgot-password.html">Forgot password?</a>
                     </div>
                     <!-- Button -->
-                    <div class="d-grid"><button type="submit" class="btn btn-lg btn-primary">Login</button></div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-lg btn-primary" disabled=@isLoggingIn>
+                            @if (isLoggingIn)
+                            {
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            }
+                            Login
+                        </button>
+                    </div>
                     <!-- Copyright -->
                     <p class="mb-0 mt-3">©2022 <a target="_blank" href="https://www.webestica.com/">Webestica.</a> All rights reserved</p>
                 </EditForm>

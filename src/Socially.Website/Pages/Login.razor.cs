@@ -11,6 +11,8 @@ namespace Socially.Website.Pages
     public partial class Login
     {
 
+        bool isLoggingIn = false;
+        bool isSigningUp = false;
         ICollection<string> errors = new List<string>();
 
         LoginModel loginModel;
@@ -40,19 +42,27 @@ namespace Socially.Website.Pages
 
         async Task SignupAsync()
         {
+            isSigningUp = true;
             errors = Array.Empty<string>();
             try
             {
                 await Consumer.SignupAsync(signUpModel);
+
+                isSigningUp = false;
             }
             catch (ErrorForClientException ex)
             {
                 errors = ex.Errors.SelectMany(e => e.Errors).ToList();
             }
+            finally
+            {
+                isSigningUp = false;
+            }
         }
 
         async Task LoginAsync()
         {
+            isLoggingIn = true;
             errors = Array.Empty<string>();
             try
             {
@@ -71,6 +81,10 @@ namespace Socially.Website.Pages
             catch
             {
                 errors = new string[] { "failed to connect to server!" };
+            }
+            finally
+            {
+                isLoggingIn = false;
             }
         }
 

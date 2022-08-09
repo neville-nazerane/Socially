@@ -38,6 +38,11 @@ namespace Socially.Apps.Consumer.Services
             return await res.Content.ReadAsStringAsync();
         }
 
+        public Task<ProfileUpdateModel> GetUpdateProfileAsync(CancellationToken cancellationToken = default)
+            => _httpClient.GetFromJsonAsync<ProfileUpdateModel>("profile", cancellationToken);
+
+        public Task UpdateProfileAsync(ProfileUpdateModel model, CancellationToken cancellationToken = default)
+            => _httpClient.PutAsJsonAsync("profile", model, cancellationToken);
 
     }
 }
