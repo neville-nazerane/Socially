@@ -11,6 +11,9 @@ namespace Socially.Server.DataAccess
     public class ApplicationDbContext : IdentityDbContext<User, UserRole, int>
     {
 
+        public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
+
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
