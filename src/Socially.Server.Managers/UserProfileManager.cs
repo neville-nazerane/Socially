@@ -85,7 +85,7 @@ namespace Socially.Server.Managers
                                                           && u.RefreshToken == refreshToken,
                                                      cancellationToken);
 
-        public async Task DisableRefreshToken(int userId,
+        public async Task DisableRefreshTokenAsync(int userId,
                                               string refreshToken,
                                               CancellationToken cancellationToken = default)
         {

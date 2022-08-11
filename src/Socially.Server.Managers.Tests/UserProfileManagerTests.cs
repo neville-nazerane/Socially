@@ -181,7 +181,6 @@ namespace Socially.Server.Managers.Tests
             Assert.Equal("sampleUser", profile.FirstName);
         }
 
-
         [Fact]
         public async Task Update_InvalidIdAndNullModel_ThrowsArgumentNullException()
         {
@@ -291,8 +290,6 @@ namespace Socially.Server.Managers.Tests
         {
             // ARRANGE
             await SetupManagerAsync();
-
-            // ACT
             await DbContext.UserRefreshTokens.AddRangeAsync(new UserRefreshToken
             {
                 UserId = 10, 
@@ -301,6 +298,8 @@ namespace Socially.Server.Managers.Tests
                 RefreshToken = "sampleToken"
             });
             await DbContext.SaveChangesAsync();
+
+            // ACT
             bool isValid = await manager.VerifyRefreshToken(10, "notASample");
 
             // ASSERT
@@ -312,8 +311,6 @@ namespace Socially.Server.Managers.Tests
         {
             // ARRANGE
             await SetupManagerAsync();
-
-            // ACT
             await DbContext.UserRefreshTokens.AddRangeAsync(new UserRefreshToken
             {
                 UserId = 10,
@@ -322,6 +319,8 @@ namespace Socially.Server.Managers.Tests
                 RefreshToken = "sampleToken"
             });
             await DbContext.SaveChangesAsync();
+
+            // ACT
             bool isValid = await manager.VerifyRefreshToken(11, "sampleToken");
 
             // ASSERT
@@ -333,8 +332,6 @@ namespace Socially.Server.Managers.Tests
         {
             // ARRANGE
             await SetupManagerAsync();
-
-            // ACT
             await DbContext.UserRefreshTokens.AddRangeAsync(new UserRefreshToken
             {
                 UserId = 10,
@@ -343,6 +340,8 @@ namespace Socially.Server.Managers.Tests
                 RefreshToken = "sampleToken"
             });
             await DbContext.SaveChangesAsync();
+
+            // ACT
             bool isValid = await manager.VerifyRefreshToken(10, "sampleToken");
 
             // ASSERT
@@ -355,8 +354,6 @@ namespace Socially.Server.Managers.Tests
         {
             // ARRANGE
             await SetupManagerAsync();
-
-            // ACT
             await DbContext.UserRefreshTokens.AddRangeAsync(new UserRefreshToken
             {
                 UserId = 10,
@@ -365,6 +362,8 @@ namespace Socially.Server.Managers.Tests
                 RefreshToken = "sampleToken"
             });
             await DbContext.SaveChangesAsync();
+
+            // ACT
             bool isValid = await manager.VerifyRefreshToken(10, "sampleToken");
 
             // ASSERT
@@ -376,8 +375,6 @@ namespace Socially.Server.Managers.Tests
         {
             // ARRANGE
             await SetupManagerAsync();
-
-            // ACT
             await DbContext.UserRefreshTokens.AddRangeAsync(new UserRefreshToken
             {
                 UserId = 10,
@@ -386,10 +383,35 @@ namespace Socially.Server.Managers.Tests
                 RefreshToken = "sampleToken"
             });
             await DbContext.SaveChangesAsync();
+
+            // ACT
             bool isValid = await manager.VerifyRefreshToken(10, "sampleToken");
 
             // ASSERT
             Assert.True(isValid);
+        }
+
+        [Fact]
+        public async Task DisableRefreshToken_Vaild_Updates()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            UserRefreshToken entity = new()
+            {
+                UserId = 10,
+                IsEnabled = true,
+                ExpiresOn = DateTime.UtcNow.AddMinutes(5),
+                RefreshToken = "sampleToken"
+            };
+            await DbContext.UserRefreshTokens.AddRangeAsync(entity);
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            await manager.DisableRefreshTokenAsync(10, "sampleToken");
+            entity = await DbContext.UserRefreshTokens.AsNoTracking().SingleOrDefaultAsync(u => u.Id == entity.Id);
+
+            // ASSERT
+            Assert.True(!entity.IsEnabled);
         }
 
     }
