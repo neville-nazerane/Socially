@@ -33,5 +33,13 @@ namespace Socially.WebAPI.Utils
             var tk = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(tk);
         }
+
+        public ClaimsPrincipal GetPrinciple(string tokenStr)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            
+            var principle = tokenHandler.ValidateToken(tokenStr, Options.TokenValidationParameters, out var validatedToken);
+            return principle;
+        }
     }
 }

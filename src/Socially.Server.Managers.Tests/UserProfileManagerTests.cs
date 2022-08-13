@@ -414,5 +414,63 @@ namespace Socially.Server.Managers.Tests
             Assert.True(!entity.IsEnabled);
         }
 
+        [Fact]
+        public async Task GetUserById_InvalidId_ReturnsNull()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            UserRefreshToken entity = new()
+            {
+                UserId = 10,
+                IsEnabled = true,
+                ExpiresOn = DateTime.UtcNow.AddMinutes(5),
+                RefreshToken = "sampleToken"
+            };
+            await DbContext.UserRefreshTokens.AddRangeAsync(entity);
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            int invalidId = entity.Id + 5;
+            var res = await manager.GetUserByIdAsync(invalidId);
+
+
+            // ASSERT 
+            Assert.Null(res);
+        }
+
+        [Fact]
+        public async Task GetUserById_NoUsersInDb_ReturnsNull()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+
+            // ACT
+            var res = await manager.GetUserByIdAsync(5);
+
+            // ASSERT 
+            Assert.Null(res);
+        }
+
+        [Fact]
+        public async Task GetUserById_ValidId_ReturnsEntity()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            User entity = new()
+            {
+                CreatedOn = DateTime.UtcNow,
+                Email = "something@valid.com"
+            };
+            await DbContext.Users.AddRangeAsync(entity);
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            var res = await manager.GetUserByIdAsync(entity.Id);
+
+            // ASSERT 
+            Assert.NotNull(res);
+            Assert.Equal("something@valid.com", res.Email);
+        }
+
     }
 }

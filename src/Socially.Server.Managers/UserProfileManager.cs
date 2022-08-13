@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Socially.Core.Entities;
 using Socially.Core.Models;
 using Socially.Server.DataAccess;
 using System;
@@ -19,6 +20,9 @@ namespace Socially.Server.Managers
         {
             _dbContext = dbContext;
         }
+
+        public ValueTask<User> GetUserByIdAsync(int userId, CancellationToken cancellationToken = default)
+            => _dbContext.Users.FindAsync(new object[] { userId }, cancellationToken);
 
         public Task<ProfileSummary> GetSummaryAsync(int userId, CancellationToken cancellationToken = default)
             => _dbContext.Users
@@ -97,7 +101,7 @@ namespace Socially.Server.Managers
         }
 
         // code from: https://code-maze.com/using-refresh-tokens-in-asp-net-core-authentication
-        private string GenerateRefreshToken()
+        private static string GenerateRefreshToken()
         {
             var randomNumber = new byte[32];
             using var rng = RandomNumberGenerator.Create();

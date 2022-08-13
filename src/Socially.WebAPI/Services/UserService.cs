@@ -9,6 +9,7 @@ using Socially.WebAPI.Models;
 using Socially.WebAPI.Utils;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -35,24 +36,76 @@ namespace Socially.WebAPI.Services
             _tokenInfo = tokenInfo;
         }
 
-        public async Task<string> LoginAsync(LoginModel model)
+        public Task<TokenResponseModel> LoginAsync(LoginModel model, CancellationToken cancellationToken = default)
+            => GetTokenIfLoginValidAsync(model, TimeSpan.FromHours(2), cancellationToken);
+        
+        public Task<TokenResponseModel> RenewTokenAsync(TokenRenewRequestModel model, CancellationToken cancellationToken = default)
+            => RenewTokenAsync(model, TimeSpan.FromHours(2), cancellationToken);
+
+        private async Task<TokenResponseModel> GetTokenIfLoginValidAsync(LoginModel model,
+                                                                         TimeSpan expireIn,
+                                                                         CancellationToken cancellationToken = default)
         {
             var user = await _userManager.FindByNameAsync(model.UserName);
             if (user is null) return null;
             bool valid = await _userManager.CheckPasswordAsync(user, model.Password);
             if (!valid) return null;
-            Claim[] claims = new Claim[] {
-                new Claim(ClaimTypes.Name, model.UserName),
+            var token = _tokenInfo.GenerateToken(new TokenRequest
+            {
+                Claims = GetClaimsForUser(user),
+                ExpireIn = expireIn,
+                Audience = model.Source
+            });
+
+            var refreshToken = await _userProfileManager.CreateRefreshTokenAsync(user.Id, expireIn, cancellationToken);
+
+            return new TokenResponseModel
+            {
+                AccessToken = token,
+                ExpiresIn = expireIn.TotalSeconds,
+                RefreshToken = refreshToken,
+                TokenType = "Bearer",
+            };
+        }
+
+        private static Claim[] GetClaimsForUser(User user)
+        {
+            return new Claim[] {
+                new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.GivenName, $"{user.FirstName} {user.LastName}"),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             };
-            return _tokenInfo.GenerateToken(new TokenRequest
+        }
+
+        private async Task<TokenResponseModel> RenewTokenAsync(TokenRenewRequestModel model, 
+                                                               TimeSpan expireIn,
+                                                               CancellationToken cancellationToken = default)
+        {
+            var principle = _tokenInfo.GetPrinciple(model.AccessToken);
+            var readToken = new JwtSecurityTokenHandler().ReadJwtToken(model.AccessToken);
+
+            int userId = int.Parse(principle.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (await _userProfileManager.VerifyRefreshToken(userId, model.RefreshToken, cancellationToken))
             {
-                Claims = claims,
-                ExpireIn = TimeSpan.FromHours(2),
-                Audience = model.Source
-            });
-            //return _bearerManager.Generate(claims);
+                var user = await _userProfileManager.GetUserByIdAsync(userId, cancellationToken);
+                var token = _tokenInfo.GenerateToken(new TokenRequest
+                {
+                    Claims = GetClaimsForUser(user),
+                    ExpireIn = expireIn,
+                    Audience = readToken.Audiences.FirstOrDefault()
+                });
+                var refreshToken = await _userProfileManager.CreateRefreshTokenAsync(userId, expireIn, cancellationToken);
+                var result = new TokenResponseModel
+                {
+                    AccessToken = token,
+                    ExpiresIn = expireIn.TotalSeconds,
+                    RefreshToken = refreshToken,
+                    TokenType = "Bearer"
+                };
+                await _userProfileManager.DisableRefreshTokenAsync(userId, model.RefreshToken, cancellationToken);
+                return result;
+            }
+            else throw new BadRequestException("Invalid token");
         }
 
         public async Task SignUpAsync(SignUpModel model, CancellationToken cancellationToken = default)
