@@ -102,6 +102,7 @@ namespace Socially.WebAPI.IntegrationTests
             Assert.NotNull(newTokenReponse.AccessToken);
             Assert.NotEqual(tokenResponse.AccessToken, newTokenReponse.AccessToken);
 
+            // verify if refresh token is no longer valid
             var newTokenRequest2 = await client.PostAsJsonAsync("renewToken", new TokenRenewRequestModel
             {
                 AccessToken = tokenResponse.AccessToken,
