@@ -12,7 +12,7 @@ namespace Socially.Website.Shared
 
         Task LogoutAsync()
         {
-            return AuthProvider.SetAsync(string.Empty);
+            return AuthProvider.SetAsync(null);
         }
 
 

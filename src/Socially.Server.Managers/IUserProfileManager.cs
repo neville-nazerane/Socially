@@ -14,6 +14,7 @@ namespace Socially.Server.Managers
         Task<string> CreateRefreshTokenAsync(int userId, TimeSpan expireIn, CancellationToken cancellationToken = default);
         Task DisableRefreshTokenAsync(int userId, string refreshToken, CancellationToken cancellationToken = default);
         Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken = default);
+        Task<ProfileSummary> GetSummaryAsync(int userId, CancellationToken cancellationToken = default);
         Task<ProfileUpdateModel> GetUpdatableProfileAsync(int userId, CancellationToken cancellationToken = default);
         ValueTask<User> GetUserByIdAsync(int userId, CancellationToken cancellationToken = default);
         Task UpdateAsync(int userId, ProfileUpdateModel model, CancellationToken cancellationToken = default);

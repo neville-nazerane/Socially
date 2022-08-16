@@ -37,10 +37,10 @@ namespace Socially.WebAPI.Services
         }
 
         public Task<TokenResponseModel> LoginAsync(LoginModel model, CancellationToken cancellationToken = default)
-            => GetTokenIfLoginValidAsync(model, TimeSpan.FromHours(2), cancellationToken);
+            => GetTokenIfLoginValidAsync(model, TimeSpan.FromHours(1), cancellationToken);
         
         public Task<TokenResponseModel> RenewTokenAsync(TokenRenewRequestModel model, CancellationToken cancellationToken = default)
-            => RenewTokenAsync(model, TimeSpan.FromHours(2), cancellationToken);
+            => RenewTokenAsync(model, TimeSpan.FromHours(1), cancellationToken);
 
         private async Task<TokenResponseModel> GetTokenIfLoginValidAsync(LoginModel model,
                                                                          TimeSpan expireIn,
@@ -57,7 +57,7 @@ namespace Socially.WebAPI.Services
                 Audience = model.Source
             });
 
-            var refreshToken = await _userProfileManager.CreateRefreshTokenAsync(user.Id, expireIn, cancellationToken);
+            var refreshToken = await _userProfileManager.CreateRefreshTokenAsync(user.Id, TimeSpan.FromDays(90), cancellationToken);
 
             return new TokenResponseModel
             {
@@ -94,7 +94,7 @@ namespace Socially.WebAPI.Services
                     ExpireIn = expireIn,
                     Audience = readToken.Audiences.FirstOrDefault()
                 });
-                var refreshToken = await _userProfileManager.CreateRefreshTokenAsync(userId, expireIn, cancellationToken);
+                var refreshToken = await _userProfileManager.CreateRefreshTokenAsync(userId, TimeSpan.FromDays(90), cancellationToken);
                 var result = new TokenResponseModel
                 {
                     AccessToken = token,

@@ -67,7 +67,7 @@ namespace Socially.Website.Pages
             try
             {
                 var res = await Consumer.LoginAsync(loginModel);
-                await ((AuthProvider)AuthProvider).SetAsync(res.AccessToken);
+                await ((AuthProvider)AuthProvider).SetAsync(res);
             }
             catch (ErrorForClientException ex)
             {
