@@ -11,14 +11,13 @@ namespace Socially.Website.Services
 {
     public class AuthProvider : AuthenticationStateProvider
     {
-
+        private const string tokenKey = "tokenData";
         private TokenResponseModel tokenData;
         private DateTime? expiary;
         private readonly IJSRuntime _jSRuntime;
 
         private static ClaimsPrincipal FailedLogin
             => new (new ClaimsIdentity(Array.Empty<Claim>(), string.Empty));
-
 
         public AuthProvider(IJSRuntime jSRuntime)
         {
@@ -63,9 +62,12 @@ namespace Socially.Website.Services
         {
             if (tokenData is null)
             {
-                string dataStr = await _jSRuntime.InvokeAsync<string>("getData", "tokenData");
-                if (dataStr is null) return;
-
+                string dataStr = await _jSRuntime.InvokeAsync<string>("getData", tokenKey);
+                if (dataStr is null)
+                {
+                    tokenData = null;
+                    return;
+                }
                 tokenData = JsonSerializer.Deserialize<TokenResponseModel>(dataStr);
                 if (tokenData is null)
                     return;
@@ -78,8 +80,13 @@ namespace Socially.Website.Services
 
         public async Task SetAsync(TokenResponseModel res, CancellationToken cancellationToken = default)
         {
-            string strData = res == null ? null : JsonSerializer.Serialize(res);
-            await _jSRuntime.InvokeVoidAsync("setData", "tokenData", strData);
+            tokenData = res;
+            if (res is null)
+            {
+                await _jSRuntime.InvokeVoidAsync("removeData", tokenKey);
+            }
+            else 
+                await _jSRuntime.InvokeVoidAsync("setData", tokenKey, JsonSerializer.Serialize(res));
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }
 
