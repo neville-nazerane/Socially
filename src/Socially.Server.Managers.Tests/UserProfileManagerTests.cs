@@ -1,4 +1,5 @@
-﻿using Socially.Core.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Socially.Core.Entities;
 using Socially.Core.Models;
 using Socially.Server.DataAccess;
 using System;
@@ -93,7 +94,7 @@ namespace Socially.Server.Managers.Tests
             // ARRANGE
             await SetupManagerAsync();
             await DbContext.Users.AddAsync(new User
-            { 
+            {
                 CreatedOn = DateTime.UtcNow,
                 UserName = "myUser"
             });
@@ -180,7 +181,6 @@ namespace Socially.Server.Managers.Tests
             Assert.Equal("sampleUser", profile.FirstName);
         }
 
-
         [Fact]
         public async Task Update_InvalidIdAndNullModel_ThrowsArgumentNullException()
         {
@@ -266,6 +266,210 @@ namespace Socially.Server.Managers.Tests
             Assert.NotEqual("Unchanged", stored.FirstName);
             Assert.Equal("Changed", stored.FirstName);
 
+        }
+
+        [Fact]
+        public async Task CreateRefreshToken_Creating_Creates()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+
+            // ACT
+            string token = await manager.CreateRefreshTokenAsync(10, TimeSpan.Zero);
+
+            // ASSERT
+            var exists = await DbContext.UserRefreshTokens.AnyAsync(u => u.UserId == 10 && u.RefreshToken == token);
+            var exists2 = await DbContext.UserRefreshTokens.AnyAsync(u => u.UserId == 11 && u.RefreshToken == token);
+            Assert.True(exists);
+            Assert.False(exists2);
+
+        }
+
+        [Fact]
+        public async Task VerifyRefreshToken_InvalidToken_ReturnsFalse()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            await DbContext.UserRefreshTokens.AddRangeAsync(new UserRefreshToken
+            {
+                UserId = 10, 
+                IsEnabled = true,
+                ExpiresOn = DateTime.UtcNow.AddMinutes(5),
+                RefreshToken = "sampleToken"
+            });
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            bool isValid = await manager.VerifyRefreshToken(10, "notASample");
+
+            // ASSERT
+            Assert.False(isValid);
+        }
+
+        [Fact]
+        public async Task VerifyRefreshToken_InvalidUser_ReturnsFalse()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            await DbContext.UserRefreshTokens.AddRangeAsync(new UserRefreshToken
+            {
+                UserId = 10,
+                IsEnabled = true,
+                ExpiresOn = DateTime.UtcNow.AddMinutes(5),
+                RefreshToken = "sampleToken"
+            });
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            bool isValid = await manager.VerifyRefreshToken(11, "sampleToken");
+
+            // ASSERT
+            Assert.False(isValid);
+        }
+
+        [Fact]
+        public async Task VerifyRefreshToken_DisabledToken_ReturnsFalse()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            await DbContext.UserRefreshTokens.AddRangeAsync(new UserRefreshToken
+            {
+                UserId = 10,
+                IsEnabled = false,
+                ExpiresOn = DateTime.UtcNow.AddMinutes(5),
+                RefreshToken = "sampleToken"
+            });
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            bool isValid = await manager.VerifyRefreshToken(10, "sampleToken");
+
+            // ASSERT
+            Assert.False(isValid);
+        }
+
+
+        [Fact]
+        public async Task VerifyRefreshToken_Expired_ReturnsFalse()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            await DbContext.UserRefreshTokens.AddRangeAsync(new UserRefreshToken
+            {
+                UserId = 10,
+                IsEnabled = true,
+                ExpiresOn = DateTime.UtcNow.AddMinutes(-5),
+                RefreshToken = "sampleToken"
+            });
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            bool isValid = await manager.VerifyRefreshToken(10, "sampleToken");
+
+            // ASSERT
+            Assert.False(isValid);
+        }
+
+        [Fact]
+        public async Task VerifyRefreshToken_Valid_ReturnsTrue()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            await DbContext.UserRefreshTokens.AddRangeAsync(new UserRefreshToken
+            {
+                UserId = 10,
+                IsEnabled = true,
+                ExpiresOn = DateTime.UtcNow.AddMinutes(5),
+                RefreshToken = "sampleToken"
+            });
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            bool isValid = await manager.VerifyRefreshToken(10, "sampleToken");
+
+            // ASSERT
+            Assert.True(isValid);
+        }
+
+        [Fact]
+        public async Task DisableRefreshToken_Vaild_Updates()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            UserRefreshToken entity = new()
+            {
+                UserId = 10,
+                IsEnabled = true,
+                ExpiresOn = DateTime.UtcNow.AddMinutes(5),
+                RefreshToken = "sampleToken"
+            };
+            await DbContext.UserRefreshTokens.AddRangeAsync(entity);
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            await manager.DisableRefreshTokenAsync(10, "sampleToken");
+            entity = await DbContext.UserRefreshTokens.AsNoTracking().SingleOrDefaultAsync(u => u.Id == entity.Id);
+
+            // ASSERT
+            Assert.True(!entity.IsEnabled);
+        }
+
+        [Fact]
+        public async Task GetUserById_InvalidId_ReturnsNull()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            UserRefreshToken entity = new()
+            {
+                UserId = 10,
+                IsEnabled = true,
+                ExpiresOn = DateTime.UtcNow.AddMinutes(5),
+                RefreshToken = "sampleToken"
+            };
+            await DbContext.UserRefreshTokens.AddRangeAsync(entity);
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            int invalidId = entity.Id + 5;
+            var res = await manager.GetUserByIdAsync(invalidId);
+
+
+            // ASSERT 
+            Assert.Null(res);
+        }
+
+        [Fact]
+        public async Task GetUserById_NoUsersInDb_ReturnsNull()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+
+            // ACT
+            var res = await manager.GetUserByIdAsync(5);
+
+            // ASSERT 
+            Assert.Null(res);
+        }
+
+        [Fact]
+        public async Task GetUserById_ValidId_ReturnsEntity()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            User entity = new()
+            {
+                CreatedOn = DateTime.UtcNow,
+                Email = "something@valid.com"
+            };
+            await DbContext.Users.AddRangeAsync(entity);
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            var res = await manager.GetUserByIdAsync(entity.Id);
+
+            // ASSERT 
+            Assert.NotNull(res);
+            Assert.Equal("something@valid.com", res.Email);
         }
 
     }

@@ -27,15 +27,14 @@ namespace Socially.Apps.Consumer.Services
             res.EnsureSuccessStatusCode();
         }
 
-        public async Task<string> LoginAsync(LoginModel model,
+        public async Task<TokenResponseModel> LoginAsync(LoginModel model,
                                      CancellationToken cancellationToken = default)
         {
             var res = await _httpClient.PostAsJsonAsync("login",
                                                         model,
                                                         cancellationToken);
             res.EnsureSuccessStatusCode();
-
-            return await res.Content.ReadAsStringAsync();
+            return await res.Content.ReadFromJsonAsync<TokenResponseModel>(cancellationToken: cancellationToken);
         }
 
         public Task<ProfileUpdateModel> GetUpdateProfileAsync(CancellationToken cancellationToken = default)

@@ -7,7 +7,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
 		<PackageReference Include="NetCore.Jwt" Version="1.0.2" />
-		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.7" />
+		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.8" />
 	</ItemGroup>
 
 	<ItemGroup>

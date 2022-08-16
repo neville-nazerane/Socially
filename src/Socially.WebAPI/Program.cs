@@ -102,6 +102,7 @@ app.UseEndpoints(endpoints =>
     endpoints.MapHealthChecks("/health");
 
     endpoints.MapCustom<AccountEndpoints>();
+    endpoints.MapCustom<ProfileEndpoints>();
 
 });
 

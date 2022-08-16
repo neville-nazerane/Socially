@@ -31,30 +31,23 @@ namespace Socially.WebAPI.Endpoints
 
                 endpoints.MapPost("signup", SignupAsync),
                 endpoints.MapPost("login", LoginAsync),
-
-                endpoints.MapPut("profile", UpdateProfileAsync).RequireAuthorization(),
-                endpoints.MapGet("profile", GetUpdatableProfileAsync).RequireAuthorization()
+                endpoints.MapPost("renewToken", RenewTokenAsync),
 
             };
         }
 
+        static Task<TokenResponseModel> RenewTokenAsync(TokenRenewRequestModel mode,
+                                                        IUserService service,
+                                                        CancellationToken cancellationToken = default)
+            => service.RenewTokenAsync(mode, cancellationToken);
 
-
-        static Task<ProfileUpdateModel> GetUpdatableProfileAsync(IUserService service,
-                                                                 CancellationToken cancellationToken = default)
-            => service.GetUpdatableProfileAsync(cancellationToken);
-
-        static Task UpdateProfileAsync(IUserService service,
-                                       ProfileUpdateModel model,
-                                       CancellationToken cancellation = default)
-            => service.UpdateProfileAsync(model, cancellation);
 
         static Task SignupAsync(SignUpModel model,
                                 IUserService userService,
                                 CancellationToken cancellationToken = default)
             => userService.SignUpAsync(model, cancellationToken);
 
-        static async Task<string> LoginAsync(LoginModel model,
+        static async Task<TokenResponseModel> LoginAsync(LoginModel model,
                                              IUserService service)
         {
             var res = await service.LoginAsync(model);

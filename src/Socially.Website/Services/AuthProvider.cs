@@ -1,14 +1,19 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
+using Socially.Apps.Consumer.Services;
+using Socially.Core.Models;
 using Socially.Website.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace Socially.Website.Services
 {
     public class AuthProvider : AuthenticationStateProvider
     {
-        private string token;
+
+        private TokenResponseModel tokenData;
+        private DateTime? expiary;
         private readonly IJSRuntime _jSRuntime;
 
         private static ClaimsPrincipal FailedLogin
@@ -36,17 +41,45 @@ namespace Socially.Website.Services
             return new AuthenticationState(login);
         }
 
-        public async ValueTask<string> GetTokenAsync(CancellationToken cancellationToken = default)
+        public async ValueTask<TokenResponseModel> GetTokenInfoAsync(CancellationToken cancellationToken = default)
         {
-            if (token is null)
-                token = await _jSRuntime.InvokeAsync<string>("getData", "token");
-            return token;
+            await LazyLoadAsync(cancellationToken);
+            return tokenData;
         }
 
-        public async Task SetAsync(string jwt, CancellationToken cancellationToken = default)
+        public async ValueTask<string> GetTokenAsync(CancellationToken cancellationToken = default)
         {
-            token = jwt;
-            await _jSRuntime.InvokeVoidAsync("setData", "token", jwt);
+            await LazyLoadAsync(cancellationToken);
+            return tokenData?.AccessToken;
+        }
+
+        public async ValueTask<DateTime?> GetExiparyAsync(CancellationToken cancellationToken = default)
+        {
+            await LazyLoadAsync(cancellationToken);
+            return expiary;
+        }
+
+        private async ValueTask LazyLoadAsync(CancellationToken cancellationToken = default)
+        {
+            if (tokenData is null)
+            {
+                string dataStr = await _jSRuntime.InvokeAsync<string>("getData", "tokenData");
+                if (dataStr is null) return;
+
+                tokenData = JsonSerializer.Deserialize<TokenResponseModel>(dataStr);
+                if (tokenData is null)
+                    return;
+
+                var readToken = new JwtSecurityTokenHandler().ReadJwtToken(tokenData.AccessToken);
+
+                expiary = readToken.ValidTo;
+            }
+        }
+
+        public async Task SetAsync(TokenResponseModel res, CancellationToken cancellationToken = default)
+        {
+            string strData = res == null ? null : JsonSerializer.Serialize(res);
+            await _jSRuntime.InvokeVoidAsync("setData", "tokenData", strData);
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }
 

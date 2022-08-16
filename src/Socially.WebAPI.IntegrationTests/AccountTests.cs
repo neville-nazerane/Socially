@@ -12,7 +12,6 @@ namespace Socially.WebAPI.IntegrationTests
     public class AccountTests : IClassFixture<CustomWebApplicationFactory>
     {
 
-        const string path = "";
         private readonly CustomWebApplicationFactory _factory;
 
         public AccountTests(CustomWebApplicationFactory factory)
@@ -38,7 +37,7 @@ namespace Socially.WebAPI.IntegrationTests
                 Source = loginSource
             };
 
-            var loginResult = await client.PostAsJsonAsync($"{path}/login", loginModel);
+            var loginResult = await client.PostAsJsonAsync($"login", loginModel);
 
             Assert.Equal(400, (int)loginResult.StatusCode);
 
@@ -51,17 +50,17 @@ namespace Socially.WebAPI.IntegrationTests
                 ConfirmPassword = testPassword
             };
 
-            var signinRes = await client.PostAsJsonAsync($"{path}/signup", signupModel);
+            var signinRes = await client.PostAsJsonAsync($"signup", signupModel);
             Assert.True(signinRes.IsSuccessStatusCode,
                                 $"Sign up had error code {signinRes.StatusCode} saying '{await signinRes.Content.ReadAsStringAsync()}'");
 
-            loginResult = await client.PostAsJsonAsync($"{path}/login", loginModel);
+            loginResult = await client.PostAsJsonAsync($"login", loginModel);
 
             Assert.True(loginResult.IsSuccessStatusCode,
                                $"Sign in had error code {loginResult.StatusCode} saying '{await loginResult.Content.ReadAsStringAsync()}'");
 
 
-            var failedLoginResult = await client.PostAsJsonAsync($"{path}/login", new LoginModel
+            var failedLoginResult = await client.PostAsJsonAsync($"login", new LoginModel
             {
                 UserName = loginModel.UserName,
                 Password = "INVALID",
@@ -70,11 +69,13 @@ namespace Socially.WebAPI.IntegrationTests
 
             Assert.Equal(System.Net.HttpStatusCode.BadRequest, failedLoginResult.StatusCode);
 
-            string token = await loginResult.Content.ReadAsStringAsync();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+            TokenResponseModel tokenResponse = await loginResult.Content.ReadFromJsonAsync<TokenResponseModel>();
+            Assert.NotNull(tokenResponse.AccessToken);
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", tokenResponse.AccessToken);
 
             var profile = await client.GetFromJsonAsync<ProfileUpdateModel>("profile");
-            
+
             Assert.NotNull(profile);
             Assert.Null(profile.FirstName);
 
@@ -88,6 +89,26 @@ namespace Socially.WebAPI.IntegrationTests
             Assert.Equal("UpdatedName", profile.FirstName);
             Assert.Equal("UpdatedLName", profile.LastName);
 
+            var newTokenRequest = await client.PostAsJsonAsync("renewToken", new TokenRenewRequestModel
+            {
+                AccessToken = tokenResponse.AccessToken,
+                RefreshToken = tokenResponse.RefreshToken,
+            });
+
+            Assert.Equal(200, (int)newTokenRequest.StatusCode);
+
+            var newTokenReponse = await newTokenRequest.Content.ReadFromJsonAsync<TokenResponseModel>();
+
+            Assert.NotNull(newTokenReponse.AccessToken);
+            Assert.NotEqual(tokenResponse.AccessToken, newTokenReponse.AccessToken);
+
+            // verify if refresh token is no longer valid
+            var newTokenRequest2 = await client.PostAsJsonAsync("renewToken", new TokenRenewRequestModel
+            {
+                AccessToken = tokenResponse.AccessToken,
+                RefreshToken = tokenResponse.RefreshToken,
+            });
+            Assert.Equal(400, (int)newTokenRequest2.StatusCode);
         }
 
 
