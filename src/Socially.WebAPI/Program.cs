@@ -55,12 +55,11 @@ services.AddAuthentication("complete")
             };
         });
 services.AddAuthorization(o =>
-{
     o.DefaultPolicy = new AuthorizationPolicyBuilder()
                             .AddAuthenticationSchemes("complete")
                             .RequireAuthenticatedUser()
-                            .Build();
-});
+                            .Build()
+);
 
 // managers
 services.AddTransient<IUserProfileManager, UserProfileManager>();
