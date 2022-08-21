@@ -10,6 +10,7 @@ namespace Socially.WebAPI.Services
         Task<ProfileUpdateModel> GetUpdatableProfileAsync(CancellationToken cancellationToken = default);
         Task<TokenResponseModel> LoginAsync(LoginModel model, CancellationToken cancellationToken = default);
         Task<TokenResponseModel> RenewTokenAsync(TokenRenewRequestModel model, CancellationToken cancellationToken = default);
+        Task ResetPasswordAsync(PasswordResetModel model, CancellationToken cancellationToken = default);
         Task SignUpAsync(SignUpModel model, CancellationToken cancellationToken = default);
         Task UpdateProfileAsync(ProfileUpdateModel model, CancellationToken cancellation = default);
         Task<bool> VerifyEmailAsync(string email, CancellationToken cancellationToken = default);

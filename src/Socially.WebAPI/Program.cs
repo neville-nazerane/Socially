@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,7 +37,8 @@ services.AddCors();
 services.AddApplicationInsightsTelemetry(o => o.ConnectionString = configuration["appinsights"]);
 services.AddDbContext<ApplicationDbContext>(c => c.UseSqlServer(configuration.GetConnectionString("db")));
 services.AddIdentity<User, UserRole>()
-        .AddEntityFrameworkStores<ApplicationDbContext>();
+        .AddEntityFrameworkStores<ApplicationDbContext>()
+        .AddDefaultTokenProviders();
 services.AddHealthChecks()
         .AddDbContextCheck<ApplicationDbContext>();
 //services.AddControllers();
@@ -109,3 +111,4 @@ app.UseEndpoints(endpoints =>
 await app.RunAsync();
 
 public partial class Program { }
+

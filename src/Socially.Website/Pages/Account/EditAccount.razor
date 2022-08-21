@@ -29,6 +29,9 @@
             <div class="card-body">
                 <!-- Form settings START -->
                 <EditForm Model=model OnValidSubmit=UpdateAsync class="row g-3">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
                     <!-- First name -->
                     <div class="col-sm-6 col-lg-4">
                         <label class="form-label">First names</label>
@@ -112,18 +115,20 @@
             <!-- Title START -->
             <div class="card-body">
                 <!-- Settings START -->
-                <form class="row g-3">
+                <EditForm Model=passwordModel OnValidSubmit=ResetPasswordAsync class="row g-3">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
                     <!-- Current password -->
                     <div class="col-12">
                         <label class="form-label">Current password</label>
-                        <input type="text" class="form-control" placeholder="">
+                        <InputText type="password" @bind-Value=passwordModel.CurrentPassword class="form-control" placeholder="" />
                     </div>
                     <!-- New password -->
                     <div class="col-12">
                         <label class="form-label">New password</label>
                         <!-- Input group -->
                         <div class="input-group">
-                            <input class="form-control fakepassword" type="password" id="psw-input" placeholder="Enter new password">
+                            <InputText @bind-Value=passwordModel.NewPassword class="form-control fakepassword" type="password" id="psw-input" placeholder="Enter new password" />
                             <span class="input-group-text p-0">
                                 <i class="fakepasswordicon fa-solid fa-eye-slash cursor-pointer p-2 w-40px"></i>
                             </span>
@@ -135,13 +140,19 @@
                     <!-- Confirm password -->
                     <div class="col-12">
                         <label class="form-label">Confirm password</label>
-                        <input type="text" class="form-control" placeholder="">
+                        <InputText @bind-Value=passwordModel.ConfirmPassword type="password" class="form-control" placeholder="" />
                     </div>
                     <!-- Button  -->
                     <div class="col-12 text-end">
-                        <button type="submit" class="btn btn-primary mb-0">Update password</button>
+                        <button type="submit" class="btn btn-primary mb-0">
+                            @if (isPasswordResetting)
+                            {
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            }
+                            Update password
+                        </button>
                     </div>
-                </form>
+                </EditForm>
                 <!-- Settings END -->
             </div>
         </div>

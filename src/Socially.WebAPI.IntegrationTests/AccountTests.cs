@@ -27,6 +27,7 @@ namespace Socially.WebAPI.IntegrationTests
             const string testEmail = "ya@goo.com";
             const string testUsername = "username";
             const string testPassword = "pasSword!2";
+            const string testv2Password = "pasSword!3";
             const string loginSource = "tester";
 
             // attempt signin
@@ -60,6 +61,7 @@ namespace Socially.WebAPI.IntegrationTests
                                $"Sign in had error code {loginResult.StatusCode} saying '{await loginResult.Content.ReadAsStringAsync()}'");
 
 
+            // test with failed password
             var failedLoginResult = await client.PostAsJsonAsync($"login", new LoginModel
             {
                 UserName = loginModel.UserName,
@@ -74,6 +76,23 @@ namespace Socially.WebAPI.IntegrationTests
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", tokenResponse.AccessToken);
 
+            // reset password
+            var resetPasswordResult = await client.PutAsJsonAsync($"profile/resetPassword", new PasswordResetModel
+            {
+                CurrentPassword = testPassword,
+                NewPassword = testv2Password
+            });
+            Assert.Equal(System.Net.HttpStatusCode.OK, resetPasswordResult.StatusCode);
+            var newLoginResult = await client.PostAsJsonAsync($"login", new LoginModel
+            {
+                UserName = loginModel.UserName,
+                Password = testv2Password,
+                Source = loginSource
+            });
+            Assert.Equal(System.Net.HttpStatusCode.OK, newLoginResult.StatusCode);
+
+
+            // profile setup
             var profile = await client.GetFromJsonAsync<ProfileUpdateModel>("profile");
 
             Assert.NotNull(profile);
@@ -109,6 +128,7 @@ namespace Socially.WebAPI.IntegrationTests
                 RefreshToken = tokenResponse.RefreshToken,
             });
             Assert.Equal(400, (int)newTokenRequest2.StatusCode);
+
         }
 
 

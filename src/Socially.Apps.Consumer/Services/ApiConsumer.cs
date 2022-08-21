@@ -43,5 +43,8 @@ namespace Socially.Apps.Consumer.Services
         public Task UpdateProfileAsync(ProfileUpdateModel model, CancellationToken cancellationToken = default)
             => _httpClient.PutAsJsonAsync("profile", model, cancellationToken);
 
+        public Task ResetPasswordAsync(PasswordResetModel model, CancellationToken cancellationToken = default)
+            => _httpClient.PutAsJsonAsync("profile/resetPassword", model, cancellationToken);
+
     }
 }

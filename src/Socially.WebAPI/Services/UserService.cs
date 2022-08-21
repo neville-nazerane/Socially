@@ -108,9 +108,17 @@ namespace Socially.WebAPI.Services
             else throw new BadRequestException("Invalid token");
         }
 
+        public async Task ResetPasswordAsync(PasswordResetModel model,
+                                       CancellationToken cancellationToken = default)
+        {
+            var user = await _userProfileManager.GetUserByIdAsync(_currentContext.UserId, cancellationToken);
+            var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+            if (!result.Succeeded)
+                throw new BadRequestException(GetErrorModel(result.Errors));
+        }
+
         public async Task SignUpAsync(SignUpModel model, CancellationToken cancellationToken = default)
         {
-
             var emailExists = await _userProfileManager.EmailExistsAsync(model.Email, cancellationToken);
 
             if (emailExists)
