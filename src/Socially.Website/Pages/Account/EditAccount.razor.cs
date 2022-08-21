@@ -9,6 +9,8 @@ namespace Socially.Website.Pages.Account
     {
         ProfileUpdateModel model = null;
 
+        PasswordResetModel passwordModel = new();
+
         bool StoreDateOfBirth
         {
             get => model?.DateOfBirth is not null;
@@ -24,13 +26,15 @@ namespace Socially.Website.Pages.Account
         DateTime? DateOfBirth
         {
             get => model?.DateOfBirth;
-            set {
+            set
+            {
                 if (value is not null)
                     model.DateOfBirth = value;
             }
         }
 
         bool isAccountUpdating = false;
+        bool isPasswordResetting = false;
 
         [Inject]
         public IApiConsumer ApiConsumer { get; set; }
@@ -51,6 +55,21 @@ namespace Socially.Website.Pages.Account
             finally
             {
                 isAccountUpdating = false;
+            }
+        }
+
+        async Task ResetPasswordAsync()
+        {
+            return;
+            isPasswordResetting = true;
+            try
+            {
+                //await ApiConsumer.ResetPasswordAsync(passwordModel);
+                passwordModel = new();
+            }
+            finally
+            {
+                isPasswordResetting = false;
             }
         }
 

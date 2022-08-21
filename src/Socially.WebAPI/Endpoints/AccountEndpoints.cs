@@ -31,8 +31,7 @@ namespace Socially.WebAPI.Endpoints
 
                 endpoints.MapPost("signup", SignupAsync),
                 endpoints.MapPost("login", LoginAsync),
-                endpoints.MapPost("renewToken", RenewTokenAsync),
-
+                endpoints.MapPost("renewToken", RenewTokenAsync)
             };
         }
 
@@ -56,6 +55,8 @@ namespace Socially.WebAPI.Endpoints
 
             return res;
         }
+
+
 
     }
 }

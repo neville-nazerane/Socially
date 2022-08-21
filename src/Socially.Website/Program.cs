@@ -11,9 +11,6 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-//var apiEndpoint = "https://api.sociallyconnections.com";
-//var apiEndpoint = "http://localhost:37872";
-
 var apiEndpoint = builder.Configuration["apiEndpoint"];
 
 builder.Services.AddScoped(sp => new HttpClient(sp.GetService<WebHttpHandler>()) { BaseAddress = new Uri(apiEndpoint) });

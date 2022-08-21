@@ -25,7 +25,9 @@ namespace Socially.WebAPI.Endpoints
             {
 
                 endpoints.MapPut("profile", UpdateProfileAsync),
-                endpoints.MapGet("profile", GetUpdatableProfileAsync)
+                endpoints.MapGet("profile", GetUpdatableProfileAsync),
+
+                endpoints.MapPut("profile/resetPassword", ResetPasswordAsync)
 
             };
 
@@ -39,6 +41,11 @@ namespace Socially.WebAPI.Endpoints
                                        ProfileUpdateModel model,
                                        CancellationToken cancellation = default)
             => service.UpdateProfileAsync(model, cancellation);
+
+        static Task ResetPasswordAsync(PasswordResetModel model,
+                               IUserService service,
+                               CancellationToken cancellationToken = default)
+            => service.ResetPasswordAsync(model, cancellationToken);
 
     }
 }
