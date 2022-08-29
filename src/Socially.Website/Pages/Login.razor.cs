@@ -5,11 +5,18 @@ using Socially.Apps.Consumer.Exceptions;
 using Socially.Apps.Consumer.Services;
 using Socially.Core.Models;
 using Socially.Website.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Socially.Website.Pages
 {
     public partial class Login
     {
+        string forgotEmail = null;
+        bool isShowingForgotPassword = false;
+        bool isLoadingForgotPassword = false;
 
         bool isLoggingIn = false;
         bool isSigningUp = false;
@@ -86,6 +93,11 @@ namespace Socially.Website.Pages
             {
                 isLoggingIn = false;
             }
+        }
+
+        async Task ForgotPasswordAsync()
+        {
+            await Consumer.ForgotPasswordAsync(forgotEmail);
         }
 
     }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Socially.Website.Services;
+using System.Threading.Tasks;
 
 namespace Socially.Website.Shared
 {

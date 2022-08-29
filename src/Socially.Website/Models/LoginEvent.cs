@@ -1,4 +1,6 @@
-﻿namespace Socially.Website.Models
+﻿using System;
+
+namespace Socially.Website.Models
 {
     public class LoginEvent : EventArgs
     {

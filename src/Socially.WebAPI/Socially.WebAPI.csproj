@@ -15,7 +15,7 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.8" />
 		<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="6.0.8" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-		<PackageReference Include="NetCore.Jwt" Version="1.0.2" />
+		<PackageReference Include="SendGrid.Extensions.DependencyInjection" Version="1.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>

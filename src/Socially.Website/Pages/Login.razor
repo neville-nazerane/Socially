@@ -6,7 +6,39 @@
         <!-- Sign in START -->
         <div class="card card-body text-center p-4 p-sm-5">
 
-            @if (isSignup)
+            @if (isShowingForgotPassword)
+            {
+                                <!-- Title -->
+                <h1 class="mb-2">Forgot password</h1>
+                <p class="mb-0">Remembered already?<a href="#" @onclick:preventDefault=true @onclick=@(e => isShowingForgotPassword = false)> Click here to sign up</a></p>
+                <!-- Form START -->
+                <form @onsubmit=ForgotPasswordAsync class="mt-sm-4">
+
+                    @foreach (var error in errors)
+                    {
+                        <small class="text-danger">@error</small>
+                    }
+
+                    <!-- Email -->
+                    <div class="mb-3 input-group-lg">
+                        <input @bind-value=forgotEmail class="form-control" placeholder="Enter Email" />
+                    </div>
+                    <!-- Button -->
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-lg btn-primary" @onclick=ForgotPasswordAsync disabled=@isLoadingForgotPassword>
+                            @if (isLoadingForgotPassword)
+                            {
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            }
+                            Send Email
+                        </button>
+                    </div>
+                    <!-- Copyright -->
+                    <p class="mb-0 mt-3">©2022 <a target="_blank" href="https://www.webestica.com/">Webestica.</a> All rights reserved</p>
+                </form>
+                <!-- Form END -->
+            }
+            else if (isSignup)
             {
                 <div class="text-center">
                     <!-- Title -->
@@ -123,7 +155,7 @@
                             <input type="checkbox" class="form-check-input" id="rememberCheck">
                             <label class="form-check-label" for="rememberCheck">Remember me?</label>
                         </div>
-                        <a href="forgot-password.html">Forgot password?</a>
+                        <a href="#" @onclick:preventDefault=true @onclick=@(() => isShowingForgotPassword = true)>Forgot password?</a>
                     </div>
                     <!-- Button -->
                     <div class="d-grid">

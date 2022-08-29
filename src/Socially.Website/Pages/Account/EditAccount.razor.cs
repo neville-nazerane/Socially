@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Socially.Apps.Consumer.Services;
 using Socially.Core.Models;
+using System;
+using System.Threading.Tasks;
 
 namespace Socially.Website.Pages.Account
 {
@@ -60,11 +62,10 @@ namespace Socially.Website.Pages.Account
 
         async Task ResetPasswordAsync()
         {
-            return;
             isPasswordResetting = true;
             try
             {
-                //await ApiConsumer.ResetPasswordAsync(passwordModel);
+                await ApiConsumer.ResetPasswordAsync(passwordModel);
                 passwordModel = new();
             }
             finally

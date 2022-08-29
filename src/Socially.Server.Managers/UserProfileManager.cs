@@ -24,6 +24,16 @@ namespace Socially.Server.Managers
         public ValueTask<User> GetUserByIdAsync(int userId, CancellationToken cancellationToken = default)
             => _dbContext.Users.FindAsync(new object[] { userId }, cancellationToken);
 
+        public Task<User> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default)
+            => _dbContext.Users
+                         .Where(u => u.Email == email)
+                         .SingleOrDefaultAsync(cancellationToken);
+
+        public Task<User> GetUserByUsernameAsync(string username, CancellationToken cancellationToken = default)
+            => _dbContext.Users
+                          .Where(u => u.UserName == username)
+                          .SingleOrDefaultAsync(cancellationToken);
+
         public Task<ProfileSummary> GetSummaryAsync(int userId, CancellationToken cancellationToken = default)
             => _dbContext.Users
                          .Where(u => u.Id == userId)
