@@ -1,6 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Socially.Apps.Consumer.Exceptions;
 using Socially.Apps.Consumer.Services;
 using Socially.Core.Models;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Socially.Website.Pages.Account
@@ -9,6 +14,10 @@ namespace Socially.Website.Pages.Account
     {
 
         ForgotPasswordModel model = new();
+
+        string message;
+        bool isDone = false;
+        ICollection<string> errors = new List<string>();
 
         [Inject]
         public IApiConsumer Consumer { get; set; }
@@ -23,14 +32,38 @@ namespace Socially.Website.Pages.Account
 
         protected override void OnInitialized()
         {
-            model.Token = Token;
-            model.UserName = UserName;
+            InitModel();
+        }
+
+        private void InitModel()
+        {
+            model = new()
+            {
+                Token = Token,
+                UserName = UserName
+            };
         }
 
         async Task SubmitAsync()
         {
-            var res = await Consumer.ResetForgottenPasswordAsync(model);
-            res.EnsureSuccessStatusCode();
+            message = null;
+            errors.Clear();
+            try
+            {
+                var res = await Consumer.ResetForgottenPasswordAsync(model);
+                res.EnsureSuccessStatusCode();
+                InitModel();
+                message = "DONE!";
+                isDone = true;
+            }
+            catch (ErrorForClientException ex)
+            {
+                errors = ex.Errors.SelectMany(e => e.Errors).ToList();
+            }
+            catch
+            {
+                message = "Something went wrong";
+            }
         }
 
         //protected override async Task OnInitializedAsync()

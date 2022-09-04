@@ -97,7 +97,20 @@ namespace Socially.Website.Pages
 
         async Task ForgotPasswordAsync()
         {
-            await Consumer.ForgotPasswordAsync(forgotEmail);
+            try
+            {
+                isLoadingForgotPassword = true;
+                await Consumer.ForgotPasswordAsync(forgotEmail);
+                isShowingForgotPassword = false;
+            }
+            catch (Exception ex)
+            {
+                
+            }
+            finally
+            {
+                isLoadingForgotPassword = false;
+            }
         }
 
     }
