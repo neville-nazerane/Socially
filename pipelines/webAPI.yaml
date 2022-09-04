@@ -39,7 +39,12 @@ extends:
       ASPNETCORE_ENVIRONMENT: Production
       connectionStrings__db: $(Secrets.Db)
       appinsights: $(Secrets.web_appInsights)
+      sendGridApiKey: $(Secrets.sendgrid)
+      
       authOptions__secret: $(Secrets.AuthSecret)
       authOptions__audiences: website
       authOptions__issuer: https://api.sociallyconnections.com
 
+      settings__clientBaseUrl: https://sociallyconnections.com
+      settings__emailFrom: accounts@sociallyconnections.com
+      settings__forgotPasswordTemplate: $(Secrets.forgotPasswordTemplate)

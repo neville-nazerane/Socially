@@ -292,7 +292,7 @@ namespace Socially.Server.Managers.Tests
             await SetupManagerAsync();
             await DbContext.UserRefreshTokens.AddRangeAsync(new UserRefreshToken
             {
-                UserId = 10, 
+                UserId = 10,
                 IsEnabled = true,
                 ExpiresOn = DateTime.UtcNow.AddMinutes(5),
                 RefreshToken = "sampleToken"
@@ -470,6 +470,115 @@ namespace Socially.Server.Managers.Tests
             // ASSERT 
             Assert.NotNull(res);
             Assert.Equal("something@valid.com", res.Email);
+        }
+
+        [Fact]
+        public async Task GetUserNameByEmail_NoUsersInDb_ReturnsNull()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+
+            // ACT
+            var user = await manager.GetUserByEmailAsync("any@email.com");
+
+            // ASSERT
+            Assert.Null(user);
+        }
+
+        [Fact]
+        public async Task GetUserByEmail_InvalidEmail_ReturnsNull()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            await DbContext.Users.AddAsync(new User
+            {
+                CreatedOn = DateTime.UtcNow,
+                UserName = "user1",
+                Email = "email@valid.com"
+            });
+            await DbContext.SaveChangesAsync();
+            
+            // ACT
+            var user = await manager.GetUserByEmailAsync("any@email.com");
+
+            // ASSERT
+            Assert.Null(user);
+        }
+
+        [Fact]
+        public async Task GetUserByEmail_ValidEmail_ReturnsUser()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            await DbContext.Users.AddAsync(new User
+            {
+                CreatedOn = DateTime.UtcNow,
+                UserName = "user1",
+                Email = "email@valid.com"
+            });
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            var user = await manager.GetUserByEmailAsync("email@valid.com");
+
+            // ASSERT
+            Assert.NotNull(user);
+            Assert.Equal("user1", user.UserName);
+        }
+
+
+        [Fact]
+        public async Task GetUserByUsername_NoUsersInDb_ReturnsNull()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+
+            // ACT
+            var user = await manager.GetUserByUsernameAsync("anyuser");
+
+            // ASSERT
+            Assert.Null(user);
+        }
+
+        [Fact]
+        public async Task GetUserByUsername_InvalidUsername_ReturnsNull()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            await DbContext.Users.AddAsync(new User
+            {
+                CreatedOn = DateTime.UtcNow,
+                UserName = "user1",
+                Email = "Username@valid.com"
+            });
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            var user = await manager.GetUserByUsernameAsync("user2");
+
+            // ASSERT
+            Assert.Null(user);
+        }
+
+        [Fact]
+        public async Task GetUserByUsername_ValidUsername_ReturnsUser()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            await DbContext.Users.AddAsync(new User
+            {
+                CreatedOn = DateTime.UtcNow,
+                UserName = "user1",
+                Email = "Username@valid.com"
+            });
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            var user = await manager.GetUserByUsernameAsync("user1");
+
+            // ASSERT
+            Assert.NotNull(user);
+            Assert.Equal("user1", user.UserName);
         }
 
     }

@@ -25,6 +25,8 @@ using Socially.WebAPI.Endpoints;
 using Socially.WebAPI.Middlewares;
 using Socially.WebAPI.Services;
 using Socially.WebAPI.Utils;
+using SendGrid.Extensions.DependencyInjection;
+using Socially.Website.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,14 +38,21 @@ var configuration = builder.Configuration;
 services.AddCors();
 services.AddApplicationInsightsTelemetry(o => o.ConnectionString = configuration["appinsights"]);
 services.AddDbContext<ApplicationDbContext>(c => c.UseSqlServer(configuration.GetConnectionString("db")));
+services.AddSingleton(p =>
+{
+    var template = new ConfigsSettings();
+    configuration.GetSection("settings").Bind(template);
+    return template;
+});
 services.AddIdentity<User, UserRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders();
 services.AddHealthChecks()
         .AddDbContextCheck<ApplicationDbContext>();
-//services.AddControllers();
 
-//services.AddSwaggerDocument();
+
+services.AddSendGrid(o => o.ApiKey = configuration["sendGridApiKey"]);
+
 services.AddAuthentication("complete")
         .AddJwtBearerCompletely(o =>
         {
@@ -99,6 +108,7 @@ app.UseCurrentSetup();
 
 app.UseEndpoints(endpoints =>
 {
+    endpoints.MapGet("/send/{email}", SampleAsync);
     endpoints.MapGet("/", () => "Hello from a socially app");
     endpoints.MapHealthChecks("/health");
 
@@ -109,6 +119,8 @@ app.UseEndpoints(endpoints =>
 
 
 await app.RunAsync();
+
+Task SampleAsync(string email, IUserService service) => service.ForgotPasswordAsync(email);
 
 public partial class Program { }
 

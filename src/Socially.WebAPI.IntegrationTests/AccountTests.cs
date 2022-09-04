@@ -6,6 +6,15 @@ using Xunit;
 using Socially.Core.Models;
 using System.Net.Http.Json;
 using System.Net.Http.Headers;
+using Socially.Apps.Consumer.Services;
+using Moq;
+using SendGrid;
+using Microsoft.Extensions.DependencyInjection;
+using SendGrid.Helpers.Mail;
+using System.Threading;
+using System.Net;
+using Microsoft.AspNetCore.Mvc.Routing;
+using System.Web;
 
 namespace Socially.WebAPI.IntegrationTests
 {
@@ -23,12 +32,24 @@ namespace Socially.WebAPI.IntegrationTests
         public async Task AccountSetup()
         {
             var client = _factory.CreateClient();
+            var consumer = new ApiConsumer(client);
 
             const string testEmail = "ya@goo.com";
             const string testUsername = "username";
-            const string testPassword = "pasSword!2";
-            const string testv2Password = "pasSword!3";
+            const string testPassword = "pasSword!1";
+            const string testv2Password = "pasSword!2";
+            const string testv3Password = "pasSword!3";
             const string loginSource = "tester";
+
+            var mockedSendgrid = _factory.Services.GetService<Mock<ISendGridClient>>();
+            string forgotUrl = null;
+            mockedSendgrid.Setup(s => s.SendEmailAsync(It.IsAny<SendGridMessage>(), It.IsAny<CancellationToken>()))
+                          .Callback((SendGridMessage msg, CancellationToken tok) =>
+                          {
+                              var obj = msg.Personalizations.First().TemplateData;
+                              forgotUrl = obj.GetType().GetProperties().Single(p => p.Name == "reseturl").GetValue(obj).ToString();
+                          });
+
 
             // attempt signin
             var loginModel = new LoginModel
@@ -89,9 +110,29 @@ namespace Socially.WebAPI.IntegrationTests
                 Password = testv2Password,
                 Source = loginSource
             });
-            Assert.Equal(System.Net.HttpStatusCode.OK, newLoginResult.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, newLoginResult.StatusCode);
 
+            // forgot password
+            
+            await consumer.ForgotPasswordAsync(testEmail);
+            var token = forgotUrl.Split("token=").Last();
+            var forgotResult = await consumer.ResetForgottenPasswordAsync(new ForgotPasswordModel
+            {
+                UserName = testUsername,
+                Token = HttpUtility.UrlDecode(token),
+                NewPassword = testv3Password
+            });
+            string str = await forgotResult.Content.ReadAsStringAsync();
+            Assert.Equal(HttpStatusCode.OK, forgotResult.StatusCode);
+            var unforgettenLoginResult = await client.PostAsJsonAsync($"login", new LoginModel
+            {
+                UserName = loginModel.UserName,
+                Password = testv3Password,
+                Source = loginSource
+            });
+            Assert.Equal(HttpStatusCode.OK, unforgettenLoginResult.StatusCode);
 
+            
             // profile setup
             var profile = await client.GetFromJsonAsync<ProfileUpdateModel>("profile");
 

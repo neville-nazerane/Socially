@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using NetCore.Jwt;
+using SendGrid;
 using Socially.Core.Entities;
 using Socially.Core.Exceptions;
 using Socially.Core.Models;
@@ -7,6 +8,7 @@ using Socially.Server.Managers;
 using Socially.Server.Services.Models;
 using Socially.WebAPI.Models;
 using Socially.WebAPI.Utils;
+using Socially.Website.Models;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -15,6 +17,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Socially.WebAPI.Services
 {
@@ -22,17 +25,23 @@ namespace Socially.WebAPI.Services
     {
         private readonly IUserProfileManager _userProfileManager;
         private readonly CurrentContext _currentContext;
+        private readonly ConfigsSettings _configSettings;
+        private readonly ISendGridClient _sendGridClient;
         private readonly TokenInfo _tokenInfo;
         private readonly UserManager<User> _userManager;
 
         public UserService(UserManager<User> userManager,
                            IUserProfileManager userProfileManager,
                            CurrentContext currentContext,
+                           ConfigsSettings configSettings,
+                           ISendGridClient sendGridClient,
                            TokenInfo tokenInfo)
         {
             _userManager = userManager;
             _userProfileManager = userProfileManager;
             _currentContext = currentContext;
+            _configSettings = configSettings;
+            _sendGridClient = sendGridClient;
             _tokenInfo = tokenInfo;
         }
 
@@ -155,6 +164,50 @@ namespace Socially.WebAPI.Services
 
         public Task<ProfileUpdateModel> GetUpdatableProfileAsync(CancellationToken cancellationToken = default)
             => _userProfileManager.GetUpdatableProfileAsync(_currentContext.UserId, cancellationToken);
+
+        public async Task ForgotPasswordAsync(string email, CancellationToken cancellationToken = default)
+        {
+            var user = await _userProfileManager.GetUserByEmailAsync(email, cancellationToken);
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            token = HttpUtility.UrlEncode(token);
+            var res = await _sendGridClient.SendEmailAsync(new()
+            {
+                From = new SendGrid.Helpers.Mail.EmailAddress(_configSettings.EmailFrom),
+                ReplyTo = new SendGrid.Helpers.Mail.EmailAddress(email),
+                TemplateId = _configSettings.ForgotPasswordTemplate,
+                Personalizations = new List<SendGrid.Helpers.Mail.Personalization>
+                {
+                  new SendGrid.Helpers.Mail.Personalization
+                  {
+                      Tos = new List<SendGrid.Helpers.Mail.EmailAddress>
+                      {
+                          new SendGrid.Helpers.Mail.EmailAddress(email)
+                      },
+                      TemplateData = new
+                      {
+                          username = user.UserName,
+                          reseturl = $"{_configSettings.ClientBaseUrl}/forgotPassword?username={user.UserName}&token={token}"
+                      }
+                  }  
+                },
+                //CustomArgs = new()
+                //{
+                //    { "username", user.UserName },
+                //    { "resetUrl", $"sociallywebsites.com/forgotPassword?id={user.Id}&token={token}" }
+                //}
+            }, cancellationToken);
+            //var response = await res.Body.ReadAsStringAsync();
+        }
+
+        public async Task ResetForgottenPasswordAsync(ForgotPasswordModel model, CancellationToken cancellationToken = default)
+        {
+            var user = await _userProfileManager.GetUserByUsernameAsync(model.UserName, cancellationToken);
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+            if (!result.Succeeded)
+                throw new BadRequestException(GetErrorModel(result.Errors));
+        }
+
 
         private static IEnumerable<ErrorModel> GetErrorModel(IEnumerable<IdentityError> errors)
         {

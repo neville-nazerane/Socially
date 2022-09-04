@@ -31,9 +31,23 @@ namespace Socially.WebAPI.Endpoints
 
                 endpoints.MapPost("signup", SignupAsync),
                 endpoints.MapPost("login", LoginAsync),
-                endpoints.MapPost("renewToken", RenewTokenAsync)
+                endpoints.MapPost("renewToken", RenewTokenAsync),
+
+                endpoints.MapPost("forgotPassword/{email}", ForgotPasswordAsync),
+                endpoints.MapPut("resetForgottenPassword", ResetForgottenPasswordAsync)
             };
         }
+
+        static Task ForgotPasswordAsync(string email, 
+                                       IUserService service,
+                                       CancellationToken cancellationToken = default)
+            => service.ForgotPasswordAsync(email, cancellationToken);
+
+        static Task ResetForgottenPasswordAsync(ForgotPasswordModel model,
+                                                      IUserService service,
+                                                      CancellationToken cancellationToken = default)
+            => service.ResetForgottenPasswordAsync(model, cancellationToken);
+
 
         static Task<TokenResponseModel> RenewTokenAsync(TokenRenewRequestModel mode,
                                                         IUserService service,
