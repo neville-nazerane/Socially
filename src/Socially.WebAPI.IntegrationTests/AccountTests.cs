@@ -13,6 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using SendGrid.Helpers.Mail;
 using System.Threading;
 using System.Net;
+using Microsoft.AspNetCore.Mvc.Routing;
+using System.Web;
 
 namespace Socially.WebAPI.IntegrationTests
 {
@@ -34,8 +36,8 @@ namespace Socially.WebAPI.IntegrationTests
 
             const string testEmail = "ya@goo.com";
             const string testUsername = "username";
-            const string testPassword = "pasSword!2";
-            const string testv2Password = "pasSword!3";
+            const string testPassword = "pasSword!1";
+            const string testv2Password = "pasSword!2";
             const string testv3Password = "pasSword!3";
             const string loginSource = "tester";
 
@@ -108,7 +110,7 @@ namespace Socially.WebAPI.IntegrationTests
                 Password = testv2Password,
                 Source = loginSource
             });
-            Assert.Equal(System.Net.HttpStatusCode.OK, newLoginResult.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, newLoginResult.StatusCode);
 
             // forgot password
             
@@ -117,9 +119,10 @@ namespace Socially.WebAPI.IntegrationTests
             var forgotResult = await consumer.ResetForgottenPasswordAsync(new ForgotPasswordModel
             {
                 UserName = testUsername,
-                Token = token,
+                Token = HttpUtility.UrlDecode(token),
                 NewPassword = testv3Password
             });
+            string str = await forgotResult.Content.ReadAsStringAsync();
             Assert.Equal(HttpStatusCode.OK, forgotResult.StatusCode);
             var unforgettenLoginResult = await client.PostAsJsonAsync($"login", new LoginModel
             {
