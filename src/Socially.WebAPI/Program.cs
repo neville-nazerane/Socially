@@ -41,7 +41,7 @@ services.AddDbContext<ApplicationDbContext>(c => c.UseSqlServer(configuration.Ge
 services.AddSingleton(p =>
 {
     var template = new ConfigsSettings();
-    configuration.GetSection("emailTemplates").Bind(template);
+    configuration.GetSection("settings").Bind(template);
     return template;
 });
 services.AddIdentity<User, UserRole>()
