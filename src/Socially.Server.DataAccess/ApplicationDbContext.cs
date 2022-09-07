@@ -13,6 +13,7 @@ namespace Socially.Server.DataAccess
 
         public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
 
+        public DbSet<ProfileImage> ProfileImages { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

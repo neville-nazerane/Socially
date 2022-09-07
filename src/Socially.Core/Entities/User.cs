@@ -21,5 +21,7 @@ namespace Socially.Core.Entities
         [Required]
         public DateTime? CreatedOn { get; set; }
 
+        public IEnumerable<ProfileImage> ProfileImages { get; set; }
+
     }
 }

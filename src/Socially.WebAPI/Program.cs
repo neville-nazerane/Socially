@@ -52,6 +52,7 @@ services.AddHealthChecks()
 
 
 services.AddSendGrid(o => o.ApiKey = configuration["sendGridApiKey"]);
+services.AddSingleton<IBlobAccess>(p => new BlobAccess(configuration["blobConnString"]));
 
 services.AddAuthentication("complete")
         .AddJwtBearerCompletely(o =>
@@ -73,10 +74,12 @@ services.AddAuthorization(o =>
 );
 
 // managers
-services.AddTransient<IUserProfileManager, UserProfileManager>();
+services.AddTransient<IUserProfileManager, UserProfileManager>()
+        .AddTransient<IImageManager, ImageManager>();
 
 // services
 services.AddTransient<IUserService, UserService>()
+        .AddTransient<IImagesService, ImagesService>()
         .AddScoped<CurrentContext>();
 
 // swagger
