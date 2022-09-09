@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Socially.Core.Models;
 using Socially.WebAPI.Models;
@@ -20,14 +21,18 @@ namespace Socially.WebAPI.Endpoints
         {
             return new RouteHandlerBuilder[]
             {
+                endpoints.MapGet("images", GetAllForUserAsync),
                 endpoints.MapPost("image", UploadAsync)
             };
         }
 
         Task UploadAsync(ImagesService service,
-                         ImageUploadModel model,
+                        [FromForm]ImageUploadModel model,
                          CancellationToken cancellationToken = default)
             => service.UploadAsync(model.Image, cancellationToken);
+
+        Task<IEnumerable<string>> GetAllForUserAsync(ImagesService service, CancellationToken cancellationToken = default)
+            => service.GetAllForUserAsync(cancellationToken);
 
     }
 }

@@ -10,6 +10,8 @@ namespace Socially.Core.Models
     public class ImageUploadModel
     {
 
+        public UploadContext ImageContext { get; set; }
+
         public IFormFile Image { get; set; }
 
     }
