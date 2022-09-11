@@ -17,6 +17,7 @@ namespace Socially.Server.DataAccess
 
         Task UploadAsync(string containerName,
                          string fileName,
+                         string contentType,
                          Stream stream,
                          CancellationToken cancellationToken = default);
 

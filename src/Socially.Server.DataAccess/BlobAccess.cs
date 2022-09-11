@@ -13,6 +13,7 @@ namespace Socially.Server.DataAccess
 
     public class BlobAccess : IBlobAccess
     {
+
         private readonly BlobServiceClient _client;
 
         public BlobAccess(string connString)
@@ -29,9 +30,19 @@ namespace Socially.Server.DataAccess
 
         public Task UploadAsync(string containerName,
                                 string fileName,
+                                string contentType,
                                 Stream stream,
                                 CancellationToken cancellationToken = default)
-            => WithContainer(containerName).UploadBlobAsync(fileName, stream, cancellationToken);
+        {
+           return WithContainer(containerName).GetBlobClient(fileName)
+                                                .UploadAsync(stream, new BlobUploadOptions
+                                                {
+                                                    HttpHeaders = new BlobHttpHeaders
+                                                    {
+                                                        ContentType = contentType
+                                                    }
+                                                }, cancellationToken);
+        }
 
         public Task DeleteAsync(string containerName,
                                 string fileName,

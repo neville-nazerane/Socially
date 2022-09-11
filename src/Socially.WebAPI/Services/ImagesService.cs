@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.StaticFiles;
 using Socially.Server.Managers;
 using Socially.Server.Services.Models;
 using Socially.Website.Models;
@@ -11,6 +12,9 @@ namespace Socially.WebAPI.Services
 {
     public class ImagesService : IImagesService
     {
+
+        private static readonly FileExtensionContentTypeProvider contentTypeProvider = new();
+
         private readonly IImageManager _imageManager;
         private readonly ConfigsSettings configsSettings;
         private readonly CurrentContext _currentContext;
@@ -25,10 +29,17 @@ namespace Socially.WebAPI.Services
         }
 
         public Task<string> UploadAsync(IFormFile formFile, CancellationToken cancellationToken = default)
-            => _imageManager.AddAsync(_currentContext.UserId,
-                                      formFile.FileName.Split(".").Last(),
-                                      formFile.OpenReadStream(),
-                                      cancellationToken);
+        {
+            var ext = $".{formFile.FileName.Split(".").Last()}";
+            if (!contentTypeProvider.Mappings.ContainsKey(ext))
+                throw new BadHttpRequestException("Invalid file format");
+
+            return _imageManager.AddAsync(_currentContext.UserId,
+                                          ext,
+                                          contentTypeProvider.Mappings[ext],
+                                          formFile.OpenReadStream(),
+                                          cancellationToken);
+        }
 
         public Task<IEnumerable<string>> GetAllForUserAsync(CancellationToken cancellationToken = default)
             => _imageManager.GetAllForUserAsync(_currentContext.UserId, cancellationToken);

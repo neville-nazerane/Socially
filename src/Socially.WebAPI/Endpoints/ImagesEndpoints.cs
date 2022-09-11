@@ -21,7 +21,9 @@ namespace Socially.WebAPI.Endpoints
     public class ImagesEndpoints : EndpointsBase
     {
 
-        public override IEndpointConventionBuilder Aggregate(RouteHandlerBuilder builder) => builder.WithTags("images");
+        public override IEndpointConventionBuilder Aggregate(RouteHandlerBuilder builder) 
+            => builder.WithTags("images")
+                      .RequireAuthorization();
 
 
         public override IEnumerable<RouteHandlerBuilder> Setup(IEndpointRouteBuilder endpoints)

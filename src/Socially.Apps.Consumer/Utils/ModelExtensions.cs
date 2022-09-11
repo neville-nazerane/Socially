@@ -27,7 +27,7 @@ namespace Socially.Apps.Consumer.Utils
                     var value = (UploadContext)p.GetValue(model);
                     string name = p.Name[..^"Context".Length];
                     if (value is not null && value.Stream is not null)
-                        result.Add(new StreamContent(File.OpenRead(@"C:\Setup.log")), name, value.FileName);
+                        result.Add(new StreamContent(value.Stream), name, value.FileName);
                 }
                 else if (p.PropertyType.IsPrimitive)
                 {

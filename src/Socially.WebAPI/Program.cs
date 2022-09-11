@@ -27,6 +27,7 @@ using Socially.WebAPI.Services;
 using Socially.WebAPI.Utils;
 using SendGrid.Extensions.DependencyInjection;
 using Socially.Website.Models;
+using Socially.Website.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,7 +81,8 @@ services.AddTransient<IUserProfileManager, UserProfileManager>()
 // services
 services.AddTransient<IUserService, UserService>()
         .AddTransient<IImagesService, ImagesService>()
-        .AddScoped<CurrentContext>();
+        .AddScoped<CurrentContext>()
+        .AddScoped<InitializeService>();
 
 // swagger
 services.AddEndpointsApiExplorer();
@@ -111,7 +113,7 @@ app.UseCurrentSetup();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapGet("/", () => "Hello from a socially app").WithTags("general");
+    endpoints.MapGet("/", () => "Hello from a socially app").ExcludeFromDescription();
     endpoints.MapHealthChecks("/health");
 
     endpoints.MapCustom<AccountEndpoints>();
@@ -120,10 +122,10 @@ app.UseEndpoints(endpoints =>
 
 });
 
+await using (var scope = app.Services.CreateAsyncScope())
+    await scope.ServiceProvider.GetService<InitializeService>().InitAsync();
 
 await app.RunAsync();
-
-Task SampleAsync(string email, IUserService service) => service.ForgotPasswordAsync(email);
 
 public partial class Program { }
 

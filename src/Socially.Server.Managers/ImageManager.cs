@@ -19,7 +19,7 @@ namespace Socially.Server.Managers
         private readonly ILogger<ImageManager> _logger;
         private readonly IBlobAccess _blobAccess;
 
-        public ImageManager(ApplicationDbContext dbContext, 
+        public ImageManager(ApplicationDbContext dbContext,
                             ILogger<ImageManager> logger,
                             IBlobAccess blobAccess)
         {
@@ -28,13 +28,19 @@ namespace Socially.Server.Managers
             _blobAccess = blobAccess;
         }
 
+        public Task InitAsync(CancellationToken cancellationToken = default)
+            => _blobAccess.CreateContainerIfNotExistAsync(conatinerName,
+                                                          Azure.Storage.Blobs.Models.PublicAccessType.Blob,
+                                                          cancellationToken);
+
         public async Task<string> AddAsync(int userId,
                                    string fileExtension,
+                                   string contentType,
                                    Stream stream,
                                    CancellationToken cancellationToken = default)
         {
-            var fileName = $"{Guid.NewGuid():N}.{fileExtension}";
-            await _blobAccess.UploadAsync(conatinerName, fileName, stream, cancellationToken);
+            var fileName = $"{Guid.NewGuid():N}{fileExtension}";
+            await _blobAccess.UploadAsync(conatinerName, fileName, contentType, stream, cancellationToken);
             await _dbContext.ProfileImages
                                 .AddAsync(new ProfileImage
                                 {
