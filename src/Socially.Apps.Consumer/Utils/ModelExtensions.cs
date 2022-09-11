@@ -2,6 +2,7 @@
 using Socially.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -25,11 +26,14 @@ namespace Socially.Apps.Consumer.Utils
                 {
                     var value = (UploadContext)p.GetValue(model);
                     string name = p.Name[..^"Context".Length];
-                    result.Add(new StreamContent(value.Stream), name);
+                    if (value is not null && value.Stream is not null)
+                        result.Add(new StreamContent(File.OpenRead(@"C:\Setup.log")), name, value.FileName);
                 }
                 else if (p.PropertyType.IsPrimitive)
                 {
-                    result.Add(new StringContent(p.GetValue(model)?.ToString()), p.Name);
+                    var value = p.GetValue(model);
+                    if (value is not null)
+                        result.Add(new StringContent(value.ToString()), p.Name);
                 }
                 // account for objects
             }

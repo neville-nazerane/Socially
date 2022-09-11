@@ -36,19 +36,15 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         {
             // Remove the app's ApplicationDbContext registration.
             services.RemoveService<DbContextOptions<ApplicationDbContext>>();
+            services.RemoveService<ApplicationDbContext>();
 
             // Add ApplicationDbContext using an in-memory database for testing.
-            services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("InMemoryDbForTesting"));
+            services.AddDbContext<ApplicationDbContext>(
+                options => options.UseInMemoryDatabase("InMemoryDbForTesting"),
+                contextLifetime: ServiceLifetime.Singleton);
 
-
-
-            // Remove sendgrid
-            services.RemoveService<ISendGridClient>();
-
-            // Add mocked sendgrid client
-            var mockedSendgrid = new Mock<ISendGridClient>();
-            services.AddSingleton(mockedSendgrid)
-                    .AddSingleton(p => mockedSendgrid.Object);
+            services.ReplaceServiceWithMock<ISendGridClient>()
+                    .ReplaceServiceWithMock<IBlobAccess>();
 
         });
     }

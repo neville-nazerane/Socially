@@ -111,12 +111,12 @@ app.UseCurrentSetup();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapGet("/send/{email}", SampleAsync);
-    endpoints.MapGet("/", () => "Hello from a socially app");
+    endpoints.MapGet("/", () => "Hello from a socially app").WithTags("general");
     endpoints.MapHealthChecks("/health");
 
     endpoints.MapCustom<AccountEndpoints>();
     endpoints.MapCustom<ProfileEndpoints>();
+    endpoints.MapCustom<ImagesEndpoints>();
 
 });
 

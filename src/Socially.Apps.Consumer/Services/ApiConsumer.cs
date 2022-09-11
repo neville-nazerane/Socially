@@ -55,7 +55,7 @@ namespace Socially.Apps.Consumer.Services
             => _httpClient.PostAsync($"forgotPassword/{email}", null, cancellationToken);
 
         public Task<HttpResponseMessage> UploadAsync(ImageUploadModel model, CancellationToken cancellationToken = default)
-            => _httpClient.PostAsync($"image", model.MakeForm(), cancellationToken);
+            => _httpClient.PostAsync("image", model.MakeForm(), cancellationToken);
 
         public Task<IEnumerable<string>> GetAllImagesOfUserAsync(CancellationToken cancellationToken = default)
             => _httpClient.GetFromJsonAsync<IEnumerable<string>>("images", cancellationToken);
