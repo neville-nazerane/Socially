@@ -8,6 +8,6 @@ namespace Socially.WebAPI.Services
     public interface IImagesService
     {
         Task<IEnumerable<string>> GetAllForUserAsync(CancellationToken cancellationToken = default);
-        Task UploadAsync(IFormFile formFile, CancellationToken cancellationToken = default);
+        Task<string> UploadAsync(IFormFile formFile, CancellationToken cancellationToken = default);
     }
 }

@@ -33,7 +33,7 @@ namespace Socially.WebAPI.Endpoints
             };
         }
 
-        Task UploadAsync(FormBinder<ImageUploadModel> model,
+        Task<string> UploadAsync(FormBinder<ImageUploadModel> model,
                          IImagesService service,
                          CancellationToken cancellationToken = default)
             => service.UploadAsync(model.Model.Image, cancellationToken);

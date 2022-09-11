@@ -24,7 +24,7 @@ namespace Socially.WebAPI.Services
             _currentContext = currentContext;
         }
 
-        public Task UploadAsync(IFormFile formFile, CancellationToken cancellationToken = default)
+        public Task<string> UploadAsync(IFormFile formFile, CancellationToken cancellationToken = default)
             => _imageManager.AddAsync(_currentContext.UserId,
                                       formFile.FileName.Split(".").Last(),
                                       formFile.OpenReadStream(),

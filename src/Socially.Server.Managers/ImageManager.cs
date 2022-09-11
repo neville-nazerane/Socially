@@ -33,7 +33,7 @@ namespace Socially.Server.Managers
                                    Stream stream,
                                    CancellationToken cancellationToken = default)
         {
-            var fileName = $"{Guid.NewGuid():N}{fileExtension}";
+            var fileName = $"{Guid.NewGuid():N}.{fileExtension}";
             await _blobAccess.UploadAsync(conatinerName, fileName, stream, cancellationToken);
             await _dbContext.ProfileImages
                                 .AddAsync(new ProfileImage
