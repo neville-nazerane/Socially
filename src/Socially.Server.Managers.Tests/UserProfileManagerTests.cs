@@ -16,11 +16,10 @@ namespace Socially.Server.Managers.Tests
 
         private UserProfileManager manager;
 
-        private async Task SetupManagerAsync()
+        private Task SetupManagerAsync()
         {
-            await DbContext.Database.EnsureDeletedAsync();
-            await DbContext.Database.EnsureCreatedAsync();
             manager = new UserProfileManager(DbContext);
+            return Task.CompletedTask;
         }
 
         [Fact]
@@ -278,10 +277,10 @@ namespace Socially.Server.Managers.Tests
             string token = await manager.CreateRefreshTokenAsync(10, TimeSpan.Zero);
 
             // ASSERT
+            var otherUserExists = await DbContext.UserRefreshTokens.AnyAsync(u => u.UserId != 10 && u.RefreshToken == token);
             var exists = await DbContext.UserRefreshTokens.AnyAsync(u => u.UserId == 10 && u.RefreshToken == token);
-            var exists2 = await DbContext.UserRefreshTokens.AnyAsync(u => u.UserId == 11 && u.RefreshToken == token);
-            Assert.True(exists);
-            Assert.False(exists2);
+            Assert.False(otherUserExists, "Refresh token created for different user user");
+            Assert.True(exists, "No refresh token created for current user");
 
         }
 

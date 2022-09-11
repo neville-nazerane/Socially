@@ -16,7 +16,7 @@ namespace Socially.Server.Managers.Tests
         public TestBase()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                                                .UseInMemoryDatabase("mainDb")
+                                                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                                                 .Options;
             DbContext = new ApplicationDbContext(options);
         }

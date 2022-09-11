@@ -23,9 +23,6 @@ namespace Socially.Server.Managers.Tests
 
         private async Task SetupManagerAsync()
         {
-            await DbContext.Database.EnsureDeletedAsync();
-            await DbContext.Database.EnsureCreatedAsync();
-
             blobMock = new Mock<IBlobAccess>();
             loggerMock = new Mock<ILogger<ImageManager>>();
             manager = new ImageManager(DbContext, loggerMock.Object, blobMock.Object);
