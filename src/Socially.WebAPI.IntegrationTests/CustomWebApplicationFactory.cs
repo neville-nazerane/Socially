@@ -40,15 +40,15 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
                     .RemoveService<ApplicationDbContext>();
 
             // Add ApplicationDbContext using an in-memory database for testing.
-            services.AddDbContext<ApplicationDbContext>(
-                        options => options.UseInMemoryDatabase("InMemoryDbForTesting"));
+            string dbname = Guid.NewGuid().ToString();
+            services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase(dbname));
 
             services.ReplaceServiceWithMock<ISendGridClient>()
                     .ReplaceServiceWithMock<IBlobAccess>();
 
             // Set context as singleton
-            services.RemoveService<CurrentContext>()
-                    .AddSingleton<CurrentContext>();
+            //services.RemoveService<CurrentContext>()
+            //        .AddSingleton<CurrentContext>();
 
         });
     }

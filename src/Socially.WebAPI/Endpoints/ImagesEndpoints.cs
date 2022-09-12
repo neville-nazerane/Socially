@@ -31,7 +31,8 @@ namespace Socially.WebAPI.Endpoints
             return new RouteHandlerBuilder[]
             {
                 endpoints.MapGet("images", GetAllForUserAsync),
-                endpoints.MapPost("image", UploadAsync)
+                endpoints.MapPost("image", UploadAsync),
+                endpoints.MapDelete("image/{fileName}", DeleteAsync)
             };
         }
 
@@ -42,6 +43,9 @@ namespace Socially.WebAPI.Endpoints
 
         Task<IEnumerable<string>> GetAllForUserAsync(IImagesService service, CancellationToken cancellationToken = default)
             => service.GetAllForUserAsync(cancellationToken);
+
+        Task DeleteAsync(IImagesService service, string fileName, CancellationToken cancellationToken = default)
+            => service.DeleteAsync(fileName, cancellationToken);
 
     }
 }

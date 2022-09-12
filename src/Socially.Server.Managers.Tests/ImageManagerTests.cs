@@ -36,11 +36,12 @@ namespace Socially.Server.Managers.Tests
             var cancellationToken = new CancellationToken();
 
             // ACT
-            var fileName = await manager.AddAsync(4, ".sample", null, cancellationToken);
+            var fileName = await manager.AddAsync(4, ".sample", "content/type", null, cancellationToken);
 
             // ASSERT
             blobMock.Verify(b => b.UploadAsync(It.IsIn("userprofiles"),
                                                It.Is<string>(s => s.EndsWith(".sample")),
+                                               It.IsIn("content/type"),
                                                It.IsAny<Stream>(),
                                                It.IsIn(cancellationToken)), 
                             Times.Once);

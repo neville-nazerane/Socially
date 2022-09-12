@@ -41,6 +41,9 @@ namespace Socially.WebAPI.Services
                                           cancellationToken);
         }
 
+        public Task DeleteAsync(string fileName, CancellationToken cancellationToken = default)
+            => _imageManager.DeleteByNameAsync(_currentContext.UserId, fileName, cancellationToken);
+
         public Task<IEnumerable<string>> GetAllForUserAsync(CancellationToken cancellationToken = default)
             => _imageManager.GetAllForUserAsync(_currentContext.UserId, cancellationToken);
 

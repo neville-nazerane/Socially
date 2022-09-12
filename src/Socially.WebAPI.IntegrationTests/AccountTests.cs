@@ -76,7 +76,7 @@ namespace Socially.WebAPI.IntegrationTests
             Assert.True(signinRes.IsSuccessStatusCode,
                                 $"Sign up had error code {signinRes.StatusCode} saying '{await signinRes.Content.ReadAsStringAsync()}'");
 
-            loginResult = await client.PostAsJsonAsync($"login", loginModel);
+            loginResult = await client.PostAsJsonAsync("login", loginModel);
 
             Assert.True(loginResult.IsSuccessStatusCode,
                                $"Sign in had error code {loginResult.StatusCode} saying '{await loginResult.Content.ReadAsStringAsync()}'");

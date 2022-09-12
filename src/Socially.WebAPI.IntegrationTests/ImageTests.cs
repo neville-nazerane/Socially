@@ -5,6 +5,7 @@ using Socially.Apps.Consumer.Services;
 using Socially.Core.Entities;
 using Socially.Server.DataAccess;
 using Socially.Server.Services.Models;
+using Socially.WebAPI.IntegrationTests.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -42,13 +43,16 @@ namespace Socially.WebAPI.IntegrationTests
             await dbContext.Database.EnsureDeletedAsync();
             await dbContext.Database.EnsureCreatedAsync();
 
+            await consumer.TestSignupAndLoginAsync();
+            var user = await dbContext.GetTestUserAsync();
+
             // ACT
             await using var stream = new MemoryStream(Array.Empty<byte>());
             using var response = await consumer.UploadAsync(new Core.Models.ImageUploadModel
             {
                 ImageContext = new Core.Models.UploadContext
                 {
-                    FileName = "helloWorld.txt",
+                    FileName = "helloWorld.png",
                     Stream = stream
                 }
             });
@@ -59,6 +63,7 @@ namespace Socially.WebAPI.IntegrationTests
             var result = await dbContext.ProfileImages.ToListAsync();
             mockBlobAccess.Verify(b => b.UploadAsync(It.IsAny<string>(),
                                                      It.IsIn(fileName),
+                                                     It.IsIn("image/png"),
                                                      It.IsAny<Stream>(),
                                                      It.IsAny<CancellationToken>()),
                                   Times.Once);
@@ -75,20 +80,24 @@ namespace Socially.WebAPI.IntegrationTests
             await using var scope = _factory.Services.CreateAsyncScope();
             var scopeProvider = scope.ServiceProvider;
             var dbContext = scopeProvider.GetService<ApplicationDbContext>();
-            var context = _factory.Services.GetService<CurrentContext>();
+            //var context = _factory.Services.GetService<CurrentContext>();
 
-            context.UserId = 10;
             await dbContext.Database.EnsureDeletedAsync();
             await dbContext.Database.EnsureCreatedAsync();
+
+            await consumer.TestSignupAndLoginAsync();
+
+            var user = await dbContext.GetTestUserAsync();
+
             await dbContext.ProfileImages.AddRangeAsync(new ProfileImage
             {
                 FileName = "hello.txt",
-                UserId = context.UserId
+                UserId = user.Id
             },
             new ProfileImage
             {
                 FileName = "bye.txt",
-                UserId = context.UserId
+                UserId = user.Id
             },
             new ProfileImage
             {
@@ -98,7 +107,7 @@ namespace Socially.WebAPI.IntegrationTests
             new ProfileImage
             {
                 FileName = "seeya.png",
-                UserId = context.UserId
+                UserId = user.Id
             });
             await dbContext.SaveChangesAsync();
 
@@ -117,33 +126,36 @@ namespace Socially.WebAPI.IntegrationTests
             // ARRANGE
             var consumer = new ApiConsumer(_factory.CreateClient());
 
-            var context = _factory.Services.GetService<CurrentContext>();
+            //var context = _factory.Services.GetService<CurrentContext>();
             await using var scope = _factory.Services.CreateAsyncScope();
             var scopeProvider = scope.ServiceProvider;
             var dbContext = scopeProvider.GetService<ApplicationDbContext>();
 
-            context.UserId = 10;
             await dbContext.Database.EnsureDeletedAsync();
             await dbContext.Database.EnsureCreatedAsync();
+
+            await consumer.TestSignupAndLoginAsync();
+            var user = await dbContext.GetTestUserAsync();
+
             await dbContext.ProfileImages.AddRangeAsync(new ProfileImage
             {
                 FileName = "hello.txt",
-                UserId = 5
+                UserId = user.Id + 5
             },
             new ProfileImage
             {
                 FileName = "bye.txt",
-                UserId = 2
+                UserId = user.Id + 2
             },
             new ProfileImage
             {
                 FileName = "bye.txt",
-                UserId = 11
+                UserId = user.Id + 11
             },
             new ProfileImage
             {
                 FileName = "seeya.png",
-                UserId = 2
+                UserId = user.Id + 2
             });
             await dbContext.SaveChangesAsync();
 
@@ -153,6 +165,105 @@ namespace Socially.WebAPI.IntegrationTests
             // ASSERT
             Assert.Empty(res);
 
+        }
+
+        [Fact]
+        public async Task DeleteImage_HasImages_DeletesOne()
+        {
+            // ARRANGE
+            var consumer = new ApiConsumer(_factory.CreateClient());
+
+            await using var scope = _factory.Services.CreateAsyncScope();
+            var scopeProvider = scope.ServiceProvider;
+            var dbContext = scopeProvider.GetService<ApplicationDbContext>();
+
+            await dbContext.Database.EnsureDeletedAsync();
+            await dbContext.Database.EnsureCreatedAsync();
+
+            await consumer.TestSignupAndLoginAsync();
+
+            var user = await dbContext.GetTestUserAsync();
+
+            await dbContext.ProfileImages.AddRangeAsync(new ProfileImage
+            {
+                FileName = "hello.txt",
+                UserId = user.Id
+            },
+            new ProfileImage
+            {
+                FileName = "bye.txt",
+                UserId = user.Id
+            },
+            new ProfileImage
+            {
+                FileName = "bye.txt",
+                UserId = 11
+            },
+            new ProfileImage
+            {
+                FileName = "seeya.png",
+                UserId = user.Id
+            });
+            await dbContext.SaveChangesAsync();
+
+            // ACT
+            var result = await consumer.DeleteImageAsync("hello.txt");
+
+            // ASSERT
+            Assert.Equal(200, (int)result.StatusCode);
+            var imageCount = await dbContext.ProfileImages
+                                            .Where(i => i.UserId == user.Id)
+                                            .CountAsync();
+            Assert.Equal(2, imageCount);
+        }
+
+        [Fact]
+        public async Task DeleteImage_HasNoImagesForUser_DeletesNone()
+        {
+            // ARRANGE
+            var consumer = new ApiConsumer(_factory.CreateClient());
+
+            await using var scope = _factory.Services.CreateAsyncScope();
+            var scopeProvider = scope.ServiceProvider;
+            var dbContext = scopeProvider.GetService<ApplicationDbContext>();
+
+            await dbContext.Database.EnsureDeletedAsync();
+            await dbContext.Database.EnsureCreatedAsync();
+
+            await consumer.TestSignupAndLoginAsync();
+
+            var user = await dbContext.GetTestUserAsync();
+
+            await dbContext.ProfileImages.AddRangeAsync(new ProfileImage
+            {
+                FileName = "hello.txt",
+                UserId = user.Id + 3
+            },
+            new ProfileImage
+            {
+                FileName = "bye.txt",
+                UserId = user.Id + 3
+            },
+            new ProfileImage
+            {
+                FileName = "bye.txt",
+                UserId = user.Id + 11
+            },
+            new ProfileImage
+            {
+                FileName = "seeya.png",
+                UserId = user.Id + 2
+            });
+            await dbContext.SaveChangesAsync();
+
+            // ACT
+            var result = await consumer.DeleteImageAsync("hello.txt");
+
+            // ASSERT
+            Assert.Equal(200, (int)result.StatusCode);
+            var imageCount = await dbContext.ProfileImages
+                                            .CountAsync();
+            Assert.Equal(4, imageCount);
         }
 
     }

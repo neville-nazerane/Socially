@@ -20,6 +20,11 @@ namespace Socially.Apps.Consumer.Services
             _httpClient = httpClient;
         }
 
+        public void SetJwt(string jwtHeader)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", jwtHeader);
+        }
+
         public async Task SignupAsync(SignUpModel model,
                                 CancellationToken cancellationToken = default)
         {
@@ -59,6 +64,10 @@ namespace Socially.Apps.Consumer.Services
 
         public Task<IEnumerable<string>> GetAllImagesOfUserAsync(CancellationToken cancellationToken = default)
             => _httpClient.GetFromJsonAsync<IEnumerable<string>>("images", cancellationToken);
+
+        public Task<HttpResponseMessage> DeleteImageAsync(string fileName, 
+                                                          CancellationToken cancellationToken = default)
+            => _httpClient.DeleteAsync($"image/{fileName}", cancellationToken);
 
     }
 }
