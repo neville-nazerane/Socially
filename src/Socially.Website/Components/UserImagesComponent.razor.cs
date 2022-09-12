@@ -47,6 +47,13 @@ namespace Socially.Website.Components
             }
         }
 
+        async void DeleteAsync(string fileName)
+        {
+            await Consumer.DeleteImageAsync(fileName);
+            images.Remove(fileName);
+            StateHasChanged();
+        }
+
         protected override async Task OnInitializedAsync()
         {
             isLoading = true;

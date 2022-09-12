@@ -159,7 +159,7 @@ namespace Socially.Server.Managers.Tests
         }
 
         [Fact]
-        public async Task DeleteByName_DeleteWrongUserId_DoesNothing()
+        public async Task DeleteByName_DeleteWrongUserId_Warns()
         {
             // ARRANGE
             await SetupManagerAsync();
