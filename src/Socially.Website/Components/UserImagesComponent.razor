@@ -14,8 +14,8 @@
 
             <!-- Add photo START -->
             <div class="col-sm-6 col-md-4 col-lg-3">
-                <InputFile @ref=uploadInput OnChange=ImageUploaded />
-                <div class="border border-2 py-5 border-dashed h-100 rounded text-center d-flex align-items-center justify-content-center position-relative">
+                <InputFile hidden="hidden" @ref=uploadInput OnChange=ImageUploaded />
+                <div @onclick=TriggerTheKracken class="border border-2 py-5 border-dashed h-100 rounded text-center d-flex align-items-center justify-content-center position-relative">
                     <a class="stretched-link" href="#!">
                         <i class="fa-solid fa-camera-retro fs-1"></i>
                         <h6 class="mt-2">Add photo</h6>
@@ -154,7 +154,7 @@
                     <!-- glightbox Albums left bar END  -->
                 </div>
             }
-            <!-- Photo item END -->
+            @*<!-- Photo item END -->
             <!-- Photo item START -->
             <div class="col-sm-6 col-md-4 col-lg-3 position-relative">
                 <!-- Photo -->
@@ -786,7 +786,7 @@
                 </div>
                 <!-- glightbox Albums left bar END  -->
             </div>
-            <!-- Photo item END -->
+            <!-- Photo item END -->*@
         </div>
         <!-- Photos of you tab END -->
     </div>

@@ -10,3 +10,5 @@ window.getData = key => {
 window.removeData = key => {
     return localStorage.removeItem(key);
 }
+
+window.triggerClick = (elt) => elt.click();
