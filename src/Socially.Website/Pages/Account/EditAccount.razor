@@ -6,7 +6,6 @@
 <!-- Account setting tab START -->
 <div class="tab-pane show active fade" id="nav-setting-tab-1">
 
-    <UserImagesComponent></UserImagesComponent>
 
     @if (model == null)
     {
@@ -34,6 +33,8 @@
                 <EditForm Model=model OnValidSubmit=UpdateAsync class="row g-3">
                     <DataAnnotationsValidator />
                     <ValidationSummary />
+
+                    <img src="https://sociallydev.blob.core.windows.net/userprofiles/@model.ProfilePictureFileName" />
 
                     <!-- First name -->
                     <div class="col-sm-6 col-lg-4">
@@ -101,8 +102,15 @@
                             }
                             Save changes
                         </button>
+
+                        <button type="button" class="btn btn-sm btn-secondary mb-0" @onclick=SwapShowImage>Pick image</button>
                     </div>
                 </EditForm>
+
+                @if (showImages){
+                    <UserImagesComponent OnImageSelected=ImageSelectedAsync></UserImagesComponent>
+                }
+
                 <!-- Settings END -->
             </div>
             <!-- Card body END -->

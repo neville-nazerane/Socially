@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 using Socially.Apps.Consumer.Services;
 using Socially.Website.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,6 +17,9 @@ namespace Socially.Website.Components
 
         bool isLoading = false;
         private List<string> images = null;
+
+        [Parameter]
+        public Func<string, Task> OnImageSelected { get; set; }
 
         [Inject]
         public IApiConsumer Consumer { get; set; }
@@ -52,6 +56,11 @@ namespace Socially.Website.Components
             await Consumer.DeleteImageAsync(fileName);
             images.Remove(fileName);
             StateHasChanged();
+        }
+
+        void SelectImage(string fileName)
+        {
+            OnImageSelected?.Invoke(fileName);
         }
 
         protected override async Task OnInitializedAsync()

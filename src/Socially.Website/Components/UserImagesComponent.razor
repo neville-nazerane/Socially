@@ -24,19 +24,21 @@
             </div>
             <!-- Add photo END -->
             <!-- Photo item START -->
-
-            @if (isLoading){
+            @if (isLoading)
+            {
                 <center>
                     <div class="preloader-item">
                         <div class="spinner-grow text-primary"></div>
                     </div>
                 </center>
             }
-            else {
-                if (images != null){
+            else
+            {
+                if (images != null)
+                {
                     @foreach (var img in images.AsEnumerable().Reverse())
                     {
-                        <div class="col-sm-6 col-md-4 col-lg-3">
+                        <div @onclick:stopPropagation @onclick:preventDefault @onclick=@(() => SelectImage(img)) class="col-sm-6 col-md-4 col-lg-3">
                             <!-- Photo -->
                             <a href="https://sociallydev.blob.core.windows.net/userprofiles/@img" target="_blank" data-gallery="image-popup" data-glightbox="description: .custom-desc2; descPosition: left;">
                                 <img class="rounded img-fluid" src="https://sociallydev.blob.core.windows.net/userprofiles/@img" alt="">

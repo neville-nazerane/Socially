@@ -4,6 +4,7 @@ using Socially.Core.Models;
 using Socially.Server.DataAccess;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -246,8 +247,15 @@ namespace Socially.Server.Managers.Tests
             await DbContext.Users.AddAsync(new User
             {
                 FirstName = "Unchanged",
+                ProfilePictureId = 20,
                 CreatedOn = DateTime.UtcNow,
                 Id = 44
+            });
+            await DbContext.ProfileImages.AddAsync(new ProfileImage
+            {
+                Id = 21,
+                UserId = 44,
+                FileName = "hello.png"
             });
             await DbContext.SaveChangesAsync();
 
@@ -255,7 +263,8 @@ namespace Socially.Server.Managers.Tests
             var model = new ProfileUpdateModel
             {
                 DateOfBirth = new DateTime(2000, 04, 01),
-                FirstName = "Changed"
+                FirstName = "Changed",
+                ProfilePictureFileName = "hello.png"
             };
             await manager.UpdateAsync(44, model);
             var stored = await DbContext.Users.FindAsync(44);
@@ -264,7 +273,50 @@ namespace Socially.Server.Managers.Tests
             // ASSERT
             Assert.NotEqual("Unchanged", stored.FirstName);
             Assert.Equal("Changed", stored.FirstName);
+            Assert.NotEqual(20, stored.ProfilePictureId);
+            Assert.Equal(21, stored.ProfilePictureId);
+        }
 
+        [Fact]
+        public async Task Update_InvalidImageAndValidModel_UpdatesWithoutImage()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            await DbContext.Users.AddAsync(new User
+            {
+                FirstName = "Unchanged",
+                CreatedOn = DateTime.UtcNow,
+                Id = 44
+            });
+            await DbContext.ProfileImages.AddRangeAsync(new ProfileImage
+            {
+                Id = 213,
+                UserId = 12,
+                FileName = "hello.png"
+            },
+            new ProfileImage
+            {
+                Id = 21,
+                UserId = 44,
+                FileName = "hi.png"
+            });
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            var model = new ProfileUpdateModel
+            {
+                DateOfBirth = new DateTime(2000, 04, 01),
+                FirstName = "Changed",
+                ProfilePictureFileName = "hello.png"
+            };
+            await manager.UpdateAsync(44, model);
+            var stored = await DbContext.Users.FindAsync(44);
+
+
+            // ASSERT
+            Assert.NotEqual("Unchanged", stored.FirstName);
+            Assert.Equal("Changed", stored.FirstName);
+            Assert.Null(stored.ProfilePictureId);
         }
 
         [Fact]
