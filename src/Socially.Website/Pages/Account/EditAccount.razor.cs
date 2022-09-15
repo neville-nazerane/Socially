@@ -80,10 +80,17 @@ namespace Socially.Website.Pages.Account
 
         void SwapShowImage() => showImages = !showImages;
 
+        void ClearProfilePic()
+        {
+            model.ProfilePictureFileName = null;
+            StateHasChanged();
+        }
+
         Task ImageSelectedAsync(string filename)
         {
             model.ProfilePictureFileName = filename;
             showImages = false;
+            StateHasChanged();
             return Task.CompletedTask;
         }
 

@@ -34,7 +34,11 @@
                     <DataAnnotationsValidator />
                     <ValidationSummary />
 
-                    <img src="https://sociallydev.blob.core.windows.net/userprofiles/@model.ProfilePictureFileName" />
+                    @if (model.ProfilePictureFileName != null)
+                    {
+                        <button class="btn btn-danger" @onclick=ClearProfilePic>Remove Profile Pic</button>
+                        <img src="https://sociallydev.blob.core.windows.net/userprofiles/@model.ProfilePictureFileName" />
+                    }
 
                     <!-- First name -->
                     <div class="col-sm-6 col-lg-4">

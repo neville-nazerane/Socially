@@ -320,6 +320,38 @@ namespace Socially.Server.Managers.Tests
         }
 
         [Fact]
+        public async Task Update_RemoveProfilePic_ProfilePicIdIsNull()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            await DbContext.Users.AddAsync(new User
+            {
+                FirstName = "Unchanged",
+                CreatedOn = DateTime.UtcNow,
+                Id = 44,
+                ProfilePictureId = 10
+            });
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            var model = new ProfileUpdateModel
+            {
+                DateOfBirth = new DateTime(2000, 04, 01),
+                FirstName = "Changed",
+                ProfilePictureFileName = null
+            };
+            await manager.UpdateAsync(44, model);
+            var stored = await DbContext.Users.FindAsync(44);
+
+
+            // ASSERT
+            Assert.NotEqual("Unchanged", stored.FirstName);
+            Assert.Equal("Changed", stored.FirstName);
+            Assert.NotEqual(10, stored.ProfilePictureId);
+            Assert.Null(stored.ProfilePictureId);
+        }
+
+        [Fact]
         public async Task CreateRefreshToken_Creating_Creates()
         {
             // ARRANGE

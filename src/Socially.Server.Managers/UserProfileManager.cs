@@ -56,12 +56,12 @@ namespace Socially.Server.Managers
             profile.LastName = model.LastName;
             profile.DateOfBirth = model.DateOfBirth;
 
-            int picId = await _dbContext.ProfileImages
+            int? picId = await _dbContext.ProfileImages
                                                 .Where(p => p.FileName == model.ProfilePictureFileName && p.UserId == userId)
-                                                .Select(p => p.Id)
+                                                .Select(p => (int?) p.Id)
                                                 .SingleOrDefaultAsync(cancellationToken);
-            if (picId > 0)
-                profile.ProfilePictureId = picId;
+            profile.ProfilePictureId = picId;
+
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
