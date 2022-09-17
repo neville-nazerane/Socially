@@ -21,11 +21,12 @@ namespace Socially.Server.Managers.Tests
         private Mock<ILogger<ImageManager>> loggerMock;
         private ImageManager manager;
 
-        private async Task SetupManagerAsync()
+        private Task SetupManagerAsync()
         {
             blobMock = new Mock<IBlobAccess>();
             loggerMock = new Mock<ILogger<ImageManager>>();
             manager = new ImageManager(DbContext, loggerMock.Object, blobMock.Object);
+            return Task.CompletedTask;
         }
 
         [Fact]
