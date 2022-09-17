@@ -8,8 +8,14 @@ stages:
       - job: UnitTests
         steps:
 
-        - script: dotnet test src/Socially.Server.Managers.Tests -c release
-          displayName: Testing Managers
+        # - script: dotnet test src/Socially.Server.Managers.Tests -c release
+        #   displayName: Testing Managers
+
+        - task: PublishTestResults@2
+          inputs:
+            testResultsFormat: XUnit
+            searchFolder: src/Socially.Server.Managers.Tests
+            buildConfiguration: release
 
       - job: IntegrationTests
         steps:
