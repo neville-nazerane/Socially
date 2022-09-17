@@ -16,8 +16,7 @@ stages:
         - task: PublishTestResults@2
           inputs:
             testResultsFormat: XUnit
-            searchFolder: $(unitTestOutput)
-            buildConfiguration: release
+            searchFolder: $(unitTestOutput)/src/Socially.Server.Managers.Tests/TestResults
             testResultsFiles: '*.trx'
 
       - job: IntegrationTests
