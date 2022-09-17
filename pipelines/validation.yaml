@@ -1,10 +1,27 @@
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
 
-  - script: dotnet test src/Socially.Server.Managers.Tests -c release
-    displayName: Testing Managers
+stages:
+  - stage: AutomatedTests
+    jobs:
+      - job: UnitTests
+        steps:
 
-  - script: dotnet test src/Socially.WebAPI.IntegrationTests -c release
-    displayName: Integration Tests
+        - script: dotnet test src/Socially.Server.Managers.Tests -c release
+          displayName: Testing Managers
+
+      - job: IntegrationTests
+        steps:
+
+          - script: dotnet test src/Socially.WebAPI.IntegrationTests -c release
+            displayName: Integration Tests
+
+
+# steps:
+
+#   - script: dotnet test src/Socially.Server.Managers.Tests -c release
+#     displayName: Testing Managers
+
+#   - script: dotnet test src/Socially.WebAPI.IntegrationTests -c release
+#     displayName: Integration Tests
