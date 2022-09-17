@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Configuration;
 using Socially.Apps.Consumer.Services;
 using Socially.Core.Models;
 using System;
@@ -10,6 +11,9 @@ namespace Socially.Website.Pages.Account
 
     public partial class EditAccount
     {
+
+        [Inject]
+        public IConfiguration Config { get; set; }
 
         bool showImages = false;
 

@@ -38,7 +38,7 @@
                         <div class="col-lg-4 col-sm-6">
                             @if (model.ProfilePictureFileName != null)
                             {
-                                <img class="thumb-image" src="https://sociallydev.blob.core.windows.net/userprofiles/@model.ProfilePictureFileName" />
+                                <img class="thumb-image" src="@Config["imageBase"]/userprofiles/@model.ProfilePictureFileName" />
                                 <button class="btn btn-danger thumb-button" @onclick=ClearProfilePic>Remove Profile Pic</button>
                             }
                             else

@@ -40,8 +40,8 @@
                     {
                         <div @onclick:stopPropagation @onclick:preventDefault @onclick=@(() => SelectImage(img)) class="col-sm-6 col-md-4 col-lg-3">
                             <!-- Photo -->
-                            <a href="https://sociallydev.blob.core.windows.net/userprofiles/@img" target="_blank" data-gallery="image-popup" data-glightbox="description: .custom-desc2; descPosition: left;">
-                                <img class="rounded img-fluid" src="https://sociallydev.blob.core.windows.net/userprofiles/@img" alt="">
+                            <a href="@Config["imageBase"]/userprofiles/@img" target="_blank" data-gallery="image-popup" data-glightbox="description: .custom-desc2; descPosition: left;">
+                                <img class="rounded img-fluid" src="@Config["imageBase"]/userprofiles/@img" alt="">
                             </a>
                             <!-- likes -->
                             <ul class="nav nav-stack py-2 small">
