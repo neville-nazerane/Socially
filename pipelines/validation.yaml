@@ -10,14 +10,11 @@ stages:
       - job: UnitTests
         steps:
 
-        - script: dotnet test src/Socially.Server.Managers.Tests -c release -l trx -r $(unitTestOutput)
-          displayName: Testing Managers
-
-        - task: PublishTestResults@2
-          inputs:
-            testResultsFormat: VSTest
-            searchFolder: $(unitTestOutput)
-            testResultsFiles: '*.trx'
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: test
+              configuration: release
+              workingDirectory: src/Socially.Server.Managers.Tests
 
       - job: IntegrationTests
         steps:
@@ -27,15 +24,3 @@ stages:
               command: test
               configuration: release
               workingDirectory: src/Socially.WebAPI.IntegrationTests
-
-          # - script: dotnet test src/Socially.WebAPI.IntegrationTests -c release
-          #   displayName: Integration Tests
-
-
-# steps:
-
-#   - script: dotnet test src/Socially.Server.Managers.Tests -c release
-#     displayName: Testing Managers
-
-#   - script: dotnet test src/Socially.WebAPI.IntegrationTests -c release
-#     displayName: Integration Tests
