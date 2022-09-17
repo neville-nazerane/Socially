@@ -27,6 +27,7 @@ using Socially.WebAPI.Services;
 using Socially.WebAPI.Utils;
 using SendGrid.Extensions.DependencyInjection;
 using Socially.Website.Models;
+using Socially.Website.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +53,7 @@ services.AddHealthChecks()
 
 
 services.AddSendGrid(o => o.ApiKey = configuration["sendGridApiKey"]);
+services.AddSingleton<IBlobAccess>(p => new BlobAccess(configuration["blobConnString"]));
 
 services.AddAuthentication("complete")
         .AddJwtBearerCompletely(o =>
@@ -73,11 +75,14 @@ services.AddAuthorization(o =>
 );
 
 // managers
-services.AddTransient<IUserProfileManager, UserProfileManager>();
+services.AddTransient<IUserProfileManager, UserProfileManager>()
+        .AddTransient<IImageManager, ImageManager>();
 
 // services
 services.AddTransient<IUserService, UserService>()
-        .AddScoped<CurrentContext>();
+        .AddTransient<IImagesService, ImagesService>()
+        .AddScoped<CurrentContext>()
+        .AddScoped<InitializeService>();
 
 // swagger
 services.AddEndpointsApiExplorer();
@@ -108,19 +113,19 @@ app.UseCurrentSetup();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapGet("/send/{email}", SampleAsync);
-    endpoints.MapGet("/", () => "Hello from a socially app");
+    endpoints.MapGet("/", () => "Hello from a socially app").ExcludeFromDescription();
     endpoints.MapHealthChecks("/health");
 
     endpoints.MapCustom<AccountEndpoints>();
     endpoints.MapCustom<ProfileEndpoints>();
+    endpoints.MapCustom<ImagesEndpoints>();
 
 });
 
+await using (var scope = app.Services.CreateAsyncScope())
+    await scope.ServiceProvider.GetService<InitializeService>().InitAsync();
 
 await app.RunAsync();
-
-Task SampleAsync(string email, IUserService service) => service.ForgotPasswordAsync(email);
 
 public partial class Program { }
 

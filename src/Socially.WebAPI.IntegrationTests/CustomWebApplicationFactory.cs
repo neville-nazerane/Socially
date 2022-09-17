@@ -13,6 +13,7 @@ using Moq;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using Socially.Server.DataAccess;
+using Socially.Server.Services.Models;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
@@ -35,20 +36,19 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         builder.ConfigureServices(services =>
         {
             // Remove the app's ApplicationDbContext registration.
-            services.RemoveService<DbContextOptions<ApplicationDbContext>>();
+            services.RemoveService<DbContextOptions<ApplicationDbContext>>()
+                    .RemoveService<ApplicationDbContext>();
 
             // Add ApplicationDbContext using an in-memory database for testing.
-            services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("InMemoryDbForTesting"));
+            string dbname = Guid.NewGuid().ToString();
+            services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase(dbname));
 
+            services.ReplaceServiceWithMock<ISendGridClient>()
+                    .ReplaceServiceWithMock<IBlobAccess>();
 
-
-            // Remove sendgrid
-            services.RemoveService<ISendGridClient>();
-
-            // Add mocked sendgrid client
-            var mockedSendgrid = new Mock<ISendGridClient>();
-            services.AddSingleton(mockedSendgrid)
-                    .AddSingleton(p => mockedSendgrid.Object);
+            // Set context as singleton
+            //services.RemoveService<CurrentContext>()
+            //        .AddSingleton<CurrentContext>();
 
         });
     }

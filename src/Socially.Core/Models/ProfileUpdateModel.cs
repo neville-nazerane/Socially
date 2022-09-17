@@ -17,7 +17,6 @@ namespace Socially.Core.Models
         public string LastName { get; set; }
 
         public DateTime? DateOfBirth { get; set; }
-
-
+        public string ProfilePictureFileName { get; set; }
     }
 }

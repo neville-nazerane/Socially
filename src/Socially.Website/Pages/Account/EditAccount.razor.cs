@@ -2,6 +2,7 @@
 using Socially.Apps.Consumer.Services;
 using Socially.Core.Models;
 using System;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 
 namespace Socially.Website.Pages.Account
@@ -9,6 +10,9 @@ namespace Socially.Website.Pages.Account
 
     public partial class EditAccount
     {
+
+        bool showImages = false;
+
         ProfileUpdateModel model = null;
 
         PasswordResetModel passwordModel = new();
@@ -72,6 +76,22 @@ namespace Socially.Website.Pages.Account
             {
                 isPasswordResetting = false;
             }
+        }
+
+        void SwapShowImage() => showImages = !showImages;
+
+        void ClearProfilePic()
+        {
+            model.ProfilePictureFileName = null;
+            StateHasChanged();
+        }
+
+        Task ImageSelectedAsync(string filename)
+        {
+            model.ProfilePictureFileName = filename;
+            showImages = false;
+            StateHasChanged();
+            return Task.CompletedTask;
         }
 
     }

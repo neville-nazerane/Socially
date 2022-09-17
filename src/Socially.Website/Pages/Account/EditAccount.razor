@@ -6,6 +6,7 @@
 <!-- Account setting tab START -->
 <div class="tab-pane show active fade" id="nav-setting-tab-1">
 
+
     @if (model == null)
     {
         <center>
@@ -33,74 +34,105 @@
                     <DataAnnotationsValidator />
                     <ValidationSummary />
 
-                    <!-- First name -->
-                    <div class="col-sm-6 col-lg-4">
-                        <label class="form-label">First names</label>
-                        <InputText type="text" class="form-control" placeholder="" @bind-Value=model.FirstName />
-                    </div>
-                    <!-- Last name -->
-                    <div class="col-sm-6 col-lg-4">
-                        <label class="form-label">Last name</label>
-                        <InputText type="text" class="form-control" placeholder="" @bind-Value=model.LastName />
-                    </div>
-                    @*<!-- Additional name -->
-                <div class="col-sm-6 col-lg-4">
-                <label class="form-label">Additional name</label>
-                <input type="text" class="form-control" placeholder="">
-                </div>
-                <!-- User name -->
-                <div class="col-sm-6">
-                <label class="form-label">User name</label>
-                <input type="text" class="form-control" placeholder="" value="@@samlanson">
-                </div>*@
-                    <!-- Birthday -->
-                    <div class="col-sm-6 col-lg-4">
-                        <label class="form-label">Date commence existing on earth</label>
-                        <div class="form-check">
-                            <InputCheckbox class="form-check-input" id="bdayChecked" @bind-Value="@StoreDateOfBirth" />
-                            <label class="form-check-label" for="bdayChecked">
-                                Store Date of birth
-                            </label>
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-6">
+                            @if (model.ProfilePictureFileName != null)
+                            {
+                                <img class="thumb-image" src="https://sociallydev.blob.core.windows.net/userprofiles/@model.ProfilePictureFileName" />
+                                <button class="btn btn-danger thumb-button" @onclick=ClearProfilePic>Remove Profile Pic</button>
+                            }
+                            else
+                            {
+                                <h5> No profile pic selected</h5>
+                            }
                         </div>
-                        @if (StoreDateOfBirth)
-                        {
-                            <InputDate class="form-control flatpickr" @bind-Value=DateOfBirth />
-                        }
+
+                        <div class="col-lg-8">
+
+                            <!-- First name -->
+                            <div>
+                                <label class="form-label">First names</label>
+                                <InputText type="text" class="form-control" placeholder="" @bind-Value=model.FirstName />
+                            </div>
+                            <!-- Last name -->
+                            <div>
+                                <label class="form-label">Last name</label>
+                                <InputText type="text" class="form-control" placeholder="" @bind-Value=model.LastName />
+                            </div>
+                            @*<!-- Additional name -->
+                        <div class="col-sm-6 col-lg-4">
+                        <label class="form-label">Additional name</label>
+                        <input type="text" class="form-control" placeholder="">
+                        </div>
+                        <!-- User name -->
+                        <div class="col-sm-6">
+                        <label class="form-label">User name</label>
+                        <input type="text" class="form-control" placeholder="" value="@@samlanson">
+                        </div>*@
+                            <!-- Birthday -->
+                            <div>
+                                <label class="form-label">Date commence existing on earth</label>
+                                <div class="form-check">
+                                    <InputCheckbox class="form-check-input" id="bdayChecked" @bind-Value="@StoreDateOfBirth" />
+                                    <label class="form-check-label" for="bdayChecked">
+                                        Store Date of birth
+                                    </label>
+                                </div>
+                                @if (StoreDateOfBirth)
+                                {
+                                    <InputDate class="form-control flatpickr" @bind-Value=DateOfBirth />
+                                }
+
+                            </div>
+                            <!-- Allow checkbox -->
+                            @*   <!-- Phone number -->
+                        <div class="col-sm-6">
+                        <label class="form-label">Phone number</label>
+                        <input type="text" class="form-control" placeholder="" value="(678) 324-1251">
+                        <!-- Add new number -->
+                        <a class="btn btn-sm btn-dashed rounded mt-2" href="#!"> <i class="bi bi-plus-circle-dotted me-1"></i>Add new phone number</a>
+                        </div>
+                        <!-- Phone number -->
+                        <div class="col-sm-6">
+                        <label class="form-label">Email</label>
+                        <input type="text" class="form-control" placeholder="" value="sam@webestica.com">
+                        <!-- Add new email -->
+                        <a class="btn btn-sm btn-dashed rounded mt-2" href="#!"> <i class="bi bi-plus-circle-dotted me-1"></i>Add new email address</a>
+                        </div>
+                        <!-- Page information -->
+                        <div class="col-12">
+                        <label class="form-label">Overview</label>
+                        <textarea class="form-control" rows="4" placeholder="Description (Required)">Interested has all Devonshire difficulty gay assistance joy. Handsome met debating sir dwelling age material. As style lived he worse dried. Offered related so visitors we private removed. Moderate do subjects to distance.</textarea>
+                        <small>Character limit: 300</small>
+                        </div>
+                        <!-- Button  --> *@
+                        </div>
 
                     </div>
-                    <!-- Allow checkbox -->
-                    @*   <!-- Phone number -->
-                <div class="col-sm-6">
-                <label class="form-label">Phone number</label>
-                <input type="text" class="form-control" placeholder="" value="(678) 324-1251">
-                <!-- Add new number -->
-                <a class="btn btn-sm btn-dashed rounded mt-2" href="#!"> <i class="bi bi-plus-circle-dotted me-1"></i>Add new phone number</a>
-                </div>
-                <!-- Phone number -->
-                <div class="col-sm-6">
-                <label class="form-label">Email</label>
-                <input type="text" class="form-control" placeholder="" value="sam@webestica.com">
-                <!-- Add new email -->
-                <a class="btn btn-sm btn-dashed rounded mt-2" href="#!"> <i class="bi bi-plus-circle-dotted me-1"></i>Add new email address</a>
-                </div>
-                <!-- Page information -->
-                <div class="col-12">
-                <label class="form-label">Overview</label>
-                <textarea class="form-control" rows="4" placeholder="Description (Required)">Interested has all Devonshire difficulty gay assistance joy. Handsome met debating sir dwelling age material. As style lived he worse dried. Offered related so visitors we private removed. Moderate do subjects to distance.</textarea>
-                <small>Character limit: 300</small>
-                </div>
-                <!-- Button  --> *@
+
                     <div class="col-12 text-end">
 
-                        <button type="submit" class="btn btn-sm btn-primary mb-0" disabled=@isAccountUpdating>
+                        <button type="submit" class="btn btn-sm btn-success mb-0" disabled=@isAccountUpdating>
                             @if (isAccountUpdating)
                             {
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             }
                             Save changes
                         </button>
+
+                        <button type="button" class="btn btn-sm btn-primary mb-0" @onclick=SwapShowImage>Pick image</button>
                     </div>
                 </EditForm>
+
+                @if (showImages)
+
+
+
+
+                {
+                    <UserImagesComponent OnImageSelected=ImageSelectedAsync></UserImagesComponent>
+                }
+
                 <!-- Settings END -->
             </div>
             <!-- Card body END -->

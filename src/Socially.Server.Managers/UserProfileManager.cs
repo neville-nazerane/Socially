@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Microsoft.EntityFrameworkCore.Scaffolding;
 using Socially.Core.Entities;
 using Socially.Core.Models;
 using Socially.Server.DataAccess;
@@ -53,19 +55,27 @@ namespace Socially.Server.Managers
             profile.FirstName = model.FirstName;
             profile.LastName = model.LastName;
             profile.DateOfBirth = model.DateOfBirth;
+
+            int? picId = await _dbContext.ProfileImages
+                                                .Where(p => p.FileName == model.ProfilePictureFileName && p.UserId == userId)
+                                                .Select(p => (int?) p.Id)
+                                                .SingleOrDefaultAsync(cancellationToken);
+            profile.ProfilePictureId = picId;
+
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public Task<ProfileUpdateModel> GetUpdatableProfileAsync(int userId, CancellationToken cancellationToken = default)
             => _dbContext.Users
-                         .Where(u => u.Id == userId)
-                         .Select(u => new ProfileUpdateModel
-                         {
-                             FirstName = u.FirstName,
-                             LastName = u.LastName,
-                             DateOfBirth = u.DateOfBirth,
-                         })
-                         .SingleOrDefaultAsync(cancellationToken);
+                            .Where(u => u.Id == userId)
+                            .Select(u => new ProfileUpdateModel
+                            {
+                                FirstName = u.FirstName,
+                                LastName = u.LastName,
+                                DateOfBirth = u.DateOfBirth,
+                                ProfilePictureFileName = u.ProfilePicture == null ? null : u.ProfilePicture.FileName
+                            })
+                            .SingleOrDefaultAsync(cancellationToken);
 
         public Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken = default) 
             => _dbContext.Users.AnyAsync(u => u.Email == email, cancellationToken);
