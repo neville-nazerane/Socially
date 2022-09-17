@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.Extensions.Configuration;
 using Microsoft.JSInterop;
 using Socially.Apps.Consumer.Services;
 using Socially.Website.Utils;
@@ -17,6 +18,9 @@ namespace Socially.Website.Components
 
         bool isLoading = false;
         private List<string> images = null;
+
+        [Inject]
+        public IConfiguration Config { get; set; }
 
         [Parameter]
         public Func<string, Task> OnImageSelected { get; set; }
