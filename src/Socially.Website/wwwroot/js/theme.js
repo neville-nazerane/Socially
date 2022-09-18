@@ -420,48 +420,48 @@ var e = {
     // START: 08 Dark mode
     darkMode: function () {
 
-        let theme = localStorage.getItem('data-theme');
-        var style = document.getElementById("style-switch");
-        var dir = document.getElementsByTagName("html")[0].getAttribute('dir');
+        //let theme = localStorage.getItem('data-theme');
+        //var style = document.getElementById("style-switch");
+        //var dir = document.getElementsByTagName("html")[0].getAttribute('dir');
 
-        var changeThemeToDark = () => {
-            document.documentElement.setAttribute("data-theme", "dark") // set theme to dark
-            if (dir == 'rtl') {
-                style.setAttribute('href', 'assets/css/style-dark-rtl.css');
-            } else {
-                style.setAttribute('href', 'css/social-theme/style-dark.css');
-            }
-            localStorage.setItem("data-theme", "dark") // save theme to local storage
-        }
+        //var changeThemeToDark = () => {
+        //    document.documentElement.setAttribute("data-theme", "dark") // set theme to dark
+        //    if (dir == 'rtl') {
+        //        style.setAttribute('href', 'assets/css/style-dark-rtl.css');
+        //    } else {
+        //        style.setAttribute('href', 'css/social-theme/style-dark.css');
+        //    }
+        //    localStorage.setItem("data-theme", "dark") // save theme to local storage
+        //}
 
-        var changeThemeToLight = () => {
-            document.documentElement.setAttribute("data-theme", "light") // set theme light
-            if (dir == 'rtl') {
-                style.setAttribute('href', 'assets/css/style-rtl.css');
-            } else {
-                style.setAttribute('href', 'css/social-theme/style.css');
-            }
+        //var changeThemeToLight = () => {
+        //    document.documentElement.setAttribute("data-theme", "light") // set theme light
+        //    if (dir == 'rtl') {
+        //        style.setAttribute('href', 'assets/css/style-rtl.css');
+        //    } else {
+        //        style.setAttribute('href', 'css/social-theme/style.css');
+        //    }
 
-            localStorage.setItem("data-theme", 'light') // save theme to local storage
-        }
+        //    localStorage.setItem("data-theme", 'light') // save theme to local storage
+        //}
 
-        if (theme === 'dark') {
-            changeThemeToDark()
-        } else if (theme == null || theme === 'light') {
-            changeThemeToLight();
-        }
+        //if (theme === 'dark') {
+        //    changeThemeToDark()
+        //} else if (theme == null || theme === 'light') {
+        //    changeThemeToLight();
+        //}
 
-        const dms = e.select('#darkModeSwitch');
-        if (e.isVariableDefined(dms)) {
-            dms.addEventListener('click', () => {
-                let theme = localStorage.getItem('data-theme'); // Retrieve saved them from local storage
-                if (theme === 'dark') {
-                    changeThemeToLight()
-                } else {
-                    changeThemeToDark()
-                }
-            });
-        }
+        //const dms = e.select('#darkModeSwitch');
+        //if (e.isVariableDefined(dms)) {
+        //    dms.addEventListener('click', () => {
+        //        let theme = localStorage.getItem('data-theme'); // Retrieve saved them from local storage
+        //        if (theme === 'dark') {
+        //            changeThemeToLight()
+        //        } else {
+        //            changeThemeToDark()
+        //        }
+        //    });
+        //}
     },
     // END: Dark mode
 
