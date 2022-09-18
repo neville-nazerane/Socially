@@ -11,6 +11,7 @@ function init() {
     });
 
     setupThemes();
+    e.fakePwd();
 }
 
 function setupThemes() {
