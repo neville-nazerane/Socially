@@ -69,15 +69,15 @@
 
     <!-- Template Functions -->
     <script src="js/theme.js"></script>
-
     <script src="_framework/blazor.webassembly.js"></script>
 
+    <script src="js/utils.js"></script>
+    <script src="js/scripts.js"></script>
     <script>
 
-
         window.onBlazorLoaded = function () {
-            e.darkMode();
-            e.fakePwd();
+            init();
+            //e.fakePwd();
         };
     </script>
 </body>
