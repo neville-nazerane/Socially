@@ -16,7 +16,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Socially.Core\Socially.Core.csproj" />
+	  <ProjectReference Include="..\Socially.Server.Entities\Socially.Server.Entities.csproj" />
 	</ItemGroup>
 
 </Project>

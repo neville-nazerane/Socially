@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Socially.Model\Socially.Model.csproj" />
     <ProjectReference Include="..\Socially.Server.DataAccess\Socially.Server.DataAccess.csproj" />
   </ItemGroup>
 

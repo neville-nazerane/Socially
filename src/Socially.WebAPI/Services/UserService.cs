@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using NetCore.Jwt;
 using SendGrid;
 using Socially.Core.Entities;
 using Socially.Core.Exceptions;

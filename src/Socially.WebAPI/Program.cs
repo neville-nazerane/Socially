@@ -16,7 +16,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using NetCore.Jwt;
 using Socially.Core.Entities;
 using Socially.Server.DataAccess;
 using Socially.Server.Managers;
