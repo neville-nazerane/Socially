@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Socially.Apps.Consumer.Exceptions;
 using Socially.Apps.Consumer.Services;
-using Socially.Core.Models;
+using Socially.Models;
 using Socially.Website.Services;
 using System;
 using System.Collections.Generic;

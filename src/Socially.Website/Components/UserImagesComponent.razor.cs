@@ -38,9 +38,9 @@ namespace Socially.Website.Components
 
         async void ImageUploaded(InputFileChangeEventArgs args)
         {
-            var res = await Consumer.UploadAsync(new Core.Models.ImageUploadModel
+            var res = await Consumer.UploadAsync(new Socially.Models.ImageUploadModel
             {
-                ImageContext = new Core.Models.UploadContext
+                ImageContext = new Socially.Models.UploadContext
                 {
                     FileName = args.File.Name,
                     Stream = args.File.OpenReadStream(5 * 1024 * 1024)

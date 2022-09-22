@@ -5,17 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Socially.Core.Models
+namespace Socially.Models
 {
-    public class ForgotPasswordModel
+    public class PasswordResetModel
     {
-        public string UserName { get; set; }
-        public string Token { get; set; }
 
         [Required]
         public string NewPassword { get; set; }
 
         [Required, Compare(nameof(NewPassword), ErrorMessage = "Passwords don't match")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        public string CurrentPassword { get; set; }
+
+
     }
 }

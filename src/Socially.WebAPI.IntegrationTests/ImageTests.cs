@@ -2,8 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Socially.Apps.Consumer.Services;
-using Socially.Core.Entities;
 using Socially.Server.DataAccess;
+using Socially.Server.Entities;
 using Socially.Server.Services.Models;
 using Socially.WebAPI.IntegrationTests.Utils;
 using System;
@@ -48,9 +48,9 @@ namespace Socially.WebAPI.IntegrationTests
 
             // ACT
             await using var stream = new MemoryStream(Array.Empty<byte>());
-            using var response = await consumer.UploadAsync(new Core.Models.ImageUploadModel
+            using var response = await consumer.UploadAsync(new Socially.Models.ImageUploadModel
             {
-                ImageContext = new Core.Models.UploadContext
+                ImageContext = new Socially.Models.UploadContext
                 {
                     FileName = "helloWorld.png",
                     Stream = stream

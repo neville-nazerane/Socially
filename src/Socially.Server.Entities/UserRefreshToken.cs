@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Socially.Core.Entities
+namespace Socially.Server.Entities
 {
 
     [Index(nameof(RefreshToken))]

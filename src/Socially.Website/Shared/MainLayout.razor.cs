@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.JSInterop;
 using Socially.Apps.Consumer.Services;
-using Socially.Core.Models;
+using Socially.Models;
 using Socially.Website.Services;
 using System.Threading.Tasks;
 

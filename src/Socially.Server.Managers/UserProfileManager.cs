@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Scaffolding;
-using Socially.Core.Entities;
-using Socially.Core.Models;
+using Socially.Models;
 using Socially.Server.DataAccess;
+using Socially.Server.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,7 +87,7 @@ namespace Socially.Server.Managers
                                                     TimeSpan expireOn,
                                                     CancellationToken cancellationToken = default)
         {
-            Core.Entities.UserRefreshToken entity = new()
+            UserRefreshToken entity = new()
             {
                 ExpiresOn = DateTime.UtcNow.Add(expireOn),
                 UserId = userId,

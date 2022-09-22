@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Socially.Core.Entities
+namespace Socially.Server.Entities
 {
     public class User : IdentityUser<int>
     {

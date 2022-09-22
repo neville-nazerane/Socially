@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Socially.Core.Entities;
+using Socially.Server.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;

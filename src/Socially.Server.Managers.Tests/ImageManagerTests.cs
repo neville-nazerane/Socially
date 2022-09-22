@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Socially.Core.Entities;
 using Socially.Server.DataAccess;
+using Socially.Server.Entities;
 using System;
 using System.Collections.Generic;
 using System.IO;

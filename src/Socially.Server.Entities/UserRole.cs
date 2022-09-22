@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Socially.Core.Entities
+namespace Socially.Server.Entities
 {
     public class UserRole : IdentityRole<int>
     {

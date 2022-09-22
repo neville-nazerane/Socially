@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Socially.Core.Models
+namespace Socially.Models
 {
     public class ErrorModel
     {

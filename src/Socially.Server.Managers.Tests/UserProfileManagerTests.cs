@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Socially.Core.Entities;
-using Socially.Core.Models;
+using Socially.Models;
 using Socially.Server.DataAccess;
+using Socially.Server.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data;

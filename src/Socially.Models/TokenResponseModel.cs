@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Socially.Core.Models
+namespace Socially.Models
 {
     public class TokenResponseModel
     {

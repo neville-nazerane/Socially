@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Socially.Model\Socially.Model.csproj" />
+    <ProjectReference Include="..\Socially.Models\Socially.Models.csproj" />
   </ItemGroup>
 
 </Project>

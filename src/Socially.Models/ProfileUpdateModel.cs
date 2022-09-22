@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Socially.Core.Models
+namespace Socially.Models
 {
     public class ProfileUpdateModel
     {

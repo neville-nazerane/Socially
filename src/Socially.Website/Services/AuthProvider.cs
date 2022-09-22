@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using Socially.Apps.Consumer.Services;
-using Socially.Core.Models;
+using Socially.Models;
 using Socially.Website.Models;
 using System;
 using System.IdentityModel.Tokens.Jwt;

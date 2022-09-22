@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Primitives;
-using Socially.Core.Models;
+using Socially.Models;
 using Socially.WebAPI.Models;
 using Socially.WebAPI.Services;
 using Socially.WebAPI.Utils;

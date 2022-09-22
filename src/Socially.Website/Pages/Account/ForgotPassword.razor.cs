@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Socially.Apps.Consumer.Exceptions;
 using Socially.Apps.Consumer.Services;
-using Socially.Core.Models;
+using Socially.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;

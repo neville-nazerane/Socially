@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using Socially.Apps.Consumer.Utils;
-using Socially.Core.Models;
+using Socially.Models;
 using System;
 using System.Net.Http;
 using System.Net.Http.Json;

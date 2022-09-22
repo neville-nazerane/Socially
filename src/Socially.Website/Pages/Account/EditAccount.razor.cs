@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using Socially.Apps.Consumer.Services;
-using Socially.Core.Models;
+using Socially.Models;
 using System;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;

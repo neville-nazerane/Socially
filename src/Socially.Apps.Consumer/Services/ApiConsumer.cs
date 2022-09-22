@@ -1,5 +1,5 @@
 ﻿using Socially.Apps.Consumer.Utils;
-using Socially.Core.Models;
+using Socially.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;

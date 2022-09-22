@@ -16,7 +16,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Socially.Core.Entities;
 using Socially.Server.DataAccess;
 using Socially.Server.Managers;
 using Socially.Server.Services.Models;
@@ -27,6 +26,7 @@ using Socially.WebAPI.Utils;
 using SendGrid.Extensions.DependencyInjection;
 using Socially.Website.Models;
 using Socially.Website.Services;
+using Socially.Server.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 

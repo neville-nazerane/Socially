@@ -1,10 +1,10 @@
-﻿using Socially.Core.Models;
+﻿using Socially.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Socially.Core.Exceptions
+namespace Socially.Models.Exceptions
 {
     public class BadRequestException : Exception
     {
