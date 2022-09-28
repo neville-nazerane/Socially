@@ -17,9 +17,6 @@ namespace Socially.Server.DataAccess
 
         public DbSet<Post> Posts { get; set; }
 
-        public DbSet<Comment> Comments { get; set; }
-
-
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }

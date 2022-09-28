@@ -50,7 +50,6 @@ services.AddIdentity<User, UserRole>()
 services.AddHealthChecks()
         .AddDbContextCheck<ApplicationDbContext>();
 
-
 services.AddSendGrid(o => o.ApiKey = configuration["sendGridApiKey"]);
 services.AddSingleton<IBlobAccess>(p => new BlobAccess(configuration["blobConnString"]));
 
@@ -68,9 +67,9 @@ services.AddAuthentication("complete")
         });
 services.AddAuthorization(o =>
     o.DefaultPolicy = new AuthorizationPolicyBuilder()
-                            .AddAuthenticationSchemes("complete")
-                            .RequireAuthenticatedUser()
-                            .Build()
+                                    .AddAuthenticationSchemes("complete")
+                                    .RequireAuthenticatedUser()
+                                    .Build()
 );
 
 // managers

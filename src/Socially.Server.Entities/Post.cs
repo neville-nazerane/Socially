@@ -10,10 +10,7 @@ namespace Socially.Server.Entities
     public class Post
     {
 
-        public int Id { get; set; }
-
-        [MaxLength(900)]
-        public string Text { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         public DateTime? CreatedOn { get; set; }
@@ -21,8 +18,6 @@ namespace Socially.Server.Entities
         [Required]
         public int? CreatorId { get; set; }
         public User Creator { get; set; }
-
-        public IEnumerable<Comment> Comments { get; set; }
 
     }
 }
