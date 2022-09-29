@@ -4,69 +4,50 @@ using Socially.Models;
 using Socially.Server.DataAccess;
 using Socially.Server.Entities;
 using Socially.Server.Managers.Exceptions;
+using Socially.Server.ModelMappings;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Comment = Socially.Server.Entities.NoSql.Comment;
+using Comment = Socially.Server.Entities.Comment;
 
 namespace Socially.Server.Managers
 {
     public class PostsManager
     {
-        private const string containerName = "posts";
 
         private readonly ApplicationDbContext _dbContext;
-        private readonly IBlobAccess _blobAccess;
         private readonly ILogger<PostsManager> _logger;
 
         public PostsManager(ApplicationDbContext dbContext, 
-                            IBlobAccess blobAccess,
                             ILogger<PostsManager> logger)
         {
             _dbContext = dbContext;
-            _blobAccess = blobAccess;
             _logger = logger;
         }
 
-        public Task InitAsync(CancellationToken cancellationToken = default)
-            => _blobAccess.CreateContainerIfNotExistAsync(containerName,
-                                                          Azure.Storage.Blobs.Models.PublicAccessType.None,
-                                                          cancellationToken);
-
-        public async Task<Guid> AddAsync(int userId,
+        public async Task<int> AddAsync(int userId,
                                         AddPostModel addPostModel,
                                         CancellationToken cancellationToken = default)
         {
             var entity = new Post
             {
-                Id = Guid.NewGuid(),
                 CreatorId = userId,
-                CreatedOn = DateTime.UtcNow
+                Text = addPostModel.Text,
+                CreatedOn = DateTime.UtcNow,
             };
 
-            await Task.WhenAll(new Task[]
-            {
-                _dbContext.Posts.AddAsync(entity, cancellationToken).AsTask(),
-
-                _blobAccess.UploadAsync(containerName,
-                                              entity.Id.ToString(),
-                                              new Entities.NoSql.Post
-                                              {
-                                                  CreatedOn = entity.CreatedOn.Value,
-                                                  CreatorId = userId,
-                                                  Text = addPostModel.Text
-                                              }, cancellationToken)
-            });
-
+            await _dbContext.Posts.AddAsync(entity, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return entity.Id;
         }
 
-        public async Task DeleteAsync(int userId, Guid postId, CancellationToken cancellationToken = default)
+        public async Task DeleteAsync(int userId, int postId, CancellationToken cancellationToken = default)
         {
             var post = await _dbContext.Posts.SingleOrDefaultAsync(s => s.CreatorId == userId && s.Id == postId,
                                                                    cancellationToken);
@@ -77,56 +58,88 @@ namespace Socially.Server.Managers
             }
             _dbContext.Posts.Remove(post);
 
-            await Task.WhenAll(new Task[]
-            {
-                _dbContext.SaveChangesAsync(CancellationToken.None),
-                _blobAccess.DeleteAsync(containerName, post.Id.ToString(), CancellationToken.None)
-            });
+            await _dbContext.SaveChangesAsync(CancellationToken.None);
         }
 
         public async Task AddCommentAsync(int userId, AddCommentModel model, CancellationToken cancellationToken = default)
         {
             var entity = new Comment
             {
-                Id = Guid.NewGuid(),
                 Text = model.Text,
                 CreatorId = userId,
                 PostId = model.PostId,
+                ParentCommentId = model.ParentCommentId,
                 CreatedOn = DateTime.UtcNow
             };
-
-            var post = await _blobAccess.DownloadAsync<Entities.NoSql.Post>(containerName,
-                                                                            model.PostId.ToString(),
-                                                                            cancellationToken);
-            if (model.ParentCommentId is null)
-            {
-                post.Comments ??= Array.Empty<Comment>();
-                post.Comments = post.Comments.Union(new Comment[] { entity });
-            }
-            else
-            {
-                var parent = FlattenComments(post.Comments).SingleOrDefault(c => c.Id == model.ParentCommentId);
-                throw new RequiredDataNotFoundException(model.ParentCommentId, "comment");
-            }
-
-            await _blobAccess.DeleteAsync(containerName, model.PostId.ToString(), cancellationToken);
-            await _blobAccess.UploadAsync(containerName, model.PostId.ToString(), post, CancellationToken.None);
-        }
-
-        private IEnumerable<Comment> FlattenComments(IEnumerable<Comment> comments)
-        {
-            return comments.Union(  
-                    FlattenComments(comments.Where(c => c.Comments?.Any() == true)
-                                            .SelectMany(c => c.Comments))
-                );
+            await _dbContext.AddAsync(entity, cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task DeleteCommentAsync(int userId,
-                                             Guid postId,
-                                             Guid commentId,
+                                             int commentId,
                                              CancellationToken cancellationToken = default)
         {
-
+            var comment = await _dbContext.Comments.SingleOrDefaultAsync(s => s.CreatorId == userId && s.Id == commentId,
+                                                                   cancellationToken);
+            if (comment == null)
+            {
+                _logger.LogWarning("Did not find comment {commentId} to delete with user {userId}", commentId, userId);
+                return;
+            }
+            _dbContext.Comments.Remove(comment);
+            await _dbContext.SaveChangesAsync(CancellationToken.None);
         }
+
+        public async Task<IEnumerable<PostDisplayModel>> GetProfilePostsAsync(int userId, CancellationToken cancellationToken = default)
+        {
+            var data =  await _dbContext.Posts
+                                            .Where(p => p.CreatorId == userId)
+                                            .Select(p => new
+                                            {
+                                                Comments = p.Comments.ToArray(),
+                                                Post = new PostDisplayModel
+                                                {
+                                                    Id = p.Id,
+                                                    Text = p.Text,
+                                                    CreatorId = p.CreatorId,
+                                                    CreatedOn = p.CreatedOn
+                                                }
+                                            })
+                                            .ToArrayAsync(cancellationToken);
+
+            var allComments = data.SelectMany(r => r.Comments).ToArray();
+
+            var postResults = data.Select(r => r.Post).ToArray();
+
+            foreach (var p in postResults)
+                p.Comments = MapComments(allComments.Where(c => c.PostId == p.Id).ToArray()).ToList();
+
+            return postResults;
+        }
+
+        private static IEnumerable<DisplayCommentModel> MapComments(IEnumerable<Comment> comments, int? parentId = null)
+        {
+            var result = new List<DisplayCommentModel>();
+            var dictonary = comments.ToDictionary(c => c.Id, c => c.ToDisplayModel());
+            foreach (var comment in comments)
+            {
+                if (comment.ParentCommentId.HasValue && dictonary.ContainsKey(comment.ParentCommentId.Value))
+                    dictonary[comment.ParentCommentId.Value].Comments.Add(dictonary[comment.Id]);
+
+                if (comment.ParentCommentId == parentId) result.Add(dictonary[comment.Id]);
+            }
+            
+            return result;
+        }
+
+        //private IEnumerable<Comment> FlattenComments(IEnumerable<Comment> comments)
+        //{
+        //    return comments.Union(
+        //            FlattenComments(comments.Where(c => c.Comments?.Any() == true)
+        //                                    .SelectMany(c => c.Comments))
+        //        );
+        //}
+
     }
+
 }

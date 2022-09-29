@@ -17,6 +17,8 @@ namespace Socially.Server.DataAccess
 
         public DbSet<Post> Posts { get; set; }
 
+        public DbSet<Comment> Comments { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
@@ -24,6 +26,14 @@ namespace Socially.Server.DataAccess
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<User>()
+                   .Property(u => u.CreatedOn)
+                   .HasDefaultValueSql("GETUTCDATE()");
+
+            builder.Entity<Post>()
+                   .Property(u => u.CreatedOn)
+                   .HasDefaultValueSql("GETUTCDATE()");
+
+            builder.Entity<Comment>()
                    .Property(u => u.CreatedOn)
                    .HasDefaultValueSql("GETUTCDATE()");
 

@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Socially.Models\Socially.Models.csproj" />
-    <ProjectReference Include="..\Socially.Server.DataAccess\Socially.Server.DataAccess.csproj" />
-    <ProjectReference Include="..\Socially.Server.ModelMappings\Socially.Server.ModelMappings.csproj" />
+    <ProjectReference Include="..\Socially.Server.Entities\Socially.Server.Entities.csproj" />
   </ItemGroup>
 
 </Project>

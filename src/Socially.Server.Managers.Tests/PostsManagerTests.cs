@@ -29,7 +29,8 @@ namespace Socially.Server.Managers.Tests
             return Task.CompletedTask;
         }
 
-        [Fact]
+
+        [Fact, Trait("action", "add"), Trait("happyPath", "valid")]
         public async Task Add_ValidPost_AddsPost()
         {
             // ARRANGE
@@ -40,7 +41,7 @@ namespace Socially.Server.Managers.Tests
             {
                 Text = "Sample post"
             }, CancellationToken.None);
-            
+
             // ASSERT
             var storedPosts = await DbContext.Posts.Where(p => p.CreatorId == 10).ToListAsync();
             Assert.NotEmpty(storedPosts);
@@ -49,8 +50,9 @@ namespace Socially.Server.Managers.Tests
 
         }
 
-        [Fact]
-        public async Task Remove_NonExistingPost_Warns() 
+
+        [Fact, Trait("action", "delete"), Trait("happyPath", "invalid")]
+        public async Task Remove_NonExistingPost_Warns()
         {
             // ARRANGE
             await SetupManagerAsync();
@@ -79,12 +81,12 @@ namespace Socially.Server.Managers.Tests
 
         }
 
-        [Fact]
+        [Fact, Trait("action", "delete"), Trait("happyPath", "invalid")]
         public async Task Remove_ExistingPostInvalidUser_Warns()
         {
             // ARRANGE
             await SetupManagerAsync();
- 
+
             var post = new Post
             {
                 CreatedOn = DateTime.Now,
@@ -109,7 +111,7 @@ namespace Socially.Server.Managers.Tests
 
         }
 
-        [Fact]
+        [Fact, Trait("action", "delete"), Trait("happyPath", "valid")]
         public async Task Remove_ExistingPostValidUser_Removes()
         {
             // ARRANGE
@@ -137,7 +139,8 @@ namespace Socially.Server.Managers.Tests
 
         }
 
-        [Fact]
+
+        [Fact, Trait("action", "add"), Trait("happyPath", "valid")]
         public async Task AddComment_ValidComment_AddsComment()
         {
             // ARRANGE
@@ -159,7 +162,8 @@ namespace Socially.Server.Managers.Tests
 
         }
 
-        [Fact]
+
+        [Fact, Trait("action", "add"), Trait("happyPath", "invalid")]
         public async Task DeleteComment_InvalidCommentValidUser_Warns()
         {
             // ARRANGE
@@ -189,7 +193,7 @@ namespace Socially.Server.Managers.Tests
                                 Times.Once);
         }
 
-        [Fact]
+        [Fact, Trait("action", "delete"), Trait("happyPath", "invalid")]
         public async Task DeleteComment_ValidCommitInvalidUser_Warns()
         {
             // ARRANGE
@@ -219,7 +223,7 @@ namespace Socially.Server.Managers.Tests
                     Times.Once);
         }
 
-        [Fact]
+        [Fact, Trait("action", "delete"), Trait("happyPath", "valid")]
         public async Task DeleteComment_ValidCommitValidUser_Deletes()
         {
             // ARRANGE
@@ -242,6 +246,85 @@ namespace Socially.Server.Managers.Tests
             // ASSERT
             var comments = await DbContext.Comments.ToListAsync();
             Assert.Empty(comments);
+
+        }
+
+        [Fact, Trait("action", "get"), Trait("happyPath", "valid")]
+        public async Task GetProfilePosts_ValidUser_GetUsersPosts()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            await DbContext.Posts.AddRangeAsync(new Post[]
+            {
+                new Post
+                {
+                    Text = "first post",
+                    CreatedOn = DateTime.UtcNow,
+                    CreatorId = 10,
+                    Comments = new Comment[]
+                    {
+                        new Comment
+                        {
+                            Id = 1,
+                            CreatedOn = DateTime.UtcNow,
+                            Text = "first comment"
+                        },
+                        new Comment
+                        {
+                            Id = 2,
+                            CreatedOn = DateTime.UtcNow,
+                            Text = "Second comment",
+                        },
+                        new Comment
+                        {
+                            Id = 3,
+                            ParentCommentId = 2,
+                            Text = "fore-ty",
+                            CreatedOn = DateTime.UtcNow
+                        }
+                        ,
+                        new Comment
+                        {
+                            Id = 4,
+                            ParentCommentId = 3,
+                            Text = "inner inner comment",
+                            CreatedOn = DateTime.UtcNow
+                        }
+                    }
+                },
+                new Post
+                {
+                    Text = "second post",
+                    CreatorId = 11,
+                    CreatedOn = DateTime.UtcNow
+                },
+                new Post
+                {
+                    Text = "third post",
+                    CreatorId = 10,
+                    CreatedOn = DateTime.UtcNow
+                }
+            });
+            await DbContext.SaveChangesAsync();
+
+
+            // ACT
+            var res = await manager.GetProfilePostsAsync(10);
+
+            
+            // ASSERT
+            
+            Assert.NotNull(res);
+            Assert.NotEmpty(res);
+            Assert.Equal(2, res.Count());
+
+            var comment2 = res.SingleOrDefault(p => p.Text == "first post")?.Comments?.SingleOrDefault(c => c.Id == 2);
+            Assert.NotNull(comment2);
+            Assert.Equal("Second comment", comment2.Text);
+            Assert.NotEmpty(comment2.Comments);
+            Assert.Single(comment2.Comments);
+            Assert.NotEmpty(comment2.Comments.First().Comments);
+            Assert.Single(comment2.Comments.First().Comments);
 
         }
 
