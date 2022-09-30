@@ -18,14 +18,14 @@ using Comment = Socially.Server.Entities.Comment;
 
 namespace Socially.Server.Managers
 {
-    public class PostsManager
+    public class PostManager
     {
 
         private readonly ApplicationDbContext _dbContext;
-        private readonly ILogger<PostsManager> _logger;
+        private readonly ILogger<PostManager> _logger;
 
-        public PostsManager(ApplicationDbContext dbContext, 
-                            ILogger<PostsManager> logger)
+        public PostManager(ApplicationDbContext dbContext, 
+                            ILogger<PostManager> logger)
         {
             _dbContext = dbContext;
             _logger = logger;

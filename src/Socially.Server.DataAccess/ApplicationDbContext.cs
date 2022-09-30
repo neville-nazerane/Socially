@@ -19,6 +19,10 @@ namespace Socially.Server.DataAccess
 
         public DbSet<Comment> Comments { get; set; }
 
+        public DbSet<Friend> Friends { get; set; }
+
+        public DbSet<FriendRequest> FriendRequests { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }

@@ -17,15 +17,15 @@ using Xunit;
 
 namespace Socially.Server.Managers.Tests
 {
-    public class PostsManagerTests : TestBase
+    public class PostManagerTests : TestBase
     {
-        private Mock<ILogger<PostsManager>> loggerMock;
-        private PostsManager manager;
+        private Mock<ILogger<PostManager>> loggerMock;
+        private PostManager manager;
 
         private Task SetupManagerAsync()
         {
-            loggerMock = new Mock<ILogger<PostsManager>>();
-            manager = new PostsManager(DbContext, loggerMock.Object);
+            loggerMock = new Mock<ILogger<PostManager>>();
+            manager = new PostManager(DbContext, loggerMock.Object);
             return Task.CompletedTask;
         }
 
