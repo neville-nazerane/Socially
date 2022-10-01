@@ -28,5 +28,9 @@ namespace Socially.Server.Entities
 
         public IEnumerable<ProfileImage> ProfileImages { get; set; }
 
+        [InverseProperty(nameof(Friend.OwnerUser))]
+        public IEnumerable<Friend> Friends { get; set; }
+
+
     }
 }

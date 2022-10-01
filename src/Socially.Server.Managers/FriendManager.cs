@@ -6,6 +6,7 @@ using Socially.Models;
 using Socially.Server.DataAccess;
 using Socially.Server.Entities;
 using Socially.Server.Managers.Exceptions;
+using Socially.Server.ModelMappings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace Socially.Server.Managers
 {
+
     public class FriendManager
     {
         private readonly ApplicationDbContext _dbContext;
@@ -58,9 +60,9 @@ namespace Socially.Server.Managers
         }
 
         public async Task<bool> RespondAsync(int requesterId,
-                                       int forId,
-                                       bool isAccepted,
-                                       CancellationToken cancellationToken = default)
+                                             int forId,
+                                             bool isAccepted,
+                                             CancellationToken cancellationToken = default)
         {
             var existingRequest = await _dbContext.FriendRequests.SingleOrDefaultAsync(
                                                                 f => f.RequesterId == requesterId && f.ForId == forId && f.IsAccepted != false,
@@ -95,10 +97,20 @@ namespace Socially.Server.Managers
             return true;
         }
 
+        public async Task<IEnumerable<UserSummaryModel>> SearchNonFriendsAsync(int userId,
+                                                                               string query,
+                                                                               CancellationToken cancellationToken = default)
+            => await _dbContext.Users.Where(u => u.FirstName.Contains(query, StringComparison.InvariantCultureIgnoreCase)
+                                                || u.LastName.Contains(query, StringComparison.InvariantCultureIgnoreCase))
+                                     .Where(u => !_dbContext.Users.Single(u => u.Id == userId).Friends.Any(f => f.FriendUserId == u.Id))
+                                     .SelectAsSummaryModel()
+                                     .ToListAsync(cancellationToken);
+
         public async Task<IEnumerable<UserSummaryModel>> GetRequestsAsync(int userId, CancellationToken cancellationToken = default)
             => await _dbContext.FriendRequests
                                  .AsNoTracking()
-                                 .Where(r => r.ForId == userId)
+                                 .Where(r => r.ForId == userId && r.IsAccepted == null)
+                                 .OrderBy(r => r.RequestedOn)
                                  .Select(r => new UserSummaryModel
                                  {
                                      Id = r.RequesterId.Value,

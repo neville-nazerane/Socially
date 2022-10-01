@@ -30,7 +30,7 @@ namespace Socially.Server.Managers.Tests
         }
 
 
-        [Fact, Trait("action", "add"), Trait("happyPath", "valid")]
+        [Fact]
         public async Task Add_ValidPost_AddsPost()
         {
             // ARRANGE
@@ -51,7 +51,7 @@ namespace Socially.Server.Managers.Tests
         }
 
 
-        [Fact, Trait("action", "delete"), Trait("happyPath", "invalid")]
+        [Fact]
         public async Task Remove_NonExistingPost_Warns()
         {
             // ARRANGE
@@ -81,7 +81,7 @@ namespace Socially.Server.Managers.Tests
 
         }
 
-        [Fact, Trait("action", "delete"), Trait("happyPath", "invalid")]
+        [Fact]
         public async Task Remove_ExistingPostInvalidUser_Warns()
         {
             // ARRANGE
@@ -111,7 +111,7 @@ namespace Socially.Server.Managers.Tests
 
         }
 
-        [Fact, Trait("action", "delete"), Trait("happyPath", "valid")]
+        [Fact]
         public async Task Remove_ExistingPostValidUser_Removes()
         {
             // ARRANGE
@@ -140,7 +140,7 @@ namespace Socially.Server.Managers.Tests
         }
 
 
-        [Fact, Trait("action", "add"), Trait("happyPath", "valid")]
+        [Fact]
         public async Task AddComment_ValidComment_AddsComment()
         {
             // ARRANGE
@@ -163,7 +163,7 @@ namespace Socially.Server.Managers.Tests
         }
 
 
-        [Fact, Trait("action", "add"), Trait("happyPath", "invalid")]
+        [Fact]
         public async Task DeleteComment_InvalidCommentValidUser_Warns()
         {
             // ARRANGE
@@ -193,7 +193,7 @@ namespace Socially.Server.Managers.Tests
                                 Times.Once);
         }
 
-        [Fact, Trait("action", "delete"), Trait("happyPath", "invalid")]
+        [Fact]
         public async Task DeleteComment_ValidCommitInvalidUser_Warns()
         {
             // ARRANGE
@@ -223,7 +223,7 @@ namespace Socially.Server.Managers.Tests
                     Times.Once);
         }
 
-        [Fact, Trait("action", "delete"), Trait("happyPath", "valid")]
+        [Fact]
         public async Task DeleteComment_ValidCommitValidUser_Deletes()
         {
             // ARRANGE
@@ -249,7 +249,7 @@ namespace Socially.Server.Managers.Tests
 
         }
 
-        [Fact, Trait("action", "get"), Trait("happyPath", "valid")]
+        [Fact]
         public async Task GetProfilePosts_ValidUser_GetUsersPosts()
         {
             // ARRANGE
@@ -309,7 +309,7 @@ namespace Socially.Server.Managers.Tests
 
 
             // ACT
-            var res = await manager.GetProfilePostsAsync(10);
+            var res = await manager.GetProfilePostsAsync(10, 10);
 
             
             // ASSERT
@@ -327,6 +327,154 @@ namespace Socially.Server.Managers.Tests
             Assert.Single(comment2.Comments.First().Comments);
 
         }
+
+        [Fact]
+        public async Task GetProfilePosts_ValidUserMultiplePages_GetEachPage()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            int currentUserId = 10;
+            await DbContext.Posts.AddRangeAsync(new Post[]
+            {
+                new Post
+                {
+                    Text = "first post",
+                    CreatedOn = DateTime.UtcNow,
+                    CreatorId = currentUserId,
+                },
+                new Post
+                {
+                    Text = "second post",
+                    CreatorId = 11,
+                    CreatedOn = DateTime.UtcNow
+                },
+                new Post
+                {
+                    Text = "third post",
+                    CreatorId = currentUserId,
+                    CreatedOn = DateTime.UtcNow
+                },
+                new Post
+                {
+                    Text = "fourth post",
+                    CreatorId = currentUserId,
+                    CreatedOn = DateTime.UtcNow
+                },
+                new Post
+                {
+                    Text = "fifth post",
+                    CreatorId = currentUserId,
+                    CreatedOn = DateTime.UtcNow
+                },
+                new Post
+                {
+                    Text = "sixth post",
+                    CreatorId = currentUserId,
+                    CreatedOn = DateTime.UtcNow
+                },
+                new Post
+                {
+                    Text = "seventh post",
+                    CreatorId = currentUserId,
+                    CreatedOn = DateTime.UtcNow
+                }
+            });
+            await DbContext.SaveChangesAsync();
+
+
+            // ACT
+            var page1 = await manager.GetProfilePostsAsync(10, 4);
+            var token = page1.OrderBy(p => p.CreatedOn).LastOrDefault()?.CreatedOn;
+            var page2 = await manager.GetProfilePostsAsync(10, 4, token);
+
+
+            // ASSERT
+
+            Assert.NotNull(page1);
+            Assert.NotEmpty(page1);
+            Assert.Equal(4, page1.Count());
+
+            Assert.NotNull(page2);
+            Assert.NotEmpty(page2);
+            Assert.Equal(2, page2.Count());
+
+        }
+
+        [Fact]
+        public async Task GetHomePosts_ValidUser_GetUsersPosts()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            int currentUserId = 10;
+
+            //await DbContext.Friends.AddRangeAsync(new Friend[]
+            //{
+            //    new Friend
+            //    {
+            //        FriendUserId = 11,
+            //        OwnerUserId = currentUserId
+            //    },
+            //    new Friend
+            //    {
+            //        FriendUserId = currentUserId,
+            //        OwnerUserId = 11
+            //    }
+            //});
+            await DbContext.Users.AddAsync(new User
+            {
+                CreatedOn = DateTime.UtcNow,
+                Id = 11,
+                Friends = new Friend[]
+                {
+                    new Friend
+                    {
+                        FriendUserId = currentUserId
+                    }
+                }
+            });
+
+            await DbContext.Posts.AddRangeAsync(new Post[]
+            {
+                new Post
+                {
+                    Text = "first post",
+                    CreatorId = currentUserId,
+                    CreatedOn = DateTime.UtcNow
+                },
+                new Post
+                {
+                    Text = "second post",
+                    CreatorId = 11,
+                    CreatedOn = DateTime.UtcNow
+                },
+                new Post
+                {
+                    Text = "third post",
+                    CreatorId = currentUserId,
+                    CreatedOn = DateTime.UtcNow
+                },
+                 new Post
+                {
+                    Text = "fourth post",
+                    CreatorId = 12,
+                    CreatedOn = DateTime.UtcNow
+                },
+            });
+            await DbContext.SaveChangesAsync();
+
+
+            // ACT
+            var res = await manager.GetHomePostsAsync(currentUserId, 30);
+
+
+            // ASSERT
+
+            Assert.NotNull(res);
+            Assert.NotEmpty(res);
+            Assert.Single(res);
+
+        }
+
 
     }
 }

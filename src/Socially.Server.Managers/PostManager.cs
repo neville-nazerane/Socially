@@ -90,25 +90,70 @@ namespace Socially.Server.Managers
             await _dbContext.SaveChangesAsync(CancellationToken.None);
         }
 
-        public async Task<IEnumerable<PostDisplayModel>> GetProfilePostsAsync(int userId, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<PostDisplayModel>> GetProfilePostsAsync(int userId, 
+                                                                              int pageSize,
+                                                                              DateTime? since = null,
+                                                                              CancellationToken cancellationToken = default)
         {
-            var data =  await _dbContext.Posts
-                                            .Where(p => p.CreatorId == userId)
-                                            .Select(p => new
-                                            {
-                                                Comments = p.Comments.ToArray(),
-                                                Post = new PostDisplayModel
-                                                {
-                                                    Id = p.Id,
-                                                    Text = p.Text,
-                                                    CreatorId = p.CreatorId,
-                                                    CreatedOn = p.CreatedOn
-                                                }
-                                            })
-                                            .ToArrayAsync(cancellationToken);
+
+            return await ProjectPostAsync(_dbContext.Posts.Where(p => p.CreatorId == userId), 
+                                          pageSize, since, cancellationToken);
+
+            //var data = await _dbContext.Posts.AsNoTracking()
+            //                                .Where(p => p.CreatorId == userId && (since == null || p.CreatedOn > since))
+            //                                .Take(pageSize)
+            //                                .Select(p => new
+            //                                {
+            //                                    Comments = p.Comments.ToArray(),
+            //                                    Post = new PostDisplayModel
+            //                                    {
+            //                                        Id = p.Id,
+            //                                        Text = p.Text,
+            //                                        CreatorId = p.CreatorId,
+            //                                        CreatedOn = p.CreatedOn
+            //                                    }
+            //                                })
+            //                                .ToArrayAsync(cancellationToken);
+
+            //var allComments = data.SelectMany(r => r.Comments).ToArray();
+
+            //var postResults = data.Select(r => r.Post).ToArray();
+
+            //foreach (var p in postResults)
+            //    p.Comments = MapComments(allComments.Where(c => c.PostId == p.Id).ToArray()).ToList();
+
+            //return postResults;
+        }
+
+        public async Task<IEnumerable<PostDisplayModel>> GetHomePostsAsync(int userId,
+                                                                              int pageSize,
+                                                                              DateTime? since = null,
+                                                                              CancellationToken cancellationToken = default)
+            => await ProjectPostAsync(_dbContext.Posts.Where(p => p.Creator.Friends.Select(f => f.FriendUserId).Contains(userId)),
+                                      pageSize, since, cancellationToken);
+
+        async Task<IEnumerable<PostDisplayModel>> ProjectPostAsync(IQueryable<Post> querablePosts,
+                                                                   int pageSize,
+                                                                   DateTime? since = null,
+                                                                   CancellationToken cancellationToken = default)
+        {
+            var data = await querablePosts.AsNoTracking()
+                                          .Where(p => since == null || p.CreatedOn > since)
+                                          .OrderBy(p => p.CreatedOn)
+                                          .Take(pageSize)
+                                                    .Select(p => new {
+                                                            Comments = p.Comments.ToArray(),
+                                                            Post = new PostDisplayModel
+                                                            {
+                                                                Id = p.Id,
+                                                                Text = p.Text,
+                                                                CreatorId = p.CreatorId,
+                                                                CreatedOn = p.CreatedOn
+                                                            }
+                                                        })
+                                                        .ToArrayAsync(cancellationToken);
 
             var allComments = data.SelectMany(r => r.Comments).ToArray();
-
             var postResults = data.Select(r => r.Post).ToArray();
 
             foreach (var p in postResults)
