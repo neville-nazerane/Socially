@@ -508,7 +508,6 @@ namespace Socially.Server.Managers.Tests
 
         }
 
-
         [Fact]
         public async Task SwapLike_ExistingPostNotLikedByCurrentUser_PostLiked()
         {
