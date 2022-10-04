@@ -14,6 +14,6 @@ namespace Socially.Models
         public string Text { get; set; }
 
         public ICollection<DisplayCommentModel> Comments { get; set; }
-
+        public int LikeCount { get; set; }
     }
 }

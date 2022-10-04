@@ -9,6 +9,12 @@ namespace Socially.Server.Entities
 {
     public class Comment
     {
+
+        public Comment()
+        {
+            CreatedOn = DateTime.UtcNow;
+        }
+
         public int Id { get; set; }
 
         [MaxLength(2000)]
@@ -28,7 +34,9 @@ namespace Socially.Server.Entities
         public int? ParentCommentId { get; set; }
         public Comment ParentComment { get; set; }
 
-        //public IEnumerable<Comment> Comments { get; set; }
+        public IEnumerable<Comment> Comments { get; set; }
 
+        public IEnumerable<PostLike> Likes { get; set; }
+        public int? LikeCount { get; set; }
     }
 }

@@ -90,6 +90,45 @@ namespace Socially.Server.Managers
             await _dbContext.SaveChangesAsync(CancellationToken.None);
         }
 
+        public async Task SwapLikeAsync(int userId,
+                                        int postId,
+                                        int? commentId,
+                                        CancellationToken cancellationToken = default)
+        {
+            bool removal = false;
+            var existing = await _dbContext.PostLikes.SingleOrDefaultAsync(l => l.UserId == userId && l.PostId == postId && l.CommentId == commentId, cancellationToken);
+            if (existing is not null)
+            {
+                removal = true;
+                _dbContext.PostLikes.Remove(existing);
+            }
+            else
+            {
+                await _dbContext.PostLikes.AddAsync(new PostLike
+                {
+                    UserId = userId,
+                    PostId = postId,
+                    CommentId = commentId,
+                    CreatedOn = DateTime.UtcNow,
+                }, cancellationToken);
+            }
+
+            if (commentId == null)
+            {
+                var post = await _dbContext.Posts.SingleOrDefaultAsync(p => p.Id == postId, cancellationToken);
+                post.LikeCount = (post.LikeCount ?? 0) + (removal ? -1 : 1);
+                if (post.LikeCount < 1) post.LikeCount = null;
+            }
+            else
+            {
+                var comment = await _dbContext.Comments.SingleOrDefaultAsync(p => p.Id == commentId, cancellationToken);
+                comment.LikeCount = (comment.LikeCount ?? 0) + (removal ? -1 : 1);
+                if (comment.LikeCount < 1) comment.LikeCount = null;
+            }
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
         public async Task<IEnumerable<PostDisplayModel>> GetProfilePostsAsync(int userId, 
                                                                               int pageSize,
                                                                               DateTime? since = null,
@@ -148,7 +187,8 @@ namespace Socially.Server.Managers
                                                                 Id = p.Id,
                                                                 Text = p.Text,
                                                                 CreatorId = p.CreatorId,
-                                                                CreatedOn = p.CreatedOn
+                                                                CreatedOn = p.CreatedOn,
+                                                                LikeCount = p.LikeCount ?? 0,
                                                             }
                                                         })
                                                         .ToArrayAsync(cancellationToken);
@@ -176,14 +216,6 @@ namespace Socially.Server.Managers
             
             return result;
         }
-
-        //private IEnumerable<Comment> FlattenComments(IEnumerable<Comment> comments)
-        //{
-        //    return comments.Union(
-        //            FlattenComments(comments.Where(c => c.Comments?.Any() == true)
-        //                                    .SelectMany(c => c.Comments))
-        //        );
-        //}
 
     }
 

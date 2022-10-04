@@ -23,6 +23,8 @@ namespace Socially.Server.DataAccess
 
         public DbSet<FriendRequest> FriendRequests { get; set; }
 
+        public DbSet<PostLike> PostLikes { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }

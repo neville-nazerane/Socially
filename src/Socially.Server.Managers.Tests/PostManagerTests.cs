@@ -50,7 +50,6 @@ namespace Socially.Server.Managers.Tests
 
         }
 
-
         [Fact]
         public async Task Remove_NonExistingPost_Warns()
         {
@@ -138,7 +137,6 @@ namespace Socially.Server.Managers.Tests
             loggerMock.VerifyLog(l => l.LogWarning(It.IsAny<string>()), Times.Never);
 
         }
-
 
         [Fact]
         public async Task AddComment_ValidComment_AddsComment()
@@ -311,9 +309,9 @@ namespace Socially.Server.Managers.Tests
             // ACT
             var res = await manager.GetProfilePostsAsync(10, 10);
 
-            
+
             // ASSERT
-            
+
             Assert.NotNull(res);
             Assert.NotEmpty(res);
             Assert.Equal(2, res.Count());
@@ -334,49 +332,50 @@ namespace Socially.Server.Managers.Tests
             // ARRANGE
             await SetupManagerAsync();
             int currentUserId = 10;
+            int timeIncrement = 0;
             await DbContext.Posts.AddRangeAsync(new Post[]
             {
                 new Post
                 {
                     Text = "first post",
-                    CreatedOn = DateTime.UtcNow,
+                    CreatedOn = DateTime.UtcNow.AddMilliseconds(++timeIncrement),
                     CreatorId = currentUserId,
                 },
                 new Post
                 {
                     Text = "second post",
                     CreatorId = 11,
-                    CreatedOn = DateTime.UtcNow
+                    CreatedOn = DateTime.UtcNow.AddMilliseconds(++timeIncrement)
                 },
                 new Post
                 {
                     Text = "third post",
                     CreatorId = currentUserId,
-                    CreatedOn = DateTime.UtcNow
+                    CreatedOn = DateTime.UtcNow.AddMilliseconds(++ timeIncrement)
                 },
                 new Post
                 {
                     Text = "fourth post",
                     CreatorId = currentUserId,
-                    CreatedOn = DateTime.UtcNow
+                    CreatedOn = DateTime.UtcNow.AddMilliseconds(++ timeIncrement)
                 },
                 new Post
                 {
                     Text = "fifth post",
                     CreatorId = currentUserId,
-                    CreatedOn = DateTime.UtcNow
+                    CreatedOn = DateTime.UtcNow.AddMilliseconds(++ timeIncrement)
                 },
                 new Post
                 {
                     Text = "sixth post",
                     CreatorId = currentUserId,
-                    CreatedOn = DateTime.UtcNow
+                    CreatedOn = DateTime.UtcNow.AddMilliseconds(++ timeIncrement)
                 },
                 new Post
                 {
                     Text = "seventh post",
                     CreatorId = currentUserId,
-                    CreatedOn = DateTime.UtcNow
+                    CreatedOn = DateTime.UtcNow.AddMilliseconds(++ timeIncrement)
                 }
             });
             await DbContext.SaveChangesAsync();
@@ -406,20 +405,6 @@ namespace Socially.Server.Managers.Tests
             // ARRANGE
             await SetupManagerAsync();
             int currentUserId = 10;
-
-            //await DbContext.Friends.AddRangeAsync(new Friend[]
-            //{
-            //    new Friend
-            //    {
-            //        FriendUserId = 11,
-            //        OwnerUserId = currentUserId
-            //    },
-            //    new Friend
-            //    {
-            //        FriendUserId = currentUserId,
-            //        OwnerUserId = 11
-            //    }
-            //});
             await DbContext.Users.AddAsync(new User
             {
                 CreatedOn = DateTime.UtcNow,
@@ -475,6 +460,312 @@ namespace Socially.Server.Managers.Tests
 
         }
 
+        [Fact]
+        public async Task SwapLike_ExistingPostNotLikedByAnyone_PostLiked()
+        {
+            // ASSERT
+            await SetupManagerAsync();
+            var currentUserId = 11;
+            int targetPostId = 10;
+            await DbContext.Posts.AddRangeAsync(new Post[]
+            {
+                new Post
+                {
+                    Id = targetPostId,
+                    CreatorId = currentUserId,
+                    Text = "real post"
+                },
+                new Post
+                {
+                    Id = 30,
+                    CreatorId = currentUserId,
+                    Text = "other liked post",
+                    LikeCount = 1
+                }
+            });
+            await DbContext.PostLikes.AddRangeAsync(new PostLike[]
+            {
+                new PostLike
+                {
+                    PostId = 30,
+                    UserId = currentUserId,
+                }
+            });
+
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            await manager.SwapLikeAsync(currentUserId, targetPostId, null);
+
+            // ASSERT
+            var targetPost = await DbContext.Posts.SingleOrDefaultAsync(p => p.Id == targetPostId);
+            var wrongPost = await DbContext.Posts.SingleOrDefaultAsync(p => p.Id == 30);
+            Assert.Equal(1, targetPost.LikeCount);
+            Assert.Equal(1, wrongPost.LikeCount);
+
+            var recordExist = await DbContext.PostLikes.AnyAsync(l => l.PostId == targetPostId && l.UserId == currentUserId);
+            Assert.True(recordExist);
+
+        }
+
+
+        [Fact]
+        public async Task SwapLike_ExistingPostNotLikedByCurrentUser_PostLiked()
+        {
+            // ASSERT
+            await SetupManagerAsync();
+            var currentUserId = 11;
+            int targetPostId = 10;
+            await DbContext.Users.AddRangeAsync(new User
+            {
+                CreatedOn = DateTime.UtcNow,
+                Id = currentUserId
+            });
+            await DbContext.Posts.AddRangeAsync(new Post[]
+            {
+                new Post
+                {
+                    Id = targetPostId,
+                    CreatorId = currentUserId,
+                    Text = "real post",
+                    CreatedOn = DateTime.UtcNow,
+                    LikeCount = 1
+                },
+                new Post
+                {
+                    Id = 30,
+                    CreatorId = currentUserId,
+                    Text = "other liked post",
+                    CreatedOn = DateTime.UtcNow,
+                    LikeCount = 1
+                }
+            });
+            await DbContext.PostLikes.AddRangeAsync(new PostLike[]
+            {
+                new PostLike
+                {
+                    PostId = 30,
+                    UserId = currentUserId,
+                },
+                new PostLike
+                {
+                    PostId = targetPostId,
+                    UserId = 29
+                }
+            });
+
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            await manager.SwapLikeAsync(currentUserId, targetPostId, null);
+
+            // ASSERT
+            var targetPost = await DbContext.Posts.SingleOrDefaultAsync(p => p.Id == targetPostId);
+            var wrongPost = await DbContext.Posts.SingleOrDefaultAsync(p => p.Id == 30);
+            Assert.Equal(2, targetPost.LikeCount);
+            Assert.Equal(1, wrongPost.LikeCount);
+
+            var recordExist = await DbContext.PostLikes.AnyAsync(l => l.PostId == targetPostId && l.UserId == currentUserId);
+            Assert.True(recordExist);
+
+        }
+
+        [Fact]
+        public async Task SwapLike_ExistingLikedPost_PostUnLiked()
+        {
+            // ASSERT
+            await SetupManagerAsync();
+            var currentUserId = 11;
+            int targetPostId = 10;
+            await DbContext.Posts.AddRangeAsync(new Post[]
+            {
+                new Post
+                {
+                    Id = targetPostId,
+                    CreatorId = currentUserId,
+                    Text = "real post",
+                    CreatedOn = DateTime.UtcNow,
+                    LikeCount = 1,
+                    Likes = new List<PostLike>
+                    {
+                        new PostLike { UserId = currentUserId }
+                    }
+                },
+                new Post
+                {
+                    Id = 30,
+                    CreatorId = currentUserId,
+                    Text = "other liked post",
+                    CreatedOn = DateTime.UtcNow,
+                    LikeCount = 1,
+                    Likes = new List<PostLike>
+                    {
+                        new PostLike { UserId = currentUserId  }
+                    }
+                }
+            });
+
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            await manager.SwapLikeAsync(currentUserId, targetPostId, null);
+
+            // ASSERT
+            var targetPost = await DbContext.Posts.SingleOrDefaultAsync(p => p.Id == targetPostId);
+            var wrongPost = await DbContext.Posts.SingleOrDefaultAsync(p => p.Id == 30);
+            Assert.Null(targetPost.LikeCount);
+            Assert.Equal(1, wrongPost.LikeCount);
+
+            var recordExist = await DbContext.PostLikes.AnyAsync(l => l.PostId == targetPostId && l.UserId == currentUserId);
+            Assert.False(recordExist);
+        }
+
+        [Fact]
+        public async Task SwapLike_ExistingCommentNotLikedbyAnyOne_CommentLiked()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            var currentUserId = 11;
+            int targetPostId = 10;
+            int targetCommentId = 9;
+            await DbContext.Posts.AddAsync(new Post
+            {
+                Id = targetPostId,
+                CreatorId = currentUserId,
+                Text = "real post",
+                CreatedOn = DateTime.UtcNow,
+                Comments = new Comment[]
+                    {
+                        new Comment
+                        {
+                            Id = targetCommentId
+                        }
+                    }
+            });
+            await DbContext.PostLikes.AddAsync(new PostLike
+            {
+                PostId = 30,
+                UserId = currentUserId,
+            });
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            await manager.SwapLikeAsync(currentUserId, targetPostId, targetCommentId);
+
+            // ASSERT
+            var targetPost = await DbContext.Posts
+                                            .Include(p => p.Comments)
+                                            .SingleOrDefaultAsync(p => p.Id == targetPostId);
+            Assert.Null(targetPost.LikeCount);
+            Assert.Equal(1, targetPost.Comments.First().LikeCount);
+
+            var recordExist = await DbContext.PostLikes.AnyAsync(l => l.PostId == targetPostId && l.UserId == currentUserId && l.CommentId == targetCommentId);
+            Assert.True(recordExist);
+
+        }
+
+        [Fact]
+        public async Task SwapLike_ExistingCommentNotLikedbyCurrentUser_CommentLiked()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            var currentUserId = 11;
+            int targetPostId = 10;
+            int targetCommentId = 9;
+            await DbContext.Posts.AddRangeAsync(new Post[]
+            {
+                new Post
+                {
+                    Id = targetPostId,
+                    CreatorId = currentUserId,
+                    Text = "real post",
+                    CreatedOn = DateTime.UtcNow,
+                    Comments = new Comment[]
+                    {
+                        new Comment
+                        {
+                            Id = targetCommentId,
+                            LikeCount = 1
+                        }
+                    }
+                }
+            });
+            await DbContext.PostLikes.AddRangeAsync(new PostLike[]
+            {
+                new PostLike
+                {
+                    PostId = 30,
+                    UserId = currentUserId,
+                },
+                new PostLike
+                {
+                    PostId = targetPostId,
+                    CommentId = currentUserId,
+                    UserId = 29
+                }
+            });
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            await manager.SwapLikeAsync(currentUserId, targetPostId, targetCommentId);
+
+            // ASSERT
+            var targetPost = await DbContext.Posts
+                                            .Include(p => p.Comments)
+                                            .SingleOrDefaultAsync(p => p.Id == targetPostId);
+            Assert.Null(targetPost.LikeCount);
+            Assert.Equal(2, targetPost.Comments.First().LikeCount);
+
+            var recordExist = await DbContext.PostLikes.AnyAsync(l => l.PostId == targetPostId && l.UserId == currentUserId && l.CommentId == targetCommentId);
+            Assert.True(recordExist);
+
+        }
+
+        [Fact]
+        public async Task SwapLike_ExistingCommentLikedByCurrentUser_CommentUnLiked()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            var currentUserId = 11;
+            int targetPostId = 10;
+            int targetCommentId = 9;
+            await DbContext.Posts.AddRangeAsync(new Post
+            {
+                Id = targetPostId,
+                CreatorId = currentUserId,
+                Text = "real post",
+                CreatedOn = DateTime.UtcNow,
+                Comments = new Comment[]
+                    {
+                        new Comment
+                        {
+                            Id = targetCommentId,
+                            LikeCount = 1
+                        }
+                    }
+            });
+            await DbContext.PostLikes.AddAsync(new PostLike
+            {
+                PostId = targetPostId,
+                CommentId = targetCommentId,
+                UserId = currentUserId
+            });
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            await manager.SwapLikeAsync(currentUserId, targetPostId, targetCommentId);
+
+            // ASSERT
+            var targetPost = await DbContext.Posts
+                                            .Include(p => p.Comments)
+                                            .SingleOrDefaultAsync(p => p.Id == targetPostId);
+            Assert.Null(targetPost.LikeCount);
+            Assert.Null(targetPost.Comments.First().LikeCount);
+
+            var recordExist = await DbContext.PostLikes.AnyAsync(l => l.PostId == targetPostId && l.UserId == currentUserId && l.CommentId == targetCommentId);
+            Assert.False(recordExist);
+
+        }
 
     }
 }

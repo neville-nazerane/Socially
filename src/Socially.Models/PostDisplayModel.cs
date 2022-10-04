@@ -13,5 +13,6 @@ namespace Socially.Models
         public int? CreatorId { get; set; }
         public DateTime? CreatedOn { get; set; }
         public ICollection<DisplayCommentModel> Comments { get; set; }
+        public int LikeCount { get; set; }
     }
 }
