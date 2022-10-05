@@ -69,5 +69,23 @@ namespace Socially.Apps.Consumer.Services
                                                           CancellationToken cancellationToken = default)
             => _httpClient.DeleteAsync($"image/{fileName}", cancellationToken);
 
+
+
+        #region friends
+
+        public Task<HttpResponseMessage> RequestFriendAsync(int forId, CancellationToken cancellationToken = default)
+            => _httpClient.PostAsync($"/friend/request/{forId}", null, cancellationToken);
+
+        public async Task<bool> RespondAsync(int requesterId,
+                                bool isAccepted,
+                                CancellationToken cancellationToken = default)
+        {
+            var res = await _httpClient.PutAsync($"/friend/respond/{requesterId}/{isAccepted}", null, cancellationToken);
+            res.EnsureSuccessStatusCode();
+            return bool.Parse(await res.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        #endregion
+
     }
 }

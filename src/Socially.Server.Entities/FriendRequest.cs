@@ -7,6 +7,11 @@ namespace Socially.Server.Entities
     public class FriendRequest
     {
 
+        public FriendRequest()
+        {
+            RequestedOn = DateTime.UtcNow;
+        }
+
         public int Id { get; set; }
 
         [Required]

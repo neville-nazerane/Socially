@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Socially.Apps.Consumer.Services;
 using Socially.Server.DataAccess;
 using Socially.Server.Entities;

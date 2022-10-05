@@ -9,5 +9,4 @@
     <ProjectReference Include="..\Socially.Server.DataAccess\Socially.Server.DataAccess.csproj" />
     <ProjectReference Include="..\Socially.Server.ModelMappings\Socially.Server.ModelMappings.csproj" />
   </ItemGroup>
-
 </Project>

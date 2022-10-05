@@ -37,6 +37,8 @@ var configuration = builder.Configuration;
 
 services.AddCors();
 services.AddApplicationInsightsTelemetry(o => o.ConnectionString = configuration["appinsights"]);
+
+services.AddSingleton<IBlobAccess>(p => new BlobAccess(configuration["blobConnString"]));
 services.AddDbContext<ApplicationDbContext>(c => c.UseSqlServer(configuration.GetConnectionString("db")));
 services.AddSingleton(p =>
 {
@@ -51,36 +53,11 @@ services.AddHealthChecks()
         .AddDbContextCheck<ApplicationDbContext>();
 
 services.AddSendGrid(o => o.ApiKey = configuration["sendGridApiKey"]);
-services.AddSingleton<IBlobAccess>(p => new BlobAccess(configuration["blobConnString"]));
 
-services.AddAuthentication("complete")
-        .AddJwtBearerCompletely(o =>
-        {
-            var configs = configuration.GetRequiredSection("authOptions");
-            o.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidIssuer = configs["issuer"],
-                ValidAudiences = configs["audiences"].Split(","),
-                RequireExpirationTime = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configs["secret"]))
-            };
-        });
-services.AddAuthorization(o =>
-    o.DefaultPolicy = new AuthorizationPolicyBuilder()
-                                    .AddAuthenticationSchemes("complete")
-                                    .RequireAuthenticatedUser()
-                                    .Build()
-);
+services.AddSocalAuthentication(configuration);
 
-// managers
-services.AddTransient<IUserProfileManager, UserProfileManager>()
-        .AddTransient<IImageManager, ImageManager>();
-
-// services
-services.AddTransient<IUserService, UserService>()
-        .AddTransient<IImagesService, ImagesService>()
-        .AddScoped<CurrentContext>()
-        .AddScoped<InitializeService>();
+services.AddManagers();
+services.AddServices();
 
 // swagger
 services.AddEndpointsApiExplorer();
@@ -117,6 +94,7 @@ app.UseEndpoints(endpoints =>
     endpoints.MapCustom<AccountEndpoints>();
     endpoints.MapCustom<ProfileEndpoints>();
     endpoints.MapCustom<ImagesEndpoints>();
+    endpoints.MapCustom<FriendEndpoints>();
 
 });
 

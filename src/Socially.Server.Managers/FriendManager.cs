@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 namespace Socially.Server.Managers
 {
 
-    public class FriendManager
+    public class FriendManager : IFriendManager
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly ILogger<FriendManager> _logger;

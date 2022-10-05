@@ -1,0 +1,20 @@
+﻿using Microsoft.AspNetCore.Http;
+using Socially.Server.Services.Models;
+using System.Security.Claims;
+
+namespace Socially.WebAPI.Services
+{
+    public class CurrentContextProvider : ICurrentContextProvider
+    {
+
+        public void SetupCurrentContext(HttpContext httpContext, CurrentContext context)
+        {
+            if (httpContext.User.Identity.IsAuthenticated)
+            {
+                context.UserId = int.Parse(
+                                        httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            }
+        }
+
+    }
+}
