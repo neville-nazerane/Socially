@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
 using Socially.WebAPI.Services;
+using Socially.Models;
 
 namespace Socially.WebAPI.Endpoints
 {
@@ -22,7 +23,8 @@ namespace Socially.WebAPI.Endpoints
             {
 
                 endpoints.MapPost("/friend/request/{forId}", RequestAsync),
-                endpoints.MapPut("/friend/respond/{requesterId}/{isAccepted}", RespondAsync)
+                endpoints.MapPut("/friend/respond/{requesterId}/{isAccepted}", RespondAsync),
+                endpoints.MapGet("/friend/requests", GetRequestsAsync)
 
             };
         }
@@ -35,6 +37,9 @@ namespace Socially.WebAPI.Endpoints
                                 bool isAccepted,
                                 CancellationToken cancellationToken = default)
             => friendsService.RespondAsync(requesterId, isAccepted, cancellationToken);
+
+        Task<IEnumerable<UserSummaryModel>> GetRequestsAsync(IFriendsService friendsService, CancellationToken cancellationToken = default)
+            => friendsService.GetRequestsAsync(cancellationToken);
 
     }
 }

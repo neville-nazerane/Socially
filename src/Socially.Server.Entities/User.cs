@@ -10,6 +10,11 @@ namespace Socially.Server.Entities
     public class User : IdentityUser<int>
     {
 
+        public User()
+        {
+            CreatedOn = DateTime.UtcNow;
+        }
+
         [MaxLength(100)]
         public string FirstName { get; set; }
 

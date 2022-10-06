@@ -85,6 +85,9 @@ namespace Socially.Apps.Consumer.Services
             return bool.Parse(await res.Content.ReadAsStringAsync(cancellationToken));
         }
 
+        public Task<IEnumerable<UserSummaryModel>> GetFriendRequestsAsync(CancellationToken cancellationToken = default)
+            => _httpClient.GetFromJsonAsync<IEnumerable<UserSummaryModel>>("/friend/requests", cancellationToken);
+
         #endregion
 
     }
