@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Socially.Models;
+using Socially.Models.Enums;
 using Socially.Server.DataAccess;
 using Socially.Server.Entities;
 using System;
@@ -118,6 +119,59 @@ namespace Socially.Server.Managers
                                                                cancellationToken);
             entity.IsEnabled = false;
             await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<IEnumerable<SearchedUserModel>> SearchAsync(int userId,
+                                                  string q,
+                                                  CancellationToken cancellationToken = default)
+        {
+            var res = await _dbContext.Users.Where(u => u.Id != userId &&
+                                                    (EF.Functions.Like(u.FirstName , $"%{q}%") || EF.Functions.Like(u.LastName, $"%{q}%") ))
+                                       .Select(u => new
+                                       {
+                                           u.Id,
+                                           u.FirstName,
+                                           u.LastName,
+                                           ProfilePicUrl = u.ProfilePicture == null ? null : u.ProfilePicture.FileName,
+                                           RecievedRequest = u.RecievedFriendRequests.Where(r => r.RequesterId == userId)
+                                                                                               .Select(r => new { r.IsAccepted })
+                                                                                               .SingleOrDefault(),
+                                           SentRequest = u.SentFriendRequests.Where(r => r.ForId == userId)
+                                                                                        .Select(r => new { r.IsAccepted })
+                                                                                        .SingleOrDefault()
+                                       })
+                                       .ToListAsync(cancellationToken);
+
+            return res.Select(u => new SearchedUserModel
+            {
+                Id = u.Id,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                ProfilePicUrl = u.ProfilePicUrl,
+                FriendState = u.RecievedRequest != null ?
+                                     (GetStateByRecievedRequest(u.RecievedRequest.IsAccepted) ??
+                                        (u.SentRequest!= null ? (GetStateBySentRequest(u.SentRequest.IsAccepted) ?? UserFriendState.None) : UserFriendState.None))
+                                     : (u.SentRequest != null ? (GetStateBySentRequest(u.SentRequest.IsAccepted) ?? UserFriendState.None) : UserFriendState.None)
+
+            }) ;
+        }
+
+        static UserFriendState? GetStateByRecievedRequest(bool? isAccepted)
+        {
+            if (isAccepted == null)
+                return UserFriendState.SentRequest;
+            else if (isAccepted == true)
+                return UserFriendState.Friend;
+            else return null;
+        }
+
+        static UserFriendState? GetStateBySentRequest(bool? isAccepted)
+        {
+            if (isAccepted == null)
+                return UserFriendState.RecievedRequest;
+            else if (isAccepted == true)
+                return UserFriendState.Friend;
+            else return null;
         }
 
         // code from: https://code-maze.com/using-refresh-tokens-in-asp-net-core-authentication

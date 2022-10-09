@@ -36,6 +36,11 @@ namespace Socially.Server.Entities
         [InverseProperty(nameof(Friend.OwnerUser))]
         public IEnumerable<Friend> Friends { get; set; }
 
+        [InverseProperty(nameof(FriendRequest.For))]
+        public IEnumerable<FriendRequest> RecievedFriendRequests { get; set; }
+
+        [InverseProperty(nameof(FriendRequest.Requester))]
+        public IEnumerable<FriendRequest> SentFriendRequests { get; set; }
 
     }
 }

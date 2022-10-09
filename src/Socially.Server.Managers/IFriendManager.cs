@@ -11,6 +11,5 @@ namespace Socially.Server.Managers
         Task<IEnumerable<UserSummaryModel>> GetRequestsAsync(int userId, CancellationToken cancellationToken = default);
         Task RequestAsync(int requesterId, int approverId, CancellationToken cancellationToken = default);
         Task<bool> RespondAsync(int requesterId, int forId, bool isAccepted, CancellationToken cancellationToken = default);
-        Task<IEnumerable<UserSummaryModel>> SearchNonFriendsAsync(int userId, string query, CancellationToken cancellationToken = default);
     }
 }

@@ -264,71 +264,7 @@ namespace Socially.Server.Managers.Tests
 
         }
 
-        [Fact]
-        public async Task SearchNonFriends_HasNonFriends_FindsByQuery()
-        {
-            // ARRANGE
-            await SetupManagerAsync();
-            int currentUserId = 10;
-            await DbContext.Users.AddAsync(new User
-            {
-                Id = currentUserId,
-                CreatedOn = DateTime.UtcNow,
-                Friends = new Friend[]
-                {
-                    new Friend
-                    {
-                        FriendUser = new User
-                        {
-                            CreatedOn = DateTime.UtcNow,
-                            FirstName = "First",
-                            LastName = "friend"
-                        }
-                    },
-                    new Friend
-                    {
-                        FriendUser = new User
-                        {
-                            CreatedOn = DateTime.UtcNow,
-                            FirstName = "Second",
-                            LastName = "friend"
-                        }
-                    }
-                }
-            });
-            await DbContext.Users.AddRangeAsync(new User[]
-            {
-                new User
-                {
-                    CreatedOn = DateTime.UtcNow,
-                    FirstName = "somekindda",
-                    LastName = "friends"
-                },
-                new User
-                {
-                    CreatedOn = DateTime.UtcNow,
-                    FirstName = "friendly",
-                    LastName = "dude"
-                },
-                new User
-                {
-                    CreatedOn = DateTime.UtcNow,
-                    FirstName = "sweet",
-                    LastName = "person"
-                }
-            });
-            await DbContext.SaveChangesAsync();
-
-            // ACT
-            var result = await manager.SearchNonFriendsAsync(currentUserId, "FRIEnd");
-
-            // ASSERT
-            Assert.NotNull(result);
-            Assert.NotEmpty(result);
-            Assert.Equal(2, result.Count());
-
-        }
-
+       
         [Fact]
         public async Task GetRequests_HasData_GetsOnlyForCurrentUser()
         {

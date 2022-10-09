@@ -97,15 +97,6 @@ namespace Socially.Server.Managers
             return true;
         }
 
-        public async Task<IEnumerable<UserSummaryModel>> SearchNonFriendsAsync(int userId,
-                                                                               string query,
-                                                                               CancellationToken cancellationToken = default)
-            => await _dbContext.Users.Where(u => u.FirstName.Contains(query, StringComparison.InvariantCultureIgnoreCase)
-                                                || u.LastName.Contains(query, StringComparison.InvariantCultureIgnoreCase))
-                                     .Where(u => !_dbContext.Users.Single(u => u.Id == userId).Friends.Any(f => f.FriendUserId == u.Id))
-                                     .SelectAsSummaryModel()
-                                     .ToListAsync(cancellationToken);
-
         public async Task<IEnumerable<UserSummaryModel>> GetRequestsAsync(int userId, CancellationToken cancellationToken = default)
             => await _dbContext.FriendRequests
                                  .AsNoTracking()

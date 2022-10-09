@@ -27,8 +27,8 @@ namespace Socially.WebAPI.Services
         public Task<bool> RespondAsync(int requesterId, bool isAccepted, CancellationToken cancellationToken = default)
             => _friendManager.RespondAsync(requesterId, _currentContext.UserId, isAccepted, cancellationToken);
 
-        public Task<IEnumerable<UserSummaryModel>> SearchNonFriendsAsync(string query, CancellationToken cancellationToken = default)
-            => _friendManager.SearchNonFriendsAsync(_currentContext.UserId, query, cancellationToken);
+        //public Task<IEnumerable<UserSummaryModel>> SearchNonFriendsAsync(string query, CancellationToken cancellationToken = default)
+        //    => _friendManager.SearchNonFriendsAsync(_currentContext.UserId, query, cancellationToken);
 
         public Task<IEnumerable<UserSummaryModel>> GetFriendsAsync(CancellationToken cancellationToken = default)
             => _friendManager.GetFriendsAsync(_currentContext.UserId, cancellationToken);
