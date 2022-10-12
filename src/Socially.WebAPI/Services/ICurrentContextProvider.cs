@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Socially.Server.Services.Models;
+using Socially.Server.Managers.Utils;
 
 namespace Socially.WebAPI.Services
 {

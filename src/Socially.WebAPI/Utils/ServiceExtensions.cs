@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Socially.Server.Managers;
-using Socially.Server.Services.Models;
+using Socially.Server.Managers.Utils;
 using Socially.WebAPI.Services;
 using Socially.Website.Services;
 using System.Text;

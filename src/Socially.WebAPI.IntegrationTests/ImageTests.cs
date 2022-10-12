@@ -4,7 +4,7 @@ using Moq;
 using Socially.Apps.Consumer.Services;
 using Socially.Server.DataAccess;
 using Socially.Server.Entities;
-using Socially.Server.Services.Models;
+using Socially.Server.Managers.Utils;
 using Socially.WebAPI.IntegrationTests.Utils;
 using System;
 using System.Collections.Generic;

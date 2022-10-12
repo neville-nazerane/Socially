@@ -1,4 +1,4 @@
-﻿namespace Socially.Server.Services.Models
+﻿namespace Socially.Server.Managers.Utils
 {
     public class CurrentContext
     {

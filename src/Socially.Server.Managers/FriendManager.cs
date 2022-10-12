@@ -6,6 +6,7 @@ using Socially.Models;
 using Socially.Server.DataAccess;
 using Socially.Server.Entities;
 using Socially.Server.Managers.Exceptions;
+using Socially.Server.Managers.Utils;
 using Socially.Server.ModelMappings;
 using System;
 using System.Collections.Generic;
@@ -20,16 +21,21 @@ namespace Socially.Server.Managers
     public class FriendManager : IFriendManager
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly CurrentContext _currentContext;
         private readonly ILogger<FriendManager> _logger;
 
-        public FriendManager(ApplicationDbContext dbContext, ILogger<FriendManager> logger)
+        public FriendManager(ApplicationDbContext dbContext,
+                             CurrentContext currentContext,
+                             ILogger<FriendManager> logger)
         {
             _dbContext = dbContext;
+            _currentContext = currentContext;
             _logger = logger;
         }
 
-        public async Task RequestAsync(int requesterId, int approverId, CancellationToken cancellationToken = default)
+        public async Task RequestAsync(int approverId, CancellationToken cancellationToken = default)
         {
+            int requesterId = _currentContext.UserId;
             var existing = await _dbContext.FriendRequests.AsNoTracking()
                                                             .Where(
                                                                 f => (f.RequesterId == requesterId && f.ForId == approverId
@@ -60,10 +66,10 @@ namespace Socially.Server.Managers
         }
 
         public async Task<bool> RespondAsync(int requesterId,
-                                             int forId,
                                              bool isAccepted,
                                              CancellationToken cancellationToken = default)
         {
+            int forId = _currentContext.UserId;
             var existingRequest = await _dbContext.FriendRequests.SingleOrDefaultAsync(
                                                                 f => f.RequesterId == requesterId && f.ForId == forId && f.IsAccepted != false,
                                                                 cancellationToken);
@@ -97,10 +103,10 @@ namespace Socially.Server.Managers
             return true;
         }
 
-        public async Task<IEnumerable<UserSummaryModel>> GetRequestsAsync(int userId, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<UserSummaryModel>> GetRequestsAsync(CancellationToken cancellationToken = default)
             => await _dbContext.FriendRequests
                                  .AsNoTracking()
-                                 .Where(r => r.ForId == userId && r.IsAccepted == null)
+                                 .Where(r => r.ForId == _currentContext.UserId && r.IsAccepted == null)
                                  .OrderBy(r => r.RequestedOn)
                                  .Select(r => new UserSummaryModel
                                  {
@@ -111,10 +117,10 @@ namespace Socially.Server.Managers
                                  })
                                  .ToListAsync(cancellationToken);
 
-        public async Task<IEnumerable<UserSummaryModel>> GetFriendsAsync(int userId, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<UserSummaryModel>> GetFriendsAsync(CancellationToken cancellationToken = default)
             => await _dbContext.Friends
                         .AsNoTracking()
-                        .Where(r => r.OwnerUserId == userId)
+                        .Where(r => r.OwnerUserId == _currentContext.UserId)
                         .Select(r => new UserSummaryModel
                         {
                             Id = r.FriendUserId.Value,

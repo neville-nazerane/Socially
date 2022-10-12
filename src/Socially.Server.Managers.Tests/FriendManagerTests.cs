@@ -23,15 +23,16 @@ namespace Socially.Server.Managers.Tests
         private ValueTask SetupManagerAsync()
         {
             mockedLogger = new Mock<ILogger<FriendManager>>();
-            manager = new FriendManager(DbContext, mockedLogger.Object);
+            manager = new FriendManager(DbContext, CurrentContext, mockedLogger.Object);
             return ValueTask.CompletedTask;
         }
 
-        [Fact, Trait("action", "add"), Trait("happyPath", "fail")]
+        [Fact]
         public async Task Request_AlreadyRequestedByCurrentUser_Throws()
         {
             // ARRANGE
             int currentUserId = 10;
+            CurrentContext.UserId = currentUserId;
             await SetupManagerAsync();
             DateTime createdTime = DateTime.UtcNow;
             await DbContext.FriendRequests.AddAsync(new Entities.FriendRequest
@@ -43,17 +44,18 @@ namespace Socially.Server.Managers.Tests
             await DbContext.SaveChangesAsync();
 
             // ACT & ASSERT
-            var exception = await Assert.ThrowsAsync<FriendRequestExistsException>(() => manager.RequestAsync(currentUserId, 8));
+            var exception = await Assert.ThrowsAsync<FriendRequestExistsException>(() => manager.RequestAsync(8));
             Assert.Equal(currentUserId, exception.Model.RequesterId);
             Assert.Equal(createdTime, exception.Model.RequestedOn);
 
         }
 
-        [Fact, Trait("action", "add"), Trait("happyPath", "fail")]
+        [Fact]
         public async Task Request_AlreadyRequestedByOtherUser_Throws()
         {
             // ARRANGE
             int currentUserId = 10;
+            CurrentContext.UserId = currentUserId;
             await SetupManagerAsync();
             DateTime createdTime = DateTime.UtcNow;
             await DbContext.FriendRequests.AddAsync(new Entities.FriendRequest
@@ -65,20 +67,21 @@ namespace Socially.Server.Managers.Tests
             await DbContext.SaveChangesAsync();
 
             // ACT & ASSERT
-            var exception = await Assert.ThrowsAsync<FriendRequestExistsException>(() => manager.RequestAsync(currentUserId, 8));
+            var exception = await Assert.ThrowsAsync<FriendRequestExistsException>(() => manager.RequestAsync(8));
             Assert.Equal(8, exception.Model.RequesterId);
             Assert.Equal(createdTime, exception.Model.RequestedOn);
         }
 
-        [Fact, Trait("action", "add"), Trait("happyPath", "success")]
+        [Fact]
         public async Task Request_RequestDoesntExist_Requests()
         {
             // ARRANGE
             await SetupManagerAsync();
             int currentUserId = 10;
+            CurrentContext.UserId = currentUserId;
 
             // ACT
-            await manager.RequestAsync(currentUserId, 11);
+            await manager.RequestAsync(11);
 
             // ASSERT
             var requests = await DbContext.FriendRequests.ToListAsync();
@@ -91,12 +94,14 @@ namespace Socially.Server.Managers.Tests
 
         }
 
-        [Fact, Trait("action", "add"), Trait("happyPath", "success")]
+        [Fact]
         public async Task Request_CurrentUserRequestedOthers_Requests()
         {
             // ARRANGE
             await SetupManagerAsync();
             int currentUserId = 10;
+            CurrentContext.UserId = currentUserId;
+
             await DbContext.FriendRequests.AddAsync(new Entities.FriendRequest
             {
                 ForId = 8,
@@ -106,7 +111,7 @@ namespace Socially.Server.Managers.Tests
             await DbContext.SaveChangesAsync();
 
             // ACT
-            await manager.RequestAsync(currentUserId, 11);
+            await manager.RequestAsync(11);
 
             // ASSERT
             var requests = await DbContext.FriendRequests.ToListAsync();
@@ -115,12 +120,14 @@ namespace Socially.Server.Managers.Tests
 
         }
 
-        [Fact, Trait("action", "add"), Trait("happyPath", "success")]
+        [Fact]
         public async Task Request_CurrentUserHasOtherRequests_Requests()
         {
             // ARRANGE
             await SetupManagerAsync();
             int currentUserId = 10;
+            CurrentContext.UserId = currentUserId;
+
             await DbContext.FriendRequests.AddAsync(new Entities.FriendRequest
             {
                 ForId = currentUserId,
@@ -130,7 +137,7 @@ namespace Socially.Server.Managers.Tests
             await DbContext.SaveChangesAsync();
 
             // ACT
-            await manager.RequestAsync(currentUserId, 11);
+            await manager.RequestAsync(11);
 
             // ASSERT
             var requests = await DbContext.FriendRequests.ToListAsync();
@@ -145,9 +152,10 @@ namespace Socially.Server.Managers.Tests
         {
             // ARRANGE
             await SetupManagerAsync();
+            CurrentContext.UserId = 10;
 
             // ACT
-            bool success = await manager.RespondAsync(10, 20, true);
+            bool success = await manager.RespondAsync(20, true);
 
             // ASSERT
             Assert.False(success);
@@ -169,7 +177,7 @@ namespace Socially.Server.Managers.Tests
             await DbContext.SaveChangesAsync();
 
             // ACT
-            bool success = await manager.RespondAsync(11, currentUserId, true);
+            bool success = await manager.RespondAsync(11, true);
 
             // ASSERT
             Assert.False(success);
@@ -192,7 +200,7 @@ namespace Socially.Server.Managers.Tests
             await DbContext.SaveChangesAsync();
 
             // ACT
-            bool success = await manager.RespondAsync(11, currentUserId, true);
+            bool success = await manager.RespondAsync(11, true);
 
             // ASSERT
             Assert.False(success);
@@ -206,7 +214,8 @@ namespace Socially.Server.Managers.Tests
             // ARRANGE
             await SetupManagerAsync();
             int currentUserId = 10;
-            await DbContext.FriendRequests.AddAsync(new Entities.FriendRequest
+            CurrentContext.UserId = currentUserId;
+            await DbContext.FriendRequests.AddAsync(new FriendRequest
             {
                 RequestedOn = DateTime.UtcNow,
                 RequesterId = 11,
@@ -215,7 +224,7 @@ namespace Socially.Server.Managers.Tests
             await DbContext.SaveChangesAsync();
 
             // ACT
-            bool success = await manager.RespondAsync(11, currentUserId, false);
+            bool success = await manager.RespondAsync(11, false);
 
             // ASSERT
             Assert.True(success);
@@ -233,6 +242,8 @@ namespace Socially.Server.Managers.Tests
             // ARRANGE
             await SetupManagerAsync();
             int currentUserId = 10;
+            CurrentContext.UserId = currentUserId;
+
             await DbContext.FriendRequests.AddAsync(new Entities.FriendRequest
             {
                 RequestedOn = DateTime.UtcNow,
@@ -242,7 +253,7 @@ namespace Socially.Server.Managers.Tests
             await DbContext.SaveChangesAsync();
 
             // ACT
-            bool success = await manager.RespondAsync(11, currentUserId, true);
+            bool success = await manager.RespondAsync(11, true);
 
             // ASSERT
             Assert.True(success);
@@ -264,13 +275,14 @@ namespace Socially.Server.Managers.Tests
 
         }
 
-       
+
         [Fact]
         public async Task GetRequests_HasData_GetsOnlyForCurrentUser()
         {
             // ARRANGE
             await SetupManagerAsync();
             int currentUserId = 40;
+            CurrentContext.UserId = currentUserId;
 
             // adding users
             #region setting data
@@ -350,7 +362,7 @@ namespace Socially.Server.Managers.Tests
             #endregion
 
             // ACT
-            var result = await manager.GetRequestsAsync(currentUserId);
+            var result = await manager.GetRequestsAsync();
 
             // ASSERT
             Assert.NotNull(result);
@@ -365,6 +377,7 @@ namespace Socially.Server.Managers.Tests
             // ARRANGE
             await SetupManagerAsync();
             int currentUserId = 40;
+            CurrentContext.UserId = currentUserId;
 
             // adding users
             #region setting data
@@ -456,7 +469,7 @@ namespace Socially.Server.Managers.Tests
             #endregion
 
             // ACT
-            var result = await manager.GetRequestsAsync(currentUserId);
+            var result = await manager.GetRequestsAsync();
 
             // ASSERT
             Assert.NotNull(result);
@@ -471,6 +484,7 @@ namespace Socially.Server.Managers.Tests
             // ARRANGE
             await SetupManagerAsync();
             int currentUserId = 40;
+            CurrentContext.UserId = currentUserId;
 
             // adding users
             #region setting data
@@ -547,7 +561,7 @@ namespace Socially.Server.Managers.Tests
             #endregion
 
             // ACT
-            var result = await manager.GetFriendsAsync(currentUserId);
+            var result = await manager.GetFriendsAsync();
 
             // ASSERT
             Assert.NotNull(result);

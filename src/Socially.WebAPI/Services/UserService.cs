@@ -4,7 +4,7 @@ using Socially.Models;
 using Socially.Models.Exceptions;
 using Socially.Server.Entities;
 using Socially.Server.Managers;
-using Socially.Server.Services.Models;
+using Socially.Server.Managers.Utils;
 using Socially.WebAPI.Models;
 using Socially.WebAPI.Utils;
 using Socially.Website.Models;

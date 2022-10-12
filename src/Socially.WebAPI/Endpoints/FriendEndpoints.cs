@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Socially.WebAPI.Services;
 using Socially.Models;
+using Socially.Server.Managers;
 
 namespace Socially.WebAPI.Endpoints
 {
@@ -29,17 +30,19 @@ namespace Socially.WebAPI.Endpoints
             };
         }
 
-        Task RequestAsync(IFriendsService friendsService, int forId, CancellationToken cancellationToken = default)
-            => friendsService.RequestAsync(forId, cancellationToken);
+        Task RequestAsync(IFriendManager manager,
+                          int forId,
+                          CancellationToken cancellationToken = default)
+            => manager.RequestAsync(forId, cancellationToken);
 
-        Task<bool> RespondAsync(IFriendsService friendsService,
+        Task<bool> RespondAsync(IFriendManager manager,
                                 int requesterId,
                                 bool isAccepted,
                                 CancellationToken cancellationToken = default)
-            => friendsService.RespondAsync(requesterId, isAccepted, cancellationToken);
+            => manager.RespondAsync(requesterId, isAccepted, cancellationToken);
 
-        Task<IEnumerable<UserSummaryModel>> GetRequestsAsync(IFriendsService friendsService, CancellationToken cancellationToken = default)
-            => friendsService.GetRequestsAsync(cancellationToken);
+        Task<IEnumerable<UserSummaryModel>> GetRequestsAsync(IFriendManager manager, CancellationToken cancellationToken = default)
+            => manager.GetRequestsAsync(cancellationToken);
 
     }
 }

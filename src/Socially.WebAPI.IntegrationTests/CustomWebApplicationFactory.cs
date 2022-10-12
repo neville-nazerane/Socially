@@ -13,7 +13,7 @@ using Moq;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using Socially.Server.DataAccess;
-using Socially.Server.Services.Models;
+using Socially.Server.Managers.Utils;
 using Socially.WebAPI.Services;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>

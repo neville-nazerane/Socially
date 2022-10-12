@@ -18,7 +18,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Socially.Server.DataAccess;
 using Socially.Server.Managers;
-using Socially.Server.Services.Models;
+using Socially.Server.Managers.Utils;
 using Socially.WebAPI.Endpoints;
 using Socially.WebAPI.Middlewares;
 using Socially.WebAPI.Services;
@@ -93,6 +93,7 @@ app.UseEndpoints(endpoints =>
 
     endpoints.MapCustom<AccountEndpoints>();
     endpoints.MapCustom<ProfileEndpoints>();
+    endpoints.MapCustom<UserEndpoints>();
     endpoints.MapCustom<ImagesEndpoints>();
     endpoints.MapCustom<FriendEndpoints>();
 
