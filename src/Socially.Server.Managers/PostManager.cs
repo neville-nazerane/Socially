@@ -4,6 +4,7 @@ using Socially.Models;
 using Socially.Server.DataAccess;
 using Socially.Server.Entities;
 using Socially.Server.Managers.Exceptions;
+using Socially.Server.Managers.Utils;
 using Socially.Server.ModelMappings;
 using System;
 using System.Collections;
@@ -22,22 +23,24 @@ namespace Socially.Server.Managers
     {
 
         private readonly ApplicationDbContext _dbContext;
+        private readonly CurrentContext _currentContext;
         private readonly ILogger<PostManager> _logger;
 
         public PostManager(ApplicationDbContext dbContext, 
+                           CurrentContext currentContext,
                             ILogger<PostManager> logger)
         {
             _dbContext = dbContext;
+            _currentContext = currentContext;
             _logger = logger;
         }
 
-        public async Task<int> AddAsync(int userId,
-                                        AddPostModel addPostModel,
+        public async Task<int> AddAsync(AddPostModel addPostModel,
                                         CancellationToken cancellationToken = default)
         {
             var entity = new Post
             {
-                CreatorId = userId,
+                CreatorId = _currentContext.UserId,
                 Text = addPostModel.Text,
                 CreatedOn = DateTime.UtcNow,
             };
@@ -47,8 +50,9 @@ namespace Socially.Server.Managers
             return entity.Id;
         }
 
-        public async Task DeleteAsync(int userId, int postId, CancellationToken cancellationToken = default)
+        public async Task DeleteAsync(int postId, CancellationToken cancellationToken = default)
         {
+            int userId = _currentContext.UserId;
             var post = await _dbContext.Posts.SingleOrDefaultAsync(s => s.CreatorId == userId && s.Id == postId,
                                                                    cancellationToken);
             if (post == null)
@@ -61,12 +65,12 @@ namespace Socially.Server.Managers
             await _dbContext.SaveChangesAsync(CancellationToken.None);
         }
 
-        public async Task AddCommentAsync(int userId, AddCommentModel model, CancellationToken cancellationToken = default)
+        public async Task AddCommentAsync(AddCommentModel model, CancellationToken cancellationToken = default)
         {
             var entity = new Comment
             {
                 Text = model.Text,
-                CreatorId = userId,
+                CreatorId = _currentContext.UserId,
                 PostId = model.PostId,
                 ParentCommentId = model.ParentCommentId,
                 CreatedOn = DateTime.UtcNow
@@ -75,12 +79,12 @@ namespace Socially.Server.Managers
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task DeleteCommentAsync(int userId,
-                                             int commentId,
+        public async Task DeleteCommentAsync(int commentId,
                                              CancellationToken cancellationToken = default)
         {
+            int userId = _currentContext.UserId;
             var comment = await _dbContext.Comments.SingleOrDefaultAsync(s => s.CreatorId == userId && s.Id == commentId,
-                                                                   cancellationToken);
+                                                                        cancellationToken);
             if (comment == null)
             {
                 _logger.LogWarning("Did not find comment {commentId} to delete with user {userId}", commentId, userId);
@@ -90,11 +94,11 @@ namespace Socially.Server.Managers
             await _dbContext.SaveChangesAsync(CancellationToken.None);
         }
 
-        public async Task SwapLikeAsync(int userId,
-                                        int postId,
+        public async Task SwapLikeAsync(int postId,
                                         int? commentId,
                                         CancellationToken cancellationToken = default)
         {
+            int userId = _currentContext.UserId;
             bool removal = false;
             var existing = await _dbContext.PostLikes.SingleOrDefaultAsync(l => l.UserId == userId && l.PostId == postId && l.CommentId == commentId, cancellationToken);
             if (existing is not null)
@@ -129,13 +133,10 @@ namespace Socially.Server.Managers
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<PostDisplayModel>> GetProfilePostsAsync(int userId, 
-                                                                              int pageSize,
+        public async Task<IEnumerable<PostDisplayModel>> GetProfilePostsAsync(int pageSize,
                                                                               DateTime? since = null,
                                                                               CancellationToken cancellationToken = default)
-        {
-
-            return await ProjectPostAsync(_dbContext.Posts.Where(p => p.CreatorId == userId), 
+            => await ProjectPostAsync(_dbContext.Posts.Where(p => p.CreatorId == _currentContext.UserId), 
                                           pageSize, since, cancellationToken);
 
             //var data = await _dbContext.Posts.AsNoTracking()
@@ -162,13 +163,11 @@ namespace Socially.Server.Managers
             //    p.Comments = MapComments(allComments.Where(c => c.PostId == p.Id).ToArray()).ToList();
 
             //return postResults;
-        }
 
-        public async Task<IEnumerable<PostDisplayModel>> GetHomePostsAsync(int userId,
-                                                                              int pageSize,
+        public async Task<IEnumerable<PostDisplayModel>> GetHomePostsAsync(int pageSize,
                                                                               DateTime? since = null,
                                                                               CancellationToken cancellationToken = default)
-            => await ProjectPostAsync(_dbContext.Posts.Where(p => p.Creator.Friends.Select(f => f.FriendUserId).Contains(userId)),
+            => await ProjectPostAsync(_dbContext.Posts.Where(p => p.Creator.Friends.Select(f => f.FriendUserId).Contains(_currentContext.UserId)),
                                       pageSize, since, cancellationToken);
 
         async Task<IEnumerable<PostDisplayModel>> ProjectPostAsync(IQueryable<Post> querablePosts,
@@ -216,6 +215,7 @@ namespace Socially.Server.Managers
             
             return result;
         }
+
 
     }
 

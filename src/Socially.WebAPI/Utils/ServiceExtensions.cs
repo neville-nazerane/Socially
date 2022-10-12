@@ -25,7 +25,6 @@ namespace Socially.WebAPI.Utils
         {
             return services.AddTransient<IUserService, UserService>()
                             .AddTransient<IImagesService, ImagesService>()
-                            .AddTransient<IFriendsService, FriendsService>()
                             .AddSingleton<ICurrentContextProvider, CurrentContextProvider>()
                             .AddScoped<CurrentContext>()
                             .AddScoped<InitializeService>();

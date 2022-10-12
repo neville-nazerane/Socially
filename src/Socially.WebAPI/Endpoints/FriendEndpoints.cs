@@ -25,7 +25,8 @@ namespace Socially.WebAPI.Endpoints
 
                 endpoints.MapPost("/friend/request/{forId}", RequestAsync),
                 endpoints.MapPut("/friend/respond/{requesterId}/{isAccepted}", RespondAsync),
-                endpoints.MapGet("/friend/requests", GetRequestsAsync)
+                endpoints.MapGet("/friend/requests", GetRequestsAsync),
+                endpoints.MapGet("/friends", GetFriendsAsync)
 
             };
         }
@@ -43,6 +44,9 @@ namespace Socially.WebAPI.Endpoints
 
         Task<IEnumerable<UserSummaryModel>> GetRequestsAsync(IFriendManager manager, CancellationToken cancellationToken = default)
             => manager.GetRequestsAsync(cancellationToken);
+
+        Task<IEnumerable<UserSummaryModel>> GetFriendsAsync(IFriendManager manager, CancellationToken cancellationToken = default)
+            => manager.GetFriendsAsync(cancellationToken);
 
     }
 }

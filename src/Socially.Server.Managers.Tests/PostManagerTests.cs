@@ -25,7 +25,7 @@ namespace Socially.Server.Managers.Tests
         private Task SetupManagerAsync()
         {
             loggerMock = new Mock<ILogger<PostManager>>();
-            manager = new PostManager(DbContext, loggerMock.Object);
+            manager = new PostManager(DbContext, CurrentContext, loggerMock.Object);
             return Task.CompletedTask;
         }
 
@@ -35,9 +35,10 @@ namespace Socially.Server.Managers.Tests
         {
             // ARRANGE
             await SetupManagerAsync();
+            CurrentContext.UserId = 10;
 
             // ACT
-            await manager.AddAsync(10, new AddPostModel
+            await manager.AddAsync(new AddPostModel
             {
                 Text = "Sample post"
             }, CancellationToken.None);
@@ -55,6 +56,7 @@ namespace Socially.Server.Managers.Tests
         {
             // ARRANGE
             await SetupManagerAsync();
+            CurrentContext.UserId = 10;
             var post = new Post
             {
                 CreatedOn = DateTime.Now,
@@ -66,7 +68,7 @@ namespace Socially.Server.Managers.Tests
             int invalidId = post.Id + 1;
 
             // ACT
-            await manager.DeleteAsync(10, invalidId, CancellationToken.None);
+            await manager.DeleteAsync(invalidId, CancellationToken.None);
 
 
             // ASSERT
@@ -85,6 +87,7 @@ namespace Socially.Server.Managers.Tests
         {
             // ARRANGE
             await SetupManagerAsync();
+            CurrentContext.UserId = 30;
 
             var post = new Post
             {
@@ -97,7 +100,7 @@ namespace Socially.Server.Managers.Tests
             int postId = post.Id;
 
             // ACT
-            await manager.DeleteAsync(30, postId, CancellationToken.None);
+            await manager.DeleteAsync(postId, CancellationToken.None);
 
             // ASSERT
             var posts = await DbContext.Posts.ToListAsync();
@@ -115,6 +118,7 @@ namespace Socially.Server.Managers.Tests
         {
             // ARRANGE
             await SetupManagerAsync();
+            CurrentContext.UserId= 10;
 
             var post = new Entities.Post
             {
@@ -127,7 +131,7 @@ namespace Socially.Server.Managers.Tests
             int postId = post.Id;
 
             // ACT
-            await manager.DeleteAsync(10, postId, CancellationToken.None);
+            await manager.DeleteAsync(postId, CancellationToken.None);
 
             // ASSERT
             var posts = await DbContext.Posts
@@ -145,7 +149,7 @@ namespace Socially.Server.Managers.Tests
             await SetupManagerAsync();
 
             // ACT
-            await manager.AddCommentAsync(11, new AddCommentModel
+            await manager.AddCommentAsync(new AddCommentModel
             {
                 ParentCommentId = 20,
                 PostId = 2,
@@ -166,6 +170,7 @@ namespace Socially.Server.Managers.Tests
         {
             // ARRANGE
             await SetupManagerAsync();
+            CurrentContext.UserId = 10;
             var comment = new Comment
             {
                 Text = "my little comment",
@@ -179,7 +184,7 @@ namespace Socially.Server.Managers.Tests
             int invalidCommentId = comment.Id + 1;
 
             // ACT
-            await manager.DeleteCommentAsync(10, invalidCommentId, CancellationToken.None);
+            await manager.DeleteCommentAsync(invalidCommentId, CancellationToken.None);
 
             // ASSERT
             var comments = await DbContext.Comments.ToListAsync();
@@ -196,6 +201,7 @@ namespace Socially.Server.Managers.Tests
         {
             // ARRANGE
             await SetupManagerAsync();
+            CurrentContext.UserId = 11;
             var comment = new Comment
             {
                 Text = "my little comment",
@@ -209,7 +215,7 @@ namespace Socially.Server.Managers.Tests
             int commentId = comment.Id;
 
             // ACT
-            await manager.DeleteCommentAsync(11, commentId, CancellationToken.None);
+            await manager.DeleteCommentAsync(commentId, CancellationToken.None);
 
             // ASSERT
             var comments = await DbContext.Comments.ToListAsync();
@@ -226,6 +232,7 @@ namespace Socially.Server.Managers.Tests
         {
             // ARRANGE
             await SetupManagerAsync();
+            CurrentContext.UserId = 10;
             var comment = new Comment
             {
                 Text = "my little comment",
@@ -239,7 +246,7 @@ namespace Socially.Server.Managers.Tests
             int commentId = comment.Id;
 
             // ACT
-            await manager.DeleteCommentAsync(10, commentId, CancellationToken.None);
+            await manager.DeleteCommentAsync(commentId, CancellationToken.None);
 
             // ASSERT
             var comments = await DbContext.Comments.ToListAsync();
@@ -252,6 +259,7 @@ namespace Socially.Server.Managers.Tests
         {
             // ARRANGE
             await SetupManagerAsync();
+            CurrentContext.UserId = 10;
             await DbContext.Posts.AddRangeAsync(new Post[]
             {
                 new Post
@@ -307,7 +315,7 @@ namespace Socially.Server.Managers.Tests
 
 
             // ACT
-            var res = await manager.GetProfilePostsAsync(10, 10);
+            var res = await manager.GetProfilePostsAsync(10);
 
 
             // ASSERT
@@ -332,6 +340,7 @@ namespace Socially.Server.Managers.Tests
             // ARRANGE
             await SetupManagerAsync();
             int currentUserId = 10;
+            CurrentContext.UserId = currentUserId;
             int timeIncrement = 0;
             await DbContext.Posts.AddRangeAsync(new Post[]
             {
@@ -382,9 +391,9 @@ namespace Socially.Server.Managers.Tests
 
 
             // ACT
-            var page1 = await manager.GetProfilePostsAsync(10, 4);
+            var page1 = await manager.GetProfilePostsAsync(4);
             var token = page1.OrderBy(p => p.CreatedOn).LastOrDefault()?.CreatedOn;
-            var page2 = await manager.GetProfilePostsAsync(10, 4, token);
+            var page2 = await manager.GetProfilePostsAsync(4, token);
 
 
             // ASSERT
@@ -405,6 +414,7 @@ namespace Socially.Server.Managers.Tests
             // ARRANGE
             await SetupManagerAsync();
             int currentUserId = 10;
+            CurrentContext.UserId = currentUserId;
             await DbContext.Users.AddAsync(new User
             {
                 CreatedOn = DateTime.UtcNow,
@@ -449,7 +459,7 @@ namespace Socially.Server.Managers.Tests
 
 
             // ACT
-            var res = await manager.GetHomePostsAsync(currentUserId, 30);
+            var res = await manager.GetHomePostsAsync(30);
 
 
             // ASSERT
@@ -466,6 +476,7 @@ namespace Socially.Server.Managers.Tests
             // ASSERT
             await SetupManagerAsync();
             var currentUserId = 11;
+            CurrentContext.UserId = currentUserId;
             int targetPostId = 10;
             await DbContext.Posts.AddRangeAsync(new Post[]
             {
@@ -495,7 +506,7 @@ namespace Socially.Server.Managers.Tests
             await DbContext.SaveChangesAsync();
 
             // ACT
-            await manager.SwapLikeAsync(currentUserId, targetPostId, null);
+            await manager.SwapLikeAsync(targetPostId, null);
 
             // ASSERT
             var targetPost = await DbContext.Posts.SingleOrDefaultAsync(p => p.Id == targetPostId);
@@ -514,6 +525,7 @@ namespace Socially.Server.Managers.Tests
             // ASSERT
             await SetupManagerAsync();
             var currentUserId = 11;
+            CurrentContext.UserId = currentUserId;
             int targetPostId = 10;
             await DbContext.Users.AddRangeAsync(new User
             {
@@ -556,7 +568,7 @@ namespace Socially.Server.Managers.Tests
             await DbContext.SaveChangesAsync();
 
             // ACT
-            await manager.SwapLikeAsync(currentUserId, targetPostId, null);
+            await manager.SwapLikeAsync(targetPostId, null);
 
             // ASSERT
             var targetPost = await DbContext.Posts.SingleOrDefaultAsync(p => p.Id == targetPostId);
@@ -575,6 +587,7 @@ namespace Socially.Server.Managers.Tests
             // ASSERT
             await SetupManagerAsync();
             var currentUserId = 11;
+            CurrentContext.UserId = currentUserId;
             int targetPostId = 10;
             await DbContext.Posts.AddRangeAsync(new Post[]
             {
@@ -607,7 +620,7 @@ namespace Socially.Server.Managers.Tests
             await DbContext.SaveChangesAsync();
 
             // ACT
-            await manager.SwapLikeAsync(currentUserId, targetPostId, null);
+            await manager.SwapLikeAsync(targetPostId, null);
 
             // ASSERT
             var targetPost = await DbContext.Posts.SingleOrDefaultAsync(p => p.Id == targetPostId);
@@ -625,6 +638,7 @@ namespace Socially.Server.Managers.Tests
             // ARRANGE
             await SetupManagerAsync();
             var currentUserId = 11;
+            CurrentContext.UserId = currentUserId;
             int targetPostId = 10;
             int targetCommentId = 9;
             await DbContext.Posts.AddAsync(new Post
@@ -649,7 +663,7 @@ namespace Socially.Server.Managers.Tests
             await DbContext.SaveChangesAsync();
 
             // ACT
-            await manager.SwapLikeAsync(currentUserId, targetPostId, targetCommentId);
+            await manager.SwapLikeAsync(targetPostId, targetCommentId);
 
             // ASSERT
             var targetPost = await DbContext.Posts
@@ -669,6 +683,7 @@ namespace Socially.Server.Managers.Tests
             // ARRANGE
             await SetupManagerAsync();
             var currentUserId = 11;
+            CurrentContext.UserId = currentUserId;   
             int targetPostId = 10;
             int targetCommentId = 9;
             await DbContext.Posts.AddRangeAsync(new Post[]
@@ -706,7 +721,7 @@ namespace Socially.Server.Managers.Tests
             await DbContext.SaveChangesAsync();
 
             // ACT
-            await manager.SwapLikeAsync(currentUserId, targetPostId, targetCommentId);
+            await manager.SwapLikeAsync(targetPostId, targetCommentId);
 
             // ASSERT
             var targetPost = await DbContext.Posts
@@ -726,6 +741,7 @@ namespace Socially.Server.Managers.Tests
             // ARRANGE
             await SetupManagerAsync();
             var currentUserId = 11;
+            CurrentContext.UserId = currentUserId;
             int targetPostId = 10;
             int targetCommentId = 9;
             await DbContext.Posts.AddRangeAsync(new Post
@@ -752,7 +768,7 @@ namespace Socially.Server.Managers.Tests
             await DbContext.SaveChangesAsync();
 
             // ACT
-            await manager.SwapLikeAsync(currentUserId, targetPostId, targetCommentId);
+            await manager.SwapLikeAsync(targetPostId, targetCommentId);
 
             // ASSERT
             var targetPost = await DbContext.Posts
