@@ -18,6 +18,7 @@ namespace Socially.WebAPI.Utils
         {
             return services.AddTransient<IUserProfileManager, UserProfileManager>()
                             .AddTransient<IImageManager, ImageManager>()
+                            .AddTransient<IPostManager, PostManager>()
                             .AddTransient<IFriendManager, FriendManager>();
         }
 

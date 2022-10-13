@@ -19,14 +19,14 @@ using Comment = Socially.Server.Entities.Comment;
 
 namespace Socially.Server.Managers
 {
-    public class PostManager
+    public class PostManager : IPostManager
     {
 
         private readonly ApplicationDbContext _dbContext;
         private readonly CurrentContext _currentContext;
         private readonly ILogger<PostManager> _logger;
 
-        public PostManager(ApplicationDbContext dbContext, 
+        public PostManager(ApplicationDbContext dbContext,
                            CurrentContext currentContext,
                             ILogger<PostManager> logger)
         {
@@ -94,9 +94,9 @@ namespace Socially.Server.Managers
             await _dbContext.SaveChangesAsync(CancellationToken.None);
         }
 
-        public async Task SwapLikeAsync(int postId,
-                                        int? commentId,
-                                        CancellationToken cancellationToken = default)
+        public async Task<bool> SwapLikeAsync(int postId,
+                                              int? commentId,
+                                              CancellationToken cancellationToken = default)
         {
             int userId = _currentContext.UserId;
             bool removal = false;
@@ -131,38 +131,45 @@ namespace Socially.Server.Managers
             }
 
             await _dbContext.SaveChangesAsync(cancellationToken);
+            return !removal;
         }
 
-        public async Task<IEnumerable<PostDisplayModel>> GetProfilePostsAsync(int pageSize,
+        public Task<IEnumerable<PostDisplayModel>> GetCurrentUserPostsAsync(int pageSize,
                                                                               DateTime? since = null,
                                                                               CancellationToken cancellationToken = default)
-            => await ProjectPostAsync(_dbContext.Posts.Where(p => p.CreatorId == _currentContext.UserId), 
+            => GetProfilePostsAsync(pageSize, _currentContext.UserId, since, cancellationToken);
+
+        public async Task<IEnumerable<PostDisplayModel>> GetProfilePostsAsync(int userId,
+                                                                              int pageSize,
+                                                                              DateTime? since = null,
+                                                                              CancellationToken cancellationToken = default)
+            => await ProjectPostAsync(_dbContext.Posts.Where(p => p.CreatorId == userId),
                                           pageSize, since, cancellationToken);
 
-            //var data = await _dbContext.Posts.AsNoTracking()
-            //                                .Where(p => p.CreatorId == userId && (since == null || p.CreatedOn > since))
-            //                                .Take(pageSize)
-            //                                .Select(p => new
-            //                                {
-            //                                    Comments = p.Comments.ToArray(),
-            //                                    Post = new PostDisplayModel
-            //                                    {
-            //                                        Id = p.Id,
-            //                                        Text = p.Text,
-            //                                        CreatorId = p.CreatorId,
-            //                                        CreatedOn = p.CreatedOn
-            //                                    }
-            //                                })
-            //                                .ToArrayAsync(cancellationToken);
+        //var data = await _dbContext.Posts.AsNoTracking()
+        //                                .Where(p => p.CreatorId == userId && (since == null || p.CreatedOn > since))
+        //                                .Take(pageSize)
+        //                                .Select(p => new
+        //                                {
+        //                                    Comments = p.Comments.ToArray(),
+        //                                    Post = new PostDisplayModel
+        //                                    {
+        //                                        Id = p.Id,
+        //                                        Text = p.Text,
+        //                                        CreatorId = p.CreatorId,
+        //                                        CreatedOn = p.CreatedOn
+        //                                    }
+        //                                })
+        //                                .ToArrayAsync(cancellationToken);
 
-            //var allComments = data.SelectMany(r => r.Comments).ToArray();
+        //var allComments = data.SelectMany(r => r.Comments).ToArray();
 
-            //var postResults = data.Select(r => r.Post).ToArray();
+        //var postResults = data.Select(r => r.Post).ToArray();
 
-            //foreach (var p in postResults)
-            //    p.Comments = MapComments(allComments.Where(c => c.PostId == p.Id).ToArray()).ToList();
+        //foreach (var p in postResults)
+        //    p.Comments = MapComments(allComments.Where(c => c.PostId == p.Id).ToArray()).ToList();
 
-            //return postResults;
+        //return postResults;
 
         public async Task<IEnumerable<PostDisplayModel>> GetHomePostsAsync(int pageSize,
                                                                               DateTime? since = null,
@@ -179,17 +186,18 @@ namespace Socially.Server.Managers
                                           .Where(p => since == null || p.CreatedOn > since)
                                           .OrderBy(p => p.CreatedOn)
                                           .Take(pageSize)
-                                                    .Select(p => new {
-                                                            Comments = p.Comments.ToArray(),
-                                                            Post = new PostDisplayModel
-                                                            {
-                                                                Id = p.Id,
-                                                                Text = p.Text,
-                                                                CreatorId = p.CreatorId,
-                                                                CreatedOn = p.CreatedOn,
-                                                                LikeCount = p.LikeCount ?? 0,
-                                                            }
-                                                        })
+                                                    .Select(p => new
+                                                    {
+                                                        Comments = p.Comments.ToArray(),
+                                                        Post = new PostDisplayModel
+                                                        {
+                                                            Id = p.Id,
+                                                            Text = p.Text,
+                                                            CreatorId = p.CreatorId,
+                                                            CreatedOn = p.CreatedOn,
+                                                            LikeCount = p.LikeCount ?? 0,
+                                                        }
+                                                    })
                                                         .ToArrayAsync(cancellationToken);
 
             var allComments = data.SelectMany(r => r.Comments).ToArray();
@@ -212,7 +220,7 @@ namespace Socially.Server.Managers
 
                 if (comment.ParentCommentId == parentId) result.Add(dictonary[comment.Id]);
             }
-            
+
             return result;
         }
 

@@ -196,5 +196,60 @@ namespace Socially.WebAPI.IntegrationTests
 
         }
 
+        [Fact]
+        public async Task GetFriends()
+        {
+            // ARRANGE
+            var consumer = new ApiConsumer(_factory.CreateClient());
+
+            await using var scope = _factory.Services.CreateAsyncScope();
+            var dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            await dbContext.Database.EnsureDeletedAsync();
+            await dbContext.Database.EnsureCreatedAsync();
+
+            await consumer.TestSignupAndLoginAsync();
+            var user = await dbContext.GetTestUserAsync();
+            await dbContext.Friends.AddRangeAsync(new Friend[]
+            {
+                new Friend
+                {
+                    FriendUser = new User
+                    {
+                        FirstName = "name",
+                        LastName = "other name"
+                    },
+                    OwnerUserId = user.Id
+                },
+                new Friend
+                {
+                    FriendUser = new User
+                    {
+                        FirstName = "name",
+                        LastName = "other name"
+                    },
+                    OwnerUserId = user.Id
+                },
+                new Friend
+                {
+                    FriendUser = new User
+                    {
+                        FirstName = "name",
+                        LastName = "other name"
+                    },
+                    OwnerUserId = user.Id + 2
+                }
+            });;
+            await dbContext.SaveChangesAsync();
+
+            // ACT
+            var friends = await consumer.GetFriendsAsync();
+
+            // ASSERT
+            Assert.NotNull(friends);
+            Assert.NotEmpty(friends);
+            Assert.Equal(2, friends.Count());
+
+        }
+
     }
 }

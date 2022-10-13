@@ -315,7 +315,7 @@ namespace Socially.Server.Managers.Tests
 
 
             // ACT
-            var res = await manager.GetProfilePostsAsync(10);
+            var res = await manager.GetCurrentUserPostsAsync(10);
 
 
             // ASSERT
@@ -391,9 +391,9 @@ namespace Socially.Server.Managers.Tests
 
 
             // ACT
-            var page1 = await manager.GetProfilePostsAsync(4);
+            var page1 = await manager.GetCurrentUserPostsAsync(4);
             var token = page1.OrderBy(p => p.CreatedOn).LastOrDefault()?.CreatedOn;
-            var page2 = await manager.GetProfilePostsAsync(4, token);
+            var page2 = await manager.GetCurrentUserPostsAsync(4, token);
 
 
             // ASSERT
