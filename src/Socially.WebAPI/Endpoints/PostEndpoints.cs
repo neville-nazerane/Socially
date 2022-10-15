@@ -10,11 +10,22 @@ using System.Xml.XPath;
 using System;
 using Socially.Server.Entities;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Socially.WebAPI.Endpoints
 {
     public class PostEndpoints : EndpointsBase
     {
+
+
+        public override IEndpointConventionBuilder Aggregate(RouteHandlerBuilder builder)
+        {
+            return builder.RequireAuthorization()
+                          .WithTags("posts");
+        }
+
+
         public override IEnumerable<RouteHandlerBuilder> Setup(IEndpointRouteBuilder endpoints)
         {
             return new RouteHandlerBuilder[]
@@ -22,16 +33,16 @@ namespace Socially.WebAPI.Endpoints
 
                 endpoints.MapPost("/post", AddAsync),
                 endpoints.MapDelete("/post/{id}", DeleteAsync),
-                
+
                 endpoints.MapPost("/post/comment", AddCommentAsync),
                 endpoints.MapDelete("/post/comment/{id}", DeleteCommentAsync),
-                
+
                 endpoints.MapPut("/post/{postId}/like", SwapLikeAsync),
                 endpoints.MapPut("/post/{postId}/comment/{commentId}/like", SwapLikeAsync),
 
                 endpoints.MapGet("/posts/me", GetCurrentUserPostsAsync),
                 endpoints.MapGet("/posts/profile/{userId}", GetProfilePostsAsync),
-                endpoints.MapGet("/posts/home", GetHomePostsAsync),
+                endpoints.MapGet("/posts/home", GetHomePostsAsync)
 
             };
         }
@@ -64,22 +75,22 @@ namespace Socially.WebAPI.Endpoints
 
         Task<IEnumerable<PostDisplayModel>> GetCurrentUserPostsAsync(IPostManager manager,
                                                                      int pageSize,
-                                                                     DateTime? since = null,
+                                                                     string since = null,
                                                                      CancellationToken cancellationToken = default)
-            => manager.GetCurrentUserPostsAsync(pageSize, since, cancellationToken);
+            => manager.GetCurrentUserPostsAsync(pageSize, since.ToDateTime(), cancellationToken);
 
         Task<IEnumerable<PostDisplayModel>> GetProfilePostsAsync(IPostManager manager,
                                                                  int userId,
                                                                  int pageSize,
-                                                                 DateTime? since = null,
+                                                                 string since = null,
                                                                  CancellationToken cancellationToken = default)
-            => manager.GetProfilePostsAsync(userId, pageSize, since, cancellationToken);
+            => manager.GetProfilePostsAsync(userId, pageSize, since.ToDateTime(), cancellationToken);
 
         Task<IEnumerable<PostDisplayModel>> GetHomePostsAsync(IPostManager manager,
                                                               int pageSize,
-                                                              DateTime? since = null,
+                                                              string since = null,
                                                               CancellationToken cancellationToken = default)
-            => manager.GetHomePostsAsync(pageSize, since, cancellationToken);
+            => manager.GetHomePostsAsync(pageSize, since.ToDateTime(), cancellationToken);
 
 
     }

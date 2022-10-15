@@ -96,6 +96,7 @@ app.UseEndpoints(endpoints =>
     endpoints.MapCustom<UserEndpoints>();
     endpoints.MapCustom<ImagesEndpoints>();
     endpoints.MapCustom<FriendEndpoints>();
+    endpoints.MapCustom<PostEndpoints>();
 
 });
 

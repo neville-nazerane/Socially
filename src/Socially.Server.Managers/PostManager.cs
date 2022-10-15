@@ -137,7 +137,7 @@ namespace Socially.Server.Managers
         public Task<IEnumerable<PostDisplayModel>> GetCurrentUserPostsAsync(int pageSize,
                                                                               DateTime? since = null,
                                                                               CancellationToken cancellationToken = default)
-            => GetProfilePostsAsync(pageSize, _currentContext.UserId, since, cancellationToken);
+            => GetProfilePostsAsync(_currentContext.UserId, pageSize, since, cancellationToken);
 
         public async Task<IEnumerable<PostDisplayModel>> GetProfilePostsAsync(int userId,
                                                                               int pageSize,
@@ -209,7 +209,7 @@ namespace Socially.Server.Managers
             return postResults;
         }
 
-        private static IEnumerable<DisplayCommentModel> MapComments(IEnumerable<Comment> comments, int? parentId = null)
+        static IEnumerable<DisplayCommentModel> MapComments(IEnumerable<Comment> comments, int? parentId = null)
         {
             var result = new List<DisplayCommentModel>();
             var dictonary = comments.ToDictionary(c => c.Id, c => c.ToDisplayModel());

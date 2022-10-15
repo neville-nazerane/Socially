@@ -97,7 +97,7 @@ namespace Socially.Apps.Consumer.Services
 
         #region posts
 
-        public async Task<int> AddAsync(AddPostModel addPostModel,
+        public async Task<int> AddPostAsync(AddPostModel addPostModel,
                                         CancellationToken cancellationToken = default)
         {
             var res = await _httpClient.PostAsJsonAsync("post", addPostModel, cancellationToken);
@@ -105,7 +105,7 @@ namespace Socially.Apps.Consumer.Services
             return int.Parse(await res.Content.ReadAsStringAsync(cancellationToken));
         }
 
-        public Task<HttpResponseMessage> DeleteAsync(int id,
+        public Task<HttpResponseMessage> DeletePostAsync(int id,
                          CancellationToken cancellationToken = default)
             => _httpClient.DeleteAsync($"/post/{id}", cancellationToken);
 
