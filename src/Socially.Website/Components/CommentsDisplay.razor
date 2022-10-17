@@ -1,18 +1,99 @@
-﻿
-<!-- Add comment -->
-<div class="d-flex mb-3">
-    <!-- Avatar -->
-    <div class="avatar avatar-xs me-2">
-        <ProfilePictureIcon />
-    </div>
-    <!-- Comment box  -->
-    <form class="position-relative w-100">
-        <textarea class="form-control pe-4 bg-light" rows="1" placeholder="Add a comment..."></textarea>
+﻿<!-- Add comment -->
+<div class="d-flex">
+@*    <form class="position-relative w-100">
+        <!-- Avatar -->
+        <div class="avatar avatar-xs me-2">
+            <ProfilePictureIcon />
+        </div>
+        <!-- Comment box  -->
+        <textarea @bind=addModel.Text @bind:event="oninput" class="form-control pe-4 bg-light" rows="1" placeholder="Add a comment..."></textarea>
+
+
+        @if (!string.IsNullOrEmpty(addModel?.Text))
+        {
+            <div class="text-sm-end">
+                <button type="submit" class="btn btn-success-soft">Post</button>
+            </div>
+        }
     </form>
+*@
+
+    <div class="card card-body card-newcomment">
+        <form @onsubmit=AddCommentAsync class="w-100">
+            <div class="d-flex">
+                <!-- Avatar -->
+                <div class="avatar avatar-xs me-2">
+                    <ProfilePictureIcon />
+                </div>
+                <!-- Post input -->
+                <input @bind=addModel.Text @bind:event="oninput" class="form-control pe-4 border-0" placeholder="Share your thoughts...">
+            </div>
+
+            @*    <!-- Share feed toolbar START -->
+            <ul class="nav nav-pills nav-stack small fw-normal">
+            <li class="nav-item">
+            <a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionPhoto"> <i class="bi bi-image-fill text-success pe-2"></i>Photo</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionVideo"> <i class="bi bi-camera-reels-fill text-info pe-2"></i>Video</a>
+            </li>
+            </ul>
+            <!-- Share feed toolbar END -->*@
+
+
+            @if (!string.IsNullOrEmpty(addModel?.Text))
+            {
+                <div class="text-sm-end">
+                    <button type="submit" class="btn btn-success-soft">Add</button>
+                </div>
+            }
+        </form>
+    </div>
+
 </div>
 
 <!-- Comment wrap START -->
 <ul class="comment-wrap list-unstyled">
+
+    @if (Comments is not null)
+    {
+        foreach (var comment in Comments.Reverse())
+        {
+            <!-- Comment item START -->
+            <li class="comment-item">
+                <div class="d-flex">
+                    <!-- Avatar -->
+                    <div class="avatar avatar-xs">
+                        <a href="#!"><img class="avatar-img rounded-circle" src="assets/images/avatar/05.jpg" alt=""></a>
+                    </div>
+                    <!-- Comment by -->
+                    <div class="ms-2">
+                        <div class="bg-light p-3 rounded">
+                            <div class="d-flex justify-content-between">
+                                <h6 class="mb-1"> <a href="#!"> Frances Guerrero </a> </h6>
+                                <small class="ms-2">4min</small>
+                            </div>
+                            <p class="small mb-0">@comment.Text</p>
+                        </div>
+                        <!-- Comment react -->
+                        <ul class="nav nav-divider pt-2 small">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#!"> Like (1)</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#!"> Reply</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#!"> View 6 replies</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <!-- Comment item END -->
+        }
+    }
+
     <!-- Comment item START -->
     <li class="comment-item">
         <div class="d-flex position-relative">
@@ -116,37 +197,6 @@
         <!-- Comment item nested END -->
     </li>
     <!-- Comment item END -->
-    <!-- Comment item START -->
-    <li class="comment-item">
-        <div class="d-flex">
-            <!-- Avatar -->
-            <div class="avatar avatar-xs">
-                <a href="#!"><img class="avatar-img rounded-circle" src="assets/images/avatar/05.jpg" alt=""></a>
-            </div>
-            <!-- Comment by -->
-            <div class="ms-2">
-                <div class="bg-light p-3 rounded">
-                    <div class="d-flex justify-content-between">
-                        <h6 class="mb-1"> <a href="#!"> Frances Guerrero </a> </h6>
-                        <small class="ms-2">4min</small>
-                    </div>
-                    <p class="small mb-0">Removed demands expense account in outward tedious do. Particular way thoroughly unaffected projection.</p>
-                </div>
-                <!-- Comment react -->
-                <ul class="nav nav-divider pt-2 small">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#!"> Like (1)</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#!"> Reply</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#!"> View 6 replies</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </li>
-    <!-- Comment item END -->
+
 </ul>
 <!-- Comment wrap END -->

@@ -41,6 +41,7 @@
     <div class="card-body">
         <p>@Post?.Text</p>
         <!-- Card img -->
+        <img class="card-img" src="assets/images/post/3by2/01.jpg" alt="Post">
         <!-- Feed react START -->
         <ul class="nav nav-stack py-3 small">
             <li class="nav-item">
@@ -68,6 +69,8 @@
         </ul>
         <!-- Feed react END -->
        
+        <CommentsDisplay PostId=Post.Id Comments=Post.Comments />
+
     </div>
     <!-- Card body END -->
     <!-- Card footer START -->
