@@ -9,6 +9,7 @@ namespace Socially.Models
     public class PostDisplayModel
     {
         public int Id { get; set; }
+
         public string Text { get; set; }
         public int? CreatorId { get; set; }
         public DateTime? CreatedOn { get; set; }

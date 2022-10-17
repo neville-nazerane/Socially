@@ -1,5 +1,8 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+.card-newpost{
+    flex: none !important;
+}
 
 .thumb-image {
     border: 10px;

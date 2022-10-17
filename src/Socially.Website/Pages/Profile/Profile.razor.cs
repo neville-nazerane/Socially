@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Socially.Website.Pages.Profile
@@ -40,18 +41,24 @@ namespace Socially.Website.Pages.Profile
 
         async Task AddPostAsyc()
         {
+            if (string.IsNullOrEmpty(addPostModel.Text)) return;
+
             int id = await Consumer.AddPostAsync(addPostModel);
             posts.Add(new PostDisplayModel
             {
                 Id = id,
                 Text = addPostModel.Text
             });
+            addPostModel = new AddPostModel();
+            StateHasChanged();
         }
 
         async Task DeletePostAsync(int postId)
         {
             var res = await Consumer.DeletePostAsync(postId);
             res.EnsureSuccessStatusCode();
+            posts = posts.Where(p => p.Id != postId).ToList();
+            StateHasChanged();
         }
 
         Task RunAllAsync(params Func<Task>[] tasks)
