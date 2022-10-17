@@ -57,7 +57,7 @@ namespace Socially.WebAPI.Endpoints
                          CancellationToken cancellationToken = default)
             => manager.DeleteAsync(id, cancellationToken);
 
-        Task AddCommentAsync(IPostManager manager,
+        Task<int> AddCommentAsync(IPostManager manager,
                             AddCommentModel model,
                             CancellationToken cancellationToken = default)
             => manager.AddCommentAsync(model, cancellationToken);

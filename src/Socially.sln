@@ -43,7 +43,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Socially.Models", "Socially
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Socially.Utils.SamplerConsole", "Socially.Utils.SamplerConsole\Socially.Utils.SamplerConsole.csproj", "{994BBDEF-42C8-4A97-93FB-FB2F89285111}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socially.Server.ModelMappings", "Socially.Server.ModelMappings\Socially.Server.ModelMappings.csproj", "{1F9B70A2-8BE7-459F-9445-14EC44C0FF7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Socially.Server.ModelMappings", "Socially.Server.ModelMappings\Socially.Server.ModelMappings.csproj", "{1F9B70A2-8BE7-459F-9445-14EC44C0FF7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

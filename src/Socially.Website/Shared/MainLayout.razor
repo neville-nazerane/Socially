@@ -263,10 +263,13 @@
 
                         <li class="nav-item ms-2 dropdown">
                             <a class="nav-link btn icon-md p-0" href="#" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
-                                @if (profileInfo?.ProfilePictureFileName != null)
+                               
+                                <ProfilePictureIcon />
+                                
+                                @* @if (profileInfo?.ProfilePictureFileName != null)
                                 {
                                     <img class="avatar-img rounded-2" src="@Config["imageBase"]/userprofiles/@profileInfo.ProfilePictureFileName" alt="">
-                                }
+                                }*@
                             </a>
                             <ul class="dropdown-menu dropdown-animation dropdown-menu-end pt-3 small me-md-n3" aria-labelledby="profileDropdown">
                                 <!-- Profile info -->
@@ -284,7 +287,7 @@
                                             @*<p class="small m-0">Web Developer</p>*@
                                         </div>
                                     </div>
-                                    <a class="dropdown-item btn btn-primary-soft btn-sm my-2 text-center" href="my-profile.html">View profile</a>
+                                    <a class="dropdown-item btn btn-primary-soft btn-sm my-2 text-center" href="/profile">View profile</a>
                                 </li>
                                 <!-- Links -->
                                 <li><a class="dropdown-item" href="account"><i class="bi bi-gear fa-fw me-2"></i>Settings & Privacy</a></li>

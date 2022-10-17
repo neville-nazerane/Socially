@@ -21,6 +21,7 @@ builder.Services.AddTransient<WebHttpHandler>();
 
 builder.Services.AddAuthorizationCore().AddOptions();
 builder.Services.AddSingleton<AuthenticationStateProvider, AuthProvider>()
+                .AddSingleton<UserContext>()
                 .AddSingleton(p => (AuthProvider) p.GetService<AuthenticationStateProvider>());
 
 await builder.Build().RunAsync();
