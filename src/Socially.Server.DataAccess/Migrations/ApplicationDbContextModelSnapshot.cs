@@ -125,7 +125,176 @@ namespace Socially.Server.DataAccess.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Socially.Core.Entities.ProfileImage", b =>
+            modelBuilder.Entity("Socially.Server.Entities.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<int>("CreatorId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("LikeCount")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ParentCommentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PostId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("ParentCommentId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("Socially.Server.Entities.Friend", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("FriendUserId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OwnerUserId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FriendUserId");
+
+                    b.HasIndex("OwnerUserId");
+
+                    b.ToTable("Friends");
+                });
+
+            modelBuilder.Entity("Socially.Server.Entities.FriendRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("ForId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<bool?>("IsAccepted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("RequestedOn")
+                        .IsRequired()
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("RequesterId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("RespondedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ForId");
+
+                    b.HasIndex("RequesterId");
+
+                    b.ToTable("FriendRequests");
+                });
+
+            modelBuilder.Entity("Socially.Server.Entities.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<int?>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("LikeCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedOn");
+
+                    b.HasIndex("CreatorId");
+
+                    b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("Socially.Server.Entities.PostLike", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("PostId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PostLikes");
+                });
+
+            modelBuilder.Entity("Socially.Server.Entities.ProfileImage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -151,7 +320,7 @@ namespace Socially.Server.DataAccess.Migrations
                     b.ToTable("ProfileImages");
                 });
 
-            modelBuilder.Entity("Socially.Core.Entities.User", b =>
+            modelBuilder.Entity("Socially.Server.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -241,7 +410,7 @@ namespace Socially.Server.DataAccess.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Socially.Core.Entities.UserRefreshToken", b =>
+            modelBuilder.Entity("Socially.Server.Entities.UserRefreshToken", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -274,7 +443,7 @@ namespace Socially.Server.DataAccess.Migrations
                     b.ToTable("UserRefreshTokens");
                 });
 
-            modelBuilder.Entity("Socially.Core.Entities.UserRole", b =>
+            modelBuilder.Entity("Socially.Server.Entities.UserRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -306,7 +475,7 @@ namespace Socially.Server.DataAccess.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("Socially.Core.Entities.UserRole", null)
+                    b.HasOne("Socially.Server.Entities.UserRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -315,7 +484,7 @@ namespace Socially.Server.DataAccess.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("Socially.Core.Entities.User", null)
+                    b.HasOne("Socially.Server.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -324,7 +493,7 @@ namespace Socially.Server.DataAccess.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("Socially.Core.Entities.User", null)
+                    b.HasOne("Socially.Server.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -333,13 +502,13 @@ namespace Socially.Server.DataAccess.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.HasOne("Socially.Core.Entities.UserRole", null)
+                    b.HasOne("Socially.Server.Entities.UserRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Socially.Core.Entities.User", null)
+                    b.HasOne("Socially.Server.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -348,16 +517,115 @@ namespace Socially.Server.DataAccess.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("Socially.Core.Entities.User", null)
+                    b.HasOne("Socially.Server.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Socially.Core.Entities.ProfileImage", b =>
+            modelBuilder.Entity("Socially.Server.Entities.Comment", b =>
                 {
-                    b.HasOne("Socially.Core.Entities.User", "User")
+                    b.HasOne("Socially.Server.Entities.User", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Socially.Server.Entities.Comment", "ParentComment")
+                        .WithMany("Comments")
+                        .HasForeignKey("ParentCommentId");
+
+                    b.HasOne("Socially.Server.Entities.Post", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Creator");
+
+                    b.Navigation("ParentComment");
+
+                    b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("Socially.Server.Entities.Friend", b =>
+                {
+                    b.HasOne("Socially.Server.Entities.User", "FriendUser")
+                        .WithMany()
+                        .HasForeignKey("FriendUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Socially.Server.Entities.User", "OwnerUser")
+                        .WithMany("Friends")
+                        .HasForeignKey("OwnerUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FriendUser");
+
+                    b.Navigation("OwnerUser");
+                });
+
+            modelBuilder.Entity("Socially.Server.Entities.FriendRequest", b =>
+                {
+                    b.HasOne("Socially.Server.Entities.User", "For")
+                        .WithMany("RecievedFriendRequests")
+                        .HasForeignKey("ForId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Socially.Server.Entities.User", "Requester")
+                        .WithMany("SentFriendRequests")
+                        .HasForeignKey("RequesterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("For");
+
+                    b.Navigation("Requester");
+                });
+
+            modelBuilder.Entity("Socially.Server.Entities.Post", b =>
+                {
+                    b.HasOne("Socially.Server.Entities.User", "Creator")
+                        .WithMany("Posts")
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Creator");
+                });
+
+            modelBuilder.Entity("Socially.Server.Entities.PostLike", b =>
+                {
+                    b.HasOne("Socially.Server.Entities.Comment", "Comment")
+                        .WithMany("Likes")
+                        .HasForeignKey("CommentId");
+
+                    b.HasOne("Socially.Server.Entities.Post", "Post")
+                        .WithMany("Likes")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Socially.Server.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Comment");
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Socially.Server.Entities.ProfileImage", b =>
+                {
+                    b.HasOne("Socially.Server.Entities.User", "User")
                         .WithMany("ProfileImages")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -366,18 +634,18 @@ namespace Socially.Server.DataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Socially.Core.Entities.User", b =>
+            modelBuilder.Entity("Socially.Server.Entities.User", b =>
                 {
-                    b.HasOne("Socially.Core.Entities.ProfileImage", "ProfilePicture")
+                    b.HasOne("Socially.Server.Entities.ProfileImage", "ProfilePicture")
                         .WithMany()
                         .HasForeignKey("ProfilePictureId");
 
                     b.Navigation("ProfilePicture");
                 });
 
-            modelBuilder.Entity("Socially.Core.Entities.UserRefreshToken", b =>
+            modelBuilder.Entity("Socially.Server.Entities.UserRefreshToken", b =>
                 {
-                    b.HasOne("Socially.Core.Entities.User", "User")
+                    b.HasOne("Socially.Server.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -386,9 +654,31 @@ namespace Socially.Server.DataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Socially.Core.Entities.User", b =>
+            modelBuilder.Entity("Socially.Server.Entities.Comment", b =>
                 {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Likes");
+                });
+
+            modelBuilder.Entity("Socially.Server.Entities.Post", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Likes");
+                });
+
+            modelBuilder.Entity("Socially.Server.Entities.User", b =>
+                {
+                    b.Navigation("Friends");
+
+                    b.Navigation("Posts");
+
                     b.Navigation("ProfileImages");
+
+                    b.Navigation("RecievedFriendRequests");
+
+                    b.Navigation("SentFriendRequests");
                 });
 #pragma warning restore 612, 618
         }

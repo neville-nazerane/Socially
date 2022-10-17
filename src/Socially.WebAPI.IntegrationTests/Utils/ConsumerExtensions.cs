@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Socially.Apps.Consumer.Services;
-using Socially.Core.Entities;
 using Socially.Server.DataAccess;
+using Socially.Server.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace Socially.WebAPI.IntegrationTests.Utils
 
         public static async Task TestSignupAndLoginAsync(this IApiConsumer consumer)
         {
-            await consumer.SignupAsync(new Core.Models.SignUpModel
+            await consumer.SignupAsync(new Socially.Models.SignUpModel
             {
                 Password = testPassword,
                 UserName = testUsername,
@@ -28,7 +29,7 @@ namespace Socially.WebAPI.IntegrationTests.Utils
                 ConfirmPassword = testPassword
             });
 
-            var token = await consumer.LoginAsync(new Core.Models.LoginModel
+            var token = await consumer.LoginAsync(new Socially.Models.LoginModel
             {
                 UserName = testUsername,
                 Password = testPassword,

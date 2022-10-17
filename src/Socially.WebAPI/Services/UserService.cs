@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using NetCore.Jwt;
 using SendGrid;
-using Socially.Core.Entities;
-using Socially.Core.Exceptions;
-using Socially.Core.Models;
+using Socially.Models;
+using Socially.Models.Exceptions;
+using Socially.Server.Entities;
 using Socially.Server.Managers;
-using Socially.Server.Services.Models;
+using Socially.Server.Managers.Utils;
 using Socially.WebAPI.Models;
 using Socially.WebAPI.Utils;
 using Socially.Website.Models;

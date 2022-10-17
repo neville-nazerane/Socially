@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using Socially.Core.Models;
+using Socially.Models;
 using Socially.WebAPI.Models;
 using Socially.WebAPI.Services;
 using System.Collections.Generic;

@@ -1,5 +1,5 @@
 ﻿using Socially.Apps.Consumer.Utils;
-using Socially.Core.Models;
+using Socially.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -68,6 +68,96 @@ namespace Socially.Apps.Consumer.Services
         public Task<HttpResponseMessage> DeleteImageAsync(string fileName, 
                                                           CancellationToken cancellationToken = default)
             => _httpClient.DeleteAsync($"image/{fileName}", cancellationToken);
+
+
+
+        #region friends
+
+        public Task<HttpResponseMessage> RequestFriendAsync(int forId, CancellationToken cancellationToken = default)
+            => _httpClient.PostAsync($"friend/request/{forId}", null, cancellationToken);
+
+        public async Task<bool> RespondAsync(int requesterId,
+                                bool isAccepted,
+                                CancellationToken cancellationToken = default)
+        {
+            var res = await _httpClient.PutAsync($"friend/respond/{requesterId}/{isAccepted}", null, cancellationToken);
+            res.EnsureSuccessStatusCode();
+            return bool.Parse(await res.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        public Task<IEnumerable<UserSummaryModel>> GetFriendRequestsAsync(CancellationToken cancellationToken = default)
+            => _httpClient.GetFromJsonAsync<IEnumerable<UserSummaryModel>>("friend/requests", cancellationToken);
+
+        public Task<IEnumerable<UserSummaryModel>> GetFriendsAsync(CancellationToken cancellationToken = default)
+            => _httpClient.GetFromJsonAsync<IEnumerable<UserSummaryModel>>("friends", cancellationToken);
+
+        #endregion
+
+
+
+        #region posts
+
+        public async Task<int> AddPostAsync(AddPostModel addPostModel,
+                                        CancellationToken cancellationToken = default)
+        {
+            var res = await _httpClient.PostAsJsonAsync("post", addPostModel, cancellationToken);
+            res.EnsureSuccessStatusCode();
+            return int.Parse(await res.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        public Task<HttpResponseMessage> DeletePostAsync(int id,
+                         CancellationToken cancellationToken = default)
+            => _httpClient.DeleteAsync($"/post/{id}", cancellationToken);
+
+        public async Task<int> AddCommentAsync(AddCommentModel model,
+                                                         CancellationToken cancellationToken = default)
+        {
+            var res = await _httpClient.PostAsJsonAsync("post/comment", model, cancellationToken);
+            res.EnsureSuccessStatusCode();
+            return int.Parse(await res.Content.ReadAsStringAsync());
+        }
+
+        public Task<HttpResponseMessage> DeleteCommentAsync(int id,
+                                                            CancellationToken cancellationToken = default)
+            => _httpClient.DeleteAsync($"/post/comment/{id}", cancellationToken);
+
+        public async Task<bool> SwapPostLikeAsync(int postId,
+                                                       CancellationToken cancellationToken = default)
+        {
+            var res = await _httpClient.PutAsync($"post/{postId}/like", null, cancellationToken);
+            res.EnsureSuccessStatusCode();
+            return bool.Parse(await res.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        public async Task<bool> SwapCommentLikeAsync(int postId,
+                                                              int commentId,
+                                                              CancellationToken cancellationToken = default)
+        {
+            var res = await _httpClient.PutAsync($"post/{postId}/comment/{commentId}/like", null, cancellationToken);
+            res.EnsureSuccessStatusCode();
+            return bool.Parse(await res.Content.ReadAsStringAsync(cancellationToken));
+        }
+
+        public Task<IEnumerable<PostDisplayModel>> GetCurrentUserPostsAsync(int pageSize,
+                                                                             DateTime? since = null,
+                                                                             CancellationToken cancellationToken = default)
+            => _httpClient.GetFromJsonAsync<IEnumerable<PostDisplayModel>>($"posts/me?pageSize={pageSize}&since={since}",
+                                                                           cancellationToken);
+
+        public Task<IEnumerable<PostDisplayModel>> GetProfilePostsAsync(int userId,
+                                                                        int pageSize,
+                                                                        DateTime? since = null,
+                                                                        CancellationToken cancellationToken = default)
+            => _httpClient.GetFromJsonAsync<IEnumerable<PostDisplayModel>>($"posts/profile/{userId}?pageSize={pageSize}&since={since}", 
+                                                                           cancellationToken);
+
+        public Task<IEnumerable<PostDisplayModel>> GetHomePostsAsync(int pageSize,
+                                                                     DateTime? since = null,
+                                                                     CancellationToken cancellationToken = default)
+            => _httpClient.GetFromJsonAsync<IEnumerable<PostDisplayModel>>($"posts/home?pageSize={pageSize}&since={since}", cancellationToken);
+
+        #endregion
+
 
     }
 }

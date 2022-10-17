@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -42,6 +43,29 @@ namespace Socially.Server.DataAccess
                                                         ContentType = contentType
                                                     }
                                                 }, cancellationToken);
+        }
+
+        public async Task UploadAsync(string containerName,
+                                string fileName,
+                                object data,
+                                CancellationToken cancellationToken = default)
+        {
+            await using var stream = new MemoryStream();
+            await JsonSerializer.SerializeAsync(stream, data, cancellationToken: cancellationToken);
+
+            await WithContainer(containerName).GetBlobClient(fileName)
+                                              .UploadAsync(stream, cancellationToken);
+        }
+
+        public async Task<TModel> DownloadAsync<TModel>(string containerName,
+                                                        string fileName,
+                                                        CancellationToken cancellationToken = default)
+            where TModel : class
+        {
+            var result = await WithContainer(containerName).GetBlobClient(fileName)
+                                                           .DownloadAsync(cancellationToken);
+            return await JsonSerializer.DeserializeAsync<TModel>(result.Value.Content, 
+                                                                 cancellationToken: cancellationToken);
         }
 
         public Task DeleteAsync(string containerName,

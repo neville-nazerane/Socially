@@ -14,12 +14,12 @@ namespace Socially.Server.DataAccess
         Task DeleteAsync(string containerName,
                          string fileName,
                          CancellationToken cancellationToken = default);
-
+        Task<TModel> DownloadAsync<TModel>(string containerName, string fileName, CancellationToken cancellationToken = default) where TModel : class;
         Task UploadAsync(string containerName,
                          string fileName,
                          string contentType,
                          Stream stream,
                          CancellationToken cancellationToken = default);
-
+        Task UploadAsync(string containerName, string fileName, object data, CancellationToken cancellationToken = default);
     }
 }

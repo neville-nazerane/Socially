@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
 using Socially.Server.Managers;
-using Socially.Server.Services.Models;
+using Socially.Server.Managers.Utils;
 using Socially.Website.Models;
 using System.Collections.Generic;
 using System.Linq;

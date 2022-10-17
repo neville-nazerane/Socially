@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Socially.Core.Exceptions;
+using Socially.Models.Exceptions;
 using Socially.WebAPI.Utils;
 using System;
 using System.Collections.Generic;

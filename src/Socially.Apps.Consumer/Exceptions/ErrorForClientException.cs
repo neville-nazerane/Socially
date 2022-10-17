@@ -1,4 +1,4 @@
-﻿using Socially.Core.Models;
+﻿using Socially.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;

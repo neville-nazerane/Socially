@@ -20,7 +20,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Socially.Server.Managers\Socially.Server.Managers.csproj" />
-		<ProjectReference Include="..\Socially.Server.Services\Socially.Server.Services.csproj" />
 	</ItemGroup>
 
 

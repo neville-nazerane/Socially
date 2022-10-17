@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
-using Socially.Core.Models;
 using System.Net.Http.Json;
 using System.Net.Http.Headers;
 using Socially.Apps.Consumer.Services;
@@ -15,6 +14,7 @@ using System.Threading;
 using System.Net;
 using Microsoft.AspNetCore.Mvc.Routing;
 using System.Web;
+using Socially.Models;
 
 namespace Socially.WebAPI.IntegrationTests
 {
