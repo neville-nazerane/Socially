@@ -45,6 +45,13 @@ namespace Socially.Website.Components
             StateHasChanged();
         }
 
+        async Task DeleteAsync(DisplayCommentModel comment)
+        {
+            await Consumer.DeleteCommentAsync(comment.Id);
+            Comments.Remove(comment);
+            StateHasChanged();
+        }
+
         AddCommentModel BuildNewModel() => new AddCommentModel
         {
             PostId = PostId,
@@ -53,8 +60,7 @@ namespace Socially.Website.Components
 
         void ShowComments(DisplayCommentModel comment)
         {
-            if (comment.Comments is null)
-                comment.Comments = new List<DisplayCommentModel>();
+            comment.Comments ??= new List<DisplayCommentModel>();
         }
 
     }
