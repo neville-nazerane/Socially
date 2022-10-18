@@ -41,7 +41,7 @@ namespace Socially.Website.Components
                 Text = addModel.Text,
                 Id = id
             });
-            addModel = new();
+            addModel = BuildNewModel();
             StateHasChanged();
         }
 
@@ -51,6 +51,11 @@ namespace Socially.Website.Components
             ParentCommentId = ParentCommentId
         };
 
+        void ShowComments(DisplayCommentModel comment)
+        {
+            if (comment.Comments is null)
+                comment.Comments = new List<DisplayCommentModel>();
+        }
 
     }
 }
