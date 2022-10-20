@@ -25,7 +25,7 @@ resources:
 extends:
   template: Shared\netcore-ubuntu.yml@templates
   parameters:
-    useVersion: 6.0.301
+    useVersion: 6.x
     projectPath: src/Socially.WebAPI
     projectName: Socially.WebAPI
     destDirectory: /var/www/socially
