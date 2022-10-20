@@ -12,7 +12,7 @@ stages:
         
           - task: UseDotNet@2
             inputs:
-              version: 6.0.402
+              version: 7.0.100-rc.2.22477.23
 
           - script: dotnet --version
 
