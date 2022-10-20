@@ -10,9 +10,6 @@ stages:
       - job: UnitTests
         steps:
 
-          - script: dotnet test
-            workingDirectory: src/Socially.Server.Managers.Tests
-
           - task: DotNetCoreCLI@2
             inputs:
               command: test
