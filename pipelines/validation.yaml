@@ -1,5 +1,5 @@
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: ubuntu-latest
 
 variables:
   unitTestOutput: $(System.DefaultWorkingDirectory)/uitests
@@ -9,10 +9,6 @@ stages:
     jobs:
       - job: UnitTests
         steps:
-
-          - task: UseDotNet@2
-            inputs:
-              version: 6.x
 
           - task: DotNetCoreCLI@2
             inputs:
