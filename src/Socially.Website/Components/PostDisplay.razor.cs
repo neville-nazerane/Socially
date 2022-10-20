@@ -25,7 +25,7 @@ namespace Socially.Website.Components
             currentuser = await UserContext.GetProfileInfoAsync();
         }
 
-        void Delete() => OnDelete?.Invoke();
+        void DeleteAsync() => OnDelete?.Invoke();
 
     }
 }

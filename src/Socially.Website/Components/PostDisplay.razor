@@ -23,7 +23,7 @@
                 </a>
                 <!-- Card feed action dropdown menu -->
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction1">
-                    <li><a @onclick:preventDefault @onclick=Delete class="dropdown-item" href="#"><i class="bi bi-slash-circle fa-fw pe-2"></i>Delete</a></li>
+                    <li><a @onclick:preventDefault @onclick=DeleteAsync class="dropdown-item" href="#"><i class="bi bi-slash-circle fa-fw pe-2"></i>Delete</a></li>
                     
                    @* <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
                     <li><a class="dropdown-item" href="#"> <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow lori ferguson </a></li>
@@ -41,6 +41,7 @@
     <div class="card-body">
         <p>@Post?.Text</p>
         <!-- Card img -->
+        <img class="card-img" src="assets/images/post/3by2/01.jpg" alt="Post">
         <!-- Feed react START -->
         <ul class="nav nav-stack py-3 small">
             <li class="nav-item">
@@ -68,6 +69,8 @@
         </ul>
         <!-- Feed react END -->
        
+        <CommentsDisplay PostId=Post.Id Comments=Post.Comments />
+
     </div>
     <!-- Card body END -->
     <!-- Card footer START -->

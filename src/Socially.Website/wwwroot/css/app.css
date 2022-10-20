@@ -1,8 +1,18 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+
+/* ==============================   POSTS =================================== */
+
 .card-newpost{
     flex: none !important;
 }
+
+.card-newcomment {
+    padding: 2px !important;
+}
+
+
+/* ==============================  END OF POSTS =========================== */ 
 
 .thumb-image {
     border: 10px;
