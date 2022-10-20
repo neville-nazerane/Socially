@@ -14,7 +14,8 @@ stages:
             inputs:
               version: 7.0.100-rc.2.22477.23
 
-          - script: dotnet --version
+          - script: dotnet test
+            workingDirectory: src/Socially.Server.Managers.Tests
 
           - task: DotNetCoreCLI@2
             inputs:
