@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Socially.Server.Managers;
 using Socially.Server.Managers.Utils;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Socially.WebAPI.Endpoints
 {
@@ -24,7 +25,8 @@ namespace Socially.WebAPI.Endpoints
         {
             return new RouteHandlerBuilder[]
             {
-                endpoints.MapGet("users", SearchAsync)
+                endpoints.MapGet("users", SearchAsync),
+                endpoints.MapPost("users/getById", GetUsersByIdsAsync),
             };
         }
 
@@ -33,5 +35,11 @@ namespace Socially.WebAPI.Endpoints
                                                          string q,
                                                          CancellationToken cancellationToken = default)
             => manager.SearchAsync(currentContext.UserId, q, cancellationToken);
+
+        Task<IEnumerable<UserSummaryModel>> GetUsersByIdsAsync(IUserProfileManager manager,
+                                                               [FromBody]IEnumerable<int> userIds,
+                                                               CancellationToken cancellationToken = default)
+            => manager.GetUsersByIdsAsync(userIds, cancellationToken);
+
     }
 }

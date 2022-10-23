@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Scaffolding;
+using MongoDB.Bson.Serialization.Serializers;
 using Socially.Models;
 using Socially.Models.Enums;
 using Socially.Server.DataAccess;
 using Socially.Server.Entities;
+using Socially.Server.ModelMappings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,6 +79,12 @@ namespace Socially.Server.Managers
                                 ProfilePictureFileName = u.ProfilePicture == null ? null : u.ProfilePicture.FileName
                             })
                             .SingleOrDefaultAsync(cancellationToken);
+
+        public async Task<IEnumerable<UserSummaryModel>> GetUsersByIdsAsync(IEnumerable<int> userIds, CancellationToken cancellationToken = default)
+            => await _dbContext.Users
+                               .Where(u => userIds.Contains(u.Id))
+                               .SelectAsSummaryModel()
+                               .ToListAsync(cancellationToken);
 
         public Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken = default) 
             => _dbContext.Users.AnyAsync(u => u.Email == email, cancellationToken);

@@ -23,5 +23,6 @@ namespace Socially.Server.Managers
         Task<bool> VerifyRefreshToken(int userId, string refreshToken, CancellationToken cancellationToken = default);
         Task<User> GetUserByUsernameAsync(string username, CancellationToken cancellationToken = default);
         Task<IEnumerable<SearchedUserModel>> SearchAsync(int userId, string q, CancellationToken cancellationToken = default);
+        Task<IEnumerable<UserSummaryModel>> GetUsersByIdsAsync(IEnumerable<int> userIds, CancellationToken cancellationToken = default);
     }
 }

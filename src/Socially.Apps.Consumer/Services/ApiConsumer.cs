@@ -69,7 +69,17 @@ namespace Socially.Apps.Consumer.Services
                                                           CancellationToken cancellationToken = default)
             => _httpClient.DeleteAsync($"image/{fileName}", cancellationToken);
 
+        #region users
 
+        public async Task<IEnumerable<UserSummaryModel>> GetUsersByIdsAsync(IEnumerable<int> userIds,
+                                                                            CancellationToken cancellationToken = default)
+        {
+            var res = await _httpClient.PostAsJsonAsync("users/getById", userIds, cancellationToken);
+            res.EnsureSuccessStatusCode();
+            return await res.Content.ReadFromJsonAsync<IEnumerable<UserSummaryModel>>();
+        }
+
+        #endregion
 
         #region friends
 
