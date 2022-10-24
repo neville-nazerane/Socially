@@ -19,7 +19,7 @@ namespace Socially.Apps.Consumer.Utils
 
             if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
             {
-                var errors = await response.Content.ReadFromJsonAsync<IEnumerable<ErrorModel>>();
+                var errors = await response.Content.ReadFromJsonAsync<IEnumerable<ErrorModel>>(cancellationToken: cancellationToken);
                 throw new ErrorForClientException(errors);
             }
 

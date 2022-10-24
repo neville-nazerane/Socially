@@ -22,6 +22,7 @@ namespace Socially.Apps.Consumer.Services
         Task<IEnumerable<PostDisplayModel>> GetHomePostsAsync(int pageSize, DateTime? since = null, CancellationToken cancellationToken = default);
         Task<IEnumerable<PostDisplayModel>> GetProfilePostsAsync(int userId, int pageSize, DateTime? since = null, CancellationToken cancellationToken = default);
         Task<ProfileUpdateModel> GetUpdateProfileAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<UserSummaryModel>> GetUsersByIdsAsync(IEnumerable<int> userIds, CancellationToken cancellationToken = default);
         Task<TokenResponseModel> LoginAsync(LoginModel model, CancellationToken cancellationToken = default);
         Task<HttpResponseMessage> RequestFriendAsync(int forId, CancellationToken cancellationToken = default);
         Task<HttpResponseMessage> ResetForgottenPasswordAsync(ForgotPasswordModel model, CancellationToken cancellationToken = default);

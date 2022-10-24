@@ -16,13 +16,16 @@ namespace Socially.Website.Components
         public Action OnDelete { get; set; }
 
         [Inject]
-        public UserContext UserContext { get; set; }
+        public CachedContext UserContext { get; set; }
+
+        [Inject]
+        public CachedContext CachedContext { get; set; }
 
         ProfileUpdateModel currentuser;
 
         protected override async Task OnInitializedAsync()
         {
-            currentuser = await UserContext.GetProfileInfoAsync();
+            currentuser = await UserContext.GetCurrentProfileInfoAsync();
         }
 
         void DeleteAsync() => OnDelete?.Invoke();

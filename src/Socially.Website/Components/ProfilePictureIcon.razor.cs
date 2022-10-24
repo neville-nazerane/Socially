@@ -18,7 +18,7 @@ namespace Socially.Website.Components
         public AuthProvider AuthProvider { get; set; }
 
         [Inject]
-        public UserContext Context { get; set; }
+        public CachedContext Context { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -33,7 +33,7 @@ namespace Socially.Website.Components
 
         async Task UpdateAsync()
         {
-            fileName = (await Context.GetProfileInfoAsync())?.ProfilePictureFileName;
+            fileName = (await Context.GetCurrentProfileInfoAsync())?.ProfilePictureFileName;
         }
 
     }

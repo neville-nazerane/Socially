@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Socially.Apps.Consumer.Services;
 using Socially.Models;
+using Socially.Website.Services;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,6 +19,10 @@ namespace Socially.Website.Components
 
         [Parameter]
         public ICollection<DisplayCommentModel> Comments { get; set; }
+
+
+        [Inject]
+        public CachedContext CachedContext { get; set; }
 
 
         [Inject]

@@ -81,7 +81,7 @@ namespace Socially.Website.Services
             }
         }
 
-        public async Task SetAsync(TokenResponseModel res, CancellationToken cancellationToken = default)
+        public async ValueTask SetAsync(TokenResponseModel res, CancellationToken cancellationToken = default)
         {
             tokenData = res;
             if (res is null)

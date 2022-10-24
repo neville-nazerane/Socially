@@ -64,13 +64,13 @@
                 <div class="d-flex">
                     <!-- Avatar -->
                     <div class="avatar avatar-xs">
-                        <a href="#!"><img class="avatar-img rounded-circle" src="assets/images/avatar/05.jpg" alt=""></a>
+                        <a href="#!"><UserThumb FileName=@CachedContext.GetUser(comment.CreatorId).ProfilePicUrl /></a>
                     </div>
                     <!-- Comment by -->
                     <div class="ms-2">
                         <div class="bg-light p-3 rounded">
                             <div class="d-flex justify-content-between">
-                                <h6 class="mb-1"> <a href="#!"> Frances Guerrero </a> </h6>
+                                <h6 class="mb-1"> <a href="#!"> @CachedContext.GetUser(comment.CreatorId).FirstName @CachedContext.GetUser(comment.CreatorId).LastName </a> </h6>
                                 <small class="ms-2">4min</small>
                             </div>
                             <p class="small mb-0">@comment.Text</p>

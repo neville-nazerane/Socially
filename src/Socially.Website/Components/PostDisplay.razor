@@ -6,12 +6,12 @@
             <div class="d-flex align-items-center">
                 <!-- Avatar -->
                 <div class="avatar avatar-story me-2">
-                    <a href="#!"> <img class="avatar-img rounded-circle" src="assets/images/avatar/04.jpg" alt=""> </a>
+                    <a href="#!"> <UserThumb FileName=@CachedContext.GetUser(Post.CreatorId).ProfilePicUrl /> </a>
                 </div>
                 <!-- Info -->
                 <div>
                     <div class="nav nav-divider">
-                        <h6 class="nav-item card-title mb-0"> <a href="#!"> Lori Ferguson </a></h6>
+                        <h6 class="nav-item card-title mb-0"> <a href="#!"> @CachedContext.GetUser(Post.CreatorId).FirstName @CachedContext.GetUser(Post.CreatorId).LastName </a></h6>
                         <span class="nav-item small"> 2hr</span>
                     </div>
                 </div>
@@ -41,7 +41,6 @@
     <div class="card-body">
         <p>@Post?.Text</p>
         <!-- Card img -->
-        <img class="card-img" src="assets/images/post/3by2/01.jpg" alt="Post">
         <!-- Feed react START -->
         <ul class="nav nav-stack py-3 small">
             <li class="nav-item">
