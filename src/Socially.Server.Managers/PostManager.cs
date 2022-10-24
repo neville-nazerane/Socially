@@ -195,7 +195,7 @@ namespace Socially.Server.Managers
                                                         {
                                                             Id = p.Id,
                                                             Text = p.Text,
-                                                            CreatorId = p.CreatorId,
+                                                            CreatorId = p.CreatorId.Value,
                                                             CreatedOn = p.CreatedOn,
                                                             LikeCount = p.LikeCount ?? 0,
                                                         }

@@ -19,6 +19,7 @@ namespace Socially.Server.ModelMappings
                 Id = comment.Id,
                 Text = comment.Text,
                 LikeCount = comment.LikeCount ?? 0,
+                CreatorId = comment.CreatorId,
                 Comments = new List<DisplayCommentModel>()
             };
         }

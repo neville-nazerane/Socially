@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Socially.Apps.Consumer.Services;
 using Socially.Models;
+using Socially.Website.Models;
 using Socially.Website.Services;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -19,12 +21,11 @@ namespace Socially.Website.Pages.Profile
         public IApiConsumer Consumer { get; set; }
 
         [Inject]
-        public UserContext UserContext { get; set; }
-
+        public CachedContext CachedContext { get; set; }
 
         bool isPostsLoading;
 
-        AddPostModel addPostModel = new AddPostModel();
+        AddPostModel addPostModel = new();
 
         // data fields
         ICollection<PostDisplayModel> posts;
@@ -34,9 +35,12 @@ namespace Socially.Website.Pages.Profile
         protected override async Task OnInitializedAsync()
         {
             await RunAllAsync(
-                async () => profileInfo = await UserContext.GetProfileInfoAsync(),
+                async () => profileInfo = await CachedContext.GetCurrentProfileInfoAsync(),
                 async () => posts = (await Consumer.GetCurrentUserPostsAsync(10)).ToList()
             );
+            StateHasChanged();
+            var requiredUserIds = posts.Select(p => p.CreatorId).Distinct().ToArray();
+            await CachedContext.ForceUpdateUserProfilesAsync(requiredUserIds);
         }
 
         async Task AddPostAsyc()
@@ -61,7 +65,7 @@ namespace Socially.Website.Pages.Profile
             StateHasChanged();
         }
 
-        Task RunAllAsync(params Func<Task>[] tasks)
+        static Task RunAllAsync(params Func<Task>[] tasks)
         {
             return Task.WhenAll(tasks.Select(t => t()));
         }

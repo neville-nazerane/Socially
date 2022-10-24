@@ -21,7 +21,7 @@ namespace Socially.Website.Shared
         [Inject]
         public IConfiguration Config { get; set; }
 
-        Task LogoutAsync() => AuthProvider.SetAsync(null);
+        async Task LogoutAsync() => await AuthProvider.SetAsync(null);
 
         protected override async Task OnInitializedAsync()
         {

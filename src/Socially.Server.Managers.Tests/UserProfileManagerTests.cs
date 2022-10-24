@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson.Serialization.Serializers;
 using Socially.Models;
 using Socially.Models.Enums;
 using Socially.Server.DataAccess;
@@ -74,7 +75,6 @@ namespace Socially.Server.Managers.Tests
             // ASSERT
             Assert.True(result);
         }
-
 
         [Fact]
         public async Task UserNameExists_EmptyTable_ReturnsFalse()
@@ -180,6 +180,63 @@ namespace Socially.Server.Managers.Tests
             // ASSERT
             Assert.NotNull(profile);
             Assert.Equal("sampleUser", profile.FirstName);
+        }
+
+        [Fact]
+        public async Task GetUsersByIds_ValidIds_GetsValidProfiles()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            await DbContext.Users.AddRangeAsync(new User[]
+            {
+                new User
+                {
+                    Id = 1,
+                    FirstName = "Test First",
+                    LastName = "Test Last"
+                },
+                new User
+                {
+                    Id = 2,
+                    FirstName = "Test2 First",
+                    LastName = "Test2 Last"
+                },
+                new User
+                {
+                    Id = 3,
+                    FirstName = "Test3 First",
+                    LastName = "Test3 Last"
+                },
+                new User
+                {
+                    Id = 4,
+                    FirstName = "Test4 First",
+                    LastName = "Test4 Last"
+                }
+            });
+            await DbContext.SaveChangesAsync();
+
+            // ACT
+            var res = await manager.GetUsersByIdsAsync(new[] { 2, 4, 5 });
+
+            // ASSERT
+            Assert.NotNull(res);
+            Assert.NotEmpty(res);
+            Assert.Equal(2, res.Count());
+
+            var twoUser = res.SingleOrDefault(u => u.Id == 2);
+            Assert.NotNull(twoUser);
+            Assert.Equal("Test2 First", twoUser.FirstName);
+            Assert.Equal("Test2 Last", twoUser.LastName);
+
+            var fourUser = res.SingleOrDefault(u => u.Id == 4);
+            Assert.NotNull(fourUser);
+            Assert.Equal("Test4 First", fourUser.FirstName);
+            Assert.Equal("Test4 Last", fourUser.LastName);
+
+            var fiveUser = res.SingleOrDefault(u => u.Id == 5);
+            Assert.Null(fiveUser);
+
         }
 
         [Fact]
