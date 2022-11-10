@@ -1,2 +1,21 @@
-﻿@layout ProfileLayout
+﻿@page "/profile/{id:int}/friends"
+@page "/profile/friends"
+@layout ProfileLayout
 
+@if (friends is not null)
+{
+    <h2>Friends</h2>
+    foreach (var friend in friends)
+    {
+        <div>@friend.FirstName</div>
+    }
+}
+
+@if (requests is not null)
+{
+    <h2>Request</h2>
+    foreach (var friend in requests)
+    {
+        <div>@friend.FirstName</div>
+    }
+}

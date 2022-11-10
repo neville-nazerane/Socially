@@ -79,6 +79,9 @@ namespace Socially.Apps.Consumer.Services
             return await res.Content.ReadFromJsonAsync<IEnumerable<UserSummaryModel>>();
         }
 
+        public Task<IEnumerable<SearchedUserModel>> SearchUserAsync(string q, CancellationToken cancellationToken = default)
+            => _httpClient.GetFromJsonAsync<IEnumerable<SearchedUserModel>>($"users?q={q}", cancellationToken);
+
         #endregion
 
         #region friends

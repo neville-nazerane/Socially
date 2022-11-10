@@ -28,6 +28,7 @@ namespace Socially.Apps.Consumer.Services
         Task<HttpResponseMessage> ResetForgottenPasswordAsync(ForgotPasswordModel model, CancellationToken cancellationToken = default);
         Task<HttpResponseMessage> ResetPasswordAsync(PasswordResetModel model, CancellationToken cancellationToken = default);
         Task<bool> RespondAsync(int requesterId, bool isAccepted, CancellationToken cancellationToken = default);
+        Task<IEnumerable<SearchedUserModel>> SearchUserAsync(string q, CancellationToken cancellationToken = default);
         void SetJwt(string jwtHeader);
         Task SignupAsync(SignUpModel model, CancellationToken cancellationToken = default);
         Task<bool> SwapCommentLikeAsync(int postId, int commentId, CancellationToken cancellationToken = default);
