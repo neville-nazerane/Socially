@@ -15,7 +15,8 @@ namespace Socially.WebAPI.IntegrationTests
     public class UserTests : TestsBase
     {
 
-        private readonly CustomWebApplicationFactory _factory;
+        readonly CustomWebApplicationFactory _factory;
+
 
         public UserTests(CustomWebApplicationFactory factory)
         {
@@ -133,6 +134,7 @@ namespace Socially.WebAPI.IntegrationTests
             Assert.Single(res);
 
         }
+
 
     }
 }

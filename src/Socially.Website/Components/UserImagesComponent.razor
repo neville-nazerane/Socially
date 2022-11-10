@@ -15,7 +15,7 @@
             <!-- Add photo START -->
             <div class="col-sm-6 col-md-4 col-lg-3">
                 <InputFile hidden="hidden" @ref=uploadInput OnChange=ImageUploaded />
-                <div @onclick=TriggerTheKracken class="border border-2 py-5 border-dashed h-100 rounded text-center d-flex align-items-center justify-content-center position-relative">
+                <div @onclick:preventDefault @onclick=TriggerTheKracken class="border border-2 py-5 border-dashed h-100 rounded text-center d-flex align-items-center justify-content-center position-relative">
                     <a class="stretched-link" href="#!">
                         <i class="fa-solid fa-camera-retro fs-1"></i>
                         <h6 class="mt-2">Add photo</h6>

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http.Features;
 using Socially.Apps.Consumer.Services;
 using Socially.Models;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,8 +10,13 @@ namespace Socially.Website.Pages.Profile
 {
     public partial class Friends
     {
-        private IEnumerable<UserSummaryModel> friends;
-        private IEnumerable<UserSummaryModel> requests;
+        IEnumerable<UserSummaryModel> friends;
+        IEnumerable<UserSummaryModel> requests;
+        IEnumerable<SearchedUserModel> searchResults = Array.Empty<SearchedUserModel>();
+
+        bool addNew = false;
+
+        string search;
 
         [Parameter]
         public int Id { get; set; }
@@ -22,10 +28,18 @@ namespace Socially.Website.Pages.Profile
         {
             friends = await Consumer.GetFriendsAsync();
             requests = await Consumer.GetFriendRequestsAsync();
-
-
         }
 
+        void SwapAddNew()
+        {
+            addNew = !addNew;
+        }
+
+        async Task SearchAsync()
+        {
+            if (search is null) searchResults = Array.Empty<SearchedUserModel>();
+            searchResults = await Consumer.SearchUserAsync(search);
+        }
 
     }
 }

@@ -133,6 +133,23 @@ namespace Socially.Server.Managers
                                                   string q,
                                                   CancellationToken cancellationToken = default)
         {
+
+            var sql = _dbContext.Users.Where(u => u.Id != userId &&
+                                                    (EF.Functions.Like(u.FirstName, $"%{q}%") || EF.Functions.Like(u.LastName, $"%{q}%")))
+                                       .Select(u => new
+                                       {
+                                           u.Id,
+                                           u.FirstName,
+                                           u.LastName,
+                                           ProfilePicUrl = u.ProfilePicture == null ? null : u.ProfilePicture.FileName,
+                                           RecievedRequest = u.RecievedFriendRequests.Where(r => r.RequesterId == userId)
+                                                                                               .Select(r => new { r.IsAccepted })
+                                                                                               .SingleOrDefault(),
+                                           SentRequest = u.SentFriendRequests.Where(r => r.ForId == userId)
+                                                                                        .Select(r => new { r.IsAccepted })
+                                                                                        .SingleOrDefault()
+                                       }).ToQueryString();
+
             var res = await _dbContext.Users.Where(u => u.Id != userId &&
                                                     (EF.Functions.Like(u.FirstName , $"%{q}%") || EF.Functions.Like(u.LastName, $"%{q}%") ))
                                        .Select(u => new
