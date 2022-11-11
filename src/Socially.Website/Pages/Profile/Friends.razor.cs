@@ -24,21 +24,36 @@ namespace Socially.Website.Pages.Profile
         [Inject]
         public IApiConsumer Consumer { get; set; }
 
-        protected override async Task OnInitializedAsync()
-        {
-            friends = await Consumer.GetFriendsAsync();
-            requests = await Consumer.GetFriendRequestsAsync();
-        }
+        protected override Task OnInitializedAsync() => RefreshAllAsync();
 
         void SwapAddNew()
         {
             addNew = !addNew;
         }
 
+        async Task RequestAsync(int userId)
+        {
+            await Consumer.RequestFriendAsync(userId);
+            await RefreshAllAsync();
+        }
+
+        async Task RespondAsync(int userId, bool isAccepted)
+        {
+            await Consumer.RespondToFriendRequestAsync(userId, isAccepted);
+            await RefreshAllAsync();
+        }
+
+        async Task RefreshAllAsync()
+        {
+            friends = await Consumer.GetFriendsAsync();
+            requests = await Consumer.GetFriendRequestsAsync();
+            await SearchAsync();
+        }
+
         async Task SearchAsync()
         {
-            if (search is null) searchResults = Array.Empty<SearchedUserModel>();
-            searchResults = await Consumer.SearchUserAsync(search);
+            if (string.IsNullOrEmpty(search)) searchResults = Array.Empty<SearchedUserModel>();
+            else searchResults = await Consumer.SearchUserAsync(search);
         }
 
     }

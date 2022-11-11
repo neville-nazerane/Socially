@@ -89,7 +89,7 @@ namespace Socially.Apps.Consumer.Services
         public Task<HttpResponseMessage> RequestFriendAsync(int forId, CancellationToken cancellationToken = default)
             => _httpClient.PostAsync($"friend/request/{forId}", null, cancellationToken);
 
-        public async Task<bool> RespondAsync(int requesterId,
+        public async Task<bool> RespondToFriendRequestAsync(int requesterId,
                                 bool isAccepted,
                                 CancellationToken cancellationToken = default)
         {

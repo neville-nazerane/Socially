@@ -20,7 +20,24 @@
 
     foreach (var result in searchResults)
     {
-        <div>@result.FirstName</div>
+        <div class="hstack gap-2 mb-3">
+            <!-- Avatar -->
+            <div class="avatar">
+                <UserThumb FileName=@result.ProfilePicUrl />
+            </div>
+            <!-- Title -->
+            <div class="overflow-hidden">
+                <a class="h6 mb-0" @onclick:preventDefault href="#">@result.FirstName @result.LastName</a>
+            </div>
+            <!-- Button -->
+            <div class="ms-md-auto d-flex">
+                @if (result.FriendState == Socially.Models.Enums.UserFriendState.None)
+                {
+                    <button class="btn btn-primary-soft btn-sm mb-0 me-2" @onclick=@(() => RequestAsync(result.Id))> Friend Request </button>
+                }
+            </div>
+
+        </div>
     }
 }
 
@@ -30,15 +47,49 @@
     <h2>Friends</h2>
     foreach (var friend in friends)
     {
-        <div>@friend.FirstName</div>
+        <div class="d-md-flex align-items-center mb-4">
+            <!-- Avatar -->
+            <div class="avatar me-3 mb-3 mb-md-0">
+                <UserThumb FileName=@friend.ProfilePicUrl />
+            </div>
+            <!-- Info -->
+            <div class="w-100">
+                <div class="d-sm-flex align-items-start">
+                    <h6 class="mb-0"><a @onclick:preventDefault href="#">@friend.FirstName @friend.LastName</a></h6>
+                </div>
+            </div>
+            <!-- Button -->
+            <div class="ms-md-auto d-flex">
+                <button class="btn btn-danger-soft btn-sm mb-0 me-2"> Remove </button>
+                <button class="btn btn-primary-soft btn-sm mb-0"> Message </button>
+            </div>
+        </div>
     }
 }
 
 @if (requests is not null)
 {
     <h2>Request</h2>
-    foreach (var friend in requests)
-    {
-        <div>@friend.FirstName</div>
-    }
+    <div class="card-body">
+        @foreach (var friend in requests)
+        {
+            <div class="d-md-flex align-items-center mb-4">
+                <!-- Avatar -->
+                <div class="avatar me-3 mb-3 mb-md-0">
+                    <UserThumb FileName=@friend.ProfilePicUrl />
+                </div>
+                <!-- Info -->
+                <div class="w-100">
+                    <div class="d-sm-flex align-items-start">
+                        <h6 class="mb-0"><a @onclick:preventDefault href="#">@friend.FirstName @friend.LastName</a></h6>
+                    </div>
+                </div>
+                <!-- Button -->
+                <div class="ms-md-auto d-flex">
+                    <button class="btn btn-primary-soft btn-sm mb-0 me-2" @onclick=@(() => RespondAsync(friend.Id, true))> Accept </button>
+                    <button class="btn btn-danger-soft btn-sm mb-0" @onclick=@(() => RespondAsync(friend.Id, false))> Reject </button>
+                </div>
+            </div>
+        }
+    </div>
 }

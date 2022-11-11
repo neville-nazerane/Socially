@@ -134,22 +134,6 @@ namespace Socially.Server.Managers
                                                   CancellationToken cancellationToken = default)
         {
 
-            var sql = _dbContext.Users.Where(u => u.Id != userId &&
-                                                    (EF.Functions.Like(u.FirstName, $"%{q}%") || EF.Functions.Like(u.LastName, $"%{q}%")))
-                                       .Select(u => new
-                                       {
-                                           u.Id,
-                                           u.FirstName,
-                                           u.LastName,
-                                           ProfilePicUrl = u.ProfilePicture == null ? null : u.ProfilePicture.FileName,
-                                           RecievedRequest = u.RecievedFriendRequests.Where(r => r.RequesterId == userId)
-                                                                                               .Select(r => new { r.IsAccepted })
-                                                                                               .SingleOrDefault(),
-                                           SentRequest = u.SentFriendRequests.Where(r => r.ForId == userId)
-                                                                                        .Select(r => new { r.IsAccepted })
-                                                                                        .SingleOrDefault()
-                                       }).ToQueryString();
-
             var res = await _dbContext.Users.Where(u => u.Id != userId &&
                                                     (EF.Functions.Like(u.FirstName , $"%{q}%") || EF.Functions.Like(u.LastName, $"%{q}%") ))
                                        .Select(u => new
@@ -158,10 +142,10 @@ namespace Socially.Server.Managers
                                            u.FirstName,
                                            u.LastName,
                                            ProfilePicUrl = u.ProfilePicture == null ? null : u.ProfilePicture.FileName,
-                                           RecievedRequest = u.RecievedFriendRequests.Where(r => r.RequesterId == userId)
+                                           RecievedRequest = u.RecievedFriendRequests.Where(r => r.RequesterId == userId && r.IsAccepted != false)
                                                                                                .Select(r => new { r.IsAccepted })
                                                                                                .SingleOrDefault(),
-                                           SentRequest = u.SentFriendRequests.Where(r => r.ForId == userId)
+                                           SentRequest = u.SentFriendRequests.Where(r => r.ForId == userId && r.IsAccepted != false)
                                                                                         .Select(r => new { r.IsAccepted })
                                                                                         .SingleOrDefault()
                                        })
@@ -174,11 +158,12 @@ namespace Socially.Server.Managers
                 LastName = u.LastName,
                 ProfilePicUrl = u.ProfilePicUrl,
                 FriendState = u.RecievedRequest != null ?
+                                     //(GetStateByRecievedRequest(u.RecievedRequest.IsAccepted) ?? (u.SentRequest != null ? (GetStateBySentRequest(u.SentRequest.IsAccepted) ?? UserFriendState.None) : UserFriendState.None)) : UserFriendState.None
                                      (GetStateByRecievedRequest(u.RecievedRequest.IsAccepted) ??
-                                        (u.SentRequest!= null ? (GetStateBySentRequest(u.SentRequest.IsAccepted) ?? UserFriendState.None) : UserFriendState.None))
+                                        (u.SentRequest != null ? (GetStateBySentRequest(u.SentRequest.IsAccepted) ?? UserFriendState.None) : UserFriendState.None))
                                      : (u.SentRequest != null ? (GetStateBySentRequest(u.SentRequest.IsAccepted) ?? UserFriendState.None) : UserFriendState.None)
 
-            }) ;
+            });
         }
 
         static UserFriendState? GetStateByRecievedRequest(bool? isAccepted)
