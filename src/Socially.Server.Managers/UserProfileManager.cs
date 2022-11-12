@@ -135,7 +135,7 @@ namespace Socially.Server.Managers
         {
 
             var res = await _dbContext.Users.Where(u => u.Id != userId &&
-                                                    (EF.Functions.Like(u.FirstName , $"%{q}%") || EF.Functions.Like(u.LastName, $"%{q}%") ))
+                                                                (u.UserName.Equals(q) || EF.Functions.Like(u.FirstName , $"%{q}%") || EF.Functions.Like(u.LastName, $"%{q}%") ))
                                        .Select(u => new
                                        {
                                            u.Id,

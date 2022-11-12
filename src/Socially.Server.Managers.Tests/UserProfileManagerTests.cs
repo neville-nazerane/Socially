@@ -730,6 +730,7 @@ namespace Socially.Server.Managers.Tests
         [InlineData("A", 4)]
         [InlineData("kent", 0)]
         [InlineData("uce", 1)]
+        [InlineData("Batman", 1)]
         public async Task Search_ByQuery_ReturnsFilteredUsers(string q, int expectedCount)
         {
             // ARRANGE
@@ -740,6 +741,7 @@ namespace Socially.Server.Managers.Tests
                 new User
                 {
                     Id = 1,
+                    UserName = "Batman",
                     FirstName = "Bruce",
                     LastName = "Wayne",
                     SentFriendRequests = new List<FriendRequest>
@@ -753,12 +755,14 @@ namespace Socially.Server.Managers.Tests
                 new User
                 {
                     Id = 2,
+                    UserName = "Superman",
                     FirstName = "Clark",
                     LastName = "Kent"
                 },
                 new User
                 {
                     Id = 3,
+                    UserName = "WonderWoman",
                     FirstName = "Diana",
                     LastName = "Prince",
                     RecievedFriendRequests = new List<FriendRequest>
@@ -772,6 +776,7 @@ namespace Socially.Server.Managers.Tests
                 new User
                 {
                     Id = 4,
+                    UserName = "GL",
                     FirstName = "Hal",
                     LastName = "Jordan",
                     RecievedFriendRequests = new List<FriendRequest>
