@@ -1,1 +1,10 @@
 ﻿@page "/"
+
+
+@if (posts is not null)
+{
+    foreach (var post in posts.Reverse())
+    {
+        <PostDisplay Post=post />
+    }
+}
