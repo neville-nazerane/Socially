@@ -40,6 +40,6 @@
 {
     foreach (var post in posts.Reverse())
     {
-                            <PostDisplay Post=post OnDelete="@(async () => await DeletePostAsync(post.Id))" />
+        <PostDisplay Post=post OnDelete="@(async () => await DeletePostAsync(post.Id))" />
     }
 }
