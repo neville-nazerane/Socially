@@ -1,0 +1,16 @@
+
+parameters:
+  - name: path
+    type: string
+
+steps:
+
+- task: UseDotNet@2
+  inputs:
+    version: 7.x
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: test
+    configuration: release
+    workingDirectory: ${{ parameters.path }}
