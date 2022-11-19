@@ -56,5 +56,11 @@ namespace Socially.Website.Pages.Profile
             else searchResults = await Consumer.SearchUserAsync(search);
         }
 
+        async Task RemoveAsync(int userId)
+        {
+            await Consumer.RemoveFriendAsync(userId);
+            await RefreshAllAsync();
+        }
+
     }
 }

@@ -130,6 +130,33 @@ namespace Socially.Server.Managers
                         })
                         .ToListAsync(cancellationToken);
 
+        public async Task<int> RemoveFriendAsync(int friendId, CancellationToken cancellationToken = default)
+        {
+            int userId = _currentContext.UserId;
+
+            int deletes = 0;
+
+            await using var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
+
+            try
+            {
+                deletes = await _dbContext.Friends.Where(f => (f.OwnerUserId == userId && f.FriendUserId == friendId)
+                                                       || (f.OwnerUserId == friendId && f.FriendUserId == userId))
+                                            .ExecuteDeleteAsync(cancellationToken);
+
+                deletes += await _dbContext.FriendRequests.Where(f => (f.RequesterId == userId && f.ForId == friendId)
+                                                          || (f.RequesterId == friendId && f.ForId == userId))
+                                        .ExecuteDeleteAsync(cancellationToken);
+            }
+            catch
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                throw;
+            }
+
+            await transaction.CommitAsync(cancellationToken);
+            return deletes;
+        }
 
     }
 }

@@ -20,14 +20,13 @@ namespace Socially.WebAPI.Endpoints
 
         public override IEnumerable<RouteHandlerBuilder> Setup(IEndpointRouteBuilder endpoints)
         {
-            return new RouteHandlerBuilder[]
+            return new[]
             {
-
                 endpoints.MapPost("/friend/request/{forId}", RequestAsync),
                 endpoints.MapPut("/friend/respond/{requesterId}/{isAccepted}", RespondAsync),
                 endpoints.MapGet("/friend/requests", GetRequestsAsync),
-                endpoints.MapGet("/friends", GetFriendsAsync)
-
+                endpoints.MapGet("/friends", GetFriendsAsync),
+                endpoints.MapDelete("/friend/{friendId}", RemoveFriendAsync)
             };
         }
 
@@ -47,6 +46,11 @@ namespace Socially.WebAPI.Endpoints
 
         Task<IEnumerable<UserSummaryModel>> GetFriendsAsync(IFriendManager manager, CancellationToken cancellationToken = default)
             => manager.GetFriendsAsync(cancellationToken);
+
+        Task<int> RemoveFriendAsync(IFriendManager friendManager,
+                                     int friendId,        
+                                     CancellationToken cancellationToken = default)
+            => friendManager.RemoveFriendAsync(friendId, cancellationToken);
 
     }
 }

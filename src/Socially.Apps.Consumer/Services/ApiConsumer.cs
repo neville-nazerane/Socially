@@ -93,7 +93,7 @@ namespace Socially.Apps.Consumer.Services
                                 bool isAccepted,
                                 CancellationToken cancellationToken = default)
         {
-            var res = await _httpClient.PutAsync($"friend/respond/{requesterId}/{isAccepted}", null, cancellationToken);
+            using var res = await _httpClient.PutAsync($"friend/respond/{requesterId}/{isAccepted}", null, cancellationToken);
             res.EnsureSuccessStatusCode();
             return bool.Parse(await res.Content.ReadAsStringAsync(cancellationToken));
         }
@@ -103,6 +103,13 @@ namespace Socially.Apps.Consumer.Services
 
         public Task<IEnumerable<UserSummaryModel>> GetFriendsAsync(CancellationToken cancellationToken = default)
             => _httpClient.GetFromJsonAsync<IEnumerable<UserSummaryModel>>("friends", cancellationToken);
+
+        public async Task<int> RemoveFriendAsync(int friendId, CancellationToken cancellationToken = default)
+        {
+            using var res = await _httpClient.DeleteAsync($"/friend/{friendId}", cancellationToken);
+            res.EnsureSuccessStatusCode();
+            return int.Parse(await res.Content.ReadAsStringAsync(cancellationToken));
+        }
 
         #endregion
 
