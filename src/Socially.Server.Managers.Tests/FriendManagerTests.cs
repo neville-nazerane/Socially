@@ -488,7 +488,8 @@ namespace Socially.Server.Managers.Tests
 
             // adding users
             #region setting data
-            await DbContext.Users.AddRangeAsync(
+            await DbContext.Users.AddRangeAsync(new[]
+            {
                 new User
                 {
                     CreatedOn = DateTime.UtcNow,
@@ -500,41 +501,42 @@ namespace Socially.Server.Managers.Tests
                         FileName = "someName"
                     }
                 },
-                new User
+                new()
                 {
                     CreatedOn = DateTime.UtcNow,
                     Id = 12,
                     FirstName = "twel",
                     LastName = "ve"
                 },
-                new User
+                new()
                 {
                     CreatedOn = DateTime.UtcNow,
                     Id = 22,
                     FirstName = "twenty",
                     LastName = "two"
                 },
-                new User
+                new()
                 {
                     CreatedOn = DateTime.UtcNow,
                     Id = 30,
                     FirstName = "thir",
                     LastName = "ty"
                 },
-                new User
+                new()
                 {
                     CreatedOn = DateTime.UtcNow,
                     Id = 32,
                     FirstName = "thirty",
                     LastName = "two"
                 },
-                new User
+                new()
                 {
                     CreatedOn = DateTime.UtcNow,
                     Id = currentUserId,
                     FirstName = "current",
                     LastName = "user"
-                });
+                }
+            });
 
             await DbContext.Friends.AddRangeAsync(
                 new Friend

@@ -9,18 +9,13 @@ stages:
     jobs:
       - job: UnitTests
         steps:
-
-          - task: DotNetCoreCLI@2
-            inputs:
-              command: test
-              configuration: release
-              workingDirectory: src/Socially.Server.Managers.Tests
+          - template: runtest.yml
+            parameters:
+              path: src/Socially.Server.Managers.Tests
 
       - job: IntegrationTests
         steps:
 
-          - task: DotNetCoreCLI@2
-            inputs:
-              command: test
-              configuration: release
-              workingDirectory: src/Socially.WebAPI.IntegrationTests
+          - template: runtest.yml
+            parameters:
+              path: src/Socially.WebAPI.IntegrationTests

@@ -10,14 +10,16 @@ var builder = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlServer(c
 var dbContext = new ApplicationDbContext(builder.Options);
 
 
-string query = "hello";
-int userId = 1;
-
-var sql = dbContext.Users.Where(u => u.FirstName.Contains(query)
-                                   || u.LastName.Contains(query))
-                                 .Where(u => !dbContext.Users.Single(u => u.Id == userId).Friends.Any(f => f.FriendUserId == u.Id))
-                                 .SelectAsSummaryModel()
-                                 .ToQueryString();
 
 
-Console.WriteLine("Hi world");
+//string query = "hello";
+//int userId = 1;
+
+//var sql = dbContext.Users.Where(u => u.FirstName.Contains(query)
+//                                   || u.LastName.Contains(query))
+//                                 .Where(u => !dbContext.Users.Single(u => u.Id == userId).Friends.Any(f => f.FriendUserId == u.Id))
+//                                 .SelectAsSummaryModel()
+//                                 .ToQueryString();
+
+
+//Console.WriteLine("Hi world");

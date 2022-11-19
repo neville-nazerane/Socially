@@ -23,7 +23,7 @@
             <div class="d-flex">
                 <!-- Avatar -->
                 <div class="avatar avatar-xs me-2">
-                    <ProfilePictureIcon />
+                    <CurrentUserProfilePicture />
                 </div>
                 <!-- Post input -->
                 <input @bind=addModel.Text @bind:event="oninput" class="form-control pe-4 border-0" placeholder="Share your thoughts...">
@@ -64,7 +64,7 @@
                 <div class="d-flex">
                     <!-- Avatar -->
                     <div class="avatar avatar-xs">
-                        <a href="#!"><UserThumb FileName=@CachedContext.GetUser(comment.CreatorId).ProfilePicUrl /></a>
+                        <a href="#!"><ProfilePicture FileName=@CachedContext.GetUser(comment.CreatorId).ProfilePicUrl /></a>
                     </div>
                     <!-- Comment by -->
                     <div class="ms-2">

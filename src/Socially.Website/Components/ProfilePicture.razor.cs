@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Socially.Website.Components
 {
-    public partial class UserThumb
+    public partial class ProfilePicture
     {
 
         [Inject]

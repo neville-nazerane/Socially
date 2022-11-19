@@ -103,10 +103,6 @@ namespace Socially.Website.Pages
                 await Consumer.ForgotPasswordAsync(forgotEmail);
                 isShowingForgotPassword = false;
             }
-            catch (Exception ex)
-            {
-                
-            }
             finally
             {
                 isLoadingForgotPassword = false;

@@ -29,13 +29,11 @@ namespace Socially.Website.Pages.Profile
 
         // data fields
         ICollection<PostDisplayModel> posts;
-        ProfileUpdateModel profileInfo;
 
 
         protected override async Task OnInitializedAsync()
         {
             await RunAllAsync(
-                async () => profileInfo = await CachedContext.GetCurrentProfileInfoAsync(),
                 async () => posts = (await Consumer.GetCurrentUserPostsAsync(10)).ToList()
             );
             StateHasChanged();

@@ -82,7 +82,7 @@ namespace Socially.WebAPI.IntegrationTests
 
 
             // ACT
-            await consumer.RespondAsync(12, true);
+            await consumer.RespondToFriendRequestAsync(12, true);
 
             // ASSERT
 
@@ -128,7 +128,7 @@ namespace Socially.WebAPI.IntegrationTests
 
 
             // ACT
-            await consumer.RespondAsync(12, false);
+            await consumer.RespondToFriendRequestAsync(12, false);
 
             // ASSERT
 

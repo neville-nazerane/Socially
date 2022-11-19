@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Socially.Website.Components
 {
-    public partial class UserImagesComponent
+    public partial class UserImagesPicker
     {
 
         InputFile uploadInput;
