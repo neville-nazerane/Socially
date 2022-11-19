@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Socially.Website.Components
 {
-    public partial class ProfilePictureIcon
+    public partial class CurrentUserProfilePicture
     {
 
         string fileName;

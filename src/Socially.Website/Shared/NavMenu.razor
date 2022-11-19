@@ -239,7 +239,7 @@
                 <li class="nav-item ms-2 dropdown">
                     <a class="nav-link btn icon-md p-0" href="#" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
 
-                        <ProfilePictureIcon />
+                        <CurrentUserProfilePicture />
 
                         @* @if (profileInfo?.ProfilePictureFileName != null)
                         {
@@ -254,7 +254,7 @@
                                 <div class="avatar me-3">
                                     @if (profileInfo?.ProfilePictureFileName != null)
                                     {
-                                        <ProfilePictureIcon />
+                                        <CurrentUserProfilePicture />
                                         @*<img class="avatar-img rounded-circle" src="@Config["imageBase"]/userprofiles/@profileInfo.ProfilePictureFileName" alt="avatar">*@
                                     }
                                 </div>
