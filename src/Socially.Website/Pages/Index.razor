@@ -33,10 +33,10 @@
                                 <div class="text-center">
                                     <!-- Avatar -->
                                     <div class="avatar avatar-lg mt-n5 mb-3">
-                                        <a href="#!"><img class="avatar-img rounded border border-white border-3" src="assets/images/avatar/07.jpg" alt=""></a>
+                                        <CurrentUserProfilePicture />
                                     </div>
                                     <!-- Info -->
-                                    <h5 class="mb-0"> <a href="#!">Sam Lanson </a> </h5>
+                                    <h5 class="mb-0"> <a @onclick:preventDefault href="#!">@currentUser?.FirstName @currentUser?.LastName</a> </h5>
                                     <small>Web Developer at Webestica</small>
                                     <p class="mt-3">I'd love to change the world, but they won’t give me the source code.</p>
 
@@ -71,25 +71,10 @@
                                 <!-- Side Nav START -->
                                 <ul class="nav nav-link-secondary flex-column fw-bold gap-2">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="my-profile.html"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/home-outline-filled.svg" alt=""><span>Feed </span></a>
+                                        <a class="nav-link" href="/profile"> <i class="bi bi-card-heading"></i><span> My Posts </span></a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="my-profile-connections.html"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/person-outline-filled.svg" alt=""><span>Connections </span></a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="blog.html"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/earth-outline-filled.svg" alt=""><span>Latest News </span></a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="events.html"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/calendar-outline-filled.svg" alt=""><span>Events </span></a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="groups.html"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/chat-outline-filled.svg" alt=""><span>Groups </span></a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="notifications.html"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/notification-outlined-filled.svg" alt=""><span>Notifications </span></a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="settings.html"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/cog-outline-filled.svg" alt=""><span>Settings </span></a>
+                                        <a class="nav-link" href="/profile/friends"><i class="bi bi-people-fill"></i> <span> Friends </span></a>
                                     </li>
                                 </ul>
                                 <!-- Side Nav END -->
@@ -143,144 +128,44 @@
         <!-- Right sidebar START -->
         <div class="col-lg-3">
             <div class="row g-4">
-                <!-- Card follow START -->
-                <div class="col-sm-6 col-lg-12">
-                    <div class="card">
-                        <!-- Card header START -->
-                        <div class="card-header pb-0 border-0">
-                            <h5 class="card-title mb-0">Who to follow</h5>
+
+                @if (friendRequests?.Any() == true)
+                {
+                    <!-- Card requests START -->
+                    <div class="col-sm-6 col-lg-12">
+                        <div class="card">
+                            <!-- Card header START -->
+                            <div class="card-header pb-0 border-0">
+                                <h5 class="card-title mb-0">Pending Requests</h5>
+                            </div>
+                            <!-- Card header END -->
+                            <!-- Card body START -->
+                            <div class="card-body">
+                                @foreach (var user in friendRequests)
+                                {
+                                    <div class="hstack gap-2 mb-3">
+                                        <!-- Avatar -->
+                                        <div class="avatar">
+                                            <ProfilePicture FileName=@user.ProfilePicUrl />
+                                        </div>
+                                        <!-- Title -->
+                                        <div class="overflow-hidden">
+                                            <a class="h6 mb-0" href="#!">@user.FirstName @user.LastName</a>
+                                        </div>
+                                        <!-- Button -->
+                                        <a class="btn btn-primary-soft rounded-circle icon-md ms-auto" @onclick=@(() => RespondFriendRequest(user.Id, true)) @onclick:preventDefault href="#"><i class="fa-solid fa-plus"> </i></a>
+                                        @*<a class="btn btn-primary-soft rounded-circle icon-md ms-auto" @onclick:preventDefault href="#"><i class="fa-solid fa-times"> </i></a>*@
+                                    </div>
+                                }
+                                <!-- Connection item START -->
+                                <!-- Connection item END -->
+                            </div>
+                            <!-- Card body END -->
                         </div>
-                        <!-- Card header END -->
-                        <!-- Card body START -->
-                        <div class="card-body">
-                            <!-- Connection item START -->
-                            <div class="hstack gap-2 mb-3">
-                                <!-- Avatar -->
-                                <div class="avatar">
-                                    <a href="#!"><img class="avatar-img rounded-circle" src="assets/images/avatar/04.jpg" alt=""></a>
-                                </div>
-                                <!-- Title -->
-                                <div class="overflow-hidden">
-                                    <a class="h6 mb-0" href="#!">Judy Nguyen </a>
-                                    <p class="mb-0 small text-truncate">News anchor</p>
-                                </div>
-                                <!-- Button -->
-                                <a class="btn btn-primary-soft rounded-circle icon-md ms-auto" href="#"><i class="fa-solid fa-plus"> </i></a>
-                            </div>
-                            <!-- Connection item END -->
-                            <!-- Connection item START -->
-                            <div class="hstack gap-2 mb-3">
-                                <!-- Avatar -->
-                                <div class="avatar avatar-story">
-                                    <a href="#!"> <img class="avatar-img rounded-circle" src="assets/images/avatar/05.jpg" alt=""> </a>
-                                </div>
-                                <!-- Title -->
-                                <div class="overflow-hidden">
-                                    <a class="h6 mb-0" href="#!">Amanda Reed </a>
-                                    <p class="mb-0 small text-truncate">Web Developer</p>
-                                </div>
-                                <!-- Button -->
-                                <a class="btn btn-primary-soft rounded-circle icon-md ms-auto" href="#"><i class="fa-solid fa-plus"> </i></a>
-                            </div>
-                            <!-- Connection item END -->
-                            <!-- Connection item START -->
-                            <div class="hstack gap-2 mb-3">
-                                <!-- Avatar -->
-                                <div class="avatar">
-                                    <a href="#"> <img class="avatar-img rounded-circle" src="assets/images/avatar/11.jpg" alt=""> </a>
-                                </div>
-                                <!-- Title -->
-                                <div class="overflow-hidden">
-                                    <a class="h6 mb-0" href="#!">Billy Vasquez </a>
-                                    <p class="mb-0 small text-truncate">News anchor</p>
-                                </div>
-                                <!-- Button -->
-                                <a class="btn btn-primary rounded-circle icon-md ms-auto" href="#"><i class="bi bi-person-check-fill"> </i></a>
-                            </div>
-                            <!-- Connection item END -->
-                            <!-- Connection item START -->
-                            <div class="hstack gap-2 mb-3">
-                                <!-- Avatar -->
-                                <div class="avatar">
-                                    <a href="#"> <img class="avatar-img rounded-circle" src="assets/images/avatar/01.jpg" alt=""> </a>
-                                </div>
-                                <!-- Title -->
-                                <div class="overflow-hidden">
-                                    <a class="h6 mb-0" href="#!">Lori Ferguson </a>
-                                    <p class="mb-0 small text-truncate">Web Developer at Webestica</p>
-                                </div>
-                                <!-- Button -->
-                                <a class="btn btn-primary-soft rounded-circle icon-md ms-auto" href="#"><i class="fa-solid fa-plus"> </i></a>
-                            </div>
-                            <!-- Connection item END -->
-                            <!-- Connection item START -->
-                            <div class="hstack gap-2 mb-3">
-                                <!-- Avatar -->
-                                <div class="avatar">
-                                    <a href="#"> <img class="avatar-img rounded-circle" src="assets/images/avatar/placeholder.jpg" alt=""> </a>
-                                </div>
-                                <!-- Title -->
-                                <div class="overflow-hidden">
-                                    <a class="h6 mb-0" href="#!">Carolyn Ortiz </a>
-                                    <p class="mb-0 small text-truncate">News anchor</p>
-                                </div>
-                                <!-- Button -->
-                                <a class="btn btn-primary-soft rounded-circle icon-md ms-auto" href="#"><i class="fa-solid fa-plus"> </i></a>
-                            </div>
-                            <!-- Connection item END -->
-                            <!-- View more button -->
-                            <div class="d-grid mt-3">
-                                <a class="btn btn-sm btn-primary-soft" href="#!">View more</a>
-                            </div>
-                        </div>
-                        <!-- Card body END -->
                     </div>
-                </div>
-                <!-- Card follow START -->
-                <!-- Card News START -->
-                <div class="col-sm-6 col-lg-12">
-                    <div class="card">
-                        <!-- Card header START -->
-                        <div class="card-header pb-0 border-0">
-                            <h5 class="card-title mb-0">Today’s news</h5>
-                        </div>
-                        <!-- Card header END -->
-                        <!-- Card body START -->
-                        <div class="card-body">
-                            <!-- News item -->
-                            <div class="mb-3">
-                                <h6 class="mb-0"><a href="blog-details.html">Ten questions you should answer truthfully</a></h6>
-                                <small>2hr</small>
-                            </div>
-                            <!-- News item -->
-                            <div class="mb-3">
-                                <h6 class="mb-0"><a href="blog-details.html">Five unbelievable facts about money</a></h6>
-                                <small>3hr</small>
-                            </div>
-                            <!-- News item -->
-                            <div class="mb-3">
-                                <h6 class="mb-0"><a href="blog-details.html">Best Pinterest Boards for learning about business</a></h6>
-                                <small>4hr</small>
-                            </div>
-                            <!-- News item -->
-                            <div class="mb-3">
-                                <h6 class="mb-0"><a href="blog-details.html">Skills that you can learn from business</a></h6>
-                                <small>6hr</small>
-                            </div>
-                            <!-- Load more comments -->
-                            <a href="#!" role="button" class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center" data-bs-toggle="button" aria-pressed="true">
-                                <div class="spinner-dots me-2">
-                                    <span class="spinner-dot"></span>
-                                    <span class="spinner-dot"></span>
-                                    <span class="spinner-dot"></span>
-                                </div>
-                                View all latest news
-                            </a>
-                        </div>
-                        <!-- Card body END -->
-                    </div>
-                </div>
-                <!-- Card News END -->
+                    <!-- Card requests START -->
+                }
+
             </div>
         </div>
         <!-- Right sidebar END -->
