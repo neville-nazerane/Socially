@@ -24,12 +24,18 @@ namespace Socially.Website.Components
         [Inject]
         public CachedContext CachedContext { get; set; }
 
-
         [Inject]
         public IApiConsumer Consumer { get; set; }
 
 
         AddCommentModel addModel = new();
+
+        UserSummaryModel currentUser;
+
+        protected override async Task OnInitializedAsync()
+        {
+            currentUser = await CachedContext.GetCurrentProfileInfoAsync();
+        }
 
 
         protected override void OnParametersSet()

@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Socially.Website.Services
@@ -13,7 +14,8 @@ namespace Socially.Website.Services
     public class CachedContext
     {
         private readonly IApiConsumer _consumer;
-        ProfileUpdateModel _currentProfileInfo;
+        private readonly AuthProvider _authProvider;
+        UserSummaryModel _currentProfileInfo;
 
         private CachedUserMappings _userSummaries;
         private TaskCompletionSource _userSummariesLock;
@@ -21,8 +23,9 @@ namespace Socially.Website.Services
         public CachedContext(IApiConsumer consumer, AuthProvider authProvider)
         {
             _userSummaries = new();
-            authProvider.AuthenticationStateChanged += AuthProvider_AuthenticationStateChanged;
-
+            _authProvider = authProvider;
+            
+            _authProvider.AuthenticationStateChanged += AuthProvider_AuthenticationStateChanged;
             _consumer = consumer;
         }
 
@@ -31,7 +34,15 @@ namespace Socially.Website.Services
             _currentProfileInfo = null;
         }
 
-        public async ValueTask<ProfileUpdateModel> GetCurrentProfileInfoAsync() => _currentProfileInfo ??= await _consumer.GetUpdateProfileAsync();
+        public async ValueTask<UserSummaryModel> GetCurrentProfileInfoAsync()
+        {
+            if (_currentProfileInfo is null)
+            {
+                _currentProfileInfo = await _consumer.GetCurrentUserSummary();
+                _userSummaries.Update(_currentProfileInfo.ToSingleItemArray());
+            }
+            return _currentProfileInfo;
+        }
 
         public async ValueTask UpdateUserProfilesIfNotExistAsync(IEnumerable<int> ids)
         {
@@ -59,7 +70,6 @@ namespace Socially.Website.Services
             }
         }
     
-    
-    
+
     }
 }

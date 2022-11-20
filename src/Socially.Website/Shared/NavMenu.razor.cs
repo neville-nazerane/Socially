@@ -8,7 +8,7 @@ namespace Socially.Website.Shared
     public partial class NavMenu
     {
 
-        private ProfileUpdateModel profileInfo;
+        private UserSummaryModel profileInfo;
 
         [Inject]
         public AuthProvider AuthProvider { get; set; }

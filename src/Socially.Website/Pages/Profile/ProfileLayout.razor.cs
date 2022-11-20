@@ -11,7 +11,7 @@ namespace Socially.Website.Pages.Profile
         [Inject]
         public CachedContext CachedContext { get; set; }
 
-        ProfileUpdateModel profileInfo;
+        UserSummaryModel profileInfo;
 
 
         protected override async Task OnInitializedAsync()

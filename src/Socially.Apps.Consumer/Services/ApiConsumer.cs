@@ -71,6 +71,9 @@ namespace Socially.Apps.Consumer.Services
 
         #region users
 
+        public Task<UserSummaryModel> GetCurrentUserSummary(CancellationToken cancellationToken = default)
+            => _httpClient.GetFromJsonAsync<UserSummaryModel>("user/current", cancellationToken);
+
         public async Task<IEnumerable<UserSummaryModel>> GetUsersByIdsAsync(IEnumerable<int> userIds,
                                                                             CancellationToken cancellationToken = default)
         {

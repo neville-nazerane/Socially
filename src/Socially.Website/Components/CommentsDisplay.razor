@@ -1,22 +1,22 @@
 ﻿<!-- Add comment -->
 <div class="d-flex">
-@*    <form class="position-relative w-100">
-        <!-- Avatar -->
-        <div class="avatar avatar-xs me-2">
-            <ProfilePictureIcon />
-        </div>
-        <!-- Comment box  -->
-        <textarea @bind=addModel.Text @bind:event="oninput" class="form-control pe-4 bg-light" rows="1" placeholder="Add a comment..."></textarea>
+    @*    <form class="position-relative w-100">
+    <!-- Avatar -->
+    <div class="avatar avatar-xs me-2">
+    <ProfilePictureIcon />
+    </div>
+    <!-- Comment box  -->
+    <textarea @bind=addModel.Text @bind:event="oninput" class="form-control pe-4 bg-light" rows="1" placeholder="Add a comment..."></textarea>
 
 
-        @if (!string.IsNullOrEmpty(addModel?.Text))
-        {
-            <div class="text-sm-end">
-                <button type="submit" class="btn btn-success-soft">Post</button>
-            </div>
-        }
+    @if (!string.IsNullOrEmpty(addModel?.Text))
+    {
+    <div class="text-sm-end">
+    <button type="submit" class="btn btn-success-soft">Post</button>
+    </div>
+    }
     </form>
-*@
+    *@
 
     <div class="card card-body card-newcomment">
         <form @onsubmit=AddCommentAsync class="w-100">
@@ -74,16 +74,18 @@
                                 <small class="ms-2">4min</small>
                             </div>
                             <p class="small mb-0">@comment.Text</p>
-                            <div class="dropdown">
-                                <a href="#" class="text-secondary btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-three-dots"></i>
-                                </a>
-                                <!-- Card feed action dropdown menu -->
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction1">
-                                    <li><a @onclick:preventDefault @onclick=@(() => DeleteAsync(comment)) class="dropdown-item" href="#"><i class="bi bi-slash-circle fa-fw pe-2"></i>Delete</a></li>
-
-                                </ul>
-                            </div>
+                            @if (comment.CreatorId == currentUser.Id)
+                            {
+                                <div class="dropdown">
+                                    <a href="#" class="text-secondary btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-three-dots"></i>
+                                    </a>
+                                    <!-- Card feed action dropdown menu -->
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction1">
+                                        <li><a @onclick:preventDefault @onclick=@(() => DeleteAsync(comment)) class="dropdown-item" href="#"><i class="bi bi-slash-circle fa-fw pe-2"></i>Delete</a></li>
+                                    </ul>
+                                </div>
+                            }
                         </div>
                         <!-- Comment react -->
                         <ul class="nav nav-divider pt-2 small">
@@ -102,7 +104,7 @@
 
                 @if (comment.Comments is not null)
                 {
-                     <ul class="comment-item-nested list-unstyled">
+                    <ul class="comment-item-nested list-unstyled">
                         <CommentsDisplay Comments=comment.Comments ParentCommentId=comment.Id PostId=PostId />
                     </ul>
                 }
