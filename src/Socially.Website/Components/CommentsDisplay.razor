@@ -74,7 +74,7 @@
                                 <small class="ms-2">4min</small>
                             </div>
                             <p class="small mb-0">@comment.Text</p>
-                            @if (comment.CreatorId == currentUser.Id)
+                            @if (comment.CreatorId == currentUser?.Id)
                             {
                                 <div class="dropdown">
                                     <a href="#" class="text-secondary btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction1" data-bs-toggle="dropdown" aria-expanded="false">

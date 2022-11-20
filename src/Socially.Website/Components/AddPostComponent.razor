@@ -1,0 +1,21 @@
+﻿
+
+<div class="card card-body card-newpost">
+    <form @onsubmit=AddPostAsyc class="w-100">
+        <div class="d-flex mb-3">
+            <!-- Avatar -->
+            <div class="avatar avatar-xs me-2">
+                <CurrentUserProfilePicture />
+            </div>
+            <!-- Post input -->
+            <input @bind=addPostModel.Text @bind:event="oninput" class="form-control pe-4 border-0" placeholder="Share your thoughts...">
+        </div>
+
+        @if (!string.IsNullOrEmpty(addPostModel?.Text))
+        {
+            <div class="text-sm-end">
+                <button type="submit" class="btn btn-success-soft">Post</button>
+            </div>
+        }
+    </form>
+</div>

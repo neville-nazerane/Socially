@@ -65,7 +65,7 @@ namespace Socially.Website.Services
             }
             finally
             {
-                _userSummariesLock.SetResult();
+                _userSummariesLock?.SetResult();
                 _userSummariesLock = null;
             }
         }
