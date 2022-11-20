@@ -49,7 +49,8 @@ namespace Socially.Website.Pages.Profile
             posts.Add(new PostDisplayModel
             {
                 Id = id,
-                Text = addPostModel.Text
+                Text = addPostModel.Text,
+                CreatorId = (await CachedContext.GetCurrentProfileInfoAsync()).Id
             });
             addPostModel = new AddPostModel();
             StateHasChanged();

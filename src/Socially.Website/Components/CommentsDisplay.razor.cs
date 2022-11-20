@@ -50,7 +50,8 @@ namespace Socially.Website.Components
             Comments.Add(new DisplayCommentModel
             {
                 Text = addModel.Text,
-                Id = id
+                Id = id,
+                CreatorId = currentUser.Id
             });
             addModel = BuildNewModel();
             StateHasChanged();
