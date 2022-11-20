@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text.Json;
 
 namespace Socially.Website.Models
@@ -13,6 +14,7 @@ namespace Socially.Website.Models
     {
 
         readonly ConcurrentDictionary<int, UserSummaryModel> _users = new();
+        readonly ConcurrentBag<int> _initialized = new();
 
         public UserSummaryModel Get(int id) => _users.GetOrAdd(id, id => new());
 
@@ -22,6 +24,11 @@ namespace Socially.Website.Models
         {
             foreach (var user in users)
             {
+                lock (_initialized)
+                {
+                    if (!_initialized.Contains(user.Id))
+                        _initialized.Add(user.Id);
+                }
                 _users.AddOrUpdate(user.Id, user, (id, existing) =>
                 {
                     existing.FirstName = user.FirstName;
@@ -32,6 +39,9 @@ namespace Socially.Website.Models
                 });
             }
         }
+
+        public bool IsInitialized(params int[] ids)
+            => _initialized.Intersect(ids).Count() == ids.Count();
 
     }
 }
