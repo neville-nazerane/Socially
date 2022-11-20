@@ -18,6 +18,13 @@ namespace Socially.Website.Components
         [Inject]
         public CachedContext CachedContext { get; set; }
 
+        UserSummaryModel currentUser;
+
+        protected override async Task OnInitializedAsync()
+        {
+            currentUser = await CachedContext.GetCurrentProfileInfoAsync();
+        }
+
         void DeleteAsync() => OnDelete?.Invoke();
 
     }

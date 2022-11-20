@@ -33,7 +33,7 @@ namespace Socially.Website.Components
 
         async Task UpdateAsync()
         {
-            fileName = (await Context.GetCurrentProfileInfoAsync())?.ProfilePictureFileName;
+            fileName = (await Context.GetCurrentProfileInfoAsync())?.ProfilePicUrl;
         }
 
     }

@@ -5,6 +5,7 @@ using Socially.Models;
 using Socially.Website.Models;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading;
@@ -27,7 +28,7 @@ namespace Socially.Website.Services
             _jSRuntime = jSRuntime;
         }
 
-        private async Task<ClaimsPrincipal> GetPrincipalAsync()
+        private async ValueTask<ClaimsPrincipal> GetPrincipalAsync()
         {
             var tokenStr = await GetTokenAsync();
             if (string.IsNullOrEmpty(tokenStr)) return null;
@@ -35,6 +36,14 @@ namespace Socially.Website.Services
             var token = handler.ReadJwtToken(tokenStr);
             var principle = new ClaimsPrincipal(new ClaimsIdentity(token.Claims, "local"));
             return principle;
+        }
+
+        public async ValueTask<int> GetUserIdAsync()
+        {
+            var principle = await GetPrincipalAsync();
+            Console.WriteLine(principle.FindFirst("nameid").Value);
+            //Console.WriteLine(principle.FindFirst(ClaimTypes.NameIdentifier).Value);
+            return int.Parse(principle.FindFirst("nameid")?.Value ?? "0");
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()

@@ -252,11 +252,7 @@
                             <div class="d-flex align-items-center position-relative">
                                 <!-- Avatar -->
                                 <div class="avatar me-3">
-                                    @if (profileInfo?.ProfilePictureFileName != null)
-                                    {
-                                        <CurrentUserProfilePicture />
-                                        @*<img class="avatar-img rounded-circle" src="@Config["imageBase"]/userprofiles/@profileInfo.ProfilePictureFileName" alt="avatar">*@
-                                    }
+                                    <CurrentUserProfilePicture />
                                 </div>
                                 <div>
                                     <a class="h6 stretched-link" href="#">@profileInfo?.FirstName @profileInfo?.LastName</a>

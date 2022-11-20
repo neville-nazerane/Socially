@@ -17,6 +17,7 @@ namespace Socially.Apps.Consumer.Services
         Task<HttpResponseMessage> ForgotPasswordAsync(string email, CancellationToken cancellationToken = default);
         Task<IEnumerable<string>> GetAllImagesOfUserAsync(CancellationToken cancellationToken = default);
         Task<IEnumerable<PostDisplayModel>> GetCurrentUserPostsAsync(int pageSize, DateTime? since = null, CancellationToken cancellationToken = default);
+        Task<UserSummaryModel> GetCurrentUserSummary(CancellationToken cancellationToken = default);
         Task<IEnumerable<UserSummaryModel>> GetFriendRequestsAsync(CancellationToken cancellationToken = default);
         Task<IEnumerable<UserSummaryModel>> GetFriendsAsync(CancellationToken cancellationToken = default);
         Task<IEnumerable<PostDisplayModel>> GetHomePostsAsync(int pageSize, DateTime? since = null, CancellationToken cancellationToken = default);
