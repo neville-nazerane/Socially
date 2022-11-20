@@ -134,26 +134,7 @@
         <!-- Main content START -->
         <div class="col-md-8 col-lg-6 vstack gap-4">
 
-
-            <!-- Share feed START -->
-            <div class="card card-body">
-                <div class="d-flex mb-3">
-                    <!-- Avatar -->
-                    <div class="avatar avatar-xs me-2">
-                        <CurrentUserProfilePicture />
-                    </div>
-                    <!-- Post input -->
-                    <div class="w-100">
-                        <textarea class="form-control pe-4 border-0" rows="2" data-autoresize="" placeholder="Share your thoughts..."></textarea>
-                    </div>
-                </div>
-                <!-- Share feed toolbar START -->
-                <div class="text-sm-end">
-                    <button type="submit" class="btn btn-success-soft">Post</button>
-                </div>
-                <!-- Share feed toolbar END -->
-            </div>
-            <!-- Share feed END -->
+            <AddPostComponent />
 
             <PostsDisplay Posts=posts />
 
