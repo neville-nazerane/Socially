@@ -35,7 +35,7 @@ namespace Socially.Website.Services
 
         public async ValueTask UpdateUserProfilesIfNotExistAsync(IEnumerable<int> ids)
         {
-            var missingIds = ids.Except(_userSummaries.ExistingIds);
+            var missingIds = ids.Where(id => !_userSummaries.IsInitialized(id));
             if (missingIds.Any())
                 await ForceUpdateUserProfilesAsync(missingIds);
         }

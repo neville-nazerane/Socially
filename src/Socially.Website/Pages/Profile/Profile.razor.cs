@@ -37,8 +37,8 @@ namespace Socially.Website.Pages.Profile
                 async () => posts = (await Consumer.GetCurrentUserPostsAsync(10)).ToList()
             );
             StateHasChanged();
-            var requiredUserIds = posts.Select(p => p.CreatorId).Distinct().ToArray();
-            await CachedContext.ForceUpdateUserProfilesAsync(requiredUserIds);
+            var requiredUserIds = posts.GetAllCreatedIds();
+            await CachedContext.UpdateUserProfilesIfNotExistAsync(requiredUserIds);
         }
 
         async Task AddPostAsyc()
