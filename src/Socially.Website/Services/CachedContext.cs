@@ -16,6 +16,7 @@ namespace Socially.Website.Services
         private readonly IApiConsumer _consumer;
         private readonly AuthProvider _authProvider;
         UserSummaryModel _currentProfileInfo;
+        TaskCompletionSource _currentProfileLock;
 
         private CachedUserMappings _userSummaries;
         private TaskCompletionSource _userSummariesLock;

@@ -15,9 +15,9 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 var apiEndpoint = builder.Configuration["apiEndpoint"];
 
-builder.Services.AddScoped(sp => new HttpClient(sp.GetService<WebHttpHandler>()) { BaseAddress = new Uri(apiEndpoint) });
-builder.Services.AddScoped<IApiConsumer>(p => new ApiConsumer(p.GetService<HttpClient>()));
 builder.Services.AddTransient<WebHttpHandler>();
+builder.Services.AddScoped(sp => new HttpClient(sp.GetService<WebHttpHandler>()) { BaseAddress = new Uri(apiEndpoint) });
+builder.Services.AddScoped<IApiConsumer, ApiConsumer>();
 
 builder.Services.AddAuthorizationCore().AddOptions();
 builder.Services.AddSingleton<AuthenticationStateProvider, AuthProvider>()
