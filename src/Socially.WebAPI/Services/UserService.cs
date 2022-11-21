@@ -45,10 +45,10 @@ namespace Socially.WebAPI.Services
         }
 
         public Task<TokenResponseModel> LoginAsync(LoginModel model, CancellationToken cancellationToken = default)
-            => GetTokenIfLoginValidAsync(model, TimeSpan.FromHours(1), cancellationToken);
+            => GetTokenIfLoginValidAsync(model, TimeSpan.FromMinutes(1), cancellationToken);
         
         public Task<TokenResponseModel> RenewTokenAsync(TokenRenewRequestModel model, CancellationToken cancellationToken = default)
-            => RenewTokenAsync(model, TimeSpan.FromHours(1), cancellationToken);
+            => RenewTokenAsync(model, TimeSpan.FromMinutes(1), cancellationToken);
 
         private async Task<TokenResponseModel> GetTokenIfLoginValidAsync(LoginModel model,
                                                                          TimeSpan expireIn,

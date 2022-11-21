@@ -16,6 +16,7 @@ namespace Socially.Website.Services
         private readonly IApiConsumer _consumer;
         private readonly AuthProvider _authProvider;
         UserSummaryModel _currentProfileInfo;
+        TaskCompletionSource _currentProfileLock;
 
         private CachedUserMappings _userSummaries;
         private TaskCompletionSource _userSummariesLock;
@@ -38,8 +39,26 @@ namespace Socially.Website.Services
         {
             if (_currentProfileInfo is null)
             {
-                _currentProfileInfo = await _consumer.GetCurrentUserSummary();
-                _userSummaries.Update(_currentProfileInfo.ToSingleItemArray());
+                if (_currentProfileLock is not null)
+                    await _currentProfileLock.Task;
+                if (_currentProfileInfo is null)
+                {
+                    _currentProfileLock = new TaskCompletionSource();
+                    try
+                    {
+                        _currentProfileInfo = await _consumer.GetCurrentUserSummary();
+                        _userSummaries.Update(_currentProfileInfo.ToSingleItemArray());
+                        _currentProfileLock.TrySetResult();
+                    }
+                    catch (Exception ex)
+                    {
+                        _currentProfileLock?.TrySetException(ex);
+                    }
+                    finally
+                    {
+                        _currentProfileLock = null;
+                    }
+                }
             }
             return _currentProfileInfo;
         }

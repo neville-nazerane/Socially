@@ -51,7 +51,14 @@ namespace Socially.Website.Services
             var login = (await GetPrincipalAsync()) ?? FailedLogin;
             return new AuthenticationState(login);
         }
-
+         
+        /// <summary>
+        /// Get token info stored in ram or local storage
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns>
+        /// Null if nothing is stored on ram or local
+        /// </returns>
         public async ValueTask<TokenResponseModel> GetTokenInfoAsync(CancellationToken cancellationToken = default)
         {
             await LazyLoadAsync(cancellationToken);
