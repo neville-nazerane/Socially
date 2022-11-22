@@ -38,14 +38,6 @@ namespace Socially.Website.Services
             return principle;
         }
 
-        public async ValueTask<int> GetUserIdAsync()
-        {
-            var principle = await GetPrincipalAsync();
-            Console.WriteLine(principle.FindFirst("nameid").Value);
-            //Console.WriteLine(principle.FindFirst(ClaimTypes.NameIdentifier).Value);
-            return int.Parse(principle.FindFirst("nameid")?.Value ?? "0");
-        }
-
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             var login = (await GetPrincipalAsync()) ?? FailedLogin;
