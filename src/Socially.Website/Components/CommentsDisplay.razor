@@ -1,45 +1,19 @@
 ﻿<!-- Add comment -->
 <div class="d-flex">
-    @*    <form class="position-relative w-100">
-    <!-- Avatar -->
-    <div class="avatar avatar-xs me-2">
-    <ProfilePictureIcon />
-    </div>
-    <!-- Comment box  -->
-    <textarea @bind=addModel.Text @bind:event="oninput" class="form-control pe-4 bg-light" rows="1" placeholder="Add a comment..."></textarea>
-
-
-    @if (!string.IsNullOrEmpty(addModel?.Text))
-    {
-    <div class="text-sm-end">
-    <button type="submit" class="btn btn-success-soft">Post</button>
-    </div>
-    }
-    </form>
-    *@
 
     <div class="card card-body card-newcomment">
         <form @onsubmit=AddCommentAsync class="w-100">
             <div class="d-flex">
                 <!-- Avatar -->
-                <div class="avatar avatar-xs me-2">
-                    <CurrentUserProfilePicture />
-                </div>
+                    @if (isShowingLogo)
+                    {
+                        <div class="avatar avatar-xs me-2">
+                            <CurrentUserProfilePicture />
+                        </div>
+                    }
                 <!-- Post input -->
-                <input @bind=addModel.Text @bind:event="oninput" class="form-control pe-4 border-0" placeholder="Share your thoughts...">
+                <input @onfocus=ShowLogo @onblur=HideLogo @bind=addModel.Text @bind:event="oninput" class="form-control pe-4 border-0" placeholder="Reply...">
             </div>
-
-            @*    <!-- Share feed toolbar START -->
-            <ul class="nav nav-pills nav-stack small fw-normal">
-            <li class="nav-item">
-            <a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionPhoto"> <i class="bi bi-image-fill text-success pe-2"></i>Photo</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionVideo"> <i class="bi bi-camera-reels-fill text-info pe-2"></i>Video</a>
-            </li>
-            </ul>
-            <!-- Share feed toolbar END -->*@
-
 
             @if (!string.IsNullOrEmpty(addModel?.Text))
             {
@@ -88,17 +62,6 @@
                             }
                         </div>
                         <!-- Comment react -->
-                        <ul class="nav nav-divider pt-2 small">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#!"> Like (1)</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" @onclick:preventDefault @onclick=@(() => ShowComments(comment)) href="#"> Reply</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#!"> View 6 replies</a>
-                            </li>
-                        </ul>
                     </div>
                 </div>
 

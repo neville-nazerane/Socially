@@ -2,6 +2,7 @@
 using Socially.Apps.Consumer.Services;
 using Socially.Models;
 using Socially.Website.Services;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ namespace Socially.Website.Components
 {
     public partial class CommentsDisplay
     {
+
+        bool isShowingLogo = false;
 
         [Parameter]
         public int PostId { get; set; }
@@ -74,6 +77,10 @@ namespace Socially.Website.Components
         {
             comment.Comments ??= new List<DisplayCommentModel>();
         }
+
+        void ShowLogo() => isShowingLogo = true;
+        void HideLogo() => isShowingLogo = false;
+
 
     }
 }
