@@ -1,37 +1,14 @@
 ﻿@inherits SociallyLayoutBase
-@*
-<div class="container">
-    @Body
-</div>*@
 
-@*
-<div class="page">
-    <div class="sidebar">
-    </div>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="#" @onclick:preventDefault @onclick=LogoutAsync target="_blank">Logout</a>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
-*@
-
-<NavMenu />
+<AuthorizeView>
+    <Authorized>
+        <NavMenu />
+    </Authorized>
+</AuthorizeView>
 
 <main>
     
     @Body
 
-
-    @*    <div class="top-row px-4">
-    <a href="#" @onclick:preventDefault @onclick=LogoutAsync target="_blank">Logout</a>
-    </div>
-
-    <article class="content px-4">
-    </article>*@
 </main>
