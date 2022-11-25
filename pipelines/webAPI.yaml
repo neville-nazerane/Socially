@@ -38,7 +38,7 @@ stages:
         steps:
           - script: |
               dotnet publish $(projectPath) -c release -o published
-              tar -czvf packed.tar.gz published/*
+              tar -czvf packed.tar.gz published .
             displayName: Compile and Compress
 
           - publish: packed.tar.gz
@@ -63,7 +63,7 @@ stages:
 
                     sudo rm -rf $(destDirectory)
                     sudo mkdir $(destDirectory)
-                    sudo tar -xf packed.tar.gz -C $(destDirectory)
+                    sudo tar -xzvf packed.tar.gz -C $(destDirectory)
 
                     rm -rf *
                   displayName: Copying website
