@@ -1,0 +1,59 @@
+
+parameters:
+  - name: label
+    type: string
+
+stages:
+  - stage: hello
+    variables: 
+      serviceTemplate: |
+        [Unit]
+        Description=${{ parameters.service.description }}
+        [Install]
+        WantedBy=multi-user.target
+        [Service]
+        WorkingDirectory=${{ parameters.destDirectory }}
+        ExecStart=/usr/bin/dotnet ${{ parameters.destDirectory }}/${{ parameters.projectName }}.dll --urls http://localhost:${{ parameters.port }}
+        Restart=always
+        # Restart service after 10 seconds if the dotnet service crashes:
+        RestartSec=10
+        KillSignal=SIGINT
+        SyslogIdentifier=${{ parameters.service.identifier }}
+        User=www-data
+    displayName: 'Deploy to Development'
+    jobs:
+      - deployment: DevDeploy
+        displayName: Deploy to Development VM
+        environment:
+          name: Development
+          resourceType: VirtualMachine
+          resourceName: websites
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+
+                - script: echo "$(serviceTemplate)" > $(Pipeline.Workspace)/drop/linux.service
+                  displayName: Generate service file
+                
+                - ${{ each config in parameters.configs }}:
+                  - script: 'echo "Environment=${{ config.key }}=''${{ config.value }}''" >> $(Pipeline.Workspace)/drop/linux.service'
+                    displayName: Adding configuration for ${{ config.key }}
+
+                - script: |
+                    echo 'showing'
+                    ls
+                    echo 'finished showing'
+                    sudo rm -rf ${{ parameters.destDirectory }}
+                    sudo unzip ${{ parameters.projectName }}.zip -d ${{ parameters.destDirectory }}
+                    sudo mv linux.service /etc/systemd/system/${{ parameters.service.name }}.service -f
+                    sudo systemctl enable ${{ parameters.service.name }}.service 
+                    sudo systemctl stop ${{ parameters.service.name }}.service 
+                    sudo systemctl start ${{ parameters.service.name }}.service
+
+                    rm -rf *
+                  displayName: Updating website
+                  workingDirectory: $(Pipeline.Workspace)/drop
+      
+                - task: DeleteFiles@1
+                  displayName: Clean up
