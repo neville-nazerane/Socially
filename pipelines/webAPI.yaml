@@ -38,7 +38,8 @@ stages:
         steps:
           - script: |
               dotnet publish $(projectPath) -c release -o published
-              tar -czvf packed.tar.gz published
+              cd published
+              tar -czvf packed.tar.gz *
             displayName: Compile and Compress
 
           - publish: packed.tar.gz
