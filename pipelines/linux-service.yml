@@ -17,7 +17,7 @@ steps:
   - script: |
       echo "
         [Unit]
-        Description=${{ parameters.service.description }} item
+        Description=${{ parameters.service.description }}
         [Install]
         WantedBy=multi-user.target
         [Service]
@@ -29,7 +29,7 @@ steps:
         KillSignal=SIGINT
         SyslogIdentifier=${{ parameters.service.identifier }}
         User=www-data
-        " > /etc/systemd/system/${{ parameters.service.name }}.service -f
+        " > /etc/systemd/system/${{ parameters.service.name }}.service
     displayName: Creating Service File
 
   - script: |
