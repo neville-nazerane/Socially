@@ -1,3 +1,4 @@
+using BlazorApplicationInsights;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -15,6 +16,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 var apiEndpoint = builder.Configuration["apiEndpoint"];
 
+builder.Services.AddBlazorApplicationInsights();
 builder.Services.AddTransient<WebHttpHandler>();
 builder.Services.AddScoped(sp => new HttpClient(sp.GetService<WebHttpHandler>()) { BaseAddress = new Uri(apiEndpoint) });
 builder.Services.AddScoped<IApiConsumer, ApiConsumer>();
