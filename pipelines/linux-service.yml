@@ -3,6 +3,10 @@ parameters:
   - name: service
     type: object
 
+  - name: configs
+    type: object
+    default: []
+
   - name: destDirectory
     type: string
 
@@ -11,6 +15,8 @@ parameters:
 
   - name: port
     type: string
+
+  
 
 steps:
 
