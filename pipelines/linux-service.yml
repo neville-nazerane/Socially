@@ -17,7 +17,7 @@ steps:
   - script: |
       echo "
         [Unit]
-        Description=${{ parameters.service.description }}
+        Description=${{ parameters.service.description }} item
         [Install]
         WantedBy=multi-user.target
         [Service]

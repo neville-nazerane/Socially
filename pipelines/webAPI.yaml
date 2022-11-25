@@ -17,6 +17,8 @@ trigger:
 variables:
   projectPath: src/Socially.WebAPI
   destDirectory: /var/www/socially
+  projectName: Socially.WebAPI
+  port: 5030
 
 
 resources:
@@ -57,21 +59,25 @@ stages:
             deploy:
               steps:
                 - script: |
+                    sudo ls
+
                     sudo rm -rf $(destDirectory)
+                    sudo mkdir $(destDirectory)
                     sudo tar -xf packed.tar.gz -C $(destDirectory)
 
                     rm -rf *
                   displayName: Copying website
                   workingDirectory: $(Pipeline.Workspace)/packed
+                  failOnStderr: true
 
                 - task: DeleteFiles@1
                   displayName: Clean up
 
                 - template: linux-service.yml
                   parameters:
-                    destDirectory: /var/www/socially
-                    projectName: Socially.WebAPI
-                    port: 5030
+                    destDirectory: $(destDirectory)
+                    projectName: $(projectName)
+                    port: $(port)
 
                     service:
                       description: Socially API
