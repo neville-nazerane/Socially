@@ -83,6 +83,14 @@ stages:
                       description: Socially API
                       identifier: sociallyAPI
                       name: kestrel-socially
+                                      
+                      configs:
+                        ASPNETCORE_ENVIRONMENT: Production
+                        connectionStrings__db: $(Secrets.Db)
+                        appinsights: $(Secrets.web_appInsights)
+                        sendGridApiKey: $(Secrets.sendgrid)
+                        blobConnString: $(Secrets.blobConnString)
+
 
 
 
