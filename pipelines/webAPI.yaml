@@ -16,6 +16,7 @@ trigger:
 
 variables:
   projectPath: src/Socially.WebAPI
+  destDirectory: /var/www/socially
 
 
 resources:
@@ -39,6 +40,46 @@ stages:
             displayName: Compile and Compress
 
           - publish: packed.tar.gz
+            artifact: packed
+
+
+  - stage: DeployDev
+    displayName: Deploy to Dev (or try)
+    jobs:
+      - deployment: DevDeploy
+        displayName: Deploy to Development VM
+        environment:
+          name: Development
+          resourceType: VirtualMachine
+          resourceName: websites
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - script: |
+                    sudo rm -rf $(destDirectory)
+                    sudo tar -xf packed.tar.gz -C $(destDirectory)
+
+                    rm -rf *
+                  displayName: Copying website
+                  workingDirectory: $(Pipeline.Workspace)/packed
+
+                - task: DeleteFiles@1
+                  displayName: Clean up
+
+                - template: linux-service.yml
+                  parameters:
+                    destDirectory: /var/www/socially
+                    projectName: Socially.WebAPI
+                    port: 5030
+
+                    service:
+                      description: Socially API
+                      identifier: sociallyAPI
+                      name: kestrel-socially
+
+
+
 
             
 

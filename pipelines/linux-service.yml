@@ -1,0 +1,40 @@
+
+parameters:
+  - name: service
+    type: object
+
+  - name: destDirectory
+    type: string
+
+  - name: projectName
+    type: string
+
+  - name: port
+    type: string
+
+steps:
+
+  - script: |
+      echo "
+        [Unit]
+        Description=${{ parameters.service.description }}
+        [Install]
+        WantedBy=multi-user.target
+        [Service]
+        WorkingDirectory=${{ parameters.destDirectory }}
+        ExecStart=/usr/bin/dotnet ${{ parameters.destDirectory }}/${{ parameters.projectName }}.dll --urls http://localhost:${{ parameters.port }}
+        Restart=always
+        # Restart service after 10 seconds if the dotnet service crashes:
+        RestartSec=10
+        KillSignal=SIGINT
+        SyslogIdentifier=${{ parameters.service.identifier }}
+        User=www-data
+        " > /etc/systemd/system/${{ parameters.service.name }}.service -f
+    displayName: Creating Service File
+
+  - script: |
+      sudo systemctl enable ${{ parameters.service.name }}.service 
+      sudo systemctl stop ${{ parameters.service.name }}.service
+      sudo systemctl start ${{ parameters.service.name }}.service
+    displayName: Restart Service
+

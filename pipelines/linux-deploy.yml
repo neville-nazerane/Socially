@@ -41,9 +41,6 @@ stages:
                     displayName: Adding configuration for ${{ config.key }}
 
                 - script: |
-                    echo 'showing'
-                    ls
-                    echo 'finished showing'
                     sudo rm -rf ${{ parameters.destDirectory }}
                     sudo unzip ${{ parameters.projectName }}.zip -d ${{ parameters.destDirectory }}
                     sudo mv linux.service /etc/systemd/system/${{ parameters.service.name }}.service -f

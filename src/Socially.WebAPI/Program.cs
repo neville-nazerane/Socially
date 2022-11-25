@@ -1,11 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -14,14 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using Socially.Server.DataAccess;
-using Socially.Server.Managers;
-using Socially.Server.Managers.Utils;
 using Socially.WebAPI.Endpoints;
 using Socially.WebAPI.Middlewares;
-using Socially.WebAPI.Services;
 using Socially.WebAPI.Utils;
 using SendGrid.Extensions.DependencyInjection;
 using Socially.Website.Models;
@@ -79,26 +66,20 @@ app.UseCors(x => x
     .AllowAnyMethod()
     .AllowAnyHeader());
 
-app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseCurrentSetup();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapGet("/", () => "Hello from a socially app").ExcludeFromDescription();
-    endpoints.MapHealthChecks("/health");
+app.MapGet("/", () => "Hello from a socially app 2").ExcludeFromDescription();
+app.MapHealthChecks("/health");
 
-    endpoints.MapCustom<AccountEndpoints>();
-    endpoints.MapCustom<ProfileEndpoints>();
-    endpoints.MapCustom<UserEndpoints>();
-    endpoints.MapCustom<ImagesEndpoints>();
-    endpoints.MapCustom<FriendEndpoints>();
-    endpoints.MapCustom<PostEndpoints>();
-
-});
+app.MapCustom<AccountEndpoints>();
+app.MapCustom<ProfileEndpoints>();
+app.MapCustom<UserEndpoints>();
+app.MapCustom<ImagesEndpoints>();
+app.MapCustom<FriendEndpoints>();
+app.MapCustom<PostEndpoints>();
 
 await using (var scope = app.Services.CreateAsyncScope())
     await scope.ServiceProvider.GetService<InitializeService>().InitAsync();
