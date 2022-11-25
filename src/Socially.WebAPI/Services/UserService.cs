@@ -93,7 +93,7 @@ namespace Socially.WebAPI.Services
             var readToken = new JwtSecurityTokenHandler().ReadJwtToken(model.AccessToken);
 
             int userId = int.Parse(principle.FindFirstValue(ClaimTypes.NameIdentifier));
-            if (await _userProfileManager.VerifyRefreshToken(userId, model.RefreshToken, cancellationToken))
+            if (await _userProfileManager.VerifyRefreshTokenAsync(userId, model.RefreshToken, cancellationToken))
             {
                 var user = await _userProfileManager.GetUserByIdAsync(userId, cancellationToken);
                 var token = _tokenInfo.GenerateToken(new TokenRequest

@@ -71,7 +71,7 @@ app.UseAuthorization();
 
 app.UseCurrentSetup();
 
-app.MapGet("/", () => "Hello from a socially app 2").ExcludeFromDescription();
+app.MapGet("/", () => "Hello from a socially app").ExcludeFromDescription();
 app.MapHealthChecks("/health");
 
 app.MapCustom<AccountEndpoints>();

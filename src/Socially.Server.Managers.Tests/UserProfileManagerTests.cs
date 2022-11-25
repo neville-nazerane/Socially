@@ -441,7 +441,7 @@ namespace Socially.Server.Managers.Tests
             await DbContext.SaveChangesAsync();
 
             // ACT
-            bool isValid = await manager.VerifyRefreshToken(10, "notASample");
+            bool isValid = await manager.VerifyRefreshTokenAsync(10, "notASample");
 
             // ASSERT
             Assert.False(isValid);
@@ -462,7 +462,7 @@ namespace Socially.Server.Managers.Tests
             await DbContext.SaveChangesAsync();
 
             // ACT
-            bool isValid = await manager.VerifyRefreshToken(11, "sampleToken");
+            bool isValid = await manager.VerifyRefreshTokenAsync(11, "sampleToken");
 
             // ASSERT
             Assert.False(isValid);
@@ -483,7 +483,7 @@ namespace Socially.Server.Managers.Tests
             await DbContext.SaveChangesAsync();
 
             // ACT
-            bool isValid = await manager.VerifyRefreshToken(10, "sampleToken");
+            bool isValid = await manager.VerifyRefreshTokenAsync(10, "sampleToken");
 
             // ASSERT
             Assert.False(isValid);
@@ -505,7 +505,7 @@ namespace Socially.Server.Managers.Tests
             await DbContext.SaveChangesAsync();
 
             // ACT
-            bool isValid = await manager.VerifyRefreshToken(10, "sampleToken");
+            bool isValid = await manager.VerifyRefreshTokenAsync(10, "sampleToken");
 
             // ASSERT
             Assert.False(isValid);
@@ -526,7 +526,7 @@ namespace Socially.Server.Managers.Tests
             await DbContext.SaveChangesAsync();
 
             // ACT
-            bool isValid = await manager.VerifyRefreshToken(10, "sampleToken");
+            bool isValid = await manager.VerifyRefreshTokenAsync(10, "sampleToken");
 
             // ASSERT
             Assert.True(isValid);

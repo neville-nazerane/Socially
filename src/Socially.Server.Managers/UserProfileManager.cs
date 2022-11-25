@@ -109,7 +109,7 @@ namespace Socially.Server.Managers
             return entity.RefreshToken;
         }
 
-        public Task<bool> VerifyRefreshToken(int userId,
+        public Task<bool> VerifyRefreshTokenAsync(int userId,
                                              string refreshToken,
                                              CancellationToken cancellationToken = default)
             => _dbContext.UserRefreshTokens.AnyAsync(u => u.UserId == userId

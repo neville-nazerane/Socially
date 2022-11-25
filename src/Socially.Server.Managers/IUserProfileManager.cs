@@ -20,7 +20,7 @@ namespace Socially.Server.Managers
         Task<User> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default);
         Task UpdateAsync(int userId, ProfileUpdateModel model, CancellationToken cancellationToken = default);
         Task<bool> UserNameExistsAsync(string userName, CancellationToken cancellationToken = default);
-        Task<bool> VerifyRefreshToken(int userId, string refreshToken, CancellationToken cancellationToken = default);
+        Task<bool> VerifyRefreshTokenAsync(int userId, string refreshToken, CancellationToken cancellationToken = default);
         Task<User> GetUserByUsernameAsync(string username, CancellationToken cancellationToken = default);
         Task<IEnumerable<SearchedUserModel>> SearchAsync(int userId, string q, CancellationToken cancellationToken = default);
         Task<IEnumerable<UserSummaryModel>> GetUsersByIdsAsync(IEnumerable<int> userIds, CancellationToken cancellationToken = default);
