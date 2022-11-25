@@ -31,8 +31,9 @@ stages:
     displayName: Compile API
     jobs:
       - job: DotnetBuild
+        displayName: Building and Publishing
         steps:
-          - script: 
+          - script: |
               dotnet publish $(projectPath) -c release -o published
               tar -czvf packed.tar.gz published
             displayName: Compile and Compress
