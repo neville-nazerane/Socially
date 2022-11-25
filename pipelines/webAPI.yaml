@@ -91,6 +91,15 @@ stages:
                       sendGridApiKey: $(Secrets.sendgrid)
                       blobConnString: $(Secrets.blobConnString)
 
+                      authOptions__secret: $(Secrets.AuthSecret)
+                      authOptions__audiences: website
+                      authOptions__issuer: https://api.sociallyconnections.com
+
+                      settings__clientBaseUrl: https://sociallyconnections.com
+                      settings__emailFrom: accounts@sociallyconnections.com
+                      settings__forgotPasswordTemplate: $(Secrets.forgotPasswordTemplate)
+                      settings__imageBase: https://pics.sociallyconnections.com
+
 
 
 
