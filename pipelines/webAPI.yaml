@@ -21,40 +21,56 @@ resources:
       name: neville-nazerane/Common-Pipelines
       endpoint: github.com_neville-nazerane
 
+stages:
 
-extends:
-  template: Shared\netcore-ubuntu.yml@templates
-  parameters:
-    useVersion: 7.x
-    projectPath: src/Socially.WebAPI
-    projectName: Socially.WebAPI
-    destDirectory: /var/www/socially
-    port: 5030
+  - stage: Build
+    displayName: Compile API
+    jobs:
+      - job: DotnetBuild
+        steps:
+          - script: 
+              dotnet publish $(projectPath) -c release -o published
+              tar -czvf packed.tar.gz published
+            displayName: Compile and Compress
 
-    service:
-      description: Socially API
-      identifier: sociallyAPI
-      name: kestrel-socially
+          - publish: packed.tar.gz
 
-    preBuildSteps:
-      - script: dotnet run "$(dbAdminConnectionString)"
-        workingDirectory: src/Socially.Utils.MigrationConsole
+            
 
-    configs:
-      ASPNETCORE_ENVIRONMENT: Production
-      connectionStrings__db: $(Secrets.Db)
-      appinsights: $(Secrets.web_appInsights)
-      sendGridApiKey: $(Secrets.sendgrid)
-      blobConnString: $(Secrets.blobConnString)
 
-      authOptions__secret: $(Secrets.AuthSecret)
-      authOptions__audiences: website
-      authOptions__issuer: https://api.sociallyconnections.com
+# extends:
+#   template: Shared\netcore-ubuntu.yml@templates
+#   parameters:
+#     useVersion: 7.x
+#     projectPath: src/Socially.WebAPI
+#     projectName: Socially.WebAPI
+#     destDirectory: /var/www/socially
+#     port: 5030
 
-      settings__clientBaseUrl: https://sociallyconnections.com
-      settings__emailFrom: accounts@sociallyconnections.com
-      settings__forgotPasswordTemplate: $(Secrets.forgotPasswordTemplate)
-      settings__imageBase: https://pics.sociallyconnections.com
+#     service:
+#       description: Socially API
+#       identifier: sociallyAPI
+#       name: kestrel-socially
+
+#     preBuildSteps:
+#       - script: dotnet run "$(dbAdminConnectionString)"
+#         workingDirectory: src/Socially.Utils.MigrationConsole
+
+#     configs:
+#       ASPNETCORE_ENVIRONMENT: Production
+#       connectionStrings__db: $(Secrets.Db)
+#       appinsights: $(Secrets.web_appInsights)
+#       sendGridApiKey: $(Secrets.sendgrid)
+#       blobConnString: $(Secrets.blobConnString)
+
+#       authOptions__secret: $(Secrets.AuthSecret)
+#       authOptions__audiences: website
+#       authOptions__issuer: https://api.sociallyconnections.com
+
+#       settings__clientBaseUrl: https://sociallyconnections.com
+#       settings__emailFrom: accounts@sociallyconnections.com
+#       settings__forgotPasswordTemplate: $(Secrets.forgotPasswordTemplate)
+#       settings__imageBase: https://pics.sociallyconnections.com
 
 
 
