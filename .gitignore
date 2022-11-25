@@ -350,3 +350,4 @@ MigrationBackup/
 .ionide/
 *.nogit.cs
 *.trx
+/src/Socially.Website/wwwroot/appsettings.Development.json
