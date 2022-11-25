@@ -32,6 +32,10 @@ steps:
         " > /etc/systemd/system/${{ parameters.service.name }}.service
     displayName: Creating Service File
 
+  - ${{ each config in parameters.configs }}:
+                - script: 'echo "Environment=${{ config.key }}=''${{ config.value }}''" >> $(Pipeline.Workspace)/drop/linux.service'
+                  displayName: Adding configuration for ${{ config.key }}
+
   - script: |
       sudo systemctl enable ${{ parameters.service.name }}.service 
       sudo systemctl stop ${{ parameters.service.name }}.service
