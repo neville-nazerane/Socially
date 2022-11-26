@@ -14,6 +14,7 @@ using SendGrid.Extensions.DependencyInjection;
 using Socially.Website.Models;
 using Socially.Website.Services;
 using Socially.Server.Entities;
+using Microsoft.Extensions.Azure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +38,8 @@ services.AddIdentity<User, UserRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders();
 services.AddHealthChecks()
+        .AddAzureBlobStorage(configuration["blobConnString"])
+        .AddSendGrid(configuration["sendGridApiKey"])
         .AddDbContextCheck<ApplicationDbContext>();
 
 services.AddSendGrid(o => o.ApiKey = configuration["sendGridApiKey"]);
