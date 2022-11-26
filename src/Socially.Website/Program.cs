@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Socially.Apps.Consumer.Services;
 using Socially.Apps.Consumer.Utils;
 using Socially.Website;
+using Socially.Website.Models;
 using Socially.Website.Services;
 using System;
 using System.Net.Http;
@@ -23,7 +24,9 @@ builder.Services.AddScoped<IApiConsumer, ApiConsumer>();
 
 builder.Services.AddAuthorizationCore().AddOptions();
 builder.Services.AddSingleton<AuthenticationStateProvider, AuthProvider>()
-                .AddSingleton<CachedContext>()
+                .AddSingleton(typeof(ICachedStorage<,>), typeof(CachedStorage<,>))
+
+                .AddScoped<CachedContext>()
                 .AddSingleton(p => (AuthProvider) p.GetService<AuthenticationStateProvider>());
 
 await builder.Build().RunAsync();

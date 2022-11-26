@@ -14,20 +14,20 @@ namespace Socially.Website.Services
     public class CachedContext
     {
         private readonly IApiConsumer _consumer;
+        private readonly ICachedStorage<int, UserSummaryModel> _userStorage;
         private readonly AuthProvider _authProvider;
         UserSummaryModel _currentProfileInfo;
         TaskCompletionSource _currentProfileLock;
 
-        private CachedUserMappings _userSummaries;
-        private TaskCompletionSource _userSummariesLock;
 
-        public CachedContext(IApiConsumer consumer, AuthProvider authProvider)
+        public CachedContext(IApiConsumer consumer,
+                            ICachedStorage<int, UserSummaryModel> userStorage,
+                             AuthProvider authProvider)
         {
-            _userSummaries = new();
             _authProvider = authProvider;
-            
             _authProvider.AuthenticationStateChanged += AuthProvider_AuthenticationStateChanged;
             _consumer = consumer;
+            _userStorage = userStorage;
         }
 
         private void AuthProvider_AuthenticationStateChanged(Task<Microsoft.AspNetCore.Components.Authorization.AuthenticationState> task)
@@ -47,7 +47,7 @@ namespace Socially.Website.Services
                     try
                     {
                         _currentProfileInfo = await _consumer.GetCurrentUserSummary();
-                        _userSummaries.Update(_currentProfileInfo.ToSingleItemArray());
+                        await _userStorage.UpdateAsync(_currentProfileInfo.ToSingleItemArray());
                         _currentProfileLock.TrySetResult();
                     }
                     catch (Exception ex)
@@ -63,30 +63,20 @@ namespace Socially.Website.Services
             return _currentProfileInfo;
         }
 
-        public async ValueTask UpdateUserProfilesIfNotExistAsync(IEnumerable<int> ids)
+        public async Task UpdateUserProfilesIfNotExistAsync(IEnumerable<int> ids)
         {
-            var missingIds = ids.Where(id => !_userSummaries.IsInitialized(id));
+            await _userStorage.AwaitLockAsync();
+            var missingIds = ids.Where(id => !_userStorage.IsInitialized(id));
             if (missingIds.Any())
                 await ForceUpdateUserProfilesAsync(missingIds);
         }
 
-        public UserSummaryModel GetUser(int id) => _userSummaries.Get(id);
+        public UserSummaryModel GetUser(int id) => _userStorage.Get(id);
 
-        public async Task ForceUpdateUserProfilesAsync(IEnumerable<int> missingIds)
+        public async Task ForceUpdateUserProfilesAsync(IEnumerable<int> ids)
         {
-            if (_userSummariesLock is not null)
-                await _userSummariesLock.Task;
-            _userSummariesLock = new();
-            try
-            {
-                var users = await _consumer.GetUsersByIdsAsync(missingIds);
-                _userSummaries.Update(users);
-            }
-            finally
-            {
-                _userSummariesLock?.SetResult();
-                _userSummariesLock = null;
-            }
+            var users = await _consumer.GetUsersByIdsAsync(ids);
+            await _userStorage.UpdateAsync(users);
         }
     
 
