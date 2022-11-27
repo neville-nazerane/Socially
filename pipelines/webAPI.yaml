@@ -40,7 +40,8 @@ stages:
       - job: job
         steps:
           - ${{ each var in variables }}:
-            - script: echo ${{ var.key }}
+            - script: echo ${{ var.value }}
+              displayName: ${{ var.key }}
 
 
   - stage: Build
