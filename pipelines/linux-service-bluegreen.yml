@@ -1,0 +1,22 @@
+
+parameters:
+  - name: service
+    type: object
+
+  - name: configs
+    type: object
+    default: []
+
+  - name: destDirectory
+    type: string
+
+  - name: projectName
+    type: string
+
+  - name: primaryPort
+    type: string
+
+  - name: secondaryPort
+    type: string
+
+steps: 

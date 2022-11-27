@@ -1,0 +1,62 @@
+
+variables:
+
+  - group: ${{ parameters.varGroup }}
+
+  - name: destDirectory
+    value: /var/www/socially
+
+  - name: projectName
+    value: Socially.WebAPI
+
+  - name: serviceDescription
+    value: Socially API
+
+  - name: serviceidentifier
+    value: sociallyAPI
+    
+  - name: servicename
+    value: kestrel-socially
+  
+
+parameters:
+
+  - name: varGroup
+    type: string
+
+  - name: port
+    type: string
+
+
+
+steps:
+  - template: linux-service.yml
+    parameters:
+                      
+      destDirectory: $(destDirectory)
+      projectName: $(projectName)
+      port: ${{ parameters.port }}
+
+      service:
+        description: $(serviceDescription)
+        identifier: $(serviceidentifier)
+        name: $(servicename)
+
+      configs:
+        ASPNETCORE_ENVIRONMENT: $(Config.ASPNETCORE_ENVIRONMENT)
+        connectionStrings__db: $(Config.DbconnectionStrings__db)
+        appinsights: $(Config.appinsights)
+        sendGridApiKey: $(Config.sendgrid)
+        blobConnString: $(Config.blobConnString)
+
+        authOptions__secret: $(Config.authOptions__secret)
+        authOptions__audiences: $(Config.authOptions__audiences)
+        authOptions__issuer: $(Config.authOptions__issuer)
+
+        settings__clientBaseUrl: $(Config.settings__clientBaseUrl)
+        settings__emailFrom: $(Config.settings__emailFrom)
+        settings__forgotPasswordTemplate: $(Secrets.settings__forgotPasswordTemplate)
+        settings__imageBase: $(Config.settings__imageBase)
+
+
+
