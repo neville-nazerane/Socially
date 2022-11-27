@@ -65,7 +65,7 @@ stages:
             deploy:
               steps:
 
-                - ${{ each var in variables.config }}:
+                - ${{ each var in variables }}:
                   - script: echo ${{ var.name }}
 
                 - script: |
