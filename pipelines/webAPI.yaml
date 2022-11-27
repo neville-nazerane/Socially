@@ -64,6 +64,10 @@ stages:
           runOnce:
             deploy:
               steps:
+
+                - ${{ each var in variables.config }}:
+                  - script: echo ${{ var.name }}
+
                 - script: |
                     sudo ls
 
@@ -80,11 +84,9 @@ stages:
                   displayName: Clean up
 
                 - template: linux-service.yml
-                  parameters:
+                  # parameters:
                     
-                  - ${{ each var in variables.config }}:
-                    - name: ${{ var.key }}
-                      default: ${{ var.value }}
+
                       
 
                       # - name: configs.${{ var.key }}
