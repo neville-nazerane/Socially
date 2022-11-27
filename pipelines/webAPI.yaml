@@ -84,40 +84,33 @@ stages:
                   displayName: Clean up
 
                 - template: linux-service.yml
-                  # parameters:
+                  parameters:
                     
+                    destDirectory: $(destDirectory)
+                    projectName: $(projectName)
+                    port: $(port)
 
-                      
-
-                      # - name: configs.${{ var.key }}
-                      #   default: ${{ var.value }}
-
-
-                    # destDirectory: $(destDirectory)
-                    # projectName: $(projectName)
-                    # port: $(port)
-
-                    # service:
-                    #   description: Socially API
-                    #   identifier: sociallyAPI
-                    #   name: kestrel-socially
+                    service:
+                      description: Socially API
+                      identifier: sociallyAPI
+                      name: kestrel-socially
 
                                       
 
-                    #   ASPNETCORE_ENVIRONMENT: Production
-                    #   connectionStrings__db: $(Secrets.Db)
-                    #   appinsights: $(Secrets.web_appInsights)
-                    #   sendGridApiKey: $(Secrets.sendgrid)
-                    #   blobConnString: $(Secrets.blobConnString)
+                      ASPNETCORE_ENVIRONMENT: Production
+                      connectionStrings__db: $(Secrets.Db)
+                      appinsights: $(Secrets.web_appInsights)
+                      sendGridApiKey: $(Secrets.sendgrid)
+                      blobConnString: $(Secrets.blobConnString)
 
-                    #   authOptions__secret: $(Secrets.AuthSecret)
-                    #   authOptions__audiences: website
-                    #   authOptions__issuer: https://api.sociallyconnections.com
+                      authOptions__secret: $(Secrets.AuthSecret)
+                      authOptions__audiences: website
+                      authOptions__issuer: https://api.sociallyconnections.com
 
-                    #   settings__clientBaseUrl: https://sociallyconnections.com
-                    #   settings__emailFrom: accounts@sociallyconnections.com
-                    #   settings__forgotPasswordTemplate: $(Secrets.forgotPasswordTemplate)
-                    #   settings__imageBase: https://pics.sociallyconnections.com
+                      settings__clientBaseUrl: https://sociallyconnections.com
+                      settings__emailFrom: accounts@sociallyconnections.com
+                      settings__forgotPasswordTemplate: $(Secrets.forgotPasswordTemplate)
+                      settings__imageBase: https://pics.sociallyconnections.com
 
 
 
