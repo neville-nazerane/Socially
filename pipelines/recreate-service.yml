@@ -12,7 +12,7 @@ variables:
   # - group: ${{ parameters.varGroup }}
 
   - name: destDirectory
-    value: /var/www/socially
+    value: '/var/www/socially'
 
   - name: projectName
     value: Socially.WebAPI
