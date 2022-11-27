@@ -81,10 +81,10 @@ stages:
                 - task: DeleteFiles@1
                   displayName: Clean up
 
-                # - template: recreate-service.yml
-                #   parameters:
-                #     port: $(devPort)
-                #     varGroup: Socially-Dev
+                - template: recreate-service.yml
+                  parameters:
+                    port: $(devPort)
+                    varGroup: Socially-Dev
 
 
                 # - template: linux-service.yml
