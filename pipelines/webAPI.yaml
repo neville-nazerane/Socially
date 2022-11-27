@@ -44,9 +44,12 @@ stages:
           - publish: packed.tar.gz
             artifact: packed
 
+          - script: az pipelines variable-group variable list locator
+
 
   - stage: DeployDev
-    displayName: Deploy to Dev (or try)
+    condition: false
+    displayName: Deploy to Dev
     jobs:
       - deployment: DevDeploy
         displayName: Deploy to Development VM
@@ -99,7 +102,6 @@ stages:
                       settings__emailFrom: accounts@sociallyconnections.com
                       settings__forgotPasswordTemplate: $(Secrets.forgotPasswordTemplate)
                       settings__imageBase: https://pics.sociallyconnections.com
-
 
 
 
