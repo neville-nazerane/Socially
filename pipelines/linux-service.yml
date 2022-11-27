@@ -21,7 +21,7 @@ parameters:
 steps:
 
   - script: |
-      sudo echo "
+      echo "
         [Unit]
         Description=${{ parameters.service.description }}
         [Install]
@@ -35,11 +35,11 @@ steps:
         KillSignal=SIGINT
         SyslogIdentifier=${{ parameters.service.identifier }}
         User=www-data
-        " > /etc/systemd/system/${{ parameters.service.name }}.service
+        " | sudo tee /etc/systemd/system/${{ parameters.service.name }}.service
     displayName: Creating Service File
 
   - ${{ each config in parameters.configs }}:
-                - script: sudo echo "Environment=${{ config.key }}='${{ config.value }}'" >> /etc/systemd/system/${{ parameters.service.name }}.service
+                - script: echo "Environment=${{ config.key }}='${{ config.value }}'" | sudo tee /etc/systemd/system/${{ parameters.service.name }}.service -a
                   displayName: Adding configuration for ${{ config.key }}
 
   - script: |

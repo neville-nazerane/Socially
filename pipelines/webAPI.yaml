@@ -73,9 +73,6 @@ stages:
                 - task: DeleteFiles@1
                   displayName: Clean up
 
-                - script: echo "hello" > /etc/systemd/system/batman.txt
-                  displayName: testing file creation
-                  
                 - template: linux-service.yml
                   parameters:
                     destDirectory: $(destDirectory)
