@@ -33,7 +33,18 @@ resources:
 
 stages:
 
+  - stage: sample
+    variables:
+      - group: Socially-Dev
+    jobs:
+      - job: job
+        steps:
+          - ${{ each var in variables }}:
+            - script: echo ${{ var.name }}
+
+
   - stage: Build
+    condition: false
     displayName: Compile API
     jobs:
       - job: DotnetBuild
@@ -50,6 +61,7 @@ stages:
 
 
   - stage: DeployDev
+    condition: false
     variables:
       - group: Socially-Dev
     displayName: Deploy to Dev
