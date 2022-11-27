@@ -1,4 +1,12 @@
 
+parameters:
+
+  - name: varGroup
+    type: string
+
+  - name: port
+    type: string
+
 variables:
 
   # - group: ${{ parameters.varGroup }}
@@ -17,17 +25,8 @@ variables:
 
   - name: servicename
     value: kestrel-socially
-  
-
-parameters:
-
-  - name: varGroup
-    type: string
-
-  - name: port
-    type: string
-
-
+      
+    
 
 steps:
   - template: linux-service.yml
