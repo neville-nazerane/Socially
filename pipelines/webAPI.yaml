@@ -39,6 +39,7 @@ stages:
       - job: DotnetBuild
         displayName: Building and Publishing
         steps:
+
           - script: |
               dotnet publish $(projectPath) -c release -o published
               tar -czvf packed.tar.gz -C published .
@@ -47,15 +48,10 @@ stages:
           - publish: packed.tar.gz
             artifact: packed
 
-          - script: az pipelines variable-group variable list 
-                      --group-id locator
-                      --org $(devopsOrg)
-                      --project $(devopsProject)
-            displayName: getting variables
-
 
   - stage: DeployDev
-    condition: false
+    variables:
+      - group: Socially-Dev
     displayName: Deploy to Dev
     jobs:
       - deployment: DevDeploy
@@ -85,30 +81,41 @@ stages:
 
                 - template: linux-service.yml
                   parameters:
-                    destDirectory: $(destDirectory)
-                    projectName: $(projectName)
-                    port: $(port)
+                    
+                  - ${{ each var in variables.config }}:
+                    - name: ${{ var.key }}
+                      default: ${{ var.value }}
+                      
 
-                    service:
-                      description: Socially API
-                      identifier: sociallyAPI
-                      name: kestrel-socially
+                      # - name: configs.${{ var.key }}
+                      #   default: ${{ var.value }}
+
+
+                    # destDirectory: $(destDirectory)
+                    # projectName: $(projectName)
+                    # port: $(port)
+
+                    # service:
+                    #   description: Socially API
+                    #   identifier: sociallyAPI
+                    #   name: kestrel-socially
+
                                       
-                    configs:
-                      ASPNETCORE_ENVIRONMENT: Production
-                      connectionStrings__db: $(Secrets.Db)
-                      appinsights: $(Secrets.web_appInsights)
-                      sendGridApiKey: $(Secrets.sendgrid)
-                      blobConnString: $(Secrets.blobConnString)
 
-                      authOptions__secret: $(Secrets.AuthSecret)
-                      authOptions__audiences: website
-                      authOptions__issuer: https://api.sociallyconnections.com
+                    #   ASPNETCORE_ENVIRONMENT: Production
+                    #   connectionStrings__db: $(Secrets.Db)
+                    #   appinsights: $(Secrets.web_appInsights)
+                    #   sendGridApiKey: $(Secrets.sendgrid)
+                    #   blobConnString: $(Secrets.blobConnString)
 
-                      settings__clientBaseUrl: https://sociallyconnections.com
-                      settings__emailFrom: accounts@sociallyconnections.com
-                      settings__forgotPasswordTemplate: $(Secrets.forgotPasswordTemplate)
-                      settings__imageBase: https://pics.sociallyconnections.com
+                    #   authOptions__secret: $(Secrets.AuthSecret)
+                    #   authOptions__audiences: website
+                    #   authOptions__issuer: https://api.sociallyconnections.com
+
+                    #   settings__clientBaseUrl: https://sociallyconnections.com
+                    #   settings__emailFrom: accounts@sociallyconnections.com
+                    #   settings__forgotPasswordTemplate: $(Secrets.forgotPasswordTemplate)
+                    #   settings__imageBase: https://pics.sociallyconnections.com
 
 
 
