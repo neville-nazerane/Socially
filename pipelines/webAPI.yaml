@@ -44,7 +44,6 @@ stages:
 
 
   - stage: Build
-    condition: false
     displayName: Compile API
     jobs:
       - job: DotnetBuild
@@ -61,7 +60,6 @@ stages:
 
 
   - stage: DeployDev
-    condition: false
     variables:
       - group: Socially-Dev
     displayName: Deploy to Dev
@@ -76,9 +74,6 @@ stages:
           runOnce:
             deploy:
               steps:
-
-                - ${{ each var in variables }}:
-                  - script: echo ${{ var.name }}
 
                 - script: |
                     sudo ls
@@ -107,22 +102,20 @@ stages:
                       identifier: sociallyAPI
                       name: kestrel-socially
 
-                                      
+                      ASPNETCORE_ENVIRONMENT: $(Config.ASPNETCORE_ENVIRONMENT)
+                      connectionStrings__db: $(Config.DbconnectionStrings__db)
+                      appinsights: $(Config.appinsights)
+                      sendGridApiKey: $(Config.sendgrid)
+                      blobConnString: $(Config.blobConnString)
 
-                      ASPNETCORE_ENVIRONMENT: Production
-                      connectionStrings__db: $(Secrets.Db)
-                      appinsights: $(Secrets.web_appInsights)
-                      sendGridApiKey: $(Secrets.sendgrid)
-                      blobConnString: $(Secrets.blobConnString)
+                      authOptions__secret: $(Config.authOptions__secret)
+                      authOptions__audiences: $(Config.authOptions__audiences)
+                      authOptions__issuer: $(Config.authOptions__issuer)
 
-                      authOptions__secret: $(Secrets.AuthSecret)
-                      authOptions__audiences: website
-                      authOptions__issuer: https://api.sociallyconnections.com
-
-                      settings__clientBaseUrl: https://sociallyconnections.com
-                      settings__emailFrom: accounts@sociallyconnections.com
-                      settings__forgotPasswordTemplate: $(Secrets.forgotPasswordTemplate)
-                      settings__imageBase: https://pics.sociallyconnections.com
+                      settings__clientBaseUrl: $(Config.settings__clientBaseUrl)
+                      settings__emailFrom: $(Config.settings__emailFrom)
+                      settings__forgotPasswordTemplate: $(Secrets.settings__forgotPasswordTemplate)
+                      settings__imageBase: $(Config.settings__imageBase)
 
 
 
