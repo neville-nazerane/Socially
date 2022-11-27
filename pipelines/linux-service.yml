@@ -21,7 +21,7 @@ parameters:
 steps:
 
   - script: |
-      echo "
+      sudo echo "
         [Unit]
         Description=${{ parameters.service.description }}
         [Install]
@@ -39,7 +39,7 @@ steps:
     displayName: Creating Service File
 
   - ${{ each config in parameters.configs }}:
-                - script: echo "Environment=${{ config.key }}='${{ config.value }}'" >> /etc/systemd/system/${{ parameters.service.name }}.service
+                - script: sudo echo "Environment=${{ config.key }}='${{ config.value }}'" >> /etc/systemd/system/${{ parameters.service.name }}.service
                   displayName: Adding configuration for ${{ config.key }}
 
   - script: |
