@@ -72,10 +72,7 @@ stages:
               steps:
 
                 - script: |
-                    sudo ls
-
-                    sudo rm -rf $(destDirectory)
-                    sudo mkdir $(destDirectory)
+                    sudo rm -rf $(destDirectory)/*
                     sudo tar -xzvf packed.tar.gz -C $(destDirectory)
 
                     rm -rf *
@@ -108,28 +105,25 @@ stages:
             deploy:
               steps:
 
-                - powershell: |
-                    $file = '/var/www/slotName'
-                    if (Test-Path -Path $file -PathType Leaf) {
-                        $slotName = Get-Content .\slotName -Raw
-                    }
-                    else {
-                        $slotName = 'blue'
-                    }
-                    Write-Host "##vso[task.setvariable variable=slotName;]$slotName"
-                    if ($slotName -eq 'blue') {
-                        $slotName = 'green';
-                    } 
-                    else {
-                        $slotName = 'blue';
-                    }
+                # - powershell: |
+                #     $file = '/var/www/slotName'
+                #     if (Test-Path -Path $file -PathType Leaf) {
+                #         $slotName = Get-Content .\slotName -Raw
+                #     }
+                #     else {
+                #         $slotName = 'blue'
+                #     }
+                #     Write-Host "##vso[task.setvariable variable=slotName;]$slotName"
+                #     if ($slotName -eq 'blue') {
+                #         $slotName = 'green';
+                #     } 
+                #     else {
+                #         $slotName = 'blue';
+                #     }
 
                 - script: |
-                    sudo ls
-
-                    sudo rm -rf $(destDirectory)$(slotName)
-                    sudo mkdir $(destDirectory)$(slotName)
-                    sudo tar -xzvf packed.tar.gz -C $(destDirectory)$(slotName)
+                    sudo rm -rf $(destDirectory)/*
+                    sudo tar -xzvf packed.tar.gz -C $(destDirectory)
 
                     rm -rf *
                   displayName: Copying website
