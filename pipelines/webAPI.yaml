@@ -35,13 +35,12 @@ stages:
 
   - stage: sample
     variables:
-      - group: Socially-Deva
+      - group: Socially-Dev
     jobs:
       - job: job
         steps:
-          - ${{ each var in variables }}:
-            - script: echo ${{ var.value }}
-              displayName: ${{ var.key }}
+            - script: echo $(Config.ASPNETCORE_ENVIRONMENT)
+              displayName: show me the penny
 
 
   - stage: Build
