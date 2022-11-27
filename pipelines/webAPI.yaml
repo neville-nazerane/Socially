@@ -15,6 +15,9 @@ trigger:
       - pipelines/webAPI.yaml
 
 variables:
+  devopsOrg: https://dev.azure.com/nevillenazerane
+  devopsProject: publishes
+
   projectPath: src/Socially.WebAPI
   destDirectory: /var/www/socially
   projectName: Socially.WebAPI
@@ -44,7 +47,11 @@ stages:
           - publish: packed.tar.gz
             artifact: packed
 
-          - script: az pipelines variable-group variable list --group-id locator
+          - script: az pipelines variable-group variable list 
+                      --group-id locator
+                      --org $(devopsOrg)
+                      --project $(devopsProject)
+            displayName: getting variables
 
 
   - stage: DeployDev
