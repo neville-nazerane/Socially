@@ -21,7 +21,8 @@ variables:
   projectPath: src/Socially.WebAPI
   destDirectory: /var/www/socially
   projectName: Socially.WebAPI
-  port: 5030
+  devPort: 5030
+  prodPort: 6000
 
 
 resources:
@@ -85,7 +86,7 @@ stages:
                     
                     destDirectory: $(destDirectory)
                     projectName: $(projectName)
-                    port: $(port)
+                    port: $(devPort)
 
                     service:
                       description: Socially API
@@ -112,6 +113,67 @@ stages:
 
 
 
+  - stage: DeployProd
+    variables:
+      - group: Socially-Prod
+    displayName: Deploy to Production
+    jobs:
+      - deployment: ProdDeploy
+        displayName: Deploy to Production VM
+        environment:
+          name: SociallyAPI
+          resourceType: VirtualMachine
+          resourceName: socially-api
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+
+                - script: |
+                    sudo ls
+
+                    sudo rm -rf $(destDirectory)
+                    sudo mkdir $(destDirectory)
+                    sudo tar -xzvf packed.tar.gz -C $(destDirectory)
+
+                    rm -rf *
+                  displayName: Copying website
+                  workingDirectory: $(Pipeline.Workspace)/packed
+                  failOnStderr: true
+
+                - task: DeleteFiles@1
+                  displayName: Clean up
+
+                - template: linux-service.yml
+                  parameters:
+                    
+                    destDirectory: $(destDirectory)
+                    projectName: $(projectName)
+                    port: $(prodPort)
+
+                    service:
+                      description: Socially API
+                      identifier: sociallyAPI
+                      name: kestrel-socially
+
+                    configs:
+
+                      ASPNETCORE_ENVIRONMENT: $(Config.ASPNETCORE_ENVIRONMENT)
+                      connectionStrings__db: $(Config.DbconnectionStrings__db)
+                      appinsights: $(Config.appinsights)
+                      sendGridApiKey: $(Config.sendgrid)
+                      blobConnString: $(Config.blobConnString)
+
+                      authOptions__secret: $(Config.authOptions__secret)
+                      authOptions__audiences: $(Config.authOptions__audiences)
+                      authOptions__issuer: $(Config.authOptions__issuer)
+
+                      settings__clientBaseUrl: $(Config.settings__clientBaseUrl)
+                      settings__emailFrom: $(Config.settings__emailFrom)
+                      settings__forgotPasswordTemplate: $(Secrets.settings__forgotPasswordTemplate)
+                      settings__imageBase: $(Config.settings__imageBase)
+
+                    
             
 
 
