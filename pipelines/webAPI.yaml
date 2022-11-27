@@ -39,7 +39,7 @@ stages:
     jobs:
       - job: job
         steps:
-          - ${{ each var in variables }}:
+          - ${{ each var in variables.Config }}:
             - script: echo ${{ var.value }}
               displayName: ${{ var.key }}
 
