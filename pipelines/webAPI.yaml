@@ -92,40 +92,7 @@ stages:
                     varGroup: Socially-Dev
 
 
-                # - template: linux-service.yml
-                #   parameters:
-                    
-                #     destDirectory: $(destDirectory)
-                #     projectName: $(projectName)
-                #     port: $(devPort)
-
-                #     service:
-                #       description: Socially API
-                #       identifier: sociallyAPI
-                #       name: kestrel-socially
-
-                #     configs:
-
-                #       ASPNETCORE_ENVIRONMENT: $(Config.ASPNETCORE_ENVIRONMENT)
-                #       connectionStrings__db: $(Config.DbconnectionStrings__db)
-                #       appinsights: $(Config.appinsights)
-                #       sendGridApiKey: $(Config.sendgrid)
-                #       blobConnString: $(Config.blobConnString)
-
-                #       authOptions__secret: $(Config.authOptions__secret)
-                #       authOptions__audiences: $(Config.authOptions__audiences)
-                #       authOptions__issuer: $(Config.authOptions__issuer)
-
-                #       settings__clientBaseUrl: $(Config.settings__clientBaseUrl)
-                #       settings__emailFrom: $(Config.settings__emailFrom)
-                #       settings__forgotPasswordTemplate: $(Secrets.settings__forgotPasswordTemplate)
-                #       settings__imageBase: $(Config.settings__imageBase)
-
-
-
-
   - stage: DeployProd
-    condition: false
     variables:
       - group: Socially-Prod
     displayName: Deploy to Production
@@ -172,37 +139,10 @@ stages:
                 - task: DeleteFiles@1
                   displayName: Clean up
 
-                - template: linux-service.yml
+                - template: recreate-service.yml
                   parameters:
-                    
-                    destDirectory: $(destDirectory)$(slotName)
-                    projectName: $(projectName)
                     port: $(prodPort)
-
-                    service:
-                      description: Socially API
-                      identifier: sociallyAPI
-                      name: kestrel-socially
-
-                    configs:
-
-                      ASPNETCORE_ENVIRONMENT: $(Config.ASPNETCORE_ENVIRONMENT)
-                      connectionStrings__db: $(Config.DbconnectionStrings__db)
-                      appinsights: $(Config.appinsights)
-                      sendGridApiKey: $(Config.sendgrid)
-                      blobConnString: $(Config.blobConnString)
-
-                      authOptions__secret: $(Config.authOptions__secret)
-                      authOptions__audiences: $(Config.authOptions__audiences)
-                      authOptions__issuer: $(Config.authOptions__issuer)
-
-                      settings__clientBaseUrl: $(Config.settings__clientBaseUrl)
-                      settings__emailFrom: $(Config.settings__emailFrom)
-                      settings__forgotPasswordTemplate: $(Secrets.settings__forgotPasswordTemplate)
-                      settings__imageBase: $(Config.settings__imageBase)
-
-                    
-            
+                    varGroup: Socially-Prod
 
 
 # extends:
