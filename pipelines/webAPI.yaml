@@ -51,9 +51,9 @@ stages:
       - deployment: DevDeploy
         displayName: Deploy to Development VM
         environment:
-          name: SociallyAPI
+          name: Development
           resourceType: VirtualMachine
-          resourceName: socially-api
+          resourceName: websites
         strategy:
           runOnce:
             deploy:
