@@ -35,11 +35,11 @@ stages:
 
   - stage: sample
     variables:
-      - group: Socially-Dev
+      - group: Socially-Deva
     jobs:
       - job: job
         steps:
-          - ${{ each var in variables.Config }}:
+          - ${{ each var in variables }}:
             - script: echo ${{ var.value }}
               displayName: ${{ var.key }}
 
