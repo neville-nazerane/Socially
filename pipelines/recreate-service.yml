@@ -1,7 +1,7 @@
 
 variables:
 
-  - group: ${{ parameters.varGroup }}
+  # - group: ${{ parameters.varGroup }}
 
   - name: destDirectory
     value: /var/www/socially
@@ -14,7 +14,7 @@ variables:
 
   - name: serviceidentifier
     value: sociallyAPI
-    
+
   - name: servicename
     value: kestrel-socially
   

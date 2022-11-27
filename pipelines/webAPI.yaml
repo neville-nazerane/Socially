@@ -51,6 +51,8 @@ stages:
 
 
   - stage: DeployDev
+    variables: 
+      - group: Socially-Dev
     displayName: Deploy to Dev
     jobs:
       - deployment: DevDeploy
