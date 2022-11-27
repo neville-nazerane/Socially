@@ -7,24 +7,24 @@ parameters:
   - name: port
     type: string
 
-variables:
+# variables:
 
 #   # - group: ${{ parameters.varGroup }}
 
 #   - name: destDirectory
 #     value: '/var/www/socially'
 
-  - name: projectName
-    value: Socially.WebAPI
+  # - name: projectName
+  #   value: Socially.WebAPI
 
-  - name: serviceDescription
-    value: Socially API
+  # - name: serviceDescription
+  #   value: Socially API
 
-  - name: serviceidentifier
-    value: sociallyAPI
+  # - name: serviceidentifier
+  #   value: sociallyAPI
 
-  - name: servicename
-    value: kestrel-socially
+  # - name: servicename
+  #   value: kestrel-socially
       
     
 

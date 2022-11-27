@@ -23,6 +23,11 @@ variables:
   projectName: Socially.WebAPI
   devPort: 5030
   prodPort: 6000
+  prodSlotPort: 5050
+
+  serviceDescription: Socially API
+  serviceidentifier: sociallyAPI
+  servicename: kestrel-socially
 
 
 resources:
