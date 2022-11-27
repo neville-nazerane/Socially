@@ -44,7 +44,7 @@ stages:
           - publish: packed.tar.gz
             artifact: packed
 
-          - script: az pipelines variable-group variable list locator
+          - script: az pipelines variable-group variable list --group-id locator
 
 
   - stage: DeployDev
