@@ -33,16 +33,6 @@ resources:
 
 stages:
 
-  - stage: sample
-    variables:
-      - group: Socially-Dev
-    jobs:
-      - job: job
-        steps:
-            - script: echo $(Config.ASPNETCORE_ENVIRONMENT)
-              displayName: show me the penny
-
-
   - stage: Build
     displayName: Compile API
     jobs:
@@ -101,6 +91,8 @@ stages:
                       description: Socially API
                       identifier: sociallyAPI
                       name: kestrel-socially
+
+                    configs:
 
                       ASPNETCORE_ENVIRONMENT: $(Config.ASPNETCORE_ENVIRONMENT)
                       connectionStrings__db: $(Config.DbconnectionStrings__db)
