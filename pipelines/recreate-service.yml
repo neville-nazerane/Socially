@@ -40,7 +40,7 @@ steps:
   - template: linux-service.yml
     parameters:
                       
-      destDirectory: ${{( destDirectory }}
+      destDirectory: ${{ destDirectory }}
       projectName: $(projectName)
       port: ${{ parameters.port }}
 
