@@ -40,14 +40,14 @@ steps:
   - template: linux-service.yml
     parameters:
                       
-      destDirectory: ${{ destDirectory }}
+      destDirectory: ${{ parameters.destDirectory }}
       projectName: $(projectName)
       port: ${{ parameters.port }}
 
       service:
         description: $(serviceDescription)
         identifier: $(serviceidentifier)
-        name: ${{ servicename }}
+        name: ${{ parameters.servicename }}
 
       configs:
         ASPNETCORE_ENVIRONMENT: $(Config.ASPNETCORE_ENVIRONMENT)
