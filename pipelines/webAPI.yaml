@@ -56,6 +56,7 @@ stages:
 
 
   - stage: DeployDev
+    condition: false
     variables: 
       - group: Socially-Dev
     displayName: Deploy to Dev
@@ -129,7 +130,7 @@ stages:
                     slotName='blue'; 
                     fi
 
-                    Write-Host "##vso[task.setvariable variable=slotName;]$slotName"
+                    echo "##vso[task.setvariable variable=slotName;]$slotName"
 
                 - script: echo 'though guy'
                   displayName: $(slotName)
