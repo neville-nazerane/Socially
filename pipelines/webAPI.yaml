@@ -121,6 +121,19 @@ stages:
                 #         $slotName = 'blue';
                 #     }
 
+                - bash: |
+                    filename=/var/www/slotName
+                    if test -f $filename; then
+                      mapfile slotName < $filename;
+                    else 
+                    slotName='blue'; 
+                    fi
+
+                    Write-Host "##vso[task.setvariable variable=slotName;]$slotName"
+
+                - script: echo 'though guy'
+                  displayName: $(slotName)
+
                 - script: |
                     sudo rm -rf $(destDirectory)/*
                     sudo tar -xzvf packed.tar.gz -C $(destDirectory)
