@@ -166,7 +166,10 @@ stages:
                     servicename: $(servicename)-$(slotName)
                     varGroup: Socially-Prod
 
-                - script: if [ $(curl localhost:$(prodSlotPort)/health) != 'Healthy' ]; then exit 125; fi
+                - script: |
+                    health=$(curl localhost:$(prodSlotPort)/health);
+                    echo 'status is: '$health
+                    if [ $health != 'Healthy' ]; then exit 125; fi
                   displayName: Health check on slot
                   failOnStderr: true
 
