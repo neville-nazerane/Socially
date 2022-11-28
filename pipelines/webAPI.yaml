@@ -73,7 +73,10 @@ stages:
               steps:
 
                 - script: |
-                    sudo rm -rf $(destDirectory)/*
+
+                    sudo rm -rf $(destDirectory)
+                    sudo mkdir $(destDirectory)
+                    
                     sudo tar -xzvf packed.tar.gz -C $(destDirectory)
 
                     rm -rf *
@@ -144,7 +147,8 @@ stages:
                 
 
                 - script: |
-                    sudo rm -rf $(destDirectory)-$(slotName)/*
+                    sudo rm -rf $(destDirectory)-$(slotName)
+                    sudo mkdir $(destDirectory)-$(slotName)
                     sudo tar -xzvf packed.tar.gz -C $(destDirectory)-$(slotName)
 
                     rm -rf *
