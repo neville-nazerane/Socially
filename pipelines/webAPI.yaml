@@ -167,7 +167,7 @@ stages:
                     varGroup: Socially-Prod
 
                 - script: |
-                    health=$(curl localhost:$(prodSlotPort)/health);
+                    health=$(curl localhost:$(prodSlotPort)/health --fail --silent --show-error);
                     echo 'status is: '$health
                     if [ $health != 'Healthy' ]; then exit 125; fi
                   displayName: Health check on slot
