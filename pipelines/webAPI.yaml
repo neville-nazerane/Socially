@@ -55,39 +55,38 @@ stages:
             artifact: packed
 
 
-  - stage: DeployDev
-    condition: false
-    variables: 
-      - group: Socially-Dev
-    displayName: Deploy to Dev
-    jobs:
-      - deployment: DevDeploy
-        displayName: Deploy to Development VM
-        environment:
-          name: Development
-          resourceType: VirtualMachine
-          resourceName: websites
-        strategy:
-          runOnce:
-            deploy:
-              steps:
+  # - stage: DeployDev
+  #   variables: 
+  #     - group: Socially-Dev
+  #   displayName: Deploy to Dev
+  #   jobs:
+  #     - deployment: DevDeploy
+  #       displayName: Deploy to Development VM
+  #       environment:
+  #         name: Development
+  #         resourceType: VirtualMachine
+  #         resourceName: websites
+  #       strategy:
+  #         runOnce:
+  #           deploy:
+  #             steps:
 
-                - script: |
-                    sudo rm -rf $(destDirectory)/*
-                    sudo tar -xzvf packed.tar.gz -C $(destDirectory)
+  #               - script: |
+  #                   sudo rm -rf $(destDirectory)/*
+  #                   sudo tar -xzvf packed.tar.gz -C $(destDirectory)
 
-                    rm -rf *
-                  displayName: Copying website
-                  workingDirectory: $(Pipeline.Workspace)/packed
-                  failOnStderr: true
+  #                   rm -rf *
+  #                 displayName: Copying website
+  #                 workingDirectory: $(Pipeline.Workspace)/packed
+  #                 failOnStderr: true
 
-                - task: DeleteFiles@1
-                  displayName: Clean up
+  #               - task: DeleteFiles@1
+  #                 displayName: Clean up
 
-                - template: recreate-service.yml
-                  parameters:
-                    port: $(devPort)
-                    varGroup: Socially-Dev
+  #               - template: recreate-service.yml
+  #                 parameters:
+  #                   port: $(devPort)
+  #                   varGroup: Socially-Dev
 
 
   - stage: DeployProd
