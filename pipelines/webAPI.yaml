@@ -131,7 +131,7 @@ stages:
 
                     echo "##vso[task.setvariable variable=slotName;]$slotName"
 
-                - script: echo 'though guy'
+                - script: echo 'though guy $(slotName)'
                   displayName: $(slotName)
 
                 - script: |
