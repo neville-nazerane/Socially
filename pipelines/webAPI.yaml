@@ -24,6 +24,7 @@ variables:
   devPort: 5030
   prodPort: 6000
   prodSlotPort: 5050
+  prodSlotFile: /var/www/slotName
 
   serviceDescription: Socially API
   serviceidentifier: sociallyAPI
@@ -55,38 +56,40 @@ stages:
             artifact: packed
 
 
-  # - stage: DeployDev
-  #   variables: 
-  #     - group: Socially-Dev
-  #   displayName: Deploy to Dev
-  #   jobs:
-  #     - deployment: DevDeploy
-  #       displayName: Deploy to Development VM
-  #       environment:
-  #         name: Development
-  #         resourceType: VirtualMachine
-  #         resourceName: websites
-  #       strategy:
-  #         runOnce:
-  #           deploy:
-  #             steps:
+  - stage: DeployDev
+    variables: 
+      - group: Socially-Dev
+    displayName: Deploy to Dev
+    jobs:
+      - deployment: DevDeploy
+        displayName: Deploy to Development VM
+        environment:
+          name: Development
+          resourceType: VirtualMachine
+          resourceName: websites
+        strategy:
+          runOnce:
+            deploy:
+              steps:
 
-  #               - script: |
-  #                   sudo rm -rf $(destDirectory)/*
-  #                   sudo tar -xzvf packed.tar.gz -C $(destDirectory)
+                - script: |
+                    sudo rm -rf $(destDirectory)/*
+                    sudo tar -xzvf packed.tar.gz -C $(destDirectory)
 
-  #                   rm -rf *
-  #                 displayName: Copying website
-  #                 workingDirectory: $(Pipeline.Workspace)/packed
-  #                 failOnStderr: true
+                    rm -rf *
+                  displayName: Copying website
+                  workingDirectory: $(Pipeline.Workspace)/packed
+                  failOnStderr: true
 
-  #               - task: DeleteFiles@1
-  #                 displayName: Clean up
+                - task: DeleteFiles@1
+                  displayName: Clean up
 
-  #               - template: recreate-service.yml
-  #                 parameters:
-  #                   port: $(devPort)
-  #                   varGroup: Socially-Dev
+                - template: recreate-service.yml
+                  parameters:
+                    port: $(devPort)
+                    destDirectory: $(destDirectory)
+                    servicename: $(servicename)
+                    varGroup: Socially-Dev
 
 
   - stage: DeployProd
@@ -120,23 +123,29 @@ stages:
                 #     else {
                 #         $slotName = 'blue';
                 #     }
-
+                  
                 - bash: |
-                    filename=/var/www/slotName
+                    filename=$(prodSlotFile)
                     if test -f $filename; then
                       mapfile slotName < $filename;
                     else 
-                    slotName='blue'; 
+                      slotName='blue'; 
+                    fi
+
+                    if [ $slotName == 'blue' ]; then 
+                      otherSlotName='green'; 
+                    else 
+                      otherSlotName='blue'; 
                     fi
 
                     echo "##vso[task.setvariable variable=slotName;]$slotName"
 
-                - script: echo 'though guy $(slotName)'
-                  displayName: $(slotName)
+                  displayName: Getting blue-green state
+                
 
                 - script: |
-                    sudo rm -rf $(destDirectory)/*
-                    sudo tar -xzvf packed.tar.gz -C $(destDirectory)
+                    sudo rm -rf $(destDirectory)-$(slotName)/*
+                    sudo tar -xzvf packed.tar.gz -C $(destDirectory)-$(slotName)
 
                     rm -rf *
                   displayName: Copying website
@@ -148,8 +157,29 @@ stages:
 
                 - template: recreate-service.yml
                   parameters:
-                    port: $(prodPort)
+                    port: $(prodSlotPort)
+                    destDirectory: $(destDirectory)-$(slotName)
+                    servicename: $(servicename)-$(slotName)
                     varGroup: Socially-Prod
+
+                - script: if [ $(curl localhost:$(prodSlotPort)/health) != 'Healthy' ]; then exit 125; fi
+                  displayName: Health check on slot
+                  failOnStderr: true
+
+                - script: sudo systemctl stop $(servicename)-$(otherSlotName).service
+                  displayName: Stopping main service
+
+                - template: recreate-service.yml
+                  parameters:
+                    port: $(prodPort)
+                    destDirectory: $(destDirectory)-$(slotName)
+                    servicename: $(servicename)-$(slotName)
+                    varGroup: Socially-Prod
+
+                - script: echo $(otherSlotName) | sudo tee $(prodSlotFile)
+                  displayName: updating slot file
+
+                
 
 
 # extends:

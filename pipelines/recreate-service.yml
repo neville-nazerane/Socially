@@ -7,6 +7,14 @@ parameters:
   - name: port
     type: string
 
+  - name: destDirectory
+    type: string
+
+  - name: servicename
+    type: string
+
+  
+
 # variables:
 
 #   # - group: ${{ parameters.varGroup }}
@@ -32,14 +40,14 @@ steps:
   - template: linux-service.yml
     parameters:
                       
-      destDirectory: $(destDirectory)
+      destDirectory: ${{( destDirectory }}
       projectName: $(projectName)
       port: ${{ parameters.port }}
 
       service:
         description: $(serviceDescription)
         identifier: $(serviceidentifier)
-        name: $(servicename)
+        name: ${{ servicename }}
 
       configs:
         ASPNETCORE_ENVIRONMENT: $(Config.ASPNETCORE_ENVIRONMENT)
