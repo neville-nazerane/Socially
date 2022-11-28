@@ -172,6 +172,7 @@ stages:
                     if [ $health != 'Healthy' ]; then exit 125; fi
                   displayName: Health check on slot
                   failOnStderr: true
+                  retryCountOnTaskFailure: 3
 
                 - script: sudo systemctl stop $(servicename)-$(otherSlotName).service
                   displayName: Stopping main service
