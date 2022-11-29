@@ -52,14 +52,14 @@ stages:
 
           - script: |
               dotnet publish $(projectPath) -c release -o published
-              tar -czvf packed.tar.gz -C published .
+              tar -czvf publishes/packed.tar.gz -C published .
 
               dotnet publish $(migrationProjectPath) -c debug -o migration
-              tar -czvf migration.tar.gz -C migration .
+              tar -czvf publishes/migration.tar.gz -C migration .
 
             displayName: Compile and Compress
 
-          - publish: packed.tar.gz, migration.tar.gz
+          - publish: publishes
             artifact: packed
 
   - stage: DeployDev
