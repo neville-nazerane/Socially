@@ -22,7 +22,7 @@ variables:
   projectPath: src/Socially.WebAPI
   destDirectory: /var/www/socially
   migrationDirectory: /var/www/sociallyMigration
-  migrationProjectName: sociallyMigration
+  migrationProjectName: Socially.Utils.MigrationConsole
   projectName: Socially.WebAPI
   devPort: 5030
   prodPort: 6000
@@ -171,7 +171,7 @@ stages:
                     sudo mkdir $(migrationDirectory)
                     sudo tar -xzvf migration.tar.gz -C $(migrationDirectory)
 
-                    dotnet $(migrationDirectory)/$(migrationProjectName).dll $(prodAdminDbConnection)
+                    dotnet $(migrationDirectory)/$(migrationProjectName).dll $(dbAdminConnectionString)
                     sudo rm -rf $(migrationDirectory)
                   displayName: Running migrations
                   workingDirectory: $(Pipeline.Workspace)/packed
@@ -180,7 +180,7 @@ stages:
                 # stopping the main service 
                 - script: sudo systemctl stop $(servicename)-$(currentSlot).service
                   displayName: Stopping main service
-                  condition: eq(variables['currentSlot'], '')
+                  condition: ne(variables.currentSlot, '')
 
                 - template: recreate-service.yml
                   parameters:
