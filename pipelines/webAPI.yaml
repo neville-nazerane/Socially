@@ -51,6 +51,7 @@ stages:
         steps:
 
           - script: |
+              mkdir publishes
               dotnet publish $(projectPath) -c release -o published
               tar -czvf publishes/packed.tar.gz -C published .
 
