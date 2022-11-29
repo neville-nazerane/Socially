@@ -54,7 +54,7 @@ steps:
         connectionStrings__db: $(Config.connectionStrings__db)
         appinsights: $(Config.appinsights)
         sendGridApiKey: $(Config.sendGridApiKey)
-        blobConnString: $(Config.blobConnString)
+        blobConnString: no$(Config.blobConnString)
 
         authOptions__secret: $(Config.authOptions__secret)
         authOptions__audiences: $(Config.authOptions__audiences)
