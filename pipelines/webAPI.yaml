@@ -118,6 +118,7 @@ stages:
             deploy:
               steps:
 
+                # fetching target slot info
                 - bash: |
                     filename=$(prodSlotFile)
                     if test -f $filename; then
@@ -139,6 +140,7 @@ stages:
 
                   displayName: Getting blue-green state
 
+                # copying website to dest 
                 - script: |
                     sudo rm -rf $(destDirectory)-$(targetSlot)
                     sudo mkdir $(destDirectory)-$(targetSlot)
@@ -167,6 +169,7 @@ stages:
                   failOnStderr: true
                   retryCountOnTaskFailure: 3
 
+                # Running migrations 
                 - script: |
                     sudo rm -rf $(migrationDirectory)
                     sudo mkdir $(migrationDirectory)
@@ -175,10 +178,13 @@ stages:
                     dotnet $(migrationDirectory)/$(migrationProjectName).dll $(prodAdminDbConnection)
                     sudo rm -rf $(migrationDirectory)
                   displayName: Running migrations
+                  workingDirectory: $(Pipeline.Workspace)/packed
+                  failOnStderr: true
 
+                # stopping the main service 
                 - script: sudo systemctl stop $(servicename)-$(currentSlot).service
                   displayName: Stopping main service
-                  condition: eq(variables.currentSlot, '')
+                  condition: eq(variables['currentSlot'], '')
 
                 - template: recreate-service.yml
                   parameters:
