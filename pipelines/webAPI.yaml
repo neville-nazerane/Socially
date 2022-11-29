@@ -158,10 +158,9 @@ stages:
                     varGroup: Socially-Prod
 
                 - script: |
-                    curl localhost:$(prodSlotPort)/health --fail || exit 125
-                    # health=$(curl localhost:$(prodSlotPort)/health --fail --silent --show-error);
-                    # echo 'status is: '$health
-                    # if [ $health != 'Healthy' ]; then exit 125; fi
+                    health=$(curl localhost:$(prodSlotPort)/health --fail --silent --show-error);
+                    echo 'status is: '$health
+                    if [ $health != 'Healthy' ]; then exit 125; fi
                   displayName: Health check on slot
                   failOnStderr: true
                   retryCountOnTaskFailure: 3
