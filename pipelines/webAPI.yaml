@@ -18,13 +18,16 @@ variables:
   devopsOrg: https://dev.azure.com/nevillenazerane
   devopsProject: publishes
 
+  migrationProjectPath: src/Socially.Utils.MigrationConsole
   projectPath: src/Socially.WebAPI
   destDirectory: /var/www/socially
+  migrationDirectory: /var/www/sociallyMigration
+  migrationProjectName: sociallyMigration
   projectName: Socially.WebAPI
   devPort: 5030
   prodPort: 6000
   prodSlotPort: 5050
-  prodSlotFile: /var/www/slotName
+  prodSlotFile: /var/www/currentSlot
 
   serviceDescription: Socially API
   serviceidentifier: sociallyAPI
@@ -50,11 +53,14 @@ stages:
           - script: |
               dotnet publish $(projectPath) -c release -o published
               tar -czvf packed.tar.gz -C published .
+
+              dotnet publish $(migrationProjectPath) -c debug -o migration
+              tar -czvf migration.tar.gz -C migration .
+
             displayName: Compile and Compress
 
-          - publish: packed.tar.gz
+          - publish: '*.tar.gz'
             artifact: packed
-
 
   - stage: DeployDev
     variables: 
@@ -111,45 +117,31 @@ stages:
             deploy:
               steps:
 
-                # - powershell: |
-                #     $file = '/var/www/slotName'
-                #     if (Test-Path -Path $file -PathType Leaf) {
-                #         $slotName = Get-Content .\slotName -Raw
-                #     }
-                #     else {
-                #         $slotName = 'blue'
-                #     }
-                #     Write-Host "##vso[task.setvariable variable=slotName;]$slotName"
-                #     if ($slotName -eq 'blue') {
-                #         $slotName = 'green';
-                #     } 
-                #     else {
-                #         $slotName = 'blue';
-                #     }
-                  
                 - bash: |
                     filename=$(prodSlotFile)
                     if test -f $filename; then
-                      mapfile slotName < $filename;
+                      mapfile currentSlot < $filename;
                     else 
-                      slotName='blue'; 
+                      currentSlot=''; 
                     fi
 
-                    if [ $slotName == 'blue' ]; then 
-                      otherSlotName='green'; 
+                    if [ $currentSlot == 'blue' ]; then 
+                      targetSlot='green'; 
                     else 
-                      otherSlotName='blue'; 
+                      targetSlot='blue'; 
                     fi
 
-                    echo "##vso[task.setvariable variable=slotName;]$slotName"
+                    echo 'current state: '$currentSlot
+
+                    echo "##vso[task.setvariable variable=currentSlot;]$currentSlot"
+                    echo "##vso[task.setvariable variable=targetSlot;]$targetSlot"
 
                   displayName: Getting blue-green state
-                
 
                 - script: |
-                    sudo rm -rf $(destDirectory)-$(slotName)
-                    sudo mkdir $(destDirectory)-$(slotName)
-                    sudo tar -xzvf packed.tar.gz -C $(destDirectory)-$(slotName)
+                    sudo rm -rf $(destDirectory)-$(targetSlot)
+                    sudo mkdir $(destDirectory)-$(targetSlot)
+                    sudo tar -xzvf packed.tar.gz -C $(destDirectory)-$(targetSlot)
 
                     rm -rf *
                   displayName: Copying website
@@ -162,8 +154,8 @@ stages:
                 - template: recreate-service.yml
                   parameters:
                     port: $(prodSlotPort)
-                    destDirectory: $(destDirectory)-$(slotName)
-                    servicename: $(servicename)-$(slotName)
+                    destDirectory: $(destDirectory)-$(targetSlot)
+                    servicename: $(servicename)-$(targetSlot)
                     varGroup: Socially-Prod
 
                 - script: |
@@ -174,19 +166,28 @@ stages:
                   failOnStderr: true
                   retryCountOnTaskFailure: 3
 
-                - script: sudo systemctl stop $(servicename)-$(otherSlotName).service
+                - script: |
+                    sudo rm -rf $(migrationDirectory)
+                    sudo mkdir $(migrationDirectory)
+                    sudo tar -xzvf migration.tar.gz -C $(migrationDirectory)
+
+                    dotnet $(migrationDirectory)/$(migrationProjectName).dll $(prodAdminDbConnection)
+                    sudo rm -rf $(migrationDirectory)
+                  displayName: Running migrations
+
+                - script: sudo systemctl stop $(servicename)-$(currentSlot).service
                   displayName: Stopping main service
+                  condition: eq(variables.currentSlot, '')
 
                 - template: recreate-service.yml
                   parameters:
                     port: $(prodPort)
-                    destDirectory: $(destDirectory)-$(slotName)
-                    servicename: $(servicename)-$(slotName)
+                    destDirectory: $(destDirectory)-$(targetSlot)
+                    servicename: $(servicename)-$(targetSlot)
                     varGroup: Socially-Prod
 
-                - script: echo $(otherSlotName) | sudo tee $(prodSlotFile)
+                - script: echo $(targetSlot) | sudo tee $(prodSlotFile)
                   displayName: updating slot file
-
                 
 
 
