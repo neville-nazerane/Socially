@@ -158,9 +158,10 @@ stages:
                     varGroup: Socially-Prod
 
                 - script: |
-                    health=$(curl localhost:$(prodSlotPort)/health --fail --silent --show-error);
-                    echo 'status is: '$health
-                    if [ $health != 'Healthy' ]; then exit 125; fi
+                    curl localhost:$(prodSlotPort)/health --fail || exit 125
+                    # health=$(curl localhost:$(prodSlotPort)/health --fail --silent --show-error);
+                    # echo 'status is: '$health
+                    # if [ $health != 'Healthy' ]; then exit 125; fi
                   displayName: Health check on slot
                   failOnStderr: true
                   retryCountOnTaskFailure: 3
@@ -180,7 +181,7 @@ stages:
                 # stopping the main service 
                 - script: sudo systemctl stop $(servicename)-$(currentSlot).service
                   displayName: Stopping main service
-                  condition: ne(variables.currentSlot, '')
+                  condition: and(succeeded(), ne(variables.currentSlot, ''))
 
                 - template: recreate-service.yml
                   parameters:
