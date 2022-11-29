@@ -146,13 +146,9 @@ stages:
                     sudo mkdir $(destDirectory)-$(targetSlot)
                     sudo tar -xzvf packed.tar.gz -C $(destDirectory)-$(targetSlot)
 
-                    rm -rf *
                   displayName: Copying website
                   workingDirectory: $(Pipeline.Workspace)/packed
                   failOnStderr: true
-
-                - task: DeleteFiles@1
-                  displayName: Clean up
 
                 - template: recreate-service.yml
                   parameters:
@@ -193,6 +189,9 @@ stages:
                     servicename: $(servicename)-$(targetSlot)
                     varGroup: Socially-Prod
 
+                - task: DeleteFiles@1
+                  displayName: Clean up
+  
                 - script: echo $(targetSlot) | sudo tee $(prodSlotFile)
                   displayName: updating slot file
                 
