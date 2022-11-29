@@ -59,7 +59,7 @@ stages:
 
             displayName: Compile and Compress
 
-          - publish: '*.tar.gz'
+          - publish: packed.tar.gz, migration.tar.gz
             artifact: packed
 
   - stage: DeployDev
