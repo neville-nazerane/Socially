@@ -35,5 +35,5 @@ extends:
       identifier: sociallySite
       name: kestrel-sociallySite
     configs:
-      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_ENVIRONMENT: Development
     
