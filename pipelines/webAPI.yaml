@@ -171,7 +171,7 @@ stages:
                     sudo mkdir $(migrationDirectory)
                     sudo tar -xzvf migration.tar.gz -C $(migrationDirectory)
 
-                    dotnet $(migrationDirectory)/$(migrationProjectName).dll $(dbAdminConnectionString)
+                    dotnet $(migrationDirectory)/$(migrationProjectName).dll "$(dbAdminConnectionString)"
                     sudo rm -rf $(migrationDirectory)
                   displayName: Running migrations
                   workingDirectory: $(Pipeline.Workspace)/packed
