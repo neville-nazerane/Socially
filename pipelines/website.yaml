@@ -41,14 +41,15 @@ stages:
 
         steps:
         
-        - task: AzureFileCopy@5
+        - task: AzureFileCopy@4
           inputs:
             SourcePath: '$(Pipeline.Workspace)/packed/wwwroot'
             azureSubscription: 'socially'
             Destination: 'AzureBlob'
             storage: 'sociallyimages'
             ContainerName: '$web'
-            CleanTargetBeforeCopy: true
+
+
             
           
           
