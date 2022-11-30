@@ -16,6 +16,7 @@ trigger:
 variables:
   projectPath: src/Socially.Website
   projectName: Socially.Website
+  azCopyPath: src/Socially.Utils.SimpleAzCopy
 
 stages:
 
@@ -48,7 +49,7 @@ stages:
         - script: 
             dotnet run "$(webBlobConnString)" $web $(Pipeline.Workspace)/packed/wwwroot
           displayName: Dotnet AZ Deploy
-          workingDirectory: src/Socially.Utils.SimpleAzCopy
+          workingDirectory: $(azCopyPath)
 
         # - script: tree
         #   displayName: show em all
