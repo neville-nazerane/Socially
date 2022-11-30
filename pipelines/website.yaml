@@ -28,11 +28,11 @@ stages:
 
           - script: |
               dotnet publish $(projectPath) -c release -o published
-              mkdir publishes
-              tar -czvf publishes/packed.tar.gz -C published .
+              # mkdir publishes
+              # tar -czvf publishes/packed.tar.gz -C published .
             displayName: building blazor
 
-          - publish: publishes
+          - publish: published
             artifact: packed
 
   - stage: Deploy
