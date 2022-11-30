@@ -43,7 +43,7 @@ stages:
 
         steps:
 
-        - download: packed
+        - download: current
 
         - script: tree
           displayName: show em all
