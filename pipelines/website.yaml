@@ -30,10 +30,20 @@ stages:
           - publish: published
             artifact: packed
 
-  # - stage: Deploy
-  #   jobs:
-  #     - job: Deploying
-  #       steps:
+  - stage: Deploy
+    jobs:
+      - job: Deploying
+        steps:
+        
+        - task: AzureFileCopy@5
+          inputs:
+            SourcePath: '$(Pipeline.Workspace)/packed/wwwroot'
+            azureSubscription: 'socially'
+            Destination: 'AzureBlob'
+            storage: 'sociallyimages'
+            ContainerName: '$web'
+            CleanTargetBeforeCopy: true
+            
           
           
 
