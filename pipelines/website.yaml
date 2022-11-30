@@ -45,18 +45,21 @@ stages:
 
         - download: current
 
-        - script: tree
-          displayName: show em all
-          workingDirectory: $(Pipeline.Workspace)/packed 
+        - script: 
+            dotnet src/Socially.Utils.SimpleAzCopy "$(webBlobConnString)" $web $(Pipeline.Workspace)/packed/wwwroot
+
+        # - script: tree
+        #   displayName: show em all
+        #   workingDirectory: $(Pipeline.Workspace)/packed 
         
-        - task: AzureFileCopy@4
-          inputs:
-            SourcePath: '$(Pipeline.Workspace)/packed/wwwroot'
-            azureSubscription: 'socially'
-            Destination: AzureBlob
-            storage: 'sociallyimages'
-            ContainerName: '$web'
-            CleanTargetBeforeCopy: true
+        # - task: AzureFileCopy@4
+        #   inputs:
+        #     SourcePath: '$(Pipeline.Workspace)/packed/wwwroot'
+        #     azureSubscription: 'socially'
+        #     Destination: AzureBlob
+        #     storage: 'sociallyimages'
+        #     ContainerName: '$web'
+        #     CleanTargetBeforeCopy: true
 
         
 
