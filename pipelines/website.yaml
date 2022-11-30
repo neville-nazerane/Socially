@@ -43,6 +43,8 @@ stages:
 
         steps:
 
+        - download: packed
+
         - script: tree
           displayName: show em all
           workingDirectory: $(Pipeline.Workspace)/packed 
