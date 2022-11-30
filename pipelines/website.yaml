@@ -11,6 +11,7 @@ trigger:
       - src/Socially.Core
       - src/Socially.Apps.Consumer
       - src/Socially.Website
+      - src/Socially.Utils.SimpleAzCopy
       - pipelines/website.yaml
 
 variables:
