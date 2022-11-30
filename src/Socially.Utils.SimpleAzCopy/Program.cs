@@ -1,5 +1,8 @@
 ﻿
 using Azure.Storage.Blobs;
+using System.ComponentModel;
+using System.IO;
+using System.Reflection;
 
 const int argsCount = 3;
 
@@ -16,14 +19,31 @@ string srcPath = args[2];
 var blobClient = new BlobServiceClient(connString);
 var containerClient = blobClient.GetBlobContainerClient(containerName);
 
+var existingBlobs = containerClient.GetBlobsByHierarchyAsync();
+
+await foreach (var blob in existingBlobs)
+    await containerClient.DeleteBlobAsync(blob.Blob.Name);
+
 var files = Directory.GetFiles(srcPath, "*.*", SearchOption.AllDirectories);
 
-foreach (var file in files)
-{
-    Console.WriteLine($"Uploading {file}");
-    var fileInfo = new FileInfo(file);
-    string fullName = fileInfo.FullName.Replace(srcPath, "");
-    await using var stream = fileInfo.OpenRead();
-    await containerClient.UploadBlobAsync(fullName, stream);
-}
+await UploadAsync(string.Empty);
 
+
+async Task UploadAsync(string path)
+{
+    var fullPath = Path.Combine(srcPath, path);
+    foreach (var file in Directory.GetFiles(fullPath))
+    {
+        var fileInfo = new FileInfo(file);
+        string fullName = Path.Combine(path, fileInfo.Name);
+        await using var stream = fileInfo.OpenRead();
+        await containerClient.UploadBlobAsync(fullName, stream);
+    }
+    
+    foreach (var dir in Directory.GetDirectories(fullPath))
+    {
+        var info = new DirectoryInfo(dir);
+        var newPath = Path.Combine(path, info.Name);
+        await UploadAsync(newPath);
+    }
+}
