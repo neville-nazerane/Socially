@@ -50,9 +50,8 @@ stages:
           workingDirectory: $(Pipeline.Workspace)/packed 
         
         - task: AzureFileCopy@4
-          condition: false
           inputs:
-            SourcePath: '$(Pipeline.Workspace)/packed'
+            SourcePath: '$(Pipeline.Workspace)/packed/wwwroot'
             azureSubscription: 'socially'
             Destination: AzureBlob
             storage: 'sociallyimages'
