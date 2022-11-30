@@ -22,18 +22,23 @@ stages:
   - stage: Build
     jobs:
       - job: Building
+        pool:
+          vmImage: 'ubuntu-latest'
         steps:
 
           - script: |
               dotnet publish $(projectPath) -c release -o published
             displayName: building blazor
-            
+
           - publish: published
             artifact: packed
 
   - stage: Deploy
     jobs:
       - job: Deploying
+        pool:
+          vmImage: 'windows-latest'
+
         steps:
         
         - task: AzureFileCopy@5
