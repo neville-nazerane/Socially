@@ -1,6 +1,6 @@
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 
 trigger:
   branches:
@@ -26,7 +26,8 @@ stages:
 
           - script: |
               dotnet publish $(projectPath) -c release -o published
-
+            displayName: building blazor
+            
           - publish: published
             artifact: packed
 
