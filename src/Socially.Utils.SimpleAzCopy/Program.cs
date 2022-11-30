@@ -37,6 +37,8 @@ async Task UploadAsync(string path)
         var fileInfo = new FileInfo(file);
         string fullName = Path.Combine(path, fileInfo.Name);
         await using var stream = fileInfo.OpenRead();
+
+        Console.WriteLine("Uploading " + file);
         await containerClient.UploadBlobAsync(fullName, stream);
     }
     
