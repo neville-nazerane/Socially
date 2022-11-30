@@ -42,12 +42,17 @@ stages:
           vmImage: 'windows-latest'
 
         steps:
+
+        - script: tree
+          displayName: show em all
+          workingDirectory: $(Pipeline.Workspace)/packed 
         
         - task: AzureFileCopy@4
+          condition: false
           inputs:
             SourcePath: '$(Pipeline.Workspace)/packed'
             azureSubscription: 'socially'
-            Destination: 'AzureBlob'
+            Destination: AzureBlob
             storage: 'sociallyimages'
             ContainerName: '$web'
             CleanTargetBeforeCopy: true
