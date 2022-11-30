@@ -43,7 +43,9 @@ async Task UploadAsync(string path)
         Console.WriteLine("Uploading " + file);
         var blobClient = containerClient.GetBlobClient(fullName);
 
-        var blobHttpHeader = new BlobHttpHeaders { ContentType = typeProvider.Mappings[fileInfo.Extension] };
+        if (!typeProvider.Mappings.TryGetValue(fileInfo.Extension, out var ext))
+            ext = string.Empty;
+        var blobHttpHeader = new BlobHttpHeaders { ContentType = ext };
         await blobClient.UploadAsync(stream, new BlobUploadOptions { HttpHeaders = blobHttpHeader });
         
         //var info = await containerClient.UploadBlobAsync(fullName, stream);
