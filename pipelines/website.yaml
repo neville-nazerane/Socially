@@ -46,7 +46,9 @@ stages:
         - download: current
 
         - script: 
-            dotnet src/Socially.Utils.SimpleAzCopy "$(webBlobConnString)" $web $(Pipeline.Workspace)/packed/wwwroot
+            dotnet run "$(webBlobConnString)" $web $(Pipeline.Workspace)/packed/wwwroot
+          displayName: Dotnet AZ Deploy
+          workingDirectory: src/Socially.Utils.SimpleAzCopy
 
         # - script: tree
         #   displayName: show em all
