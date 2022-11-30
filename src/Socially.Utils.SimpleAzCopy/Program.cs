@@ -1,5 +1,7 @@
 ﻿
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using Microsoft.AspNetCore.StaticFiles;
 using System.ComponentModel;
 using System.IO;
 using System.Reflection;
@@ -15,6 +17,7 @@ string connString = args[0];
 string containerName = args[1];
 string srcPath = args[2];
 
+var typeProvider = new FileExtensionContentTypeProvider();
 
 var blobClient = new BlobServiceClient(connString);
 var containerClient = blobClient.GetBlobContainerClient(containerName);
@@ -37,9 +40,13 @@ async Task UploadAsync(string path)
         var fileInfo = new FileInfo(file);
         string fullName = Path.Combine(path, fileInfo.Name);
         await using var stream = fileInfo.OpenRead();
-
         Console.WriteLine("Uploading " + file);
-        await containerClient.UploadBlobAsync(fullName, stream);
+        var blobClient = containerClient.GetBlobClient(fullName);
+
+        var blobHttpHeader = new BlobHttpHeaders { ContentType = typeProvider.Mappings[fileInfo.Extension] };
+        await blobClient.UploadAsync(stream, new BlobUploadOptions { HttpHeaders = blobHttpHeader });
+        
+        var info = await containerClient.UploadBlobAsync(fullName, stream);
     }
     
     foreach (var dir in Directory.GetDirectories(fullPath))

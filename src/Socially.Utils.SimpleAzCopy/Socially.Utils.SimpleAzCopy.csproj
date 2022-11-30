@@ -9,6 +9,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Azure.Storage.Blobs" Version="12.14.1" />
+		<PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
 	</ItemGroup>
 
 </Project>
