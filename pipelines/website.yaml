@@ -28,9 +28,11 @@ stages:
 
           - script: |
               dotnet publish $(projectPath) -c release -o published
+              mkdir publishes
+              tar -czvf publishes/packed.tar.gz -C published .
             displayName: building blazor
 
-          - publish: published
+          - publish: publishes
             artifact: packed
 
   - stage: Deploy
@@ -43,7 +45,7 @@ stages:
         
         - task: AzureFileCopy@4
           inputs:
-            SourcePath: '$(Pipeline.Workspace)/packed/wwwroot'
+            SourcePath: '$(Pipeline.Workspace)/packed'
             azureSubscription: 'socially'
             Destination: 'AzureBlob'
             storage: 'sociallyimages'
