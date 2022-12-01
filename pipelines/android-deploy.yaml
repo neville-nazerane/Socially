@@ -2,6 +2,16 @@
 pool:
   vmImage: 'windows-latest'
 
+
+  trigger:
+    branches:
+      include:
+        - master
+    paths:
+      include:
+        - src\Socially.MobileApp
+        - pipelines/android-deploy.yaml
+
 variables:
   projectPath: src\Socially.MobileApp
   apkName: com.sociallyconnections.app-Signed.apk
@@ -32,6 +42,8 @@ stages:
         displayName: Deploy to AppCenter
         steps:
 
+          - checkout: none
+
           - download: current
 
           - task: AndroidSigning@3
@@ -47,7 +59,7 @@ stages:
             inputs:
               serverEndpoint: 'My App Center'
               appSlug: $(appCenterSlug)
-              appFile: $(Pipeline.Workspace)/$(artifactName)/$(apkPath)
+              appFile: $(Pipeline.Workspace)/app/$(apkPath)
               symbolsOption: 'Android'
               releaseNotesOption: 'input'
               releaseNotesInput: The lazy developer hasn''t added any actual release notes.
