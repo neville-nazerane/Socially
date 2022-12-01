@@ -1,0 +1,13 @@
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  projectPath: src\Socially.MobileApp
+
+
+steps:
+
+  - script: dotnet publish -c release -f net7.0-android
+    displayName: Compile MAUI android
+    workingDirectory: $(projectPath)
