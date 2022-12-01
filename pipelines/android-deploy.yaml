@@ -4,12 +4,53 @@ pool:
 
 variables:
   projectPath: src\Socially.MobileApp
+  apkName: com.sociallyconnections.app-Signed.apk
+  keyStoreFile: socially.jks
+  appCenterSlug: live.neville-live.com/Socially-Connections
+  appCenterGroup: d25fb82e-30c5-47ec-86a9-f59d5e2d8fe6
 
 
-steps:
+stages:
+  - stage: Compile
+    jobs:
+      - job: CompileMAUI
+        displayName: Compile MAUI
+        steps:
 
-  - script: dotnet publish -c release -f net7.0-android -o $(Build.ArtifactStagingDirectory)/published
-    displayName: Compile MAUI android
-    workingDirectory: $(projectPath)
+          - script: dotnet publish -c release -f net7.0-android -o $(Build.ArtifactStagingDirectory)/published
+            displayName: Compile MAUI android
+            workingDirectory: $(projectPath)
 
-  - publish: $(Build.ArtifactStagingDirectory)/published
+          - publish: $(Build.ArtifactStagingDirectory)/published
+            artifact: app
+            displayName: Deploy to publish
+
+
+  - stage: 
+    jobs:
+      - job: Deploy2AppCenter
+        displayName: Deploy to AppCenter
+        steps:
+
+          - download: current
+
+          - task: AndroidSigning@3
+            inputs:
+              apkFiles: $(Pipeline.Workspace)/app/$(apkName)
+              apksignerKeystoreFile: $(keyStoreFile)
+              apksignerKeystorePassword: '$(keystore.password)'
+              apksignerKeystoreAlias: 'key0'
+              apksignerKeyPassword: '$(key.password)'
+
+
+          - task: AppCenterDistribute@3
+            inputs:
+              serverEndpoint: 'My App Center'
+              appSlug: $(appCenterSlug)
+              appFile: $(Pipeline.Workspace)/$(artifactName)/$(apkPath)
+              symbolsOption: 'Android'
+              releaseNotesOption: 'input'
+              releaseNotesInput: The lazy developer hasn''t added any actual release notes.
+              destinationType: 'groups'
+              distributionGroupId: $(appCenterGroup)
+              

@@ -15,7 +15,7 @@
 		<ApplicationTitle>Socially.MobileApp</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.socially.mobileapp</ApplicationId>
+		<ApplicationId>com.sociallyconnections.app</ApplicationId>
 		<ApplicationIdGuid>b7d9f164-47c0-4fe2-9978-99b4f6df8c86</ApplicationIdGuid>
 
 		<!-- Versions -->
