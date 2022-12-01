@@ -19,6 +19,7 @@ variables:
   appCenterSlug: live.neville-live.com/Socially-Connections
   appCenterGroup: d25fb82e-30c5-47ec-86a9-f59d5e2d8fe6
   artifactName: androidApp
+  compileLocation: $(Build.ArtifactStagingDirectory)/published
 
 
 stages:
@@ -28,15 +29,24 @@ stages:
         displayName: Compile MAUI
         steps:
 
-          
+          - script: dotnet workload install maui-android
+            displayName: Installing maui workload
 
-          - script: |
-              dotnet workload install maui-android
-              dotnet publish -c release -f net7.0-android -o $(Build.ArtifactStagingDirectory)/published
+          - script: dotnet publish -c release -f net7.0-android -o $(compileLocation)
             displayName: Compile MAUI android
             workingDirectory: $(projectPath)
 
-          - publish: $(Build.ArtifactStagingDirectory)/published
+          
+          - task: AndroidSigning@3
+            inputs:
+              apkFiles: $(compileLocation)/$(apkName)
+              apksignerKeystoreFile: $(keyStoreFile)
+              apksignerKeystorePassword: $(keystore.password)
+              apksignerKeystoreAlias: key0
+              apksignerKeyPassword: $(key.password)
+
+
+          - publish: $(compileLocation)
             artifact: $(artifactName)
             displayName: Deploy to publish
 
@@ -50,15 +60,6 @@ stages:
           - checkout: none
 
           - download: current
-
-          - task: AndroidSigning@3
-            inputs:
-              apkFiles: $(Pipeline.Workspace)/$(artifactName)/$(apkName)
-              apksignerKeystoreFile: $(keyStoreFile)
-              apksignerKeystorePassword: $(keystore.password)
-              apksignerKeystoreAlias: key0
-              apksignerKeyPassword: $(key.password)
-
 
           - task: AppCenterDistribute@3
             inputs:
