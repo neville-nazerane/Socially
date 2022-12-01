@@ -1,6 +1,6 @@
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
 
 
   trigger:
@@ -51,19 +51,19 @@ stages:
             inputs:
               apkFiles: $(Pipeline.Workspace)/$(artifactName)/$(apkName)
               apksignerKeystoreFile: $(keyStoreFile)
-              apksignerKeystorePassword: '$(keystore.password)'
-              apksignerKeystoreAlias: 'key0'
-              apksignerKeyPassword: '$(key.password)'
+              apksignerKeystorePassword: $(keystore.password)
+              apksignerKeystoreAlias: key0
+              apksignerKeyPassword: $(key.password)
 
 
           - task: AppCenterDistribute@3
             inputs:
-              serverEndpoint: 'My App Center'
+              serverEndpoint: My App Center
               appSlug: $(appCenterSlug)
               appFile: $(Pipeline.Workspace)/$(artifactName)/$(apkName)
-              symbolsOption: 'Android'
-              releaseNotesOption: 'input'
+              symbolsOption: Android
+              releaseNotesOption: input
               releaseNotesInput: The lazy developer hasn''t added any actual release notes.
-              destinationType: 'groups'
+              destinationType: groups
               distributionGroupId: $(appCenterGroup)
               
