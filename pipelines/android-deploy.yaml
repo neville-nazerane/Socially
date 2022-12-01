@@ -20,6 +20,7 @@ variables:
   appCenterGroup: d25fb82e-30c5-47ec-86a9-f59d5e2d8fe6
   artifactName: androidApp
   compileLocation: $(Build.ArtifactStagingDirectory)/published
+  androidManifestLocation: $(projectPath)/Platforms/Android/AndroidManifest.xml
 
 
 stages:
@@ -32,10 +33,15 @@ stages:
           - script: dotnet workload install maui-android
             displayName: Installing maui workload
 
+                    
+          - script: |
+              xmlstarlet edit --update "/manifest/@android:versionName" --value "1.0.$(Build.BuildId)" $(androidManifestLocation)
+              xmlstarlet edit --update "/manifest/@android:versionCode" --value "$(Build.BuildId)" $(androidManifestLocation)
+            displayName: Updating version
+
           - script: dotnet publish -c release -f net7.0-android -o $(compileLocation)
             displayName: Compile MAUI android
             workingDirectory: $(projectPath)
-
           
           - task: AndroidSigning@3
             inputs:
