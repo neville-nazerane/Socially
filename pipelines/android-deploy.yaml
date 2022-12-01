@@ -28,7 +28,11 @@ stages:
         displayName: Compile MAUI
         steps:
 
-          - script: dotnet publish -c release -f net7.0-android -o $(Build.ArtifactStagingDirectory)/published
+          
+
+          - script: |
+              dotnet workload install maui-android
+              dotnet publish -c release -f net7.0-android -o $(Build.ArtifactStagingDirectory)/published
             displayName: Compile MAUI android
             workingDirectory: $(projectPath)
 
