@@ -9,7 +9,7 @@ pool:
         - master
     paths:
       include:
-        - src\Socially.MobileApp
+        - src/Socially.MobileApp
         - pipelines/android-deploy.yaml
 
 variables:
