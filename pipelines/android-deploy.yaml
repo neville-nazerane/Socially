@@ -13,7 +13,7 @@ pool:
         - pipelines/android-deploy.yaml
 
 variables:
-  projectPath: src\Socially.MobileApp
+  projectPath: src/Socially.MobileApp
   apkName: com.sociallyconnections.app-Signed.apk
   keyStoreFile: socially.jks
   appCenterSlug: live.neville-live.com/Socially-Connections
