@@ -8,8 +8,8 @@ variables:
 
 steps:
 
-  - script: dotnet publish -c release -f net7.0-android -o published
+  - script: dotnet publish -c release -f net7.0-android -o $(Build.ArtifactStagingDirectory)/published
     displayName: Compile MAUI android
     workingDirectory: $(projectPath)
 
-  - publish: published
+  - publish: $(Build.ArtifactStagingDirectory)/published
