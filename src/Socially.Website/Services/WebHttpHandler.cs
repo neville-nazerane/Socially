@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
+using Socially.Apps.Consumer.Services;
 using Socially.Apps.Consumer.Utils;
 using Socially.Models;
 using System;
@@ -12,12 +13,11 @@ namespace Socially.Website.Services
     public class WebHttpHandler : ApiHttpHandler
     {
         private static TaskCompletionSource renewalLock;
+        private readonly IAuthAccess _authAccess;
 
-        private readonly AuthProvider _authService;
-
-        public WebHttpHandler(AuthProvider authService)
+        public WebHttpHandler(IAuthAccess authAccess)
         {
-            _authService = authService;
+            _authAccess = authAccess;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -35,7 +35,8 @@ namespace Socially.Website.Services
 
         private async ValueTask RenewTokenIfExpired(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var expiary = await _authService.GetExiparyAsync(cancellationToken);
+            var storedToken = await _authAccess.GetStoredTokenAsync();
+            var expiary = storedToken?.Expiary;
             if (expiary.HasValue && DateTime.UtcNow > expiary)
             {
                 await Console.Out.WriteLineAsync($"Detected expired token {expiary.Value.ToLocalTime()}");
@@ -45,11 +46,11 @@ namespace Socially.Website.Services
             await UseTokenAsync(request, cancellationToken);
         }
 
-        private async ValueTask UseTokenAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        private async ValueTask UseTokenAsync(HttpRequestMessage request, CancellationToken _)
         {
-            var token = await _authService.GetTokenAsync(cancellationToken);
+            var token = await _authAccess.GetStoredTokenAsync();
             if (token is not null)
-                request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", token);
+                request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", token.AccessToken);
         }
 
         private async Task ForceRenewTokenAsync(string baseUrl, CancellationToken cancellationToken = default)
@@ -67,7 +68,7 @@ namespace Socially.Website.Services
 
                     await Console.Out.WriteLineAsync("Refresing token");
                     var renewRequest = new HttpRequestMessage(HttpMethod.Post, $"{baseUrl}/renewToken");
-                    var info = await _authService.GetTokenInfoAsync(cancellationToken);
+                    var info = await _authAccess.GetStoredTokenAsync();
 
                     // if nothing stored in ram or local storage
                     if (info is null) return;
@@ -81,7 +82,7 @@ namespace Socially.Website.Services
                     await Console.Out.WriteLineAsync("Done refreshing token");
                     res.EnsureSuccessStatusCode();
                     var tokenResponse = await res.Content.ReadFromJsonAsync<TokenResponseModel>(cancellationToken: cancellationToken);
-                    await _authService.SetAsync(tokenResponse, cancellationToken);
+                    await _authAccess.SetStoredTokenAsync(tokenResponse);
 
                     renewalLock = null;
                     lockInstance.TrySetResult();

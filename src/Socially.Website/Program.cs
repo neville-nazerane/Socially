@@ -23,10 +23,12 @@ builder.Services.AddScoped(sp => new HttpClient(sp.GetService<WebHttpHandler>())
 builder.Services.AddScoped<IApiConsumer, ApiConsumer>();
 
 builder.Services.AddAuthorizationCore().AddOptions();
-builder.Services.AddSingleton<AuthenticationStateProvider, AuthProvider>()
+builder.Services
                 .AddSingleton(typeof(ICachedStorage<,>), typeof(CachedStorage<,>))
 
-                .AddScoped<CachedContext>()
-                .AddSingleton(p => (AuthProvider) p.GetService<AuthenticationStateProvider>());
+                .AddSingleton<AuthenticationStateProvider, AuthProvider>()
+                .AddSingleton(p => (AuthProvider) p.GetService<AuthenticationStateProvider>())
+                .AddSingleton(p => (IAuthAccess) p.GetService<AuthenticationStateProvider>())
+                .AddScoped<CachedContext>();
 
 await builder.Build().RunAsync();

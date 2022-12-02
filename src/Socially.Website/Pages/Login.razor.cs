@@ -29,7 +29,7 @@ namespace Socially.Website.Pages
         public IApiConsumer Consumer { get; set; }
 
         [Inject]
-        public AuthenticationStateProvider AuthProvider { get; set; }
+        public IAuthAccess AuthProvider { get; set; }
 
         bool isSignup = false;
 
@@ -74,7 +74,7 @@ namespace Socially.Website.Pages
             try
             {
                 var res = await Consumer.LoginAsync(loginModel);
-                await ((AuthProvider)AuthProvider).SetAsync(res);
+                await AuthProvider.SetStoredTokenAsync(res);
             }
             catch (ErrorForClientException ex)
             {
