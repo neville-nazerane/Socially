@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Configuration;
 using Socially.Website.Services;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace Socially.Website.Components
         public IConfiguration Config { get; set; }
 
         [Inject]
-        public AuthProvider AuthProvider { get; set; }
+        public AuthenticationStateProvider AuthProvider { get; set; }
 
         [Inject]
         public CachedContext Context { get; set; }

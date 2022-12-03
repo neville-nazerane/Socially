@@ -1,4 +1,5 @@
-﻿using Socially.Apps.Consumer.Services;
+﻿using Microsoft.AspNetCore.Components.Authorization;
+using Socially.Apps.Consumer.Services;
 using Socially.Models;
 using Socially.Website.Models;
 using System;
@@ -15,14 +16,14 @@ namespace Socially.Website.Services
     {
         private readonly IApiConsumer _consumer;
         private readonly ICachedStorage<int, UserSummaryModel> _userStorage;
-        private readonly AuthProvider _authProvider;
+        private readonly AuthenticationStateProvider _authProvider;
         UserSummaryModel _currentProfileInfo;
         TaskCompletionSource _currentProfileLock;
 
 
         public CachedContext(IApiConsumer consumer,
-                            ICachedStorage<int, UserSummaryModel> userStorage,
-                             AuthProvider authProvider)
+                             ICachedStorage<int, UserSummaryModel> userStorage,
+                             AuthenticationStateProvider authProvider)
         {
             _authProvider = authProvider;
             _authProvider.AuthenticationStateChanged += AuthProvider_AuthenticationStateChanged;

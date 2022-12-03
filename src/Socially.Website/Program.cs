@@ -18,8 +18,8 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 var apiEndpoint = builder.Configuration["apiEndpoint"];
 
 builder.Services.AddBlazorApplicationInsights();
-builder.Services.AddTransient<HttpClientHandler>();
-builder.Services.AddScoped(sp => new HttpClient(sp.GetService<WebHttpHandler>()) { BaseAddress = new Uri(apiEndpoint) });
+builder.Services.AddTransient<ApiHttpHandler>();
+builder.Services.AddScoped(sp => new HttpClient(sp.GetService<ApiHttpHandler>()) { BaseAddress = new Uri(apiEndpoint) });
 builder.Services.AddScoped<IApiConsumer, ApiConsumer>();
 
 builder.Services.AddAuthorizationCore().AddOptions();

@@ -28,7 +28,7 @@ namespace Socially.Apps.Consumer.Utils
             await RenewTokenIfExpired(request, cancellationToken);
             var response = await base.SendAsync(request, cancellationToken);
             await ValidateBadRequestAsync(response, cancellationToken);
-            await ValidateAuthTokenAsync(request, cancellationToken);
+            await ValidateAuthTokenAsync(response, cancellationToken);
             return response;
         }
 
@@ -42,7 +42,7 @@ namespace Socially.Apps.Consumer.Utils
         }
 
 
-        private async Task<HttpResponseMessage> ValidateAuthTokenAsync(HttpResponseMessage res, CancellationToken cancellationToken)
+        private async ValueTask<HttpResponseMessage> ValidateAuthTokenAsync(HttpResponseMessage res, CancellationToken cancellationToken)
         {
             var request = res.RequestMessage;
             if (res.StatusCode == System.Net.HttpStatusCode.Unauthorized || res.StatusCode == System.Net.HttpStatusCode.Forbidden)
