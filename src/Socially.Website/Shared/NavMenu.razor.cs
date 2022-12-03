@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Socially.Apps.Consumer.Services;
 using Socially.Models;
 using Socially.Website.Services;
 using System.Threading.Tasks;
@@ -11,12 +12,12 @@ namespace Socially.Website.Shared
         private UserSummaryModel profileInfo;
 
         [Inject]
-        public AuthProvider AuthProvider { get; set; }
+        public IAuthAccess AuthProvider { get; set; }
 
         [Inject]
         public CachedContext CachedContext { get; set; }
 
-        async Task LogoutAsync() => await AuthProvider.SetAsync(null);
+        async Task LogoutAsync() => await AuthProvider.SetStoredTokenAsync(null);
 
         protected override async Task OnInitializedAsync()
         {

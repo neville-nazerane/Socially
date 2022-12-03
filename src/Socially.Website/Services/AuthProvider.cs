@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
+using Socially.Apps.Consumer.Models;
 using Socially.Apps.Consumer.Services;
 using Socially.Models;
 using Socially.Website.Models;
@@ -13,12 +14,17 @@ using System.Threading.Tasks;
 
 namespace Socially.Website.Services
 {
-    public class AuthProvider : AuthenticationStateProvider
+    public class AuthProvider : AuthenticationStateProvider, IAuthAccess
     {
+
         private const string tokenKey = "tokenData";
-        private TokenResponseModel tokenData;
-        private DateTime? expiary;
+
         private readonly IJSRuntime _jSRuntime;
+
+        private StoredToken storedToken;
+        private TaskCompletionSource<StoredToken> setterLock;
+
+
 
         private static ClaimsPrincipal FailedLogin
             => new (new ClaimsIdentity(Array.Empty<Claim>(), string.Empty));
@@ -30,7 +36,8 @@ namespace Socially.Website.Services
 
         private async ValueTask<ClaimsPrincipal> GetPrincipalAsync()
         {
-            var tokenStr = await GetTokenAsync();
+            var stored = await GetStoredTokenAsync();
+            var tokenStr = stored?.AccessToken;
             if (string.IsNullOrEmpty(tokenStr)) return null;
             var handler = new JwtSecurityTokenHandler();
             var token = handler.ReadJwtToken(tokenStr);
@@ -43,62 +50,66 @@ namespace Socially.Website.Services
             var login = (await GetPrincipalAsync()) ?? FailedLogin;
             return new AuthenticationState(login);
         }
-         
-        /// <summary>
-        /// Get token info stored in ram or local storage
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns>
-        /// Null if nothing is stored on ram or local
-        /// </returns>
-        public async ValueTask<TokenResponseModel> GetTokenInfoAsync(CancellationToken cancellationToken = default)
-        {
-            await LazyLoadAsync(cancellationToken);
-            return tokenData;
-        }
 
-        public async ValueTask<string> GetTokenAsync(CancellationToken cancellationToken = default)
+        public async ValueTask<StoredToken> GetStoredTokenAsync()
         {
-            await LazyLoadAsync(cancellationToken);
-            return tokenData?.AccessToken;
-        }
-
-        public async ValueTask<DateTime?> GetExiparyAsync(CancellationToken cancellationToken = default)
-        {
-            await LazyLoadAsync(cancellationToken);
-            return expiary;
-        }
-
-        private async ValueTask LazyLoadAsync(CancellationToken cancellationToken = default)
-        {
-            if (tokenData is null)
+            try
             {
-                string dataStr = await _jSRuntime.InvokeAsync<string>("getData", tokenKey);
-                if (dataStr is null)
+                if (setterLock is not null) return await setterLock.Task;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to wait for lock: {ex.Message}");
+            }
+
+            if (storedToken is null)
+            {
+                try
                 {
-                    tokenData = null;
-                    return;
+                    string dataStr = await _jSRuntime.InvokeAsync<string>("getData", tokenKey);
+                    if (dataStr is not null)
+                        storedToken = JsonSerializer.Deserialize<StoredToken>(dataStr);
                 }
-                tokenData = JsonSerializer.Deserialize<TokenResponseModel>(dataStr);
-                if (tokenData is null)
-                    return;
-
-                var readToken = new JwtSecurityTokenHandler().ReadJwtToken(tokenData.AccessToken);
-
-                expiary = readToken.ValidTo;
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return null;
+                }
             }
+
+            return storedToken;
         }
 
-        public async ValueTask SetAsync(TokenResponseModel res, CancellationToken cancellationToken = default)
+        public async ValueTask SetStoredTokenAsync(TokenResponseModel res)
         {
-            tokenData = res;
-            if (res is null)
+            if (setterLock is not null) await setterLock.Task;
+
+            setterLock = new();
+
+            try
             {
-                await _jSRuntime.InvokeVoidAsync("removeData", tokenKey);
+                storedToken = new()
+                {
+                    AccessToken = res.AccessToken,
+                    RefreshToken = res.RefreshToken,
+                    Expiary = DateTime.UtcNow.AddSeconds(res.ExpiresIn)
+                };
+
+                if (res is null)
+                    await _jSRuntime.InvokeVoidAsync("removeData", tokenKey);
+                else
+                    await _jSRuntime.InvokeVoidAsync("setData", tokenKey, JsonSerializer.Serialize(storedToken));
+                NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+                setterLock.TrySetResult(storedToken);
             }
-            else 
-                await _jSRuntime.InvokeVoidAsync("setData", tokenKey, JsonSerializer.Serialize(res));
-            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+            catch (Exception ex)
+            {
+                setterLock.TrySetException(ex);
+            }
+            finally
+            {
+                setterLock = null;
+            }
         }
 
     }

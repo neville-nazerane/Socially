@@ -19,9 +19,7 @@ namespace Socially.Website.Shared
             if (firstRender)
             {
                 await JSRuntime.InvokeVoidAsync("window.onBlazorLoaded");
-                if (!string.IsNullOrEmpty(Configuration["appAI"]))
-                    await JSRuntime.InvokeVoidAsync("window.executeAppInsights", Configuration["appAI"]);
-
+                await JSRuntime.InvokeVoidAsync("window.executeAppInsights", Configuration["appAI"]);
             }
         }
     }
