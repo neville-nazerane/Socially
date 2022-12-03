@@ -22,12 +22,17 @@ namespace Socially.Website.Services
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            return await ValidateAuthTokenAsync(request, cancellationToken);
+        }
+
+        private async Task<HttpResponseMessage> ValidateAuthTokenAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
             await RenewTokenIfExpired(request, cancellationToken);
             var res = await base.SendAsync(request, cancellationToken);
             if (res.StatusCode == System.Net.HttpStatusCode.Unauthorized || res.StatusCode == System.Net.HttpStatusCode.Forbidden)
             {
                 await ForceRenewTokenAsync($"{request.RequestUri.Scheme}://{request.RequestUri.Authority}", cancellationToken);
-                await UseTokenAsync(request, cancellationToken);
+                await UseTokenAsync(request);
                 res = await base.SendAsync(request, cancellationToken);
             }
             return res;
@@ -43,10 +48,10 @@ namespace Socially.Website.Services
                 await ForceRenewTokenAsync($"{request.RequestUri.Scheme}://{request.RequestUri.Authority}", cancellationToken);
             }
 
-            await UseTokenAsync(request, cancellationToken);
+            await UseTokenAsync(request);
         }
 
-        private async ValueTask UseTokenAsync(HttpRequestMessage request, CancellationToken _)
+        private async ValueTask UseTokenAsync(HttpRequestMessage request)
         {
             var token = await _authAccess.GetStoredTokenAsync();
             if (token is not null)

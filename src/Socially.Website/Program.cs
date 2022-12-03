@@ -18,7 +18,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 var apiEndpoint = builder.Configuration["apiEndpoint"];
 
 builder.Services.AddBlazorApplicationInsights();
-builder.Services.AddTransient<WebHttpHandler>();
+builder.Services.AddTransient<HttpClientHandler>();
 builder.Services.AddScoped(sp => new HttpClient(sp.GetService<WebHttpHandler>()) { BaseAddress = new Uri(apiEndpoint) });
 builder.Services.AddScoped<IApiConsumer, ApiConsumer>();
 
@@ -27,7 +27,6 @@ builder.Services
                 .AddSingleton(typeof(ICachedStorage<,>), typeof(CachedStorage<,>))
 
                 .AddSingleton<AuthenticationStateProvider, AuthProvider>()
-                .AddSingleton(p => (AuthProvider) p.GetService<AuthenticationStateProvider>())
                 .AddSingleton(p => (IAuthAccess) p.GetService<AuthenticationStateProvider>())
                 .AddScoped<CachedContext>();
 
