@@ -9,9 +9,6 @@ var config = new ConfigurationBuilder().AddUserSecrets("Socially.WebAPI").Build(
 var builder = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlServer(config.GetConnectionString("db"));
 var dbContext = new ApplicationDbContext(builder.Options);
 
-
-
-
 //string query = "hello";
 //int userId = 1;
 
