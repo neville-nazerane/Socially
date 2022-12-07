@@ -1,12 +1,12 @@
 
 //// <GENERATED CODE> //////
-namespace Socially.MobileApp.Models.Mappings
+namespace Socially.MobileApp.Logic.Models.Mappings
 {
 
     public static class PostDisplayModelMappingExtensions 
     {
 
-        public static Socially.Models.PostDisplayModel ToModel(this Socially.MobileApp.Models.PostDisplayModel model)
+        public static Socially.Models.PostDisplayModel ToModel(this Socially.MobileApp.Logic.Models.PostDisplayModel model)
             => model is null ? null : 
               new() 
               {
@@ -18,7 +18,7 @@ namespace Socially.MobileApp.Models.Mappings
                   LikeCount = model.LikeCount
               };
 
-        public static Socially.MobileApp.Models.PostDisplayModel ToMobileModel(this Socially.Models.PostDisplayModel model)
+        public static Socially.MobileApp.Logic.Models.PostDisplayModel ToMobileModel(this Socially.Models.PostDisplayModel model)
             => model is null ? null : 
               new() 
               {

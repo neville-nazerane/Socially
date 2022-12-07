@@ -2,10 +2,10 @@
 //// <GENERATED CODE> //////
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Socially.MobileApp.Models
+namespace Socially.MobileApp.Logic.Models
 {
     
-    public partial class PasswordResetModel : ObservableObject
+    public partial class PasswordResetModel : ObservableValidator
     {
         
             [ObservableProperty]

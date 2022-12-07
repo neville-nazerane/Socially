@@ -2,12 +2,15 @@
 //// <GENERATED CODE> //////
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Socially.MobileApp.Models
+namespace Socially.MobileApp.Logic.Models
 {
     
-    public partial class LoginModel : ObservableObject
+    public partial class SignUpModel : ObservableValidator
     {
         
+            [ObservableProperty]
+            System.String email;
+
             [ObservableProperty]
             System.String userName;
 
@@ -15,7 +18,7 @@ namespace Socially.MobileApp.Models
             System.String password;
 
             [ObservableProperty]
-            System.String source;
+            System.String confirmPassword;
             
     }
 

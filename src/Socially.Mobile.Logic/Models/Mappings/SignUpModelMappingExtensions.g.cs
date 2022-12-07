@@ -1,12 +1,12 @@
 
 //// <GENERATED CODE> //////
-namespace Socially.MobileApp.Models.Mappings
+namespace Socially.MobileApp.Logic.Models.Mappings
 {
 
     public static class SignUpModelMappingExtensions 
     {
 
-        public static Socially.Models.SignUpModel ToModel(this Socially.MobileApp.Models.SignUpModel model)
+        public static Socially.Models.SignUpModel ToModel(this Socially.MobileApp.Logic.Models.SignUpModel model)
             => model is null ? null : 
               new() 
               {
@@ -16,7 +16,7 @@ namespace Socially.MobileApp.Models.Mappings
                   ConfirmPassword = model.ConfirmPassword
               };
 
-        public static Socially.MobileApp.Models.SignUpModel ToMobileModel(this Socially.Models.SignUpModel model)
+        public static Socially.MobileApp.Logic.Models.SignUpModel ToMobileModel(this Socially.Models.SignUpModel model)
             => model is null ? null : 
               new() 
               {

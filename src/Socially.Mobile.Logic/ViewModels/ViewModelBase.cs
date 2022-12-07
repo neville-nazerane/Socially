@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Socially.MobileApp.ViewModels
+namespace Socially.Mobile.Logic.ViewModels
 {
     public class ViewModelBase : ObservableObject
     {

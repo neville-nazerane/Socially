@@ -1,16 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Socially.Apps.Consumer.Services;
-using Socially.MobileApp.Models;
-using Socially.MobileApp.Models.Mappings;
+using Socially.MobileApp.Logic.Models;
+using Socially.MobileApp.Logic.Models.Mappings;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Socially.MobileApp.ViewModels
+namespace Socially.Mobile.Logic.ViewModels
 {
 
     public partial class LoginViewModel : ViewModelBase
@@ -21,19 +22,25 @@ namespace Socially.MobileApp.ViewModels
         [ObservableProperty]
         LoginModel loginModel;
 
+        [ObservableProperty]
+        ObservableCollection<ValidationResult> loginValidation;
+
         public LoginViewModel(IApiConsumer apiConsumer, IAuthAccess authAccess)
         {
+            loginModel = new();
+            loginValidation = new();
             _apiConsumer = apiConsumer;
             _authAccess = authAccess;
         }
 
         [RelayCommand]
-        async Task AttemptLogin()
+        public async Task AttemptLoginAsync()
         {
-            var res = await _apiConsumer.LoginAsync(loginModel.ToModel());
-            await _authAccess.SetStoredTokenAsync(res);
-
-            
+            if (loginModel.Validate(loginValidation))
+            {
+                var res = await _apiConsumer.LoginAsync(loginModel.ToModel());
+                await _authAccess.SetStoredTokenAsync(res);
+            }
         }
 
     }

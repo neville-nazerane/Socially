@@ -2,10 +2,10 @@
 //// <GENERATED CODE> //////
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Socially.MobileApp.Models
+namespace Socially.MobileApp.Logic.Models
 {
     
-    public partial class PostDisplayModel : ObservableObject
+    public partial class PostDisplayModel : ObservableValidator
     {
         
             [ObservableProperty]

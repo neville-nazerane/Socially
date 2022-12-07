@@ -63,10 +63,11 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Socially.Apps.Consumer\Socially.Apps.Consumer.csproj" />
+		<ProjectReference Include="..\Socially.Mobile.Logic\Socially.Mobile.Logic.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Models\Mappings\" />
+	  <Folder Include="Pages\" />
 	</ItemGroup>
 
 </Project>

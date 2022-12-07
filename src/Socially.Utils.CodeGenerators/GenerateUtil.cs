@@ -10,7 +10,7 @@ namespace Socially.Utils.CodeGenerators
     {
 
 
-        public static string MakeObservableClass(Type type,
+        public static string MakeObservableValidatorClass(Type type,
                                                  string destNameSpace)
         {
 
@@ -28,7 +28,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 namespace {destNameSpace}
 {{
     
-    public partial class {type.Name} : ObservableObject
+    public partial class {type.Name} : ObservableValidator
     {{
         {string.Join("", fieldStrings)}            
     }}
