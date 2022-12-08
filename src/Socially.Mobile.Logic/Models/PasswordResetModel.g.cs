@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Socially.MobileApp.Logic.Models
 {
     
-    public partial class PasswordResetModel : ObservableValidator
+    public partial class PasswordResetModel : ObservableObject
     {
 
         private readonly ValidationContext validationContext;

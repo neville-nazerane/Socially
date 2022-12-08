@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Socially.MobileApp.Logic.Models
 {
     
-    public partial class SignUpModel : ObservableValidator
+    public partial class SignUpModel : ObservableObject
     {
 
         private readonly ValidationContext validationContext;
