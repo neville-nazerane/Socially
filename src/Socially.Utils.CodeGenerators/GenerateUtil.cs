@@ -24,13 +24,33 @@ namespace Socially.Utils.CodeGenerators
             return $@"
 //// <GENERATED CODE> //////
 using CommunityToolkit.Mvvm.ComponentModel;
+using {destNameSpace}.Mappings;
+using System.ComponentModel.DataAnnotations;
 
 namespace {destNameSpace}
 {{
     
     public partial class {type.Name} : ObservableValidator
     {{
-        {string.Join("", fieldStrings)}            
+
+        private readonly ValidationContext validationContext;
+        private readonly {type.FullName} model;
+
+        {string.Join("", fieldStrings)}        
+
+
+        public {type.Name}()
+        {{
+            model = new();
+            validationContext = new ValidationContext(model);
+        }}
+
+        public bool Validate(ICollection<ValidationResult> errors)
+        {{
+            this.ToModel(model);
+            return Validator.TryValidateObject(model, new ValidationContext(model), errors);
+        }}
+
     }}
 
 }}
@@ -51,11 +71,14 @@ namespace {destNameSpace}
             var fields = srcType.GetProperties()
                                 .Select(p => $@"
                     {p.Name} = model.{p.Name}
-".Replace("\n", string.Empty)
- .Replace("\r", string.Empty)
- .Replace("\t", string.Empty)
- .Trim())
-                                .ToArray();
+".ClearNewLines())
+                    .ToArray();
+
+            var updateFields = srcType.GetProperties()
+                                .Select(p => $@"
+                    dest.{p.Name} = model.{p.Name};
+".ClearNewLines())
+                    .ToArray();
 
 
             string methodBody = $@"=> model is null ? null : 
@@ -63,6 +86,12 @@ namespace {destNameSpace}
               {{
                   {string.Join(",\n                  ", fields).TrimStart()}
               }};";
+
+            string updateMethodBody = $@"
+        {{
+            {string.Join("\n            ", updateFields).TrimStart()}
+            return dest;
+        }}".TrimStart();
 
 
             return $@"
@@ -76,8 +105,14 @@ namespace {mappingNameSpace}
         public static {srcName} To{srcLabel}(this {destName} model)
             {methodBody}
 
+        public static {srcName} To{srcLabel}(this {destName} model, {srcName} dest)
+        {updateMethodBody}
+
         public static {destName} To{destLabel}(this {srcName} model)
             {methodBody}
+
+        public static {destName} To{destLabel}(this {srcName} model, {destName} dest)
+        {updateMethodBody}
 
     }}
 

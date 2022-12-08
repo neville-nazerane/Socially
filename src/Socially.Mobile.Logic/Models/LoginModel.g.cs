@@ -6,20 +6,24 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Socially.MobileApp.Logic.Models
 {
-
-    public partial class LoginModel : ObservableObject
+    
+    public partial class LoginModel : ObservableValidator
     {
-        private readonly Socially.Models.LoginModel model;
+
         private readonly ValidationContext validationContext;
+        private readonly Socially.Models.LoginModel model;
 
-        [ObservableProperty]
-        System.String userName;
+        
+            [ObservableProperty]
+            System.String userName;
 
-        [ObservableProperty]
-        System.String password;
+            [ObservableProperty]
+            System.String password;
 
-        [ObservableProperty]
-        System.String source;
+            [ObservableProperty]
+            System.String source;
+        
+
 
         public LoginModel()
         {
