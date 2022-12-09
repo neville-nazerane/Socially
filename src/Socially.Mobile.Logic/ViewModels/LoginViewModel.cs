@@ -1,6 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Socially.Apps.Consumer.Exceptions;
 using Socially.Apps.Consumer.Services;
+using Socially.Mobile.Logic.Services;
+using Socially.Mobile.Logic.Utils;
 using Socially.MobileApp.Logic.Models;
 using Socially.MobileApp.Logic.Models.Mappings;
 using System;
@@ -18,6 +21,9 @@ namespace Socially.Mobile.Logic.ViewModels
     {
         private readonly IApiConsumer _apiConsumer;
         private readonly IAuthAccess _authAccess;
+        private readonly ISocialLogger _socialLogger;
+        [ObservableProperty]
+        string errorMessage;
 
         [ObservableProperty]
         LoginModel loginModel;
@@ -25,12 +31,15 @@ namespace Socially.Mobile.Logic.ViewModels
         [ObservableProperty]
         ObservableCollection<ValidationResult> loginValidation;
 
-        public LoginViewModel(IApiConsumer apiConsumer, IAuthAccess authAccess)
+        public LoginViewModel(IApiConsumer apiConsumer, 
+                              IAuthAccess authAccess,
+                              ISocialLogger socialLogger)
         {
             loginModel = new();
             loginValidation = new();
             _apiConsumer = apiConsumer;
             _authAccess = authAccess;
+            _socialLogger = socialLogger;
         }
 
         [RelayCommand]
@@ -38,8 +47,29 @@ namespace Socially.Mobile.Logic.ViewModels
         {
             if (loginModel.Validate(loginValidation))
             {
-                var res = await _apiConsumer.LoginAsync(loginModel.ToModel());
-                await _authAccess.SetStoredTokenAsync(res);
+                try
+                {
+                    var res = await _apiConsumer.LoginAsync(loginModel.ToModel());
+                    try
+                    {
+                        await _authAccess.SetStoredTokenAsync(res);
+                    }
+                    catch (Exception ex)
+                    {
+                        _socialLogger.LogException(ex);
+                        ErrorMessage = "Failed to store login information";
+                    }
+                }
+                catch (ErrorForClientException clientException)
+                {
+                    LoginValidation = clientException.ToObservableCollection();
+                }
+                catch (Exception ex)
+                {
+                    _socialLogger.LogException(ex);
+                    ErrorMessage = "Failed to login";
+                }
+
             }
         }
 
