@@ -9,7 +9,6 @@ namespace Socially.Utils.CodeGenerators
     internal class GenerateUtil
     {
 
-
         public static string MakeObservableValidatorClass(Type type,
                                                  string destNameSpace)
         {

@@ -12,6 +12,7 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
         private Mock<IApiConsumer> mockedApiConsumer;
         private Mock<IAuthAccess> mockedAuthAccess;
         private Mock<ISocialLogger> mockedLogger;
+        private Mock<INavigation> mockedNavigation;
         private LoginViewModel viewModel;
 
         private void Init()
@@ -19,7 +20,8 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
             mockedApiConsumer = new Mock<IApiConsumer>();
             mockedAuthAccess = new Mock<IAuthAccess>();
             mockedLogger = new Mock<ISocialLogger>();
-            viewModel = new LoginViewModel(mockedApiConsumer.Object, mockedAuthAccess.Object, mockedLogger.Object);
+            mockedNavigation = new Mock<INavigation>();
+            viewModel = new LoginViewModel(mockedApiConsumer.Object, mockedAuthAccess.Object, mockedNavigation.Object, mockedLogger.Object);
         }
 
         [Fact]
@@ -40,6 +42,8 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
 
             mockedAuthAccess.Verify(a => a.SetStoredTokenAsync(It.IsAny<TokenResponseModel>()),
                                     Times.Never);
+
+            mockedNavigation.Verify(a => a.GoToHomeAsync(), Times.Never);
 
             bool isValidUsername = viewModel.LoginValidation.IsValidProperty(nameof(LoginModel.UserName));
             bool isValidPassword = viewModel.LoginValidation.IsValidProperty(nameof(LoginModel.Password));
@@ -67,6 +71,9 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
 
             mockedAuthAccess.Verify(a => a.SetStoredTokenAsync(It.IsAny<TokenResponseModel>()),
                                     Times.Once);
+
+            mockedNavigation.Verify(a => a.GoToHomeAsync(), Times.Once);
+
 
             Assert.Null(viewModel.ErrorMessage);
 
@@ -98,6 +105,9 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
             mockedAuthAccess.Verify(a => a.SetStoredTokenAsync(It.IsAny<TokenResponseModel>()),
                                     Times.Never);
 
+            mockedNavigation.Verify(a => a.GoToHomeAsync(), Times.Never);
+
+
             bool isValidUsername = viewModel.LoginValidation.IsValidProperty(nameof(LoginModel.UserName));
             bool isValidPassword = viewModel.LoginValidation.IsValidProperty(nameof(LoginModel.Password));
 
@@ -125,6 +135,9 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
             mockedAuthAccess.Verify(a => a.SetStoredTokenAsync(It.IsAny<TokenResponseModel>()),
                                     Times.Never);
 
+            mockedNavigation.Verify(a => a.GoToHomeAsync(), Times.Never);
+
+
             bool isValidUsername = viewModel.LoginValidation.IsValidProperty(nameof(LoginModel.UserName));
             bool isValidPassword = viewModel.LoginValidation.IsValidProperty(nameof(LoginModel.Password));
 
@@ -151,6 +164,9 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
             mockedApiConsumer.Verify(c => c.LoginAsync(It.IsAny<LoginModel>(),
                                It.IsAny<CancellationToken>()),
              Times.Once);
+
+            mockedNavigation.Verify(a => a.GoToHomeAsync(), Times.Never);
+
 
             Assert.Equal("Failed to store login information", viewModel.ErrorMessage);
             mockedLogger.Verify(l => l.LogException(ex, null));
@@ -184,6 +200,9 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
             mockedAuthAccess.Verify(a => a.SetStoredTokenAsync(It.IsAny<TokenResponseModel>()),
                                     Times.Never);
 
+            mockedNavigation.Verify(a => a.GoToHomeAsync(), Times.Never);
+
+
             Assert.Null(viewModel.ErrorMessage);
 
             bool isValidUsername = viewModel.LoginValidation.IsValidProperty(nameof(LoginModel.UserName));
@@ -215,6 +234,9 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
             // ASSERT
             mockedAuthAccess.Verify(a => a.SetStoredTokenAsync(It.IsAny<TokenResponseModel>()),
                                     Times.Never);
+
+            mockedNavigation.Verify(a => a.GoToHomeAsync(), Times.Never);
+
 
             bool isValidUsername = viewModel.LoginValidation.IsValidProperty(nameof(LoginModel.UserName));
             bool isValidPassword = viewModel.LoginValidation.IsValidProperty(nameof(LoginModel.Password));
