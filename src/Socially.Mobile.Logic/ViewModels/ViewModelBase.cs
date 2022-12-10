@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Socially.Mobile.Logic.ViewModels
 {
-    public partial class ViewModelBase : ObservableObject
+    public class ViewModelBase : ObservableObject
     {
 
 

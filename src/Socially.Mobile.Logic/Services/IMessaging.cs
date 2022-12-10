@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Socially.Mobile.Logic.Services
 {
-    public interface INavigation
+    public interface IMessaging
     {
-
-        Task GoToHomeAsync();
-        Task GoToLoginPageAsync();
+        Task DisplayAsync(string title, string message, string button);
     }
 }

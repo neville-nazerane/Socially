@@ -21,6 +21,7 @@ namespace Socially.Mobile.Logic.ViewModels
     {
         private readonly IApiConsumer _apiConsumer;
         private readonly IAuthAccess _authAccess;
+        private readonly INavigation _navigation;
         private readonly ISocialLogger _socialLogger;
         [ObservableProperty]
         string errorMessage;
@@ -33,12 +34,14 @@ namespace Socially.Mobile.Logic.ViewModels
 
         public LoginViewModel(IApiConsumer apiConsumer, 
                               IAuthAccess authAccess,
+                              INavigation navigation,
                               ISocialLogger socialLogger)
         {
             loginModel = new();
             loginValidation = new();
             _apiConsumer = apiConsumer;
             _authAccess = authAccess;
+            _navigation = navigation;
             _socialLogger = socialLogger;
         }
 
@@ -53,6 +56,7 @@ namespace Socially.Mobile.Logic.ViewModels
                     try
                     {
                         await _authAccess.SetStoredTokenAsync(res);
+                        await _navigation.GoToHomeAsync();
                     }
                     catch (Exception ex)
                     {
