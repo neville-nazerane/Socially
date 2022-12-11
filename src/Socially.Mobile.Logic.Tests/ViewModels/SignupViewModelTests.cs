@@ -130,8 +130,8 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
             // ARRANGE
 
             Assert.Empty(viewModel.Validation);
-            Assert.NotNull(viewModel.Error);
-            Assert.Equal("Failed to signup. Please try again", viewModel.Error);
+            Assert.NotNull(viewModel.ErrorMessage);
+            Assert.Equal("Failed to signup. Please try again", viewModel.ErrorMessage);
 
             mockedMessaging.Verify(m => m.DisplayAsync("Done!",
                                                        It.IsAny<string>(),

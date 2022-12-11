@@ -26,19 +26,12 @@ namespace Socially.Mobile.Logic.ViewModels
         [ObservableProperty]
         private SignUpModel model;
 
-        [ObservableProperty]
-        private ObservableCollection<ValidationResult> validation;
-
-        [ObservableProperty]
-        private string error;
-
         public SignupViewModel(INavigation navigation,
                                IMessaging messaging,
                                IApiConsumer apiConsumer,
                                ISocialLogger logger)
         {
             model = new();
-            validation = new();
             
             _navigation = navigation;
             _messaging = messaging;
@@ -64,7 +57,7 @@ namespace Socially.Mobile.Logic.ViewModels
                 catch (Exception ex) 
                 {
                     _logger.LogException(ex);
-                    Error = "Failed to signup. Please try again";
+                    ErrorMessage = "Failed to signup. Please try again";
                 }
             }
         }

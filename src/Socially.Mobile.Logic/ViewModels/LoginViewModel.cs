@@ -17,63 +17,46 @@ using System.Threading.Tasks;
 namespace Socially.Mobile.Logic.ViewModels
 {
 
-    public partial class LoginViewModel : ViewModelBase
+    public partial class LoginViewModel : ViewModelBase<LoginModel>
     {
         private readonly IApiConsumer _apiConsumer;
         private readonly IAuthAccess _authAccess;
         private readonly INavigation _navigation;
         private readonly ISocialLogger _socialLogger;
-        [ObservableProperty]
-        string errorMessage;
 
-        [ObservableProperty]
-        LoginModel loginModel;
-
-        [ObservableProperty]
-        ObservableCollection<ValidationResult> loginValidation;
+        //[ObservableProperty]
+        //LoginModel loginModel;
 
         public LoginViewModel(IApiConsumer apiConsumer, 
                               IAuthAccess authAccess,
                               INavigation navigation,
                               ISocialLogger socialLogger)
         {
-            loginModel = new();
-            loginValidation = new();
+            //loginModel = new();
             _apiConsumer = apiConsumer;
             _authAccess = authAccess;
             _navigation = navigation;
             _socialLogger = socialLogger;
         }
 
-        [RelayCommand]
-        public async Task AttemptLoginAsync()
-        {
-            if (loginModel.Validate(loginValidation))
-            {
-                try
-                {
-                    var res = await _apiConsumer.LoginAsync(loginModel.ToModel());
-                    try
-                    {
-                        await _authAccess.SetStoredTokenAsync(res);
-                        await _navigation.GoToHomeAsync();
-                    }
-                    catch (Exception ex)
-                    {
-                        _socialLogger.LogException(ex);
-                        ErrorMessage = "Failed to store login information";
-                    }
-                }
-                catch (ErrorForClientException clientException)
-                {
-                    LoginValidation = clientException.ToObservableCollection();
-                }
-                catch (Exception ex)
-                {
-                    _socialLogger.LogException(ex);
-                    ErrorMessage = "Failed to login";
-                }
+        public override string ErrorOnException => "Failed to login";
 
+        public override string ErrorWhenBadRequestEmpty => "Failed to login";
+
+        public override void OnException(Exception ex) => _socialLogger.LogException(ex);
+
+        public override async Task SubmitToServerAsync(LoginModel model, CancellationToken cancellationToken = default)
+        {
+            var res = await _apiConsumer.LoginAsync(Model.ToModel(), cancellationToken);
+            try
+            {
+                await _authAccess.SetStoredTokenAsync(res);
+                await _navigation.GoToHomeAsync();
+            }
+            catch (Exception ex)
+            {
+                _socialLogger.LogException(ex);
+                ErrorMessage = "Failed to store login information";
             }
         }
 

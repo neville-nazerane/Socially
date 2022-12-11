@@ -11,6 +11,7 @@ var mobileModels = AggregatedType
                         .Add<SignUpModel>()
                         .Add<PasswordResetModel>()
                         .Add<ForgotPasswordModel>()
+                        .Add<ProfileUpdateModel>()
                         .Add<PostDisplayModel>()
                         .ToEnumerable();
 

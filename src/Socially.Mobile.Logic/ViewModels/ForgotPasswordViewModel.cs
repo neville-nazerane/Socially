@@ -25,10 +25,6 @@ namespace Socially.Mobile.Logic.ViewModels
         [ObservableProperty]
         string email;
 
-        [ObservableProperty]
-        string error;
-
-
         public ForgotPasswordViewModel(IMessaging messaging,
                                        IApiConsumer apiConsumer,
                                        ISocialLogger logger)
@@ -44,7 +40,7 @@ namespace Socially.Mobile.Logic.ViewModels
         {
             if (email is null)
             {
-                Error = "Enter an email";
+                ErrorMessage = "Enter an email";
             }
             else
             {
@@ -55,16 +51,16 @@ namespace Socially.Mobile.Logic.ViewModels
                 }
                 catch (ErrorForClientException clientException)
                 {
-                    Error = clientException.Errors
+                    ErrorMessage = clientException.Errors
                                            .SelectMany(e => e.Errors)
                                            .FirstOrDefault();
-                    if (string.IsNullOrEmpty(Error))
-                        Error = "Failed to use email";
+                    if (string.IsNullOrEmpty(ErrorMessage))
+                        ErrorMessage = "Failed to use email";
                 }
                 catch (Exception ex)
                 {
                     _logger.LogException(ex);
-                    Error = "Failed. Try again";
+                    ErrorMessage = "Failed. Try again";
                 }
             }
         }

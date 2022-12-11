@@ -37,8 +37,8 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
             await viewModel.SubmitAsync();
 
             // ASSERT
-            Assert.NotNull(viewModel.Error);
-            Assert.Equal("Enter an email", viewModel.Error);
+            Assert.NotNull(viewModel.ErrorMessage);
+            Assert.Equal("Enter an email", viewModel.ErrorMessage);
             VerifyDoneMessage(Times.Never);
 
         }
@@ -54,7 +54,7 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
             await viewModel.SubmitAsync();
 
             // ASSERT
-            Assert.Null(viewModel.Error);
+            Assert.Null(viewModel.ErrorMessage);
 
             mockedApiConsumer.Verify(c => c.ForgotPasswordAsync("hello@yahoo.com", It.IsAny<CancellationToken>()),
                                      Times.Once);
@@ -83,8 +83,8 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
             await viewModel.SubmitAsync();
 
             // ASSERT
-            Assert.NotNull(viewModel.Error);
-            Assert.Equal("Failed to send", viewModel.Error);
+            Assert.NotNull(viewModel.ErrorMessage);
+            Assert.Equal("Failed to send", viewModel.ErrorMessage);
 
             VerifyDoneMessage(Times.Never);
 
@@ -106,7 +106,7 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
             await viewModel.SubmitAsync();
 
             // ASSERT
-            Assert.Equal("Failed. Try again", viewModel.Error);
+            Assert.Equal("Failed. Try again", viewModel.ErrorMessage);
             VerifyDoneMessage(Times.Never);
 
         }

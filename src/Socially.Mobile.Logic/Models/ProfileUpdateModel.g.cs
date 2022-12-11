@@ -1,32 +1,34 @@
 
 //// <GENERATED CODE> //////
 using CommunityToolkit.Mvvm.ComponentModel;
-using Socially.Mobile.Logic.Models;
 using Socially.MobileApp.Logic.Models.Mappings;
 using System.ComponentModel.DataAnnotations;
 
 namespace Socially.MobileApp.Logic.Models
 {
     
-    public partial class LoginModel : ObservableObject, IValidatable
+    public partial class ProfileUpdateModel : ObservableObject
     {
 
         private readonly ValidationContext validationContext;
-        private readonly Socially.Models.LoginModel model;
+        private readonly Socially.Models.ProfileUpdateModel model;
 
         
             [ObservableProperty]
-            System.String userName;
+            System.String firstName;
 
             [ObservableProperty]
-            System.String password;
+            System.String lastName;
 
             [ObservableProperty]
-            System.String source;
+            System.Nullable<System.DateTime> dateOfBirth;
+
+            [ObservableProperty]
+            System.String profilePictureFileName;
         
 
 
-        public LoginModel()
+        public ProfileUpdateModel()
         {
             model = new();
             validationContext = new ValidationContext(model);

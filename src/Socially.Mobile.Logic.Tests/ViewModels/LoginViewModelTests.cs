@@ -34,7 +34,7 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
             Init();
 
             // ACT
-            await viewModel.AttemptLoginAsync();
+            await viewModel.SubmitAsync();
 
             // ASSERT
 
@@ -48,8 +48,8 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
 
             mockedNavigation.Verify(a => a.GoToHomeAsync(), Times.Never);
 
-            bool isValidUsername = viewModel.LoginValidation.IsValidProperty(nameof(LoginModel.UserName));
-            bool isValidPassword = viewModel.LoginValidation.IsValidProperty(nameof(LoginModel.Password));
+            bool isValidUsername = viewModel.Validation.IsValidProperty(nameof(LoginModel.UserName));
+            bool isValidPassword = viewModel.Validation.IsValidProperty(nameof(LoginModel.Password));
 
             Assert.False(isValidUsername);
             Assert.False(isValidPassword);
@@ -60,11 +60,11 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
         {
             // ARRANGE
             Init();
-            viewModel.LoginModel.UserName = "neville";
-            viewModel.LoginModel.Password = "neville";
+            viewModel.Model.UserName = "neville";
+            viewModel.Model.Password = "neville";
 
             // ACT
-            await viewModel.AttemptLoginAsync();
+            await viewModel.SubmitAsync();
 
             // ASSERT
 
@@ -80,8 +80,8 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
 
             Assert.Null(viewModel.ErrorMessage);
 
-            bool isValidUsername = viewModel.LoginValidation.IsValidProperty(nameof(LoginModel.UserName));
-            bool isValidPassword = viewModel.LoginValidation.IsValidProperty(nameof(LoginModel.Password));
+            bool isValidUsername = viewModel.Validation.IsValidProperty(nameof(LoginModel.UserName));
+            bool isValidPassword = viewModel.Validation.IsValidProperty(nameof(LoginModel.Password));
 
             Assert.True(isValidUsername);
             Assert.True(isValidPassword);
@@ -93,10 +93,10 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
         {
             // ARRANGE
             Init();
-            viewModel.LoginModel.UserName = "neville";
+            viewModel.Model.UserName = "neville";
 
             // ACT
-            await viewModel.AttemptLoginAsync();
+            await viewModel.SubmitAsync();
 
             // ASSERT
 
@@ -111,8 +111,8 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
             mockedNavigation.Verify(a => a.GoToHomeAsync(), Times.Never);
 
 
-            bool isValidUsername = viewModel.LoginValidation.IsValidProperty(nameof(LoginModel.UserName));
-            bool isValidPassword = viewModel.LoginValidation.IsValidProperty(nameof(LoginModel.Password));
+            bool isValidUsername = viewModel.Validation.IsValidProperty(nameof(LoginModel.UserName));
+            bool isValidPassword = viewModel.Validation.IsValidProperty(nameof(LoginModel.Password));
 
             Assert.True(isValidUsername);
             Assert.False(isValidPassword);
@@ -123,10 +123,10 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
         {
             // ARRANGE
             Init();
-            viewModel.LoginModel.Password = "verysecret";
+            viewModel.Model.Password = "verysecret";
 
             // ACT
-            await viewModel.AttemptLoginAsync();
+            await viewModel.SubmitAsync();
 
             // ASSERT
 
@@ -141,8 +141,8 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
             mockedNavigation.Verify(a => a.GoToHomeAsync(), Times.Never);
 
 
-            bool isValidUsername = viewModel.LoginValidation.IsValidProperty(nameof(LoginModel.UserName));
-            bool isValidPassword = viewModel.LoginValidation.IsValidProperty(nameof(LoginModel.Password));
+            bool isValidUsername = viewModel.Validation.IsValidProperty(nameof(LoginModel.UserName));
+            bool isValidPassword = viewModel.Validation.IsValidProperty(nameof(LoginModel.Password));
 
             Assert.False(isValidUsername);
             Assert.True(isValidPassword);
@@ -153,15 +153,15 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
         {
             // ARRANGE
             Init();
-            viewModel.LoginModel.UserName = "neville";
-            viewModel.LoginModel.Password = "neville";
+            viewModel.Model.UserName = "neville";
+            viewModel.Model.Password = "neville";
 
             var ex = new Exception();
             mockedAuthAccess.Setup(a => a.SetStoredTokenAsync(It.IsAny<TokenResponseModel>()))
                             .Throws(ex);
 
             // ACT
-            await viewModel.AttemptLoginAsync();
+            await viewModel.SubmitAsync();
 
             // ASSERT
             mockedApiConsumer.Verify(c => c.LoginAsync(It.IsAny<LoginModel>(),
@@ -180,8 +180,8 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
         {
             // ARRANGE
             Init();
-            viewModel.LoginModel.UserName = "neville";
-            viewModel.LoginModel.Password = "neville";
+            viewModel.Model.UserName = "neville";
+            viewModel.Model.Password = "neville";
 
             var exception = new ErrorForClientException
             (
@@ -197,7 +197,7 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
                              .Throws(exception);
 
             // ACT
-            await viewModel.AttemptLoginAsync();
+            await viewModel.SubmitAsync();
 
             // ASSERT
             mockedAuthAccess.Verify(a => a.SetStoredTokenAsync(It.IsAny<TokenResponseModel>()),
@@ -208,13 +208,13 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
 
             Assert.Null(viewModel.ErrorMessage);
 
-            bool isValidUsername = viewModel.LoginValidation.IsValidProperty(nameof(LoginModel.UserName));
-            bool isValidPassword = viewModel.LoginValidation.IsValidProperty(nameof(LoginModel.Password));
+            bool isValidUsername = viewModel.Validation.IsValidProperty(nameof(LoginModel.UserName));
+            bool isValidPassword = viewModel.Validation.IsValidProperty(nameof(LoginModel.Password));
 
             Assert.True(isValidPassword);
             Assert.False(isValidUsername);
 
-            var usernameErrors = viewModel.LoginValidation.GetErrorsForProperty(nameof(LoginModel.UserName));
+            var usernameErrors = viewModel.Validation.GetErrorsForProperty(nameof(LoginModel.UserName));
             Assert.Single(usernameErrors);
             Assert.Equal("I don't like that username", usernameErrors.First());
         }
@@ -224,15 +224,15 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
         {
             // ARRANGE
             Init();
-            viewModel.LoginModel.UserName = "neville";
-            viewModel.LoginModel.Password = "neville";
+            viewModel.Model.UserName = "neville";
+            viewModel.Model.Password = "neville";
 
             var ex = new Exception();
             mockedApiConsumer.Setup(c => c.LoginAsync(It.IsAny<LoginModel>(), It.IsAny<CancellationToken>()))
                              .Throws(ex);
 
             // ACT
-            await viewModel.AttemptLoginAsync();
+            await viewModel.SubmitAsync();
 
             // ASSERT
             mockedAuthAccess.Verify(a => a.SetStoredTokenAsync(It.IsAny<TokenResponseModel>()),
@@ -241,8 +241,8 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
             mockedNavigation.Verify(a => a.GoToHomeAsync(), Times.Never);
 
 
-            bool isValidUsername = viewModel.LoginValidation.IsValidProperty(nameof(LoginModel.UserName));
-            bool isValidPassword = viewModel.LoginValidation.IsValidProperty(nameof(LoginModel.Password));
+            bool isValidUsername = viewModel.Validation.IsValidProperty(nameof(LoginModel.UserName));
+            bool isValidPassword = viewModel.Validation.IsValidProperty(nameof(LoginModel.Password));
 
             Assert.True(isValidPassword);
             Assert.True(isValidUsername);

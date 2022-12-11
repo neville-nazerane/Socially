@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Socially.Apps.Consumer.Exceptions;
+using Socially.Mobile.Logic.Models;
 using Socially.Mobile.Logic.Services;
 using Socially.Mobile.Logic.Utils;
 using System;
@@ -12,9 +14,81 @@ using System.Threading.Tasks;
 
 namespace Socially.Mobile.Logic.ViewModels
 {
-    public class ViewModelBase : ObservableObject
+    public partial class ViewModelBase : ObservableObject
     {
 
+        [ObservableProperty]
+        ObservableCollection<ValidationResult> validation;
+
+        [ObservableProperty]
+        string errorMessage;
+
+        [ObservableProperty]
+        bool isLoading;
+
+        public ViewModelBase()
+        {
+            Validation = new();
+        }
+
+        public virtual Task InitAsync() => Task.CompletedTask;
 
     }
+
+    public abstract partial class ViewModelBase<TModel> : ViewModelBase
+        where TModel : new()
+    {
+
+        [ObservableProperty]
+        TModel model;
+
+        public virtual string ErrorOnException => "Failed to submit. Please try again.";
+
+        public virtual string ErrorWhenBadRequestEmpty => "Failed. Please try again.";
+
+        public ViewModelBase()
+        {
+            Model = new();
+        }
+
+        public virtual Task SubmitToServerAsync(TModel model, CancellationToken cancellationToken = default) => throw new NotImplementedException("Submit not implimented");
+
+        public virtual Task<TModel> GetFromServerAsync(CancellationToken cancellationToken = default) => throw new NotImplementedException("Get not implimented");
+
+        public abstract void OnException(Exception ex);
+
+        public override Task InitAsync() => GetAsync();
+
+        [RelayCommand]
+        public Task GetAsync() => ExecuteAndValidate(async () => Model = await GetFromServerAsync());
+
+        [RelayCommand]
+        public Task SubmitAsync()
+        {
+            if (model is IValidatable validatable && !validatable.Validate(Validation))
+                return Task.CompletedTask;
+            return ExecuteAndValidate(() => SubmitToServerAsync(model));
+        }
+
+        async Task ExecuteAndValidate(Func<Task> func)
+        {
+            try
+            {
+                await func();
+            }
+            catch (ErrorForClientException clientException)
+            {
+                Validation = clientException.ToObservableCollection();
+                if (!Validation.Any())
+                    ErrorMessage = ErrorWhenBadRequestEmpty;
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ErrorOnException;
+                OnException(ex);
+            }
+        }
+
+    }
+
 }
