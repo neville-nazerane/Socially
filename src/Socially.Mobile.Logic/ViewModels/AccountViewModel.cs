@@ -1,10 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Socially.Apps.Consumer.Exceptions;
 using Socially.Apps.Consumer.Services;
+using Socially.Mobile.Logic.Models;
+using Socially.Mobile.Logic.Models.Mappings;
 using Socially.Mobile.Logic.Services;
 using Socially.Mobile.Logic.Utils;
-using Socially.MobileApp.Logic.Models;
-using Socially.MobileApp.Logic.Models.Mappings;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

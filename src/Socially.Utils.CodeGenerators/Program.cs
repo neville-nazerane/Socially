@@ -23,11 +23,14 @@ Task RunMobileAsync(IEnumerable<Type> types)
 {
     string mobilePath = Path.Combine(currentPath, "..", "Socially.Mobile.Logic", "Models");
     string mappingPath = Path.Combine(mobilePath, "Mappings");
-    string modelsNamespace = "Socially.MobileApp.Logic.Models";
+    string modelsNamespace = "Socially.Mobile.Logic.Models";
     string mappingNamespace = $"{modelsNamespace}.Mappings";
 
     // CLEAR FILES
-    var filesToDelete = Directory.GetFiles(mobilePath).Union(Directory.GetFiles(mappingPath)).ToArray();
+    var filesToDelete = Directory.GetFiles(mobilePath)
+                                 .Union(Directory.GetFiles(mappingPath))
+                                 .Where(f => f.EndsWith(".g.cs"))
+                                 .ToArray();
     foreach (var file in filesToDelete)
         File.Delete(file);
 

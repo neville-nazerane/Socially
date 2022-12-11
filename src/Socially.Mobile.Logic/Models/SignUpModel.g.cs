@@ -1,13 +1,13 @@
 
 //// <GENERATED CODE> //////
 using CommunityToolkit.Mvvm.ComponentModel;
-using Socially.MobileApp.Logic.Models.Mappings;
+using Socially.Mobile.Logic.Models.Mappings;
 using System.ComponentModel.DataAnnotations;
 
-namespace Socially.MobileApp.Logic.Models
+namespace Socially.Mobile.Logic.Models
 {
     
-    public partial class SignUpModel : ObservableObject
+    public partial class SignUpModel : ObservableObject, IValidatable
     {
 
         private readonly ValidationContext validationContext;

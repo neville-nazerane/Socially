@@ -1,12 +1,12 @@
 
 //// <GENERATED CODE> //////
-namespace Socially.MobileApp.Logic.Models.Mappings
+namespace Socially.Mobile.Logic.Models.Mappings
 {
 
     public static class PostDisplayModelMappingExtensions 
     {
 
-        public static Socially.Models.PostDisplayModel ToModel(this Socially.MobileApp.Logic.Models.PostDisplayModel model)
+        public static Socially.Models.PostDisplayModel ToModel(this Socially.Mobile.Logic.Models.PostDisplayModel model)
             => model is null ? null : 
               new() 
               {
@@ -18,7 +18,7 @@ namespace Socially.MobileApp.Logic.Models.Mappings
                   LikeCount = model.LikeCount
               };
 
-        public static Socially.Models.PostDisplayModel ToModel(this Socially.MobileApp.Logic.Models.PostDisplayModel model, Socially.Models.PostDisplayModel dest)
+        public static Socially.Models.PostDisplayModel ToModel(this Socially.Mobile.Logic.Models.PostDisplayModel model, Socially.Models.PostDisplayModel dest)
         {
             dest.Id = model.Id;
             dest.Text = model.Text;
@@ -29,7 +29,7 @@ namespace Socially.MobileApp.Logic.Models.Mappings
             return dest;
         }
 
-        public static Socially.MobileApp.Logic.Models.PostDisplayModel ToMobileModel(this Socially.Models.PostDisplayModel model)
+        public static Socially.Mobile.Logic.Models.PostDisplayModel ToMobileModel(this Socially.Models.PostDisplayModel model)
             => model is null ? null : 
               new() 
               {
@@ -41,7 +41,7 @@ namespace Socially.MobileApp.Logic.Models.Mappings
                   LikeCount = model.LikeCount
               };
 
-        public static Socially.MobileApp.Logic.Models.PostDisplayModel ToMobileModel(this Socially.Models.PostDisplayModel model, Socially.MobileApp.Logic.Models.PostDisplayModel dest)
+        public static Socially.Mobile.Logic.Models.PostDisplayModel ToMobileModel(this Socially.Models.PostDisplayModel model, Socially.Mobile.Logic.Models.PostDisplayModel dest)
         {
             dest.Id = model.Id;
             dest.Text = model.Text;

@@ -4,7 +4,6 @@ using Socially.Apps.Consumer.Exceptions;
 using Socially.Apps.Consumer.Services;
 using Socially.Mobile.Logic.Services;
 using Socially.Mobile.Logic.Utils;
-using Socially.MobileApp.Logic.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

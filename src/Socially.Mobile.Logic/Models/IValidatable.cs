@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Socially.Mobile.Logic.Models
 {
-    public interface IValidatable
+    internal interface IValidatable
     {
         bool Validate(ICollection<ValidationResult> errors);
     }

@@ -1,12 +1,12 @@
 
 //// <GENERATED CODE> //////
-namespace Socially.MobileApp.Logic.Models.Mappings
+namespace Socially.Mobile.Logic.Models.Mappings
 {
 
     public static class PasswordResetModelMappingExtensions 
     {
 
-        public static Socially.Models.PasswordResetModel ToModel(this Socially.MobileApp.Logic.Models.PasswordResetModel model)
+        public static Socially.Models.PasswordResetModel ToModel(this Socially.Mobile.Logic.Models.PasswordResetModel model)
             => model is null ? null : 
               new() 
               {
@@ -15,7 +15,7 @@ namespace Socially.MobileApp.Logic.Models.Mappings
                   CurrentPassword = model.CurrentPassword
               };
 
-        public static Socially.Models.PasswordResetModel ToModel(this Socially.MobileApp.Logic.Models.PasswordResetModel model, Socially.Models.PasswordResetModel dest)
+        public static Socially.Models.PasswordResetModel ToModel(this Socially.Mobile.Logic.Models.PasswordResetModel model, Socially.Models.PasswordResetModel dest)
         {
             dest.NewPassword = model.NewPassword;
             dest.ConfirmPassword = model.ConfirmPassword;
@@ -23,7 +23,7 @@ namespace Socially.MobileApp.Logic.Models.Mappings
             return dest;
         }
 
-        public static Socially.MobileApp.Logic.Models.PasswordResetModel ToMobileModel(this Socially.Models.PasswordResetModel model)
+        public static Socially.Mobile.Logic.Models.PasswordResetModel ToMobileModel(this Socially.Models.PasswordResetModel model)
             => model is null ? null : 
               new() 
               {
@@ -32,7 +32,7 @@ namespace Socially.MobileApp.Logic.Models.Mappings
                   CurrentPassword = model.CurrentPassword
               };
 
-        public static Socially.MobileApp.Logic.Models.PasswordResetModel ToMobileModel(this Socially.Models.PasswordResetModel model, Socially.MobileApp.Logic.Models.PasswordResetModel dest)
+        public static Socially.Mobile.Logic.Models.PasswordResetModel ToMobileModel(this Socially.Models.PasswordResetModel model, Socially.Mobile.Logic.Models.PasswordResetModel dest)
         {
             dest.NewPassword = model.NewPassword;
             dest.ConfirmPassword = model.ConfirmPassword;

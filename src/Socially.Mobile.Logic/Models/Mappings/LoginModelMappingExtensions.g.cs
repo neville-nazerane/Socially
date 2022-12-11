@@ -1,12 +1,12 @@
 
 //// <GENERATED CODE> //////
-namespace Socially.MobileApp.Logic.Models.Mappings
+namespace Socially.Mobile.Logic.Models.Mappings
 {
 
     public static class LoginModelMappingExtensions 
     {
 
-        public static Socially.Models.LoginModel ToModel(this Socially.MobileApp.Logic.Models.LoginModel model)
+        public static Socially.Models.LoginModel ToModel(this Socially.Mobile.Logic.Models.LoginModel model)
             => model is null ? null : 
               new() 
               {
@@ -15,7 +15,7 @@ namespace Socially.MobileApp.Logic.Models.Mappings
                   Source = model.Source
               };
 
-        public static Socially.Models.LoginModel ToModel(this Socially.MobileApp.Logic.Models.LoginModel model, Socially.Models.LoginModel dest)
+        public static Socially.Models.LoginModel ToModel(this Socially.Mobile.Logic.Models.LoginModel model, Socially.Models.LoginModel dest)
         {
             dest.UserName = model.UserName;
             dest.Password = model.Password;
@@ -23,7 +23,7 @@ namespace Socially.MobileApp.Logic.Models.Mappings
             return dest;
         }
 
-        public static Socially.MobileApp.Logic.Models.LoginModel ToMobileModel(this Socially.Models.LoginModel model)
+        public static Socially.Mobile.Logic.Models.LoginModel ToMobileModel(this Socially.Models.LoginModel model)
             => model is null ? null : 
               new() 
               {
@@ -32,7 +32,7 @@ namespace Socially.MobileApp.Logic.Models.Mappings
                   Source = model.Source
               };
 
-        public static Socially.MobileApp.Logic.Models.LoginModel ToMobileModel(this Socially.Models.LoginModel model, Socially.MobileApp.Logic.Models.LoginModel dest)
+        public static Socially.Mobile.Logic.Models.LoginModel ToMobileModel(this Socially.Models.LoginModel model, Socially.Mobile.Logic.Models.LoginModel dest)
         {
             dest.UserName = model.UserName;
             dest.Password = model.Password;

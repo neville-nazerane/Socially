@@ -29,7 +29,7 @@ using System.ComponentModel.DataAnnotations;
 namespace {destNameSpace}
 {{
     
-    public partial class {type.Name} : ObservableObject
+    public partial class {type.Name} : ObservableObject, IValidatable
     {{
 
         private readonly ValidationContext validationContext;

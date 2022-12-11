@@ -1,12 +1,12 @@
 
 //// <GENERATED CODE> //////
-namespace Socially.MobileApp.Logic.Models.Mappings
+namespace Socially.Mobile.Logic.Models.Mappings
 {
 
     public static class ProfileUpdateModelMappingExtensions 
     {
 
-        public static Socially.Models.ProfileUpdateModel ToModel(this Socially.MobileApp.Logic.Models.ProfileUpdateModel model)
+        public static Socially.Models.ProfileUpdateModel ToModel(this Socially.Mobile.Logic.Models.ProfileUpdateModel model)
             => model is null ? null : 
               new() 
               {
@@ -16,7 +16,7 @@ namespace Socially.MobileApp.Logic.Models.Mappings
                   ProfilePictureFileName = model.ProfilePictureFileName
               };
 
-        public static Socially.Models.ProfileUpdateModel ToModel(this Socially.MobileApp.Logic.Models.ProfileUpdateModel model, Socially.Models.ProfileUpdateModel dest)
+        public static Socially.Models.ProfileUpdateModel ToModel(this Socially.Mobile.Logic.Models.ProfileUpdateModel model, Socially.Models.ProfileUpdateModel dest)
         {
             dest.FirstName = model.FirstName;
             dest.LastName = model.LastName;
@@ -25,7 +25,7 @@ namespace Socially.MobileApp.Logic.Models.Mappings
             return dest;
         }
 
-        public static Socially.MobileApp.Logic.Models.ProfileUpdateModel ToMobileModel(this Socially.Models.ProfileUpdateModel model)
+        public static Socially.Mobile.Logic.Models.ProfileUpdateModel ToMobileModel(this Socially.Models.ProfileUpdateModel model)
             => model is null ? null : 
               new() 
               {
@@ -35,7 +35,7 @@ namespace Socially.MobileApp.Logic.Models.Mappings
                   ProfilePictureFileName = model.ProfilePictureFileName
               };
 
-        public static Socially.MobileApp.Logic.Models.ProfileUpdateModel ToMobileModel(this Socially.Models.ProfileUpdateModel model, Socially.MobileApp.Logic.Models.ProfileUpdateModel dest)
+        public static Socially.Mobile.Logic.Models.ProfileUpdateModel ToMobileModel(this Socially.Models.ProfileUpdateModel model, Socially.Mobile.Logic.Models.ProfileUpdateModel dest)
         {
             dest.FirstName = model.FirstName;
             dest.LastName = model.LastName;

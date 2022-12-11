@@ -2,10 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using Socially.Apps.Consumer.Exceptions;
 using Socially.Apps.Consumer.Services;
+using Socially.Mobile.Logic.Models;
+using Socially.Mobile.Logic.Models.Mappings;
 using Socially.Mobile.Logic.Services;
 using Socially.Mobile.Logic.Utils;
-using Socially.MobileApp.Logic.Models;
-using Socially.MobileApp.Logic.Models.Mappings;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,22 +16,19 @@ using System.Threading.Tasks;
 
 namespace Socially.Mobile.Logic.ViewModels
 {
-    public partial class SignupViewModel : ViewModelBase
+    public partial class SignupViewModel : ViewModelBase<SignUpModel>
     {
         private readonly INavigation _navigation;
         private readonly IMessaging _messaging;
         private readonly IApiConsumer _apiConsumer;
         private readonly ISocialLogger _logger;
 
-        [ObservableProperty]
-        private SignUpModel model;
 
         public SignupViewModel(INavigation navigation,
                                IMessaging messaging,
                                IApiConsumer apiConsumer,
                                ISocialLogger logger)
         {
-            model = new();
             
             _navigation = navigation;
             _messaging = messaging;
@@ -39,28 +36,17 @@ namespace Socially.Mobile.Logic.ViewModels
             _logger = logger;
         }
 
-        [RelayCommand]
-        public async Task SubmitAsync()
+        public override void OnException(Exception ex) => _logger.LogException(ex);
+
+        public override string ErrorOnException => "Failed to signup. Please try again";
+
+        public override async Task SubmitToServerAsync(SignUpModel model, CancellationToken cancellationToken = default)
         {
-            if (model.Validate(Validation))
-            {
-                try
-                {
-                    await _apiConsumer.SignupAsync(model.ToModel());
-                    await _messaging.DisplayAsync("Done!", "Your Account has been created", "Go to Login");
-                    await _navigation.GoToLoginPageAsync();
-                }
-                catch (ErrorForClientException clientException)
-                {
-                    Validation = clientException.ToObservableCollection();
-                }
-                catch (Exception ex) 
-                {
-                    _logger.LogException(ex);
-                    ErrorMessage = "Failed to signup. Please try again";
-                }
-            }
+            await _apiConsumer.SignupAsync(model.ToModel(), cancellationToken);
+            await _messaging.DisplayAsync("Done!", "Your Account has been created", "Go to Login");
+            await _navigation.GoToLoginPageAsync();
         }
+
 
     }
 }

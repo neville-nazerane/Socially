@@ -42,9 +42,9 @@ namespace Socially.Mobile.Logic.ViewModels
         [ObservableProperty]
         TModel model;
 
-        public virtual string ErrorOnException => "Failed to submit. Please try again.";
+        public virtual string ErrorOnException => "Failed to submit. Please try again";
 
-        public virtual string ErrorWhenBadRequestEmpty => "Failed. Please try again.";
+        public virtual string ErrorWhenBadRequestEmpty => "Failed. Please try again";
 
         public ViewModelBase()
         {
