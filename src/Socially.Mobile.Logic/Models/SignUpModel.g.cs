@@ -10,7 +10,6 @@ namespace Socially.Mobile.Logic.Models
     public partial class SignUpModel : ObservableObject, IValidatable
     {
 
-        private readonly ValidationContext validationContext;
         private readonly Socially.Models.SignUpModel model;
 
         
@@ -31,13 +30,12 @@ namespace Socially.Mobile.Logic.Models
         public SignUpModel()
         {
             model = new();
-            validationContext = new ValidationContext(model);
         }
 
         public bool Validate(ICollection<ValidationResult> errors)
         {
             this.ToModel(model);
-            return Validator.TryValidateObject(model, new ValidationContext(model), errors);
+            return Validator.TryValidateObject(model, new ValidationContext(model), errors, true);
         }
 
     }

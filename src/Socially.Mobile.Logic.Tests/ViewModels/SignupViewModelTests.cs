@@ -150,7 +150,7 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
             var model = viewModel.Model;
             model.UserName = "Test";
             model.Password = "password";
-            model.ConfirmPassword = "nop";
+            model.ConfirmPassword = "password";
             model.Email = "boom";
         }
     }

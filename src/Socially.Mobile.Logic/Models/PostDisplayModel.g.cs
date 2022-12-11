@@ -10,7 +10,6 @@ namespace Socially.Mobile.Logic.Models
     public partial class PostDisplayModel : ObservableObject, IValidatable
     {
 
-        private readonly ValidationContext validationContext;
         private readonly Socially.Models.PostDisplayModel model;
 
         
@@ -37,13 +36,12 @@ namespace Socially.Mobile.Logic.Models
         public PostDisplayModel()
         {
             model = new();
-            validationContext = new ValidationContext(model);
         }
 
         public bool Validate(ICollection<ValidationResult> errors)
         {
             this.ToModel(model);
-            return Validator.TryValidateObject(model, new ValidationContext(model), errors);
+            return Validator.TryValidateObject(model, new ValidationContext(model), errors, true);
         }
 
     }

@@ -16,13 +16,10 @@ using System.Threading.Tasks;
 
 namespace Socially.Mobile.Logic.ViewModels
 {
-    public partial class AccountViewModel : ViewModelBase
+    public partial class AccountViewModel : ViewModelBase<ProfileUpdateModel>
     {
         private readonly IApiConsumer _apiConsumer;
         private readonly ISocialLogger _logger;
-
-        [ObservableProperty]
-        ProfileUpdateModel profile;
 
         public AccountViewModel(IApiConsumer apiConsumer, ISocialLogger logger)
         {
@@ -30,31 +27,13 @@ namespace Socially.Mobile.Logic.ViewModels
             _logger = logger;
         }
 
-        public override async Task InitAsync()
-        {
-            Profile = (await _apiConsumer.GetUpdateProfileAsync()).ToMobileModel();
-        }
+        public override void OnException(Exception ex) => _logger.LogException(ex);
 
-        public async Task UpdateAsync()
-        {
-            try
-            {
-                IsLoading = true;
-                await _apiConsumer.UpdateProfileAsync(Profile.ToModel());
-            }
-            catch (ErrorForClientException clientException) 
-            {
-                Validation = clientException.ToObservableCollection();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogException(ex);
-            }
-            finally
-            {
-                IsLoading = false;
-            }
-        }
+        public override async Task<ProfileUpdateModel> GetFromServerAsync(CancellationToken cancellationToken = default)
+            => (await _apiConsumer.GetUpdateProfileAsync()).ToMobileModel();
+
+        public override Task SubmitToServerAsync(ProfileUpdateModel model, CancellationToken cancellationToken = default)
+            => _apiConsumer.UpdateProfileAsync(Model.ToModel());
 
     }
 }

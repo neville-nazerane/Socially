@@ -32,7 +32,6 @@ namespace {destNameSpace}
     public partial class {type.Name} : ObservableObject, IValidatable
     {{
 
-        private readonly ValidationContext validationContext;
         private readonly {type.FullName} model;
 
         {string.Join("", fieldStrings)}        
@@ -41,13 +40,12 @@ namespace {destNameSpace}
         public {type.Name}()
         {{
             model = new();
-            validationContext = new ValidationContext(model);
         }}
 
         public bool Validate(ICollection<ValidationResult> errors)
         {{
             this.ToModel(model);
-            return Validator.TryValidateObject(model, new ValidationContext(model), errors);
+            return Validator.TryValidateObject(model, new ValidationContext(model), errors, true);
         }}
 
     }}
