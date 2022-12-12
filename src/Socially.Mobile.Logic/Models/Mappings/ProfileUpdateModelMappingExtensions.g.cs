@@ -13,6 +13,9 @@ namespace Socially.Mobile.Logic.Models.Mappings
         public static IEnumerable<Socially.Models.ProfileUpdateModel> ToModel(this IEnumerable<Socially.Mobile.Logic.Models.ProfileUpdateModel> model)
             => model == null ? null : model.Select(m => m.ToModel()).ToArray();
 
+        public static async Task<Socially.Models.ProfileUpdateModel> ToModel(this Task<Socially.Mobile.Logic.Models.ProfileUpdateModel> modelTask)
+            => (await modelTask).ToModel();
+
         public static Socially.Models.ProfileUpdateModel ToModel(this Socially.Mobile.Logic.Models.ProfileUpdateModel model)
             => model is null ? null : 
               new() 
@@ -37,6 +40,9 @@ namespace Socially.Mobile.Logic.Models.Mappings
 
         public static IEnumerable<Socially.Mobile.Logic.Models.ProfileUpdateModel> ToMobileModel(this IEnumerable<Socially.Models.ProfileUpdateModel> model)
             => model == null ? null : model.Select(m => m.ToMobileModel()).ToArray();   
+
+        public static async Task<Socially.Mobile.Logic.Models.ProfileUpdateModel> ToMobileModel(this Task<Socially.Models.ProfileUpdateModel> modelTask)
+            => (await modelTask).ToMobileModel();
 
         public static Socially.Mobile.Logic.Models.ProfileUpdateModel ToMobileModel(this Socially.Models.ProfileUpdateModel model)
             => model is null ? null : 

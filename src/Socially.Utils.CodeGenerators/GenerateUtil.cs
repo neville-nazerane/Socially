@@ -106,6 +106,9 @@ namespace {mappingNameSpace}
         public static IEnumerable<{srcName}> To{srcLabel}(this IEnumerable<{destName}> model)
             => model == null ? null : model.Select(m => m.To{srcLabel}()).ToArray();
 
+        public static async Task<{srcName}> To{srcLabel}(this Task<{destName}> modelTask)
+            => (await modelTask).To{srcLabel}();
+
         public static {srcName} To{srcLabel}(this {destName} model)
             {methodBody}
 
@@ -117,6 +120,9 @@ namespace {mappingNameSpace}
 
         public static IEnumerable<{destName}> To{destLabel}(this IEnumerable<{srcName}> model)
             => model == null ? null : model.Select(m => m.To{destLabel}()).ToArray();   
+
+        public static async Task<{destName}> To{destLabel}(this Task<{srcName}> modelTask)
+            => (await modelTask).To{destLabel}();
 
         public static {destName} To{destLabel}(this {srcName} model)
             {methodBody}

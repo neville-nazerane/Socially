@@ -13,6 +13,9 @@ namespace Socially.Mobile.Logic.Models.Mappings
         public static IEnumerable<Socially.Models.PostDisplayModel> ToModel(this IEnumerable<Socially.Mobile.Logic.Models.PostDisplayModel> model)
             => model == null ? null : model.Select(m => m.ToModel()).ToArray();
 
+        public static async Task<Socially.Models.PostDisplayModel> ToModel(this Task<Socially.Mobile.Logic.Models.PostDisplayModel> modelTask)
+            => (await modelTask).ToModel();
+
         public static Socially.Models.PostDisplayModel ToModel(this Socially.Mobile.Logic.Models.PostDisplayModel model)
             => model is null ? null : 
               new() 
@@ -41,6 +44,9 @@ namespace Socially.Mobile.Logic.Models.Mappings
 
         public static IEnumerable<Socially.Mobile.Logic.Models.PostDisplayModel> ToMobileModel(this IEnumerable<Socially.Models.PostDisplayModel> model)
             => model == null ? null : model.Select(m => m.ToMobileModel()).ToArray();   
+
+        public static async Task<Socially.Mobile.Logic.Models.PostDisplayModel> ToMobileModel(this Task<Socially.Models.PostDisplayModel> modelTask)
+            => (await modelTask).ToMobileModel();
 
         public static Socially.Mobile.Logic.Models.PostDisplayModel ToMobileModel(this Socially.Models.PostDisplayModel model)
             => model is null ? null : 
