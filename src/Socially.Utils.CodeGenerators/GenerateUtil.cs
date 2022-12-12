@@ -93,17 +93,30 @@ namespace {destNameSpace}
 
             return $@"
 //// <GENERATED CODE> //////
+
 namespace {mappingNameSpace}
 {{
 
     public static class {srcType.Name}MappingExtensions 
     {{
 
+        public static async Task<IEnumerable<{srcName}>> To{srcLabel}(this Task<IEnumerable<{destName}>> modelTask)
+            => (await modelTask).To{srcLabel}();
+
+        public static IEnumerable<{srcName}> To{srcLabel}(this IEnumerable<{destName}> model)
+            => model == null ? null : model.Select(m => m.To{srcLabel}()).ToArray();
+
         public static {srcName} To{srcLabel}(this {destName} model)
             {methodBody}
 
         public static {srcName} To{srcLabel}(this {destName} model, {srcName} dest)
         {updateMethodBody}
+
+        public static async Task<IEnumerable<{destName}>> To{destLabel}(this Task<IEnumerable<{srcName}>> modelTask)
+            => (await modelTask).To{destLabel}();
+
+        public static IEnumerable<{destName}> To{destLabel}(this IEnumerable<{srcName}> model)
+            => model == null ? null : model.Select(m => m.To{destLabel}()).ToArray();   
 
         public static {destName} To{destLabel}(this {srcName} model)
             {methodBody}

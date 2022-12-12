@@ -1,10 +1,17 @@
 
 //// <GENERATED CODE> //////
+
 namespace Socially.Mobile.Logic.Models.Mappings
 {
 
     public static class SignUpModelMappingExtensions 
     {
+
+        public static async Task<IEnumerable<Socially.Models.SignUpModel>> ToModel(this Task<IEnumerable<Socially.Mobile.Logic.Models.SignUpModel>> modelTask)
+            => (await modelTask).ToModel();
+
+        public static IEnumerable<Socially.Models.SignUpModel> ToModel(this IEnumerable<Socially.Mobile.Logic.Models.SignUpModel> model)
+            => model == null ? null : model.Select(m => m.ToModel()).ToArray();
 
         public static Socially.Models.SignUpModel ToModel(this Socially.Mobile.Logic.Models.SignUpModel model)
             => model is null ? null : 
@@ -24,6 +31,12 @@ namespace Socially.Mobile.Logic.Models.Mappings
             dest.ConfirmPassword = model.ConfirmPassword;
             return dest;
         }
+
+        public static async Task<IEnumerable<Socially.Mobile.Logic.Models.SignUpModel>> ToMobileModel(this Task<IEnumerable<Socially.Models.SignUpModel>> modelTask)
+            => (await modelTask).ToMobileModel();
+
+        public static IEnumerable<Socially.Mobile.Logic.Models.SignUpModel> ToMobileModel(this IEnumerable<Socially.Models.SignUpModel> model)
+            => model == null ? null : model.Select(m => m.ToMobileModel()).ToArray();   
 
         public static Socially.Mobile.Logic.Models.SignUpModel ToMobileModel(this Socially.Models.SignUpModel model)
             => model is null ? null : 

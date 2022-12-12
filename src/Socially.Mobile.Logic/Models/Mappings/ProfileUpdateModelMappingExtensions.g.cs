@@ -1,10 +1,17 @@
 
 //// <GENERATED CODE> //////
+
 namespace Socially.Mobile.Logic.Models.Mappings
 {
 
     public static class ProfileUpdateModelMappingExtensions 
     {
+
+        public static async Task<IEnumerable<Socially.Models.ProfileUpdateModel>> ToModel(this Task<IEnumerable<Socially.Mobile.Logic.Models.ProfileUpdateModel>> modelTask)
+            => (await modelTask).ToModel();
+
+        public static IEnumerable<Socially.Models.ProfileUpdateModel> ToModel(this IEnumerable<Socially.Mobile.Logic.Models.ProfileUpdateModel> model)
+            => model == null ? null : model.Select(m => m.ToModel()).ToArray();
 
         public static Socially.Models.ProfileUpdateModel ToModel(this Socially.Mobile.Logic.Models.ProfileUpdateModel model)
             => model is null ? null : 
@@ -24,6 +31,12 @@ namespace Socially.Mobile.Logic.Models.Mappings
             dest.ProfilePictureFileName = model.ProfilePictureFileName;
             return dest;
         }
+
+        public static async Task<IEnumerable<Socially.Mobile.Logic.Models.ProfileUpdateModel>> ToMobileModel(this Task<IEnumerable<Socially.Models.ProfileUpdateModel>> modelTask)
+            => (await modelTask).ToMobileModel();
+
+        public static IEnumerable<Socially.Mobile.Logic.Models.ProfileUpdateModel> ToMobileModel(this IEnumerable<Socially.Models.ProfileUpdateModel> model)
+            => model == null ? null : model.Select(m => m.ToMobileModel()).ToArray();   
 
         public static Socially.Mobile.Logic.Models.ProfileUpdateModel ToMobileModel(this Socially.Models.ProfileUpdateModel model)
             => model is null ? null : 
