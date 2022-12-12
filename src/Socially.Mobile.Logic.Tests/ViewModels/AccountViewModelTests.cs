@@ -1,5 +1,7 @@
-﻿using Socially.Apps.Consumer.Services;
+﻿using Socially.Apps.Consumer.Exceptions;
+using Socially.Apps.Consumer.Services;
 using Socially.Mobile.Logic.Services;
+using Socially.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +53,86 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
             Assert.Null(viewModel.ErrorMessage);
             Assert.Empty(viewModel.Validation);
 
+        }
+
+        [Fact]
+        public async Task Submit_BadRrequest_ShowsError()
+        {
+            // ARRANGE
+            Init();
+
+            var exception = new ErrorForClientException(new[]
+            {
+                new ErrorModel(nameof(ProfileUpdateModel.LastName), "Not a nice last name")
+            });
+            mockedApiConsumed.Setup(c => c.UpdateProfileAsync(It.IsAny<ProfileUpdateModel>(),
+                                                              It.IsAny<CancellationToken>()))
+                              .Throws(exception);
+
+            // ACT
+            await viewModel.SubmitAsync();
+
+            // ASSERT
+            Assert.Null(viewModel.ErrorMessage);
+            Assert.NotEmpty(viewModel.Validation);
+        }
+
+        [Fact]
+        public async Task Submit_ApiThrows_ShowsError()
+        {
+            // ARRANGE
+            Init();
+            var exception = new Exception("Don't show this");
+            mockedApiConsumed.Setup(c => c.UpdateProfileAsync(It.IsAny<ProfileUpdateModel>(),
+                                                  It.IsAny<CancellationToken>()))
+                  .Throws(exception);
+
+            // ACT
+            await viewModel.SubmitAsync();
+
+            // ASSERT
+            Assert.NotNull(viewModel.ErrorMessage);
+            Assert.Empty(viewModel.Validation);
+
+        }
+
+        [Fact]
+        public async Task Get_NoErrors_ShowsNoErrors()
+        {
+            // ARRANGE
+            Init();
+            var result = new ProfileUpdateModel
+            {
+                FirstName = "Somename"
+            };
+            mockedApiConsumed.Setup(c => c.GetUpdateProfileAsync(It.IsAny<CancellationToken>()))
+                             .ReturnsAsync(result);
+
+            // ACT
+            await viewModel.GetAsync();
+
+            // ASSERT
+            Assert.Null(viewModel.ErrorMessage);
+            Assert.Empty(viewModel.Validation);
+
+            Assert.Equal("Somename", viewModel.Model.FirstName); 
+        }
+
+        [Fact]
+        public async Task Get_ApiThrowsException_ShowsError()
+        {
+            // ARRANGE
+            Init();
+            
+            mockedApiConsumed.Setup(c => c.GetUpdateProfileAsync(It.IsAny<CancellationToken>()))
+                             .Throws(new Exception());
+
+            // ACT
+            await viewModel.GetAsync();
+
+            // ASSERT
+            Assert.NotNull(viewModel.ErrorMessage);
+            Assert.Empty(viewModel.Validation);
         }
 
     }

@@ -12,6 +12,7 @@ namespace Socially.Models
 
         public UploadContext ImageContext { get; set; }
 
+        // not to be used by client
         public IFormFile Image { get; set; }
 
     }

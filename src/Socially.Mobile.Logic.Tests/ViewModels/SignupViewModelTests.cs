@@ -19,7 +19,7 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
         private Mock<ISocialLogger> mockedLogger;
         private SignupViewModel viewModel;
 
-        public void Init()
+        void Init()
         {
             mockedNavigation = new Mock<INavigation>();
             mockedMessaging = new Mock<IMessaging>();
