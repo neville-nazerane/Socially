@@ -45,7 +45,13 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
         {
             // ARRANGE
             Init();
-            var res = Array.Empty<PostDisplayModel>();
+            var res = new[]
+            {
+                new PostDisplayModel
+                {
+                    Id = 90
+                }
+            };
             mockedApiConsumer.Setup(c => c.GetHomePostsAsync(It.IsAny<int>(),
                                                              It.IsAny<DateTime?>(),
                                                              It.IsAny<CancellationToken>()))
@@ -56,7 +62,8 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
 
             // ASSERT
             Assert.Null(viewModel.ErrorMessage);
-            Assert.NotNull(viewModel.Model);
+            Assert.Single(viewModel.Model);
+            Assert.Equal(90, viewModel.Model.First().Id);
         }
     }
 }
