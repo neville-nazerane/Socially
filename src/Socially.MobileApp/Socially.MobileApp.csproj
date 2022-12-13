@@ -72,7 +72,7 @@
 
 	<ItemGroup>
 	  <None Update="Platforms\Android\AndroidManifest.xml">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
 
