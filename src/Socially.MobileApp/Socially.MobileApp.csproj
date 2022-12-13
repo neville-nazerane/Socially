@@ -70,4 +70,10 @@
 	  <Folder Include="Pages\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Update="Platforms\Android\AndroidManifest.xml">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
 </Project>
