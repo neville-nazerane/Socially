@@ -2,6 +2,7 @@
 pool:
   vmImage: 'ubuntu-latest'
 
+name: $(majorVersion).$(minorVersion).$(Build.BuildId)
 
 trigger:
   branches:
@@ -42,7 +43,7 @@ stages:
             inputs:
               sourcePath: $(androidManifestLocation)
               versionCode: $(Build.BuildId)
-              versionName: $(majorVersion).$(minorVersion).$(Build.BuildId)
+              versionName: $(Build.DefinitionName)
               printFile: true
 
 
