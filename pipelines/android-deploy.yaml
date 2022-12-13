@@ -38,11 +38,13 @@ stages:
 
           - task: android-manifest-version@1
             displayName: Set Versioning
+            continueOnError: true
             inputs:
               sourcePath: $(androidManifestLocation)
               versionCode: $(Build.BuildId)
               versionName: $(majorVersion).$(minorVersion).$(Build.BuildId)
               printFile: true
+
 
           # - powershell: |
           #     [xml]$xmlDoc = Get-Content $(androidManifestLocation)
