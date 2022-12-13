@@ -7,15 +7,25 @@ variables:
 stages:
   - stage: AutomatedTests
     jobs:
-      - job: UnitTests
+      - job: APIUnitTests
+        displayName: Web API unit tests
         steps:
           - template: runtest.yml
             parameters:
               path: src/Socially.Server.Managers.Tests
 
       - job: IntegrationTests
+        displayName: Web API integration tests
         steps:
 
           - template: runtest.yml
             parameters:
               path: src/Socially.WebAPI.IntegrationTests
+
+      - job: MauiUnitTest
+        displayName: Mobile unit tests
+        steps:
+          
+          - template: runtest.yml
+            parameters:
+              path: src/Socially.Mobile.Logic.Tests
