@@ -43,7 +43,7 @@ stages:
             inputs:
               sourcePath: $(androidManifestLocation)
               versionCode: $(Build.BuildId)
-              versionName: $(Build.DefinitionName)
+              versionName: $(Build.BuildNumber)
               printFile: true
 
 
