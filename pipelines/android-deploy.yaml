@@ -33,14 +33,14 @@ stages:
           - script: dotnet workload install maui-android
             displayName: Installing maui workload
 
-          # - powershell: |
-          #     [xml]$xmlDoc = Get-Content $(androidManifestLocation)
-          #     $node = $xmlDoc.SelectSingleNode("//manifest/@android:versionName");
-          #     $node.Value = 1.0.$(Build.BuildId)
+          - powershell: |
+              [xml]$xmlDoc = Get-Content $(androidManifestLocation)
+              $node = $xmlDoc.SelectSingleNode("//manifest/@android:versionName");
+              $node.Value = 1.0.$(Build.BuildId)
               
-          #     $node = $xmlDoc.SelectSingleNode("//manifest/@android:versionCode");
-          #     $node.Value = $(Build.BuildId)
-          #   displayName: Update android manifest
+              $node = $xmlDoc.SelectSingleNode("//manifest/@android:versionCode");
+              $node.Value = $(Build.BuildId)
+            displayName: Update android manifest
 
                     
           # - script: |
