@@ -11,5 +11,14 @@ namespace Socially.MobileApp.Utils
 
         public static string BaseURL { get; }
         public static string ImageBase { get; }
+
+#if RELEASE
+        static Configs()
+        {
+            BaseURL = "https://api.sociallyconnections.com";
+            ImageBase = "https://pics.sociallyconnections.com";
+        }
+#endif
+
     }
 }
