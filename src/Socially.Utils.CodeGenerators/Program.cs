@@ -24,6 +24,7 @@ var configs = new ConfigurationBuilder()
                         .Build();
 
 await SetMobileConfigAsync(configs);
+await SetWebsiteConfigsAsync(configs);
 
 
 Task SetMobileConfigAsync(IConfiguration configuration)
@@ -50,8 +51,27 @@ namespace Socially.MobileApp.Utils
     }}
 }}
 
+    ");
+}
+
+Task SetWebsiteConfigsAsync(IConfiguration configuration)
+{
+    string websitePath = Path.Combine(currentPath, "..", "Socially.Website");
+    var configFile = Path.Combine(websitePath, "wwwroot", "appsettings.Development.json");
+
+
+    var properties = configuration.GetChildren()
+                                  .Select(c => $"   \"{c.Key}\": \"{c.Value}\"")
+                                  .ToArray();
+
+    return File.WriteAllTextAsync(configFile, $@"
+    
+{{
+{string.Join(",\n", properties)}
+}}
 
 ");
+
 }
 
 Task RunMobileAsync(IEnumerable<Type> types)
