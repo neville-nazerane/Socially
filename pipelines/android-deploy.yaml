@@ -25,7 +25,7 @@ variables:
   artifactName: androidApp
   compileLocation: $(Build.ArtifactStagingDirectory)/published
   androidManifestLocation: $(projectPath)/Platforms/Android/AndroidManifest.xml
-
+  releaseNotesPath: src/ReleaseNotes.txt
 
 stages:
   - stage: Compile
@@ -46,27 +46,12 @@ stages:
               versionName: $(Build.BuildNumber)
               printFile: true
 
-
-          # - powershell: |
-          #     [xml]$xmlDoc = Get-Content $(androidManifestLocation)
-          #     $node = $xmlDoc.SelectSingleNode("//manifest/@android:versionName");
-          #     $node.Value = 1.0.$(Build.BuildId)
-              
-          #     $node = $xmlDoc.SelectSingleNode("//manifest/@android:versionCode");
-          #     $node.Value = $(Build.BuildId)
-          #   displayName: Update android manifest
-
-                    
-          # - script: |
-          #     xmlstarlet edit --update "/manifest/@android:versionName" --value "1.0.$(Build.BuildId)" $(androidManifestLocation)
-          #     xmlstarlet edit --update "/manifest/@android:versionCode" --value "$(Build.BuildId)" $(androidManifestLocation)
-          #   displayName: Updating version
-
           - script: dotnet publish -c release -f net7.0-android -o $(compileLocation)
             displayName: Compile MAUI android
             workingDirectory: $(projectPath)
           
           - task: AndroidSigning@3
+            displayName: Signing APK
             inputs:
               apkFiles: $(compileLocation)/$(apkName)
               apksignerKeystoreFile: $(keyStoreFile)
@@ -77,7 +62,11 @@ stages:
 
           - publish: $(compileLocation)
             artifact: $(artifactName)
-            displayName: Deploy to publish
+            displayName: Publish to $(artifactName)
+
+          - publish: $(releaseNotesPath)
+            artifact: text
+            displayName: Publish release notes
 
 
   - stage: 
@@ -89,6 +78,9 @@ stages:
           - checkout: none
 
           - download: current
+
+          - script: |
+              mapfile notes < $(Pipeline.Workspace)/text/ReleaseNotes.txt
 
           - task: AppCenterDistribute@3
             inputs:
