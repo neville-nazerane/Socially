@@ -1,4 +1,6 @@
-﻿namespace Socially.MobileApp
+﻿using Microsoft.Extensions.Configuration;
+
+namespace Socially.MobileApp
 {
     public partial class MainPage : ContentPage
     {

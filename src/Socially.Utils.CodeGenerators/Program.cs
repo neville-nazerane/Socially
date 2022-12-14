@@ -1,4 +1,5 @@
-﻿using Socially.Models;
+﻿using Microsoft.Extensions.Configuration;
+using Socially.Models;
 using Socially.Utils.CodeGenerators;
 
 
@@ -18,7 +19,40 @@ var mobileModels = AggregatedType
 
 await RunMobileAsync(mobileModels);
 
+var configs = new ConfigurationBuilder()
+                        .AddUserSecrets("Socially Client")
+                        .Build();
 
+await SetMobileConfigAsync(configs);
+
+
+Task SetMobileConfigAsync(IConfiguration configuration)
+{
+    string mainMobilePath = Path.Combine(currentPath, "..", "Socially.MobileApp");
+    var configFile = Path.Combine(mainMobilePath, "Utils", "Configs.local.cs");
+
+    var properties =  configuration.GetChildren()
+                                     .Select(c => $"            {c.Key.UpperFirstLetter()} = \"{c.Value}\";")
+                                     .ToArray();
+
+    return File.WriteAllTextAsync(configFile,$@"
+
+namespace Socially.MobileApp.Utils
+{{
+    public partial class Configs
+    {{
+
+        static Configs()
+        {{
+{string.Join("\n", properties)}
+        }}
+
+    }}
+}}
+
+
+");
+}
 
 Task RunMobileAsync(IEnumerable<Type> types)
 {
