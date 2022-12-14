@@ -13,6 +13,9 @@ namespace Socially.Utils.CodeGenerators
         internal static string LowerFirstLetter(this string str)
             => str[0].ToString().ToLower() + str[1..];
 
+        internal static string UpperFirstLetter(this string str)
+            => str[0].ToString().ToUpper() + str[1..];
+
         internal static string ClearNewLines(this string str)
             => str.Replace("\n", string.Empty)
                   .Replace("\r", string.Empty)

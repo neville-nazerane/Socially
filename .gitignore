@@ -351,3 +351,4 @@ MigrationBackup/
 *.nogit.cs
 *.trx
 /src/Socially.Website/wwwroot/appsettings.Development.json
+/src/Socially.MobileApp/Utils/Configs.local.cs
