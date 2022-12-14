@@ -81,6 +81,7 @@ stages:
 
           - script: |
               mapfile notes < $(Pipeline.Workspace)/text/ReleaseNotes.txt
+              echo "##vso[task.setvariable variable=releaseNotes;]$notes"
 
           - task: AppCenterDistribute@3
             inputs:
@@ -89,7 +90,7 @@ stages:
               appFile: $(Pipeline.Workspace)/$(artifactName)/$(apkName)
               symbolsOption: Android
               releaseNotesOption: input
-              releaseNotesInput: The lazy developer hasn''t added any actual release notes.
+              releaseNotesInput: $(releaseNotes)
               destinationType: groups
               distributionGroupId: $(appCenterGroup)
               
