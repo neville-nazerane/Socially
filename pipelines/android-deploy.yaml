@@ -4,14 +4,15 @@ pool:
 
 name: $(majorVersion).$(minorVersion).$(Build.BuildId)
 
-trigger:
-  branches:
-    include:
-      - master
-  paths:
-    include:
-      - src/Socially.MobileApp
-      - pipelines/android-deploy.yaml
+trigger: none
+# trigger:
+#   branches:
+#     include:
+#       - master
+#   paths:
+#     include:
+#       - src/Socially.MobileApp
+#       - pipelines/android-deploy.yaml
 
 variables:
   majorVersion: 1
