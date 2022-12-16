@@ -38,16 +38,13 @@ stages:
   - stage: Deploy
     jobs:
       - job: Deploying
-        pool:
-          vmImage: 'windows-latest'
-
 
         steps:
 
         - download: current
 
         - script: 
-            dotnet run "$(webBlobConnString)" $web $(Pipeline.Workspace)/packed/wwwroot
+            dotnet run "$(webBlobConnString)" '$web' $(Pipeline.Workspace)/packed/wwwroot
           displayName: Dotnet AZ Deploy
           workingDirectory: $(azCopyPath)
 
