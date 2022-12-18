@@ -88,23 +88,30 @@ namespace Socially.Website.Services
 
             try
             {
-                storedToken = new()
-                {
-                    AccessToken = res.AccessToken,
-                    RefreshToken = res.RefreshToken,
-                    Expiary = DateTime.UtcNow.AddSeconds(res.ExpiresIn)
-                };
 
                 if (res is null)
+                {
                     await _jSRuntime.InvokeVoidAsync("removeData", tokenKey);
+                    storedToken = null;
+                }
                 else
+                {
+
+                    storedToken = new()
+                    {
+                        AccessToken = res.AccessToken,
+                        RefreshToken = res.RefreshToken,
+                        Expiary = DateTime.UtcNow.AddSeconds(res.ExpiresIn)
+                    };
                     await _jSRuntime.InvokeVoidAsync("setData", tokenKey, JsonSerializer.Serialize(storedToken));
+                }
                 NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
                 setterLock.TrySetResult(storedToken);
             }
             catch (Exception ex)
             {
                 setterLock.TrySetException(ex);
+                throw new Exception("Failed signing out", ex);
             }
             finally
             {
