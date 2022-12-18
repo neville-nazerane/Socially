@@ -52,6 +52,7 @@ stages:
           inputs:
             azureSubscription: socially
             scriptType: ps
+            scriptLocation: inlineScript
             inlineScript: az cdn endpoint purge -g Socially -n sociallycdn --profile-name sociallywebsiteCDN --content-paths '/*'
 
         # - script: tree
