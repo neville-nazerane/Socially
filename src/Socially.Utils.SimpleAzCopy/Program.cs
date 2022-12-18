@@ -7,6 +7,10 @@ using System.IO;
 using System.Reflection;
 
 const int argsCount = 3;
+ParallelOptions parallelOptions = new ParallelOptions
+{
+    MaxDegreeOfParallelism = 10
+};
 
 if (args.Length != argsCount)
 {
@@ -25,10 +29,8 @@ var containerClient = blobClient.GetBlobContainerClient(containerName);
 var existingBlobs = containerClient.GetBlobsByHierarchyAsync();
 
 await Parallel.ForEachAsync(existingBlobs,
-                              new ParallelOptions { MaxDegreeOfParallelism = 5 },
-                              async (blob, ct) => await containerClient.DeleteBlobAsync(blob.Blob.Name));
-//await foreach (var blob in existingBlobs)
-//    await containerClient.DeleteBlobAsync(blob.Blob.Name);
+                            parallelOptions,
+                            async (blob, ct) => await containerClient.DeleteBlobAsync(blob.Blob.Name));
 
 var files = Directory.GetFiles(srcPath, "*.*", SearchOption.AllDirectories);
 
@@ -38,11 +40,7 @@ await UploadAsync(string.Empty);
 async Task UploadAsync(string path)
 {
     var fullPath = Path.Combine(srcPath, path);
-    await Parallel.ForEachAsync(Directory.GetFiles(fullPath),
-        new ParallelOptions
-        {
-            MaxDegreeOfParallelism = 5
-        },
+    await Parallel.ForEachAsync(Directory.GetFiles(fullPath), parallelOptions,
         async (file, ct) =>
         {
             var fileInfo = new FileInfo(file);
@@ -57,8 +55,7 @@ async Task UploadAsync(string path)
             await blobClient.UploadAsync(stream, new BlobUploadOptions { HttpHeaders = blobHttpHeader }, ct);
         });
 
-    await Parallel.ForEachAsync(Directory.GetDirectories(fullPath),
-       new ParallelOptions { MaxDegreeOfParallelism = 5 },
+    await Parallel.ForEachAsync(Directory.GetDirectories(fullPath), parallelOptions,
        async (dir, ct) =>
        {
            var info = new DirectoryInfo(dir);
