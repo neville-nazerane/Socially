@@ -15,7 +15,7 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-var apiEndpoint = builder.Configuration["apiEndpoint"];
+var apiEndpoint = builder.Configuration["baseURL"];
 
 builder.Services.AddBlazorApplicationInsights();
 builder.Services.AddTransient<ApiHttpHandler>();
