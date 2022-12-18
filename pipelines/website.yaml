@@ -51,7 +51,7 @@ stages:
         - task: AzureCLI@2
           inputs:
             azureSubscription: socially
-            scriptType: ps
+            scriptType: pscore
             scriptLocation: inlineScript
             inlineScript: az cdn endpoint purge -g Socially -n sociallycdn --profile-name sociallywebsiteCDN --content-paths '/*'
 
