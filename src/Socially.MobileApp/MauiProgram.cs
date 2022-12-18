@@ -1,5 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Socially.Apps.Consumer.Services;
+using Socially.Apps.Consumer.Utils;
+using Socially.MobileApp.Pages;
+using Socially.MobileApp.Services;
 using Socially.MobileApp.Utils;
 
 namespace Socially.MobileApp
@@ -27,9 +31,22 @@ namespace Socially.MobileApp
 
             var services = builder.Services;
 
+            services.AddTransient<LoginPage>();
+
+            services.AddSingleton<IAuthAccess, AuthAccess>()
+                    .AddSingleton<ApiHttpHandler>()
+                    .AddSingleton<IApiConsumer>(p =>
+                                        new ApiConsumer(
+                                                new HttpClient(p.GetService<ApiHttpHandler>())
+                                                {
+                                                    BaseAddress = new Uri(Configs.BaseURL)
+                                                }));
+
+
+
 
 #if DEBUG
-		    builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();
