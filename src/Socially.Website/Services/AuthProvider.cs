@@ -111,7 +111,7 @@ namespace Socially.Website.Services
             catch (Exception ex)
             {
                 setterLock.TrySetException(ex);
-                throw new Exception("Failed signing out", ex);
+                throw;
             }
             finally
             {
