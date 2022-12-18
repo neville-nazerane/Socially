@@ -1,6 +1,6 @@
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: ubuntu-latest
 
 trigger:
   branches:
@@ -42,6 +42,7 @@ stages:
         steps:
 
         - download: current
+          displayName: Download artifacts
 
         - script: 
             dotnet run "$(webBlobConnString)" '$web' $(Pipeline.Workspace)/packed/wwwroot
@@ -49,53 +50,9 @@ stages:
           workingDirectory: $(azCopyPath)
 
         - task: AzureCLI@2
+          displayName: Purge CDN
           inputs:
             azureSubscription: socially
             scriptType: pscore
             scriptLocation: inlineScript
             inlineScript: az cdn endpoint purge -g Socially -n sociallycdn --profile-name sociallywebsiteCDN --content-paths '/*'
-
-        # - script: tree
-        #   displayName: show em all
-        #   workingDirectory: $(Pipeline.Workspace)/packed 
-        
-        # - task: AzureFileCopy@4
-        #   inputs:
-        #     SourcePath: '$(Pipeline.Workspace)/packed/wwwroot'
-        #     azureSubscription: 'socially'
-        #     Destination: AzureBlob
-        #     storage: 'sociallyimages'
-        #     ContainerName: '$web'
-        #     CleanTargetBeforeCopy: true
-
-        
-
-
-            
-          
-          
-
-# resources:
-#   repositories:
-#     - repository: templates
-#       type: github
-#       name: neville-nazerane/Common-Pipelines
-#       endpoint: github.com_neville-nazerane
-
-
-# extends:
-#   template: Shared\netcore-ubuntu.yml@templates
-#   parameters:
-#     useVersion: 7.x
-#     projectPath: src/Socially.Website
-#     projectName: Socially.Website
-#     destDirectory: /var/www/sociallySite
-#     port: 5075
-
-#     service:
-#       description: Socially Website
-#       identifier: sociallySite
-#       name: kestrel-sociallySite
-#     configs:
-#       ASPNETCORE_ENVIRONMENT: Development
-    

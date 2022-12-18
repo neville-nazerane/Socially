@@ -24,8 +24,11 @@ var containerClient = blobClient.GetBlobContainerClient(containerName);
 
 var existingBlobs = containerClient.GetBlobsByHierarchyAsync();
 
-await foreach (var blob in existingBlobs)
-    await containerClient.DeleteBlobAsync(blob.Blob.Name);
+await Parallel.ForEachAsync(existingBlobs,
+                              new ParallelOptions { MaxDegreeOfParallelism = 5 },
+                              async (blob, ct) => await containerClient.DeleteBlobAsync(blob.Blob.Name));
+//await foreach (var blob in existingBlobs)
+//    await containerClient.DeleteBlobAsync(blob.Blob.Name);
 
 var files = Directory.GetFiles(srcPath, "*.*", SearchOption.AllDirectories);
 
@@ -35,26 +38,38 @@ await UploadAsync(string.Empty);
 async Task UploadAsync(string path)
 {
     var fullPath = Path.Combine(srcPath, path);
-    foreach (var file in Directory.GetFiles(fullPath))
-    {
-        var fileInfo = new FileInfo(file);
-        string fullName = Path.Combine(path, fileInfo.Name);
-        await using var stream = fileInfo.OpenRead();
-        Console.WriteLine("Uploading " + file);
-        var blobClient = containerClient.GetBlobClient(fullName);
+    await Parallel.ForEachAsync(Directory.GetFiles(fullPath),
+        new ParallelOptions
+        {
+            MaxDegreeOfParallelism = 5
+        },
+        async (file, ct) =>
+        {
+            var fileInfo = new FileInfo(file);
+            string fullName = Path.Combine(path, fileInfo.Name);
+            await using var stream = fileInfo.OpenRead();
+            Console.WriteLine("Uploading " + file);
+            var blobClient = containerClient.GetBlobClient(fullName);
 
-        if (!typeProvider.Mappings.TryGetValue(fileInfo.Extension, out var ext))
-            ext = string.Empty;
-        var blobHttpHeader = new BlobHttpHeaders { ContentType = ext };
-        await blobClient.UploadAsync(stream, new BlobUploadOptions { HttpHeaders = blobHttpHeader });
-        
-        //var info = await containerClient.UploadBlobAsync(fullName, stream);
-    }
-    
-    foreach (var dir in Directory.GetDirectories(fullPath))
-    {
-        var info = new DirectoryInfo(dir);
-        var newPath = Path.Combine(path, info.Name);
-        await UploadAsync(newPath);
-    }
+            if (!typeProvider.Mappings.TryGetValue(fileInfo.Extension, out var ext))
+                ext = string.Empty;
+            var blobHttpHeader = new BlobHttpHeaders { ContentType = ext };
+            await blobClient.UploadAsync(stream, new BlobUploadOptions { HttpHeaders = blobHttpHeader }, ct);
+        });
+
+    await Parallel.ForEachAsync(Directory.GetDirectories(fullPath),
+       new ParallelOptions { MaxDegreeOfParallelism = 5 },
+       async (dir, ct) =>
+       {
+           var info = new DirectoryInfo(dir);
+           var newPath = Path.Combine(path, info.Name);
+           await UploadAsync(newPath);
+       });
+
+    //       foreach (var dir in Directory.GetDirectories(fullPath))
+    //{
+    //    var info = new DirectoryInfo(dir);
+    //    var newPath = Path.Combine(path, info.Name);
+    //    await UploadAsync(newPath);
+    //}
 }
