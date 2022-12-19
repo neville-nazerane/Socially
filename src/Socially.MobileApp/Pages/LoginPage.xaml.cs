@@ -7,10 +7,7 @@ public partial class LoginPage : ContentPage
 {
     private IApiConsumer _consumer;
 
-    public LoginPage()
-	{
-		InitializeComponent();
-    }
+    
 
 
     protected override async void OnNavigatedTo(NavigatedToEventArgs args)
