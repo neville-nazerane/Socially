@@ -10,10 +10,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Models\Mappings\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <ProjectReference Include="..\Socially.Apps.Consumer\Socially.Apps.Consumer.csproj" />
 	</ItemGroup>
 

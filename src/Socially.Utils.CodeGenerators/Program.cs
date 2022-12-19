@@ -76,10 +76,16 @@ Task SetWebsiteConfigsAsync(IConfiguration configuration)
 
 Task RunMobileAsync(IEnumerable<Type> types)
 {
-    string mobilePath = Path.Combine(currentPath, "..", "Socially.Mobile.Logic", "Models");
+    string mobilePath = Path.Combine(currentPath, "..", "Socially.Mobile.Logic", "Generated", "Models");
     string mappingPath = Path.Combine(mobilePath, "Mappings");
     string modelsNamespace = "Socially.Mobile.Logic.Models";
     string mappingNamespace = $"{modelsNamespace}.Mappings";
+
+    if (!Directory.Exists(mappingPath))
+        Directory.CreateDirectory(mobilePath);
+
+    if (!Directory.Exists(mappingPath))
+        Directory.CreateDirectory(mappingPath);
 
     // CLEAR FILES
     var filesToDelete = Directory.GetFiles(mobilePath)
