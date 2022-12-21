@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Socially.Utils.CodeGenerators
+namespace Socially.MobileApp.Generator
 {
-    public class GenerateUtil
+    public static class GenerateCode
     {
-
 
         public static string MakePageClass(Type viewModel,
                                            Type baseType,
@@ -49,6 +48,7 @@ namespace {pageNamespace}
 
             return classContent;
         }
+
 
     }
 }
