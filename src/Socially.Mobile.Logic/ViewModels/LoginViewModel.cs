@@ -47,6 +47,7 @@ namespace Socially.Mobile.Logic.ViewModels
 
         public override async Task SubmitToServerAsync(LoginModel model, CancellationToken cancellationToken = default)
         {
+            Model.Source = "mobile";
             // exceptions for the below should be caught by base submit async function
             var res = await _apiConsumer.LoginAsync(Model.ToModel(), cancellationToken);
             try

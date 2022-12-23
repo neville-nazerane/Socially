@@ -50,6 +50,10 @@ namespace Socially.MobileApp.Services
                 };
                 await SecureStorage.SetAsync(key, JsonSerializer.Serialize(token));
             }
+            catch (Exception ex)
+            {
+
+            }
             finally
             {
                 locker = null;

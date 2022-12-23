@@ -11,7 +11,6 @@ namespace Socially.MobileApp.Services
     {
         public void LogException(Exception ex, string message = null)
         {
-            throw new NotImplementedException();
         }
     }
 }

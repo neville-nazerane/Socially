@@ -19,6 +19,7 @@
         </CollectionView>
 
         <Label Text="{Binding ErrorMessage}"
+        
                TextColor="Red" />
 
         <Entry Placeholder="UserName"
