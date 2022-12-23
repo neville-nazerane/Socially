@@ -33,12 +33,15 @@ namespace Socially.MobileApp
 
             var services = builder.Services;
 
+            // internal services
             services.AddSingleton<IMessaging, Messaging>()
                     .AddSingleton<INavigationControl, NavigationControl>()
                     .AddSingleton<ISocialLogger, SociallyLogger>();
 
+            // calling auto generated function
             AppPageInjections(services);
 
+            // API setup
             services.AddSingleton<IAuthAccess, AuthAccess>()
                     .AddSingleton<ApiHttpHandler>()
                     .AddSingleton<IApiConsumer>(p =>

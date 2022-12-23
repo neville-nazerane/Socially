@@ -36,7 +36,7 @@ namespace Socially.Mobile.Logic.ComponentModels
             _apiConsumer = apiConsumer;
         }
 
-        public override async Task InitAsync()
+        public override async Task OnNavigatedAsync()
         {
             await Task.WhenAll(LoadFriendRequestAsync(), LoadFriendsAsync());
         }

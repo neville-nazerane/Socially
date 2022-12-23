@@ -31,7 +31,7 @@ namespace Socially.Mobile.Logic.ViewModels
             Validation = new();
         }
 
-        public virtual Task InitAsync() => Task.CompletedTask;
+        public virtual Task OnNavigatedAsync() => Task.CompletedTask;
 
     }
 
@@ -57,7 +57,7 @@ namespace Socially.Mobile.Logic.ViewModels
 
         public abstract void OnException(Exception ex);
 
-        public override Task InitAsync() => GetAsync();
+        public override Task OnNavigatedAsync() => GetAsync();
 
         [RelayCommand]
         public Task GetAsync() => ExecuteAndValidate(async () => Model = await GetFromServerAsync());

@@ -5,12 +5,12 @@ using Socially.Mobile.Logic.ViewModels;
 namespace Socially.MobileApp.Pages 
 {
 
-    public partial class LoginPage
+    public partial class HomePage
     {
 
-        public LoginViewModel ViewModel { get; }
+        public HomeViewModel ViewModel { get; }
                     
-        public LoginPage(LoginViewModel viewModel)
+        public HomePage(HomeViewModel viewModel)
 	    {
 		    InitializeComponent();
             BindingContext = viewModel;

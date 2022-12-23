@@ -55,14 +55,24 @@ namespace {pageNamespace}
 
     public partial class {pageName}Page
     {{
+
+        public {pageName}ViewModel ViewModel {{ get; }}
                     
         public {pageName}Page({pageName}ViewModel viewModel)
 	    {{
 		    InitializeComponent();
             BindingContext = viewModel;
+            ViewModel = viewModel;
+        }}
+
+        protected override async void OnNavigatedTo(NavigatedToEventArgs args)
+        {{
+            await ViewModel.OnNavigatedAsync();
+            base.OnNavigatedTo(args);
         }}
 
     }}
+
 
 }}
 

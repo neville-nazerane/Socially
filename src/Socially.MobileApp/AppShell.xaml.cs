@@ -7,7 +7,9 @@ namespace Socially.MobileApp
         public AppShell()
         {
             Routing.RegisterRoute("login", typeof(LoginPage));
+            Routing.RegisterRoute("home", typeof(HomePage));
             InitializeComponent();
         }
+
     }
 }

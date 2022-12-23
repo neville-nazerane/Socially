@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Socially.Mobile.Logic.ViewModels;assembly=Socially.Mobile.Logic"
+             xmlns:m="clr-namespace:Socially.Mobile.Logic.Models;assembly=Socially.Mobile.Logic"
+             x:Class="Socially.MobileApp.Pages.HomePage"
+             x:DataType="vm:HomeViewModel"
+             Title="HomePage">
+    <VerticalStackLayout>
+
+        <CollectionView ItemsSource="{ Binding Model }">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="m:PostDisplayModel">
+                    <Label Text="{ Binding Text }" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        
+    </VerticalStackLayout>
+</ContentPage>

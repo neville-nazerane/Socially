@@ -4,8 +4,7 @@
              xmlns:da="clr-namespace:System.ComponentModel.DataAnnotations;assembly=System.ComponentModel.Annotations"
              xmlns:vm="clr-namespace:Socially.Mobile.Logic.ViewModels;assembly=Socially.Mobile.Logic"
              x:Class="Socially.MobileApp.Pages.LoginPage"
-             x:DataType="vm:LoginViewModel"
-             Shell.NavBarIsVisible="False" >
+             x:DataType="vm:LoginViewModel">
     <VerticalStackLayout
         Spacing="40">
 
