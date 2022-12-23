@@ -2,13 +2,15 @@
 using Microsoft.Extensions.Logging;
 using Socially.Apps.Consumer.Services;
 using Socially.Apps.Consumer.Utils;
+using Socially.Mobile.Logic.Services;
+using Socially.Mobile.Logic.ViewModels;
 using Socially.MobileApp.Pages;
 using Socially.MobileApp.Services;
 using Socially.MobileApp.Utils;
 
 namespace Socially.MobileApp
 {
-    public static class MauiProgram
+    public static partial class MauiProgram
     {
         public static MauiApp CreateMauiApp()
         {
@@ -31,7 +33,11 @@ namespace Socially.MobileApp
 
             var services = builder.Services;
 
-            services.AddTransient<LoginPage>();
+            services.AddSingleton<IMessaging, Messaging>()
+                    .AddSingleton<INavigationControl, NavigationControl>()
+                    .AddSingleton<ISocialLogger, SociallyLogger>();
+
+            AppPageInjections(services);
 
             services.AddSingleton<IAuthAccess, AuthAccess>()
                     .AddSingleton<ApiHttpHandler>()
@@ -51,5 +57,8 @@ namespace Socially.MobileApp
 
             return builder.Build();
         }
+
+        static partial void AppPageInjections(IServiceCollection services);
+
     }
 }

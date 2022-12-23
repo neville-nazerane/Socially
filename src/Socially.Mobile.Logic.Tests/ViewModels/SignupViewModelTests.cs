@@ -13,7 +13,7 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
 {
     public class SignupViewModelTests
     {
-        private Mock<INavigation> mockedNavigation;
+        private Mock<INavigationControl> mockedNavigation;
         private Mock<IMessaging> mockedMessaging;
         private Mock<IApiConsumer> mockedApiConsumer;
         private Mock<ISocialLogger> mockedLogger;
@@ -21,7 +21,7 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
 
         void Init()
         {
-            mockedNavigation = new Mock<INavigation>();
+            mockedNavigation = new Mock<INavigationControl>();
             mockedMessaging = new Mock<IMessaging>();
             mockedApiConsumer = new Mock<IApiConsumer>();
             mockedLogger = new Mock<ISocialLogger>();

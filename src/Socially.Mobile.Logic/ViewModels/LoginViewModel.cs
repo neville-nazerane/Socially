@@ -21,7 +21,7 @@ namespace Socially.Mobile.Logic.ViewModels
     {
         private readonly IApiConsumer _apiConsumer;
         private readonly IAuthAccess _authAccess;
-        private readonly INavigation _navigation;
+        private readonly INavigationControl _navigation;
         private readonly ISocialLogger _socialLogger;
 
         //[ObservableProperty]
@@ -29,7 +29,7 @@ namespace Socially.Mobile.Logic.ViewModels
 
         public LoginViewModel(IApiConsumer apiConsumer, 
                               IAuthAccess authAccess,
-                              INavigation navigation,
+                              INavigationControl navigation,
                               ISocialLogger socialLogger)
         {
             //loginModel = new();

@@ -18,13 +18,13 @@ namespace Socially.Mobile.Logic.ViewModels
 {
     public partial class SignupViewModel : ViewModelBase<SignUpModel>
     {
-        private readonly INavigation _navigation;
+        private readonly INavigationControl _navigation;
         private readonly IMessaging _messaging;
         private readonly IApiConsumer _apiConsumer;
         private readonly ISocialLogger _logger;
 
 
-        public SignupViewModel(INavigation navigation,
+        public SignupViewModel(INavigationControl navigation,
                                IMessaging messaging,
                                IApiConsumer apiConsumer,
                                ISocialLogger logger)

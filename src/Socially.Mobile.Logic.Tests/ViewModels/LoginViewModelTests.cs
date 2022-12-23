@@ -12,7 +12,7 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
         private Mock<IApiConsumer> mockedApiConsumer;
         private Mock<IAuthAccess> mockedAuthAccess;
         private Mock<ISocialLogger> mockedLogger;
-        private Mock<INavigation> mockedNavigation;
+        private Mock<INavigationControl> mockedNavigation;
         private LoginViewModel viewModel;
 
         private void Init()
@@ -20,7 +20,7 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
             mockedApiConsumer = new Mock<IApiConsumer>();
             mockedAuthAccess = new Mock<IAuthAccess>();
             mockedLogger = new Mock<ISocialLogger>();
-            mockedNavigation = new Mock<INavigation>();
+            mockedNavigation = new Mock<INavigationControl>();
             viewModel = new LoginViewModel(mockedApiConsumer.Object,
                                            mockedAuthAccess.Object,
                                            mockedNavigation.Object,
@@ -176,7 +176,7 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
         }
 
         [Fact]
-        public async Task AttemptLogin_ClientError_PopulatesValidation()
+        public async Task AttemptLogin_BadRequest_PopulatesValidation()
         {
             // ARRANGE
             Init();

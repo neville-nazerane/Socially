@@ -8,7 +8,6 @@
 
 
 	<ItemGroup>
-		<!--<ProjectReference Include="..\Socially.Mobile.Logic\Socially.Mobile.Logic.csproj" />-->
 		<ProjectReference Include="..\Socially.Models\Socially.Models.csproj" />
 		<ProjectReference Include="..\Socially.Utils.GeneratorCommon\Socially.Utils.GeneratorCommon.csproj" />
 	</ItemGroup>

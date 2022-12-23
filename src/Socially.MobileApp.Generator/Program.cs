@@ -2,6 +2,7 @@
 using Socially.MobileApp.Generator;
 using Socially.Utils.GeneratorCommon;
 using System.Reflection;
+using System.Text;
 
 const string binPath = @"bin\Debug\net7.0";
 string currentPath = args.FirstOrDefault() ?? Environment.CurrentDirectory.Replace(binPath, string.Empty);
@@ -89,11 +90,14 @@ async Task SetMauiPageDefaultsAsync()
 
     // delete all from page
 
+    var injectablePages = new List<string>();
+
     foreach (var vm in viewModels)
     {
         var page = pages.SingleOrDefault(p => p == vm.Name[..^"ViewModel".Length]);
         if (page is not null)
         {
+            injectablePages.Add(page);
             Console.WriteLine("Generating for page: " + page);
             var pageContent = GenerateCode.MakePageClass(vm,
                                                          typeof(Socially.Mobile.Logic.ViewModels.ViewModelBase),
@@ -114,6 +118,13 @@ async Task SetMauiPageDefaultsAsync()
 
         }
     }
+
+    Console.WriteLine("Creating MAUI Program");
+
+    var mainCode = GenerateCode.MakeMauiPartialProgram(pages);
+    var mainPath = Path.Combine(genPath, "MauiProgram.g.cs");
+    await File.WriteAllTextAsync(mainPath, mainCode);
+
 }
 
 

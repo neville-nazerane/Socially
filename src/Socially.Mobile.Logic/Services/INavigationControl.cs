@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Socially.Mobile.Logic.Services
 {
-    public interface INavigation
+    public interface INavigationControl
     {
 
         Task GoToHomeAsync();

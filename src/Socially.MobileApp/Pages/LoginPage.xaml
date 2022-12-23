@@ -1,12 +1,36 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:da="clr-namespace:System.ComponentModel.DataAnnotations;assembly=System.ComponentModel.Annotations"
+             xmlns:vm="clr-namespace:Socially.Mobile.Logic.ViewModels;assembly=Socially.Mobile.Logic"
              x:Class="Socially.MobileApp.Pages.LoginPage"
+             x:DataType="vm:LoginViewModel"
              Shell.NavBarIsVisible="False" >
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to the login page"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+    <VerticalStackLayout
+        Spacing="40">
+
+
+        <CollectionView ItemsSource="{Binding Validation}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="da:ValidationResult">
+                    <Label Text="{Binding ErrorMessage}" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Label Text="{Binding ErrorMessage}"
+               TextColor="Red" />
+
+        <Entry Placeholder="UserName"
+               Text="{Binding Model.UserName}" />
+        
+        <Entry Placeholder="Password" 
+               IsPassword="True"
+               Text="{Binding Model.Password}" />
+
+        <Button Text="Login!!!!!"
+                Command="{Binding SubmitCommand}" />
+
+        
     </VerticalStackLayout>
 </ContentPage>

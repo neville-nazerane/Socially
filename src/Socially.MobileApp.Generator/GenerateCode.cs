@@ -9,18 +9,41 @@ namespace Socially.MobileApp.Generator
     public static class GenerateCode
     {
 
+        public static string MakeMauiPartialProgram(IEnumerable<string> pages)
+        {
+
+            var pageInjections = pages.Select(p => $".AddTransient<{p}Page>().AddTransient<{p}ViewModel>()")
+                                      .ToArray();
+
+            var str = $@"
+
+using Socially.Mobile.Logic.ViewModels;
+using Socially.MobileApp.Pages;
+
+namespace Socially.MobileApp;
+
+public static partial class MauiProgram
+{{
+
+    static partial void AppPageInjections(IServiceCollection services)
+    {{
+        services{string.Join("\n", pageInjections)};
+    }}
+        
+}}
+
+";
+
+            return str;
+
+        }
+
         public static string MakePageClass(Type viewModel,
                                            Type baseType,
                                            string vmNamespace,
                                            string pageNamespace,
                                            string pageName)
         {
-
-
-            //if (viewModel.IsAssignableTo(baseType))
-            //{
-
-            //}
 
 
             string classContent = @$"
