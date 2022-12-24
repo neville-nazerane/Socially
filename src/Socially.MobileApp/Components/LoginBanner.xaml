@@ -5,7 +5,7 @@
              ColumnDefinitions="*"
              RowDefinitions="6*, 2*">
 
-    <RoundRectangle Fill="{StaticResource Primary}"
+    <RoundRectangle Fill="#010C80"
                             Grid.RowSpan="2"
                             CornerRadius="0, 0, 26, 26" />
 

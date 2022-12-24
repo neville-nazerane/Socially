@@ -9,7 +9,7 @@
 
     <Grid Padding="0"
           ColumnDefinitions="*"
-          RowDefinitions="2*, 4*">
+          RowDefinitions="3*, *, 4*">
 
         <!--Header-->
         <c:LoginBanner LabelText="Login" />
@@ -35,14 +35,39 @@
 
         <!--Entry Body-->
         <Grid BackgroundColor="{StaticResource Secondary}"
-              Grid.Row="1" 
+              Grid.Row="2" 
               ColumnDefinitions="*"
-              RowDefinitions="40, 40, 20, 40" >
+              RowDefinitions="40, 40, 20, 40"
+              RowSpacing="10"
+              Padding="30, 0" >
 
-            <Entry Text="{Binding Model.UserName}"
-                   Placeholder="Userame" />
 
-            <Entry Text="{Binding Model.Password}"
+            <AbsoluteLayout>
+                <RoundRectangle CornerRadius="5"
+                                HorizontalOptions="Start"
+                                AbsoluteLayout.LayoutBounds="0, 0, 1, 35"
+                                AbsoluteLayout.LayoutFlags="WidthProportional"
+                                Stroke="Gray" />
+                <Entry Text="{Binding Model.UserName}"
+                       Placeholder="Username"
+                       AbsoluteLayout.LayoutBounds="0, 0, 1, 50"
+                       AbsoluteLayout.LayoutFlags="WidthProportional" />
+                <Rectangle 
+                    Fill="White"
+                       AbsoluteLayout.LayoutBounds="0, 38, 1, 5"
+                       AbsoluteLayout.LayoutFlags="WidthProportional" />
+                    
+            </AbsoluteLayout>
+
+            <!--<Grid RowDefinitions="50">
+                <RoundRectangle CornerRadius="5"
+                                HorizontalOptions="Start"
+                                Stroke="Gray" />
+                <Entry Text="{Binding Model.UserName}"
+                       Placeholder="Username" />
+            </Grid>-->
+
+            <c:ScEntry Text="{Binding Model.Password}"
                    Placeholder="Password"
                    IsPassword="True"
                    Grid.Row="1" />
