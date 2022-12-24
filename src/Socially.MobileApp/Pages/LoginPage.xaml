@@ -37,27 +37,25 @@
         <Grid BackgroundColor="{StaticResource Secondary}"
               Grid.Row="2" 
               ColumnDefinitions="*"
-              RowDefinitions="40, 40, 20, 40"
+              RowDefinitions="50, 50, 20, 40"
               RowSpacing="10"
               Padding="30, 0" >
 
 
-            <AbsoluteLayout>
-                <RoundRectangle CornerRadius="5"
+                <c:LoginEntry Text="{Binding Model.UserName}"
+                              Placeholder="Username"/>
+            <!--<AbsoluteLayout>-->
+                <!--<RoundRectangle CornerRadius="5"
                                 HorizontalOptions="Start"
                                 AbsoluteLayout.LayoutBounds="0, 0, 1, 35"
                                 AbsoluteLayout.LayoutFlags="WidthProportional"
                                 Stroke="Gray" />
-                <Entry Text="{Binding Model.UserName}"
-                       Placeholder="Username"
-                       AbsoluteLayout.LayoutBounds="0, 0, 1, 50"
-                       AbsoluteLayout.LayoutFlags="WidthProportional" />
                 <Rectangle 
                     Fill="White"
                        AbsoluteLayout.LayoutBounds="0, 38, 1, 5"
                        AbsoluteLayout.LayoutFlags="WidthProportional" />
                     
-            </AbsoluteLayout>
+            </AbsoluteLayout-->
 
             <!--<Grid RowDefinitions="50">
                 <RoundRectangle CornerRadius="5"
@@ -67,10 +65,15 @@
                        Placeholder="Username" />
             </Grid>-->
 
-            <c:ScEntry Text="{Binding Model.Password}"
+            <c:LoginEntry Placeholder="Password"
+                          IsPassword="True"
+                          Text="{Binding Model.Password}"
+                          Grid.Row="1"/>
+
+            <!--<c:ScEntry Text="{Binding Model.Password}"
                    Placeholder="Password"
                    IsPassword="True"
-                   Grid.Row="1" />
+                   Grid.Row="1" />-->
 
             <Label Text="Forgot Password"
                    TextColor="{StaticResource Red}"

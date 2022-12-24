@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<AbsoluteLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Socially.MobileApp.Components.LoginEntry">
+    
+    <RoundRectangle x:Name="roundRect" 
+                    CornerRadius="5"
+
+                               AbsoluteLayout.LayoutBounds="0, 0, 1, 35"
+                    AbsoluteLayout.LayoutFlags="WidthProportional"
+                    Stroke="Gray" />
+    <Entry x:Name="entry"
+           TextChanged="Entry_TextChanged"
+           Placeholder="Username"
+                               AbsoluteLayout.LayoutBounds="0, 0, 1, 50"
+
+           AbsoluteLayout.LayoutFlags="WidthProportional" />
+    <Rectangle 
+         x:Name="rect"
+        Fill="White"
+        AbsoluteLayout.LayoutBounds="0, 38, 1, 7"
+        
+        AbsoluteLayout.LayoutFlags="WidthProportional" />
+
+</AbsoluteLayout>
