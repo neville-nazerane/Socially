@@ -12,6 +12,7 @@ public partial class LoginEntry : AbsoluteLayout
                                                                                    null,
                                                                                    BindingMode.TwoWay,
                                                                                    propertyChanged: TextChanged);
+    private Color parentColor;
 
     public bool IsPassword
     {
@@ -31,9 +32,16 @@ public partial class LoginEntry : AbsoluteLayout
         set => SetValue(TextProperty, value);
     }
 
+    public Brush ParentColor
+    {
+        get => rect.Fill; 
+        set => rect.Fill = value;
+    }
+
     public LoginEntry()
     {
         InitializeComponent();
+        ParentColor = Brush.White;
     }
 
     protected override void OnSizeAllocated(double width, double height)
@@ -48,9 +56,9 @@ public partial class LoginEntry : AbsoluteLayout
 
         AbsoluteLayout.SetLayoutBounds(entry, new()
         {
-            X = 0,
+            X = 4,
             Y = 0,
-            Width = 1,
+            Width = width - 4,
             Height = height
         });
 
@@ -61,7 +69,6 @@ public partial class LoginEntry : AbsoluteLayout
             Width = 1,
             Height = 7
         });
-
 
         base.OnSizeAllocated(width, height);
     }

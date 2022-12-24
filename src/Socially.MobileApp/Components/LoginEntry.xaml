@@ -5,21 +5,13 @@
     
     <RoundRectangle x:Name="roundRect" 
                     CornerRadius="5"
-
-                               AbsoluteLayout.LayoutBounds="0, 0, 1, 35"
                     AbsoluteLayout.LayoutFlags="WidthProportional"
-                    Stroke="Gray" />
+                    Stroke="#DDDEE9" />
     <Entry x:Name="entry"
            TextChanged="Entry_TextChanged"
-           Placeholder="Username"
-                               AbsoluteLayout.LayoutBounds="0, 0, 1, 50"
-
-           AbsoluteLayout.LayoutFlags="WidthProportional" />
+           AbsoluteLayout.LayoutFlags="None" />
     <Rectangle 
          x:Name="rect"
-        Fill="White"
-        AbsoluteLayout.LayoutBounds="0, 38, 1, 7"
-        
         AbsoluteLayout.LayoutFlags="WidthProportional" />
 
 </AbsoluteLayout>

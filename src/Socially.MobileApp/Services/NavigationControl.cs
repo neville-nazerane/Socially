@@ -5,9 +5,12 @@ namespace Socially.MobileApp.Services
     internal class NavigationControl : INavigationControl
     {
 
-        public Task GoToHomeAsync() => Shell.Current.GoToAsync("home");
+        public Task GoToHomeAsync() => GoToAsync("home");
 
-        public Task GoToLoginPageAsync() => Shell.Current.GoToAsync("login");
+        public Task GoToLoginPageAsync() => GoToAsync("login");
+
+        Task GoToAsync(string path, bool animate = false)
+            => Shell.Current.GoToAsync(path, animate);
 
     }
 }

@@ -34,54 +34,41 @@
         </Grid>-->
 
         <!--Entry Body-->
-        <Grid BackgroundColor="{StaticResource Secondary}"
+        <Grid
+              VerticalOptions="End"
               Grid.Row="2" 
               ColumnDefinitions="*"
-              RowDefinitions="50, 50, 20, 40"
+              RowDefinitions="50, 50, 30, 40, 40, 40"
               RowSpacing="10"
-              Padding="30, 0" >
+              Padding="30, 20" >
 
 
-                <c:LoginEntry Text="{Binding Model.UserName}"
-                              Placeholder="Username"/>
-            <!--<AbsoluteLayout>-->
-                <!--<RoundRectangle CornerRadius="5"
-                                HorizontalOptions="Start"
-                                AbsoluteLayout.LayoutBounds="0, 0, 1, 35"
-                                AbsoluteLayout.LayoutFlags="WidthProportional"
-                                Stroke="Gray" />
-                <Rectangle 
-                    Fill="White"
-                       AbsoluteLayout.LayoutBounds="0, 38, 1, 5"
-                       AbsoluteLayout.LayoutFlags="WidthProportional" />
-                    
-            </AbsoluteLayout-->
-
-            <!--<Grid RowDefinitions="50">
-                <RoundRectangle CornerRadius="5"
-                                HorizontalOptions="Start"
-                                Stroke="Gray" />
-                <Entry Text="{Binding Model.UserName}"
-                       Placeholder="Username" />
-            </Grid>-->
+            <c:LoginEntry Text="{Binding Model.UserName}"
+                          Placeholder="Username"/>
 
             <c:LoginEntry Placeholder="Password"
                           IsPassword="True"
                           Text="{Binding Model.Password}"
                           Grid.Row="1"/>
 
-            <!--<c:ScEntry Text="{Binding Model.Password}"
-                   Placeholder="Password"
-                   IsPassword="True"
-                   Grid.Row="1" />-->
-
-            <Label Text="Forgot Password"
+            <Label Text="Forgot Password?"
+                   HorizontalOptions="End"
+                   VerticalOptions="CenterAndExpand"
                    TextColor="{StaticResource Red}"
                    Grid.Row="2" />
 
             <Button Command="{Binding SubmitCommand}"
                     Grid.Row="3"
                     Text="Login" />
+
+            <Label Text="Don't have an account?"
+                   VerticalOptions="CenterAndExpand"
+                   HorizontalOptions="Center"
+                   TextColor="Black"
+                   Grid.Row="4" />
+
+            <Button Text="Sign Up"
+                    Grid.Row="5" />
 
         </Grid>
         
