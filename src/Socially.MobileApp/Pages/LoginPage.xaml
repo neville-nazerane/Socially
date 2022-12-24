@@ -3,34 +3,60 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:da="clr-namespace:System.ComponentModel.DataAnnotations;assembly=System.ComponentModel.Annotations"
              xmlns:vm="clr-namespace:Socially.Mobile.Logic.ViewModels;assembly=Socially.Mobile.Logic"
+             xmlns:c="clr-namespace:Socially.MobileApp.Components"
              x:Class="Socially.MobileApp.Pages.LoginPage"
              x:DataType="vm:LoginViewModel">
-    <VerticalStackLayout
-        Spacing="40">
 
+    <Grid Padding="0"
+          ColumnDefinitions="*"
+          RowDefinitions="2*, 4*">
 
-        <CollectionView ItemsSource="{Binding Validation}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="da:ValidationResult">
-                    <Label Text="{Binding ErrorMessage}" />
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+        <!--Header-->
+        <c:LoginBanner LabelText="Login" />
+        <!--<Grid ColumnDefinitions="*"
+                RowDefinitions="6*, 2*">
 
-        <Label Text="{Binding ErrorMessage}"
+            <RoundRectangle Fill="Pink"
+                            Grid.RowSpan="2"
+                            CornerRadius="0, 0, 26, 26" />
+
+            <Image Source="logo.png"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" />
+
+            <Label  x:Name="lbl"
+                FontSize="Large"
+                HorizontalTextAlignment="Center"
+                Grid.Row="1"
+                TextColor="{x:StaticResource Secondary}"
+                FontAttributes="Bold" />
+
+        </Grid>-->
+
+        <!--Entry Body-->
+        <Grid BackgroundColor="{StaticResource Secondary}"
+              Grid.Row="1" 
+              ColumnDefinitions="*"
+              RowDefinitions="40, 40, 20, 40" >
+
+            <Entry Text="{Binding Model.UserName}"
+                   Placeholder="Userame" />
+
+            <Entry Text="{Binding Model.Password}"
+                   Placeholder="Password"
+                   IsPassword="True"
+                   Grid.Row="1" />
+
+            <Label Text="Forgot Password"
+                   TextColor="{StaticResource Red}"
+                   Grid.Row="2" />
+
+            <Button Command="{Binding SubmitCommand}"
+                    Grid.Row="3"
+                    Text="Login" />
+
+        </Grid>
         
-               TextColor="Red" />
-
-        <Entry Placeholder="UserName"
-               Text="{Binding Model.UserName}" />
-        
-        <Entry Placeholder="Password" 
-               IsPassword="True"
-               Text="{Binding Model.Password}" />
-
-        <Button Text="Login!!!!!"
-                Command="{Binding SubmitCommand}" />
-
-        
-    </VerticalStackLayout>
+    </Grid>
+    
 </ContentPage>
