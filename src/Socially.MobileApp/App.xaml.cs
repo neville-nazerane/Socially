@@ -8,7 +8,7 @@ namespace Socially.MobileApp
     {
         public App()
         {
-
+            InitializeComponent();
             MainPage = new AppShell();
         }
     }
