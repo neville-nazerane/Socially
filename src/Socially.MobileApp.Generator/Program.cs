@@ -107,35 +107,6 @@ async Task SetMauiPageDefaultsAsync()
             var filePath = Path.Combine(genPagePath, $"{page}Page.g.cs");
 
             await File.WriteAllTextAsync(filePath, pageContent);
-
-            var pageFile = Path.Combine(pagePath, $"{page}Page.xaml.cs");
-            var deadCtor = $@"
-    public {page}Page()
-    {{
-        InitializeComponent();
-    }}";
-
-            var ctorContent = $"public {page}Page()";
-
-            var oldLines = await File.ReadAllLinesAsync(pageFile);
-
-            int skipper = 0;
-            await File.WriteAllTextAsync(pageFile, string.Empty);
-
-            await using (var writeStream = File.OpenWrite(pageFile))
-                await using (var ws = new StreamWriter(writeStream))
-                    foreach (var line in oldLines)
-                    {
-                        if (line.Contains(ctorContent) || (skipper > 0 && skipper < 3))
-                            skipper++;
-                        else
-                            ws.WriteLine(line);
-                    }
-
-            //var oldContent = await File.ReadAllTextAsync(pageFile);
-            //Console.WriteLine(deadCtor.TrimEnd());
-            //await File.WriteAllTextAsync(pageFile, oldContent.Replace(deadCtor.Trim(), string.Empty));
-
         }
     }
 
