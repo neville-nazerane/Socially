@@ -10,9 +10,11 @@ public static partial class MauiProgram
 
     static partial void AppPageInjections(IServiceCollection services)
     {
-        services.AddTransient<HomePage>().AddTransient<HomeViewModel>()
+        services.AddTransient<ForgotPasswordPage>().AddTransient<ForgotPasswordViewModel>()
+.AddTransient<HomePage>().AddTransient<HomeViewModel>()
 .AddTransient<InitialPage>().AddTransient<InitialViewModel>()
-.AddTransient<LoginPage>().AddTransient<LoginViewModel>();
+.AddTransient<LoginPage>().AddTransient<LoginViewModel>()
+.AddTransient<SignupPage>().AddTransient<SignupViewModel>();
     }
         
 }

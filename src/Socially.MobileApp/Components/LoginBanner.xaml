@@ -27,7 +27,7 @@
         <Path.RenderTransform>
             <RotateTransform CenterX="0"
                          CenterY="0"
-                         Angle="5" />
+                         Angle="10" />
         </Path.RenderTransform>
     </Path>
 
