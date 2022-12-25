@@ -15,15 +15,19 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
         private Mock<IMessaging> mockedMessaging;
         private Mock<IApiConsumer> mockedApiConsumer;
         private Mock<ISocialLogger> mockedLogger;
+        private Mock<INavigationControl> mockedNavigationControl;
+
         private ForgotPasswordViewModel viewModel;
 
         private void Init()
         {
-            mockedMessaging = new Mock<IMessaging>();
-            mockedApiConsumer = new Mock<IApiConsumer>();
-            mockedLogger = new Mock<ISocialLogger>();
+            mockedMessaging = new();
+            mockedApiConsumer = new();
+            mockedLogger = new();
+            mockedNavigationControl = new();
             viewModel = new(mockedMessaging.Object,
                             mockedApiConsumer.Object,
+                            mockedNavigationControl.Object,
                             mockedLogger.Object);
         }
 
