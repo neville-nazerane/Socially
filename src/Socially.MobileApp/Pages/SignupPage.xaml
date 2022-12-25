@@ -12,7 +12,7 @@
           RowDefinitions="2*, *, 4*">
 
         <!--Header-->
-        <c:LoginBanner LabelText="Create an account" />
+        <c:LoginHeader Text="Create an account" />
 
         <!--Entry Body-->
         <Grid VerticalOptions="End"
