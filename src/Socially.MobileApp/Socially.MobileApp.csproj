@@ -43,7 +43,7 @@
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
 		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
-		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
+		<MauiImage Update="Resources\Images\logo_white.svg" BaseSize="200,200" TintColor="white" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -55,6 +55,10 @@
 	<ItemGroup>
 	  <MauiImage Remove="Resources\Images\splash.svg" />
 	</ItemGroup>
+
+	<!--<ItemGroup>
+	  <None Remove="Resources\Images\logo_white.svg" />
+	</ItemGroup>-->
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />

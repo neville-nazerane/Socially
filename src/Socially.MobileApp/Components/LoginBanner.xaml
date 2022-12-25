@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<AbsoluteLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Socially.MobileApp.Components.LoginBanner"
              ColumnDefinitions="*"
@@ -10,7 +10,7 @@
                             Grid.RowSpan="2"
                             CornerRadius="0, 0, 26, 26" />
 
-    <Image Source="logo.png"
+    <Image Source="logo_white.png"
                 VerticalOptions="CenterAndExpand"
                 HorizontalOptions="CenterAndExpand" />
 
@@ -21,4 +21,4 @@
             TextColor="{StaticResource Secondary}"
             FontAttributes="Bold" />
 
-</Grid>
+</AbsoluteLayout>

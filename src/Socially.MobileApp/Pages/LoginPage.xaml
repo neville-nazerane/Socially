@@ -15,8 +15,7 @@
         <c:LoginBanner LabelText="Login" />
         
         <!--Entry Body-->
-        <Grid
-              VerticalOptions="End"
+        <Grid VerticalOptions="End"
               Grid.Row="2" 
               ColumnDefinitions="*"
               RowDefinitions="50, 50, 30, 40, 40, 40"
