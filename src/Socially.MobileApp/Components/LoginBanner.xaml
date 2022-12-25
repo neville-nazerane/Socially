@@ -3,9 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Socially.MobileApp.Components.LoginBanner"
              ColumnDefinitions="*"
+             Padding="0"
              RowDefinitions="6*, 2*">
 
-    <RoundRectangle Fill="#1B258D"
+    <RoundRectangle Fill="{StaticResource Primary}"
                             Grid.RowSpan="2"
                             CornerRadius="0, 0, 26, 26" />
 

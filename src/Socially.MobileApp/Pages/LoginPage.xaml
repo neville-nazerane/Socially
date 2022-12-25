@@ -13,26 +13,7 @@
 
         <!--Header-->
         <c:LoginBanner LabelText="Login" />
-        <!--<Grid ColumnDefinitions="*"
-                RowDefinitions="6*, 2*">
-
-            <RoundRectangle Fill="Pink"
-                            Grid.RowSpan="2"
-                            CornerRadius="0, 0, 26, 26" />
-
-            <Image Source="logo.png"
-                VerticalOptions="CenterAndExpand"
-                HorizontalOptions="CenterAndExpand" />
-
-            <Label  x:Name="lbl"
-                FontSize="Large"
-                HorizontalTextAlignment="Center"
-                Grid.Row="1"
-                TextColor="{x:StaticResource Secondary}"
-                FontAttributes="Bold" />
-
-        </Grid>-->
-
+        
         <!--Entry Body-->
         <Grid
               VerticalOptions="End"
@@ -64,10 +45,13 @@
             <Label Text="Don't have an account?"
                    VerticalOptions="CenterAndExpand"
                    HorizontalOptions="Center"
-                   TextColor="Black"
                    Grid.Row="4" />
 
             <Button Text="Sign Up"
+                    BorderColor="{StaticResource Primary}"
+                    BackgroundColor="{StaticResource Secondary}"
+                    TextColor="{StaticResource Primary}"
+                    BorderWidth="1"
                     Grid.Row="5" />
 
         </Grid>

@@ -23,13 +23,7 @@ namespace Socially.MobileApp
 
             var builder = MauiApp.CreateBuilder();
 
-            builder
-                .UseMauiApp<App>()
-                .ConfigureFonts(fonts =>
-                {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                });
+            AppSetup(builder);
 
             var services = builder.Services;
 
@@ -59,6 +53,22 @@ namespace Socially.MobileApp
 #endif
 
             return builder.Build();
+        }
+
+        private static void AppSetup(MauiAppBuilder builder)
+        {
+            builder
+                //.WithApp()
+                //    .SetMainPage(new AppShell())
+                //    .AddResource("Resources/Styles/Colors.xaml")
+                //    .AddResource("Resources/Styles/Styles.xaml")
+                //.UseMaui()
+                .UseMauiApp<App>()
+                .ConfigureFonts(fonts =>
+                {
+                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                });
         }
 
         static partial void AppPageInjections(IServiceCollection services);
