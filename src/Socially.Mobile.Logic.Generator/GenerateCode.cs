@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Socially.Utils.CodeGenerators
+namespace Socially.Mobile.Logic.Generator
 {
-    internal class GenerateUtil
+    internal static class GenerateCode
     {
 
-        public static string MakeObservableValidatorClass(Type type,
-                                                 string destNameSpace)
+        internal static string MakeObservableValidatorClass(Type type,
+                                         string destNameSpace)
         {
 
             var fieldStrings = type.GetProperties()
@@ -55,7 +55,7 @@ namespace {destNameSpace}
 ";
         }
 
-        public static string MakeMappings(Type srcType, 
+        internal static string MakeMappings(Type srcType,
                                           string srcLabel,
                                           string destLabel,
                                           string mappingNameSpace,
@@ -136,6 +136,7 @@ namespace {mappingNameSpace}
 
 ";
         }
+
 
     }
 }

@@ -14,7 +14,7 @@ namespace Socially.Utils.CodeGenerators
 
         private AggregatedType(IEnumerable<Type> types)
         {
-            this._types = types;
+            _types = types;
         }
 
         public static AddingTypes Add<T>() => new(new(new[] { typeof(T) }));
@@ -31,7 +31,7 @@ namespace Socially.Utils.CodeGenerators
 
             public AddingTypes Add<T>()
             {
-                var newTypes = source._types.Union(new[] { typeof(T) });
+                var newTypes = source._types.Union(new[] { typeof(T) }).ToArray();
                 return new(new(newTypes));
             }
 

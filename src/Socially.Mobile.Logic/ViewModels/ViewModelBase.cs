@@ -31,7 +31,7 @@ namespace Socially.Mobile.Logic.ViewModels
             Validation = new();
         }
 
-        public virtual Task InitAsync() => Task.CompletedTask;
+        public virtual Task OnNavigatedAsync() => Task.CompletedTask;
 
     }
 
@@ -57,7 +57,7 @@ namespace Socially.Mobile.Logic.ViewModels
 
         public abstract void OnException(Exception ex);
 
-        public override Task InitAsync() => GetAsync();
+        public override Task OnNavigatedAsync() => GetAsync();
 
         [RelayCommand]
         public Task GetAsync() => ExecuteAndValidate(async () => Model = await GetFromServerAsync());
@@ -65,6 +65,7 @@ namespace Socially.Mobile.Logic.ViewModels
         [RelayCommand]
         public Task SubmitAsync()
         {
+            Validation.Clear();
             if (model is IValidatable validatable && !validatable.Validate(Validation))
                 return Task.CompletedTask;
             return ExecuteAndValidate(() => SubmitToServerAsync(model));
@@ -79,7 +80,7 @@ namespace Socially.Mobile.Logic.ViewModels
             catch (ErrorForClientException clientException)
             {
                 Validation = clientException.ToObservableCollection();
-                if (!Validation.Any())
+                if (!Validation.Any() || clientException.Errors.SelectMany(e => e.Errors).Sum(s => s.Length) == 0)
                     ErrorMessage = ErrorWhenBadRequestEmpty;
             }
             catch (Exception ex)

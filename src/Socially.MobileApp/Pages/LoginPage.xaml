@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:da="clr-namespace:System.ComponentModel.DataAnnotations;assembly=System.ComponentModel.Annotations"
+             xmlns:vm="clr-namespace:Socially.Mobile.Logic.ViewModels;assembly=Socially.Mobile.Logic"
+             xmlns:c="clr-namespace:Socially.MobileApp.Components"
+             x:Class="Socially.MobileApp.Pages.LoginPage"
+             x:DataType="vm:LoginViewModel">
+
+    <Grid Padding="0"
+          ColumnDefinitions="*"
+          RowDefinitions="3*, *, 4*">
+
+        <!--Header-->
+        <c:LoginBanner LabelText="Login" />
+        
+        <!--Entry Body-->
+        <Grid
+              VerticalOptions="End"
+              Grid.Row="2" 
+              ColumnDefinitions="*"
+              RowDefinitions="50, 50, 30, 40, 40, 40"
+              RowSpacing="10"
+              Padding="30, 20" >
+
+
+            <c:LoginEntry Text="{Binding Model.UserName}"
+                          Placeholder="Username"/>
+
+            <c:LoginEntry Placeholder="Password"
+                          IsPassword="True"
+                          Text="{Binding Model.Password}"
+                          Grid.Row="1"/>
+
+            <Label Text="Forgot Password?"
+                   HorizontalOptions="End"
+                   VerticalOptions="CenterAndExpand"
+                   TextColor="{StaticResource Red}"
+                   Grid.Row="2" >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoToForgotPasswordCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
+
+            <Button Command="{Binding SubmitCommand}"
+                    Grid.Row="3"
+                    Text="Login" />
+
+            <Label Text="Don't have an account?"
+                   VerticalOptions="CenterAndExpand"
+                   HorizontalOptions="Center"
+                   Grid.Row="4" />
+
+            <Button Text="Sign Up"
+                    BorderColor="{StaticResource Primary}"
+                    BackgroundColor="{StaticResource Secondary}"
+                    TextColor="{StaticResource Primary}"
+                    Command="{Binding GoToSignupCommand}"
+                    BorderWidth="1"
+                    Grid.Row="5" />
+
+        </Grid>
+        
+    </Grid>
+    
+</ContentPage>

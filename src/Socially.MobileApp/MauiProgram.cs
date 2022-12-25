@@ -1,10 +1,16 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Socially.Apps.Consumer.Services;
+using Socially.Apps.Consumer.Utils;
+using Socially.Mobile.Logic.Services;
+using Socially.Mobile.Logic.ViewModels;
+using Socially.MobileApp.Pages;
+using Socially.MobileApp.Services;
 using Socially.MobileApp.Utils;
 
 namespace Socially.MobileApp
 {
-    public static class MauiProgram
+    public static partial class MauiProgram
     {
         public static MauiApp CreateMauiApp()
         {
@@ -17,22 +23,55 @@ namespace Socially.MobileApp
 
             var builder = MauiApp.CreateBuilder();
 
+            AppSetup(builder);
+
+            var services = builder.Services;
+
+            // internal services
+            services.AddSingleton<IMessaging, Messaging>()
+                    .AddSingleton<INavigationControl, NavigationControl>()
+                    .AddSingleton<ISocialLogger, SociallyLogger>();
+
+            // calling auto generated function
+            AppPageInjections(services);
+
+            // API setup
+            services.AddSingleton<IAuthAccess, AuthAccess>()
+                    .AddSingleton<ApiHttpHandler>()
+                    .AddSingleton<IApiConsumer>(p =>
+                                        new ApiConsumer(
+                                                new HttpClient(p.GetService<ApiHttpHandler>())
+                                                {
+                                                    BaseAddress = new Uri(Configs.BaseURL)
+                                                }));
+
+
+
+
+#if DEBUG
+            builder.Logging.AddDebug();
+#endif
+
+            return builder.Build();
+        }
+
+        private static void AppSetup(MauiAppBuilder builder)
+        {
             builder
+                //.WithApp()
+                //    .SetMainPage(new AppShell())
+                //    .AddResource("Resources/Styles/Colors.xaml")
+                //    .AddResource("Resources/Styles/Styles.xaml")
+                //.UseMaui()
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
-
-            var services = builder.Services;
-
-
-#if DEBUG
-		    builder.Logging.AddDebug();
-#endif
-
-            return builder.Build();
         }
+
+        static partial void AppPageInjections(IServiceCollection services);
+
     }
 }

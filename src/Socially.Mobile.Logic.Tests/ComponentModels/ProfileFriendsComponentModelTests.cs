@@ -53,7 +53,7 @@ namespace Socially.Mobile.Logic.Tests.ComponentModels
                  .ReturnsAsync(requests);
 
             // ACT
-            await viewModel.InitAsync();
+            await viewModel.OnNavigatedAsync();
 
             // ASSERT
             Assert.Single(viewModel.Friends);
@@ -92,7 +92,7 @@ namespace Socially.Mobile.Logic.Tests.ComponentModels
                  .ReturnsAsync(requests);
 
             // ACT
-            await viewModel.InitAsync();
+            await viewModel.OnNavigatedAsync();
 
             // ASSERT
 
@@ -132,7 +132,7 @@ namespace Socially.Mobile.Logic.Tests.ComponentModels
                  .Throws(ex);
 
             // ACT
-            await viewModel.InitAsync();
+            await viewModel.OnNavigatedAsync();
 
             // ASSERT
 

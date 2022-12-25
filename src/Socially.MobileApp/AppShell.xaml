@@ -4,11 +4,13 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Socially.MobileApp"
+    xmlns:page="clr-namespace:Socially.MobileApp.Pages"
+    Shell.NavBarIsVisible="False"
     Shell.FlyoutBehavior="Disabled">
 
     <ShellContent
         Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
+        ContentTemplate="{DataTemplate page:InitialPage}"
         Route="MainPage" />
 
 </Shell>

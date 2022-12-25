@@ -1,28 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Socially.Utils.CodeGenerators
+﻿namespace System
 {
-    internal static class StringExtensions
+    public static class StringExtensions
     {
 
-        internal static string LowerFirstLetter(this string str)
+        public static string LowerFirstLetter(this string str)
             => str[0].ToString().ToLower() + str[1..];
 
-        internal static string UpperFirstLetter(this string str)
+        public static string UpperFirstLetter(this string str)
             => str[0].ToString().ToUpper() + str[1..];
 
-        internal static string ClearNewLines(this string str)
+        public static string ClearNewLines(this string str)
             => str.Replace("\n", string.Empty)
                   .Replace("\r", string.Empty)
                   .Replace("\t", string.Empty)
                   .Trim();
 
-        internal static string GetFullName(this Type type)
+        public static string GetFullName(this Type type)
         {
             string fullName = type.FullName; // $"{type.Namespace}.{type.Name.Substring(0, type.Name.IndexOf("`"))}"; 
             if (type.IsGenericType)
