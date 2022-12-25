@@ -36,6 +36,12 @@ namespace Socially.Mobile.Logic.ViewModels
             _logger = logger;
         }
 
+        [RelayCommand]
+        Task GoToLoginAsync() => _navigation.GoToLoginAsync();
+
+        [RelayCommand]
+        Task GoToForgotPasswordAsync() => _navigation.GoToForgotPasswordAsync();
+
         public override void OnException(Exception ex) => _logger.LogException(ex);
 
         public override string ErrorOnException => "Failed to signup. Please try again";
@@ -44,7 +50,7 @@ namespace Socially.Mobile.Logic.ViewModels
         {
             await _apiConsumer.SignupAsync(model.ToModel(), cancellationToken);
             await _messaging.DisplayAsync("Done!", "Your Account has been created", "Go to Login");
-            await _navigation.GoToLoginPageAsync();
+            await _navigation.GoToLoginAsync();
         }
 
 

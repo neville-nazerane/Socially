@@ -53,6 +53,7 @@
                     BackgroundColor="{StaticResource Secondary}"
                     TextColor="{StaticResource Primary}"
                     BorderWidth="1"
+                    Command="{Binding GoToLoginCommand}"
                     Grid.Row="6" />
 
         </Grid>

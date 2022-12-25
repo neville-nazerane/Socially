@@ -19,6 +19,7 @@ namespace Socially.Mobile.Logic.ViewModels
 
         private readonly IMessaging _messaging;
         private readonly IApiConsumer _apiConsumer;
+        private readonly INavigationControl _navigation;
         private readonly ISocialLogger _logger;
 
         [ObservableProperty]
@@ -26,13 +27,21 @@ namespace Socially.Mobile.Logic.ViewModels
 
         public ForgotPasswordViewModel(IMessaging messaging,
                                        IApiConsumer apiConsumer,
+                                       INavigationControl navigationControl,
                                        ISocialLogger logger)
         {
 
             _messaging = messaging;
             _apiConsumer = apiConsumer;
+            _navigation = navigationControl;
             _logger = logger;
         }
+
+        [RelayCommand]
+        Task GoToSignupAsync() => _navigation.GoToSignupAsync();
+
+        [RelayCommand]
+        Task GoToLoginAsync() => _navigation.GoToLoginAsync();
 
         [RelayCommand]
         public async Task SubmitAsync()

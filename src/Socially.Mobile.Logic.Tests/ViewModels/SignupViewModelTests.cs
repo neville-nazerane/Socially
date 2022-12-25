@@ -52,7 +52,7 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
                                                        It.IsAny<string>()),
                                    Times.Never);
 
-            mockedNavigation.Verify(n => n.GoToLoginPageAsync(), Times.Never);
+            mockedNavigation.Verify(n => n.GoToLoginAsync(), Times.Never);
 
         }
 
@@ -78,7 +78,7 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
                                                        It.IsAny<string>()),
                                    Times.Once);
 
-            mockedNavigation.Verify(n => n.GoToLoginPageAsync(), Times.Once);
+            mockedNavigation.Verify(n => n.GoToLoginAsync(), Times.Once);
 
         }
 
@@ -109,7 +109,7 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
                                            It.IsAny<string>()),
                        Times.Never);
 
-            mockedNavigation.Verify(n => n.GoToLoginPageAsync(), Times.Never);
+            mockedNavigation.Verify(n => n.GoToLoginAsync(), Times.Never);
         }
 
         [Fact]
@@ -138,7 +138,7 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
                                                        It.IsAny<string>()),
                                    Times.Never);
 
-            mockedNavigation.Verify(n => n.GoToLoginPageAsync(), Times.Never);
+            mockedNavigation.Verify(n => n.GoToLoginAsync(), Times.Never);
 
             mockedLogger.Verify(l => l.LogException(exception, It.IsAny<string>()),
                                 Times.Once);

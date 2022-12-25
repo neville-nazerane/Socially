@@ -39,6 +39,12 @@ namespace Socially.Mobile.Logic.ViewModels
             Model.Source = "mobile";
         }
 
+        [RelayCommand]
+        Task GoToSignupAsync() => _navigation.GoToSignupAsync();
+
+        [RelayCommand]
+        Task GoToForgotPasswordAsync() => _navigation.GoToForgotPasswordAsync();
+
         public override string ErrorOnException => "Failed to login";
 
         public override string ErrorWhenBadRequestEmpty => "Failed to login";

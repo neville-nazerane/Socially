@@ -23,7 +23,7 @@ namespace Socially.Mobile.Logic.ViewModels
         public override async Task OnNavigatedAsync()
         {
             if ((await _authAccess.GetStoredTokenAsync()) is null)
-                await _navigationControl.GoToLoginPageAsync();
+                await _navigationControl.GoToLoginAsync();
             else await _navigationControl.GoToHomeAsync();
         }
 

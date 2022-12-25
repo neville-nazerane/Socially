@@ -36,7 +36,11 @@
                    HorizontalOptions="End"
                    VerticalOptions="CenterAndExpand"
                    TextColor="{StaticResource Red}"
-                   Grid.Row="2" />
+                   Grid.Row="2" >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoToForgotPasswordCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
 
             <Button Command="{Binding SubmitCommand}"
                     Grid.Row="3"
@@ -51,6 +55,7 @@
                     BorderColor="{StaticResource Primary}"
                     BackgroundColor="{StaticResource Secondary}"
                     TextColor="{StaticResource Primary}"
+                    Command="{Binding GoToSignupCommand}"
                     BorderWidth="1"
                     Grid.Row="5" />
 
