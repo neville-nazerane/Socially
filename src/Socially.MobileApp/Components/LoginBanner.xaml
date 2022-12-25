@@ -1,24 +1,53 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <AbsoluteLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Socially.MobileApp.Components.LoginBanner"
-             ColumnDefinitions="*"
-             Padding="0"
-             RowDefinitions="6*, 2*">
+             x:Class="Socially.MobileApp.Components.LoginBanner" 
+             Padding="0">
 
-    <RoundRectangle Fill="{StaticResource Primary}"
-                            Grid.RowSpan="2"
-                            CornerRadius="0, 0, 26, 26" />
+    <RoundRectangle Fill="{StaticResource PanelBackground}"
+                    Margin="-1"
+                    AbsoluteLayout.LayoutFlags="SizeProportional"
+                    AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                    CornerRadius="0, 0, 26, 26" />
+
+    <Path Stroke="{StaticResource Primary}"
+          StrokeThickness="3"
+          Aspect="Uniform"
+          AbsoluteLayout.LayoutFlags="SizeProportional,YProportional"
+          AbsoluteLayout.LayoutBounds="-20, .4, .4, .4" >
+        <Path.Data>
+            <GeometryGroup>
+                <RoundRectangleGeometry CornerRadius="5"
+                                        Rect="0, 0, 30, 30" />
+                <RoundRectangleGeometry CornerRadius="5"
+                                        Rect="20, 15, 30, 30" />
+            </GeometryGroup>
+        </Path.Data>
+
+        <Path.RenderTransform>
+            <RotateTransform CenterX="0"
+                         CenterY="0"
+                         Angle="5" />
+        </Path.RenderTransform>
+    </Path>
+
+
 
     <Image Source="logo_white.png"
-                VerticalOptions="CenterAndExpand"
-                HorizontalOptions="CenterAndExpand" />
+           AbsoluteLayout.LayoutFlags="All"
+           AbsoluteLayout.LayoutBounds=".5, .2, .4, .4"
+           VerticalOptions="CenterAndExpand"
+           HorizontalOptions="CenterAndExpand" />
 
-    <Label  x:Name="lbl"
-            FontSize="Large"
-            HorizontalTextAlignment="Center"
-            Grid.Row="1"
-            TextColor="{StaticResource Secondary}"
-            FontAttributes="Bold" />
+    <Label x:Name="lbl"
+           AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional"
+           AbsoluteLayout.LayoutBounds=".5, .9, 1, 45"
+           FontSize="Large"
+           HorizontalTextAlignment="Center"
+           BackgroundColor="Transparent"
+           TextColor="{StaticResource Secondary}"
+           
+           FontAttributes="Bold" />
+
 
 </AbsoluteLayout>

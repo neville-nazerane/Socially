@@ -2,7 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Socially.MobileApp.Components;
 
-public partial class LoginBanner : Grid
+public partial class LoginBanner : AbsoluteLayout
 {
 
     

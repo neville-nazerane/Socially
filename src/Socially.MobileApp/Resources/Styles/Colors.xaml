@@ -8,6 +8,7 @@
     <Color x:Key="Secondary">#F5F5F5</Color>
     <Color x:Key="Red">#E86969</Color>
     <Color x:Key="Tertiary">#2d2d2d</Color>
+    <Color x:Key="PanelBackground">#1B258D</Color>
     
     
     
