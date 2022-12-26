@@ -53,7 +53,6 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
             //                       Times.Never);
 
             mockedNavigation.Verify(n => n.GoToLoginAsync(), Times.Never);
-
         }
 
         [Fact]

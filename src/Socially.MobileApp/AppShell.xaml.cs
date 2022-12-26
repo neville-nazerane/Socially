@@ -1,4 +1,5 @@
-﻿using Socially.MobileApp.Pages;
+﻿using CommunityToolkit.Maui.Behaviors;
+using Socially.MobileApp.Pages;
 
 namespace Socially.MobileApp
 {
@@ -11,6 +12,17 @@ namespace Socially.MobileApp
             Routing.RegisterRoute("forgotPassword", typeof(ForgotPasswordPage));
             Routing.RegisterRoute("home", typeof(HomePage));
             InitializeComponent();
+        }
+
+        protected override void OnNavigated(ShellNavigatedEventArgs args)
+        {
+
+            Current.CurrentPage.Behaviors.Add(new StatusBarBehavior
+            {
+                StatusBarColor = Color.FromArgb("#010C80")
+            }); ;
+
+            base.OnNavigated(args);
         }
 
     }

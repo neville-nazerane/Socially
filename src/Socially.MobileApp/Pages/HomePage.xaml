@@ -6,7 +6,7 @@
              x:Class="Socially.MobileApp.Pages.HomePage"
              x:DataType="vm:HomeViewModel"
              Title="HomePage">
-    <VerticalStackLayout>
+    <AbsoluteLayout>
 
         <CollectionView ItemsSource="{ Binding Model }">
             <CollectionView.ItemTemplate>
@@ -15,6 +15,80 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        
-    </VerticalStackLayout>
+
+
+        <AbsoluteLayout AbsoluteLayout.LayoutFlags="YProportional,SizeProportional"
+                        AbsoluteLayout.LayoutBounds="0, 1, 1, .1" >
+
+            <RoundRectangle CornerRadius="50, 50, 0, 0"
+                            AbsoluteLayout.LayoutFlags="YProportional,SizeProportional"
+                            AbsoluteLayout.LayoutBounds="0, .9, 1, .9"
+                            Margin="-1"
+                            Fill="{StaticResource Secondary}">
+                <RoundRectangle.Shadow>
+                    <Shadow Brush="{StaticResource Shadow}"
+                Offset="0,-120"
+                Radius="180"
+                Opacity="1" />
+                </RoundRectangle.Shadow>
+            </RoundRectangle>
+
+            <AbsoluteLayout AbsoluteLayout.LayoutFlags="PositionProportional"
+                            AbsoluteLayout.LayoutBounds=".1, .7, 40, 40">
+
+                <Ellipse Stroke="{StaticResource Primary}" 
+                         StrokeThickness="2"
+                         AbsoluteLayout.LayoutFlags="SizeProportional"
+                         AbsoluteLayout.LayoutBounds="0, 0, 1, 1" />
+
+                <Image AbsoluteLayout.LayoutFlags="All"
+                   AbsoluteLayout.LayoutBounds=".5, .5, .6, .6">
+                    <Image.Source>
+                        <FontImageSource FontFamily="faRegular" Glyph="&#xf022;" Color="{StaticResource Primary}" />
+                    </Image.Source>
+                </Image>
+                
+            </AbsoluteLayout>
+
+            <AbsoluteLayout AbsoluteLayout.LayoutFlags="PositionProportional"
+                            AbsoluteLayout.LayoutBounds=".5, -1.3, 60, 60">
+
+
+
+                <Grid AbsoluteLayout.LayoutFlags="All"
+                      AbsoluteLayout.LayoutBounds=".5, .5, .6, .6">
+                    <Image BackgroundColor="{StaticResource Primary}" >
+                        <Image.Source>
+                            <FontImageSource FontFamily="faRegular" Glyph="&#xf007;"  />
+                        </Image.Source>
+                    </Image>
+                    <!--<Grid.Clip>
+                        <EllipseGeometry Center="18, 18"
+                                         RadiusX="20"
+                                         RadiusY="20" />
+                    </Grid.Clip>-->
+                </Grid>
+                
+                <Ellipse Stroke="{StaticResource Secondary}" 
+                         StrokeThickness="17"
+                         AbsoluteLayout.LayoutFlags="SizeProportional"
+                         AbsoluteLayout.LayoutBounds="-3, -3, 1.1, 1.1" />
+
+                <Ellipse Stroke="{StaticResource Primary}" 
+                         StrokeThickness="12"
+                         AbsoluteLayout.LayoutFlags="SizeProportional"
+                         AbsoluteLayout.LayoutBounds="0, 0, 1, 1" />
+
+            </AbsoluteLayout>
+
+            <Image AbsoluteLayout.LayoutFlags="PositionProportional"
+                   AbsoluteLayout.LayoutBounds=".9, .7, 30, 30">
+                <Image.Source>
+                    <FontImageSource FontFamily="faRegular" Glyph="&#xf185;" Color="{StaticResource Primary}" />
+                </Image.Source>
+            </Image>
+
+        </AbsoluteLayout>
+
+    </AbsoluteLayout>
 </ContentPage>
