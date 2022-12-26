@@ -6,11 +6,11 @@
 
     <Color x:Key="Primary">#010C80</Color>
     <Color x:Key="Secondary">#F5F5F5</Color>
-    <Color x:Key="Red">#E86969</Color>
+    <Color x:Key="Red">#FC6471</Color>
     <Color x:Key="Tertiary">#2d2d2d</Color>
     <Color x:Key="PanelBackground">#1B258D</Color>
     <Color x:Key="MildShape">#a2a4bb</Color>
-    
+    <Color x:Key="LogoBackground">#55D6BE</Color>
     
     
     <Color x:Key="White">White</Color>

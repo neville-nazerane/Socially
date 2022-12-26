@@ -7,9 +7,9 @@
     <Grid ColumnDefinitions="*"
           RowDefinitions="*"
           Padding="0"
-          BackgroundColor="#b1aac8">
+          BackgroundColor="{StaticResource LogoBackground}">
 
-        <Image Source="logo.png"
+        <Image Source="logo_blue.png"
                VerticalOptions="CenterAndExpand"
                HorizontalOptions="CenterAndExpand"/>
 

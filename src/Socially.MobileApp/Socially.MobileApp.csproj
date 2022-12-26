@@ -35,10 +35,10 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" Color="#b1aac8" />
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" BaseSize="20,20" Color="#55D6BE" ForegroundScale="0.5" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\logo.svg" Color="#b1aac8" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Splash\logo.svg" BaseSize="50,50" Color="#55D6BE" ForegroundScale="0.65"  />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -48,7 +48,7 @@
 		  <TintColor>white</TintColor>
 		</MauiImage>-->
 		<MauiImage Update="Resources\Images\logo_white.svg" BaseSize="200,200" TintColor="white" />
-		<MauiImage Update="Resources\Images\logo_blue.svg" BaseSize="200,200" TintColor="010C80" />
+		<MauiImage Update="Resources\Images\logo_blue.svg" BaseSize="200,200" TintColor="#010C80" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
