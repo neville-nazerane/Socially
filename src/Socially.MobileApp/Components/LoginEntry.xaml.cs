@@ -1,5 +1,8 @@
 
+using CommunityToolkit.Maui.Behaviors;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Maui.Controls.Compatibility.Platform.Android;
+using System.Windows.Input;
 
 namespace Socially.MobileApp.Components;
 
@@ -12,6 +15,42 @@ public partial class LoginEntry : AbsoluteLayout
                                                                                    null,
                                                                                    BindingMode.TwoWay,
                                                                                    propertyChanged: TextChanged);
+
+    public static readonly BindableProperty NextElementProperty = BindableProperty.Create(nameof(NextElement),
+                                                                                          typeof(VisualElement),
+                                                                                          typeof(LoginEntry),
+                                                                                          propertyChanged: NextElementChanged);
+
+    public static readonly BindableProperty CommandProperty = BindableProperty.Create(nameof(Command),
+                                                                                      typeof(ICommand),
+                                                                                      typeof(LoginEntry),
+                                                                                      propertyChanged: CommandPropertyChanged);
+
+
+    public ICommand Command
+    {
+        get => (ICommand)GetValue(CommandProperty);
+        set => SetValue(CommandProperty, value);
+    }
+
+    public VisualElement NextElement
+    {
+        get => (VisualElement)GetValue(NextElementProperty);
+        set
+        {
+            SetValue(NextElementProperty, value);
+            entry.ReturnType = ReturnType.Next;
+            var dest = value is LoginEntry le ? le.entry : value;
+            SetFocusOnEntryCompletedBehavior.SetNextElement(entry, dest);
+        }
+    }
+
+    public ReturnType ReturnType
+    {
+        get => entry.ReturnType;
+        set => entry.ReturnType = value;
+    }
+
     public bool IsPassword
     {
         get => entry.IsPassword;
@@ -39,7 +78,7 @@ public partial class LoginEntry : AbsoluteLayout
     public LoginEntry()
     {
         InitializeComponent();
-        //ParentColor = Brush.White;
+
     }
 
     protected override void OnSizeAllocated(double width, double height)
@@ -71,13 +110,32 @@ public partial class LoginEntry : AbsoluteLayout
         base.OnSizeAllocated(width, height);
     }
 
-    private static void TextChanged(BindableObject bindable, object oldValue, object newValue)
-    {
-        ((LoginEntry)bindable).Text = (string)newValue;
-    }
-
     private void Entry_TextChanged(object sender, TextChangedEventArgs e)
     {
         Text = e.NewTextValue;
     }
+
+    private void Entry_Focused(object sender, FocusEventArgs e)
+    {
+        roundRect.StyleClass = new List<string> { "selected" };
+    }
+
+    private void Entry_Unfocused(object sender, FocusEventArgs e)
+    {
+        roundRect.StyleClass = new List<string> { "unselected" };
+    }
+
+    private void Entry_Completed(object sender, EventArgs e)
+    {
+        if (Command?.CanExecute(null) == true) Command.Execute(null);
+    }
+
+    private static void TextChanged(BindableObject bindable, object oldValue, object newValue) 
+        => ((LoginEntry)bindable).Text = (string)newValue;
+
+    private static void NextElementChanged(BindableObject bindable, object oldValue, object newValue) 
+        => ((LoginEntry)bindable).NextElement = (VisualElement)newValue;
+
+    private static void CommandPropertyChanged(BindableObject bindable, object oldValue, object newValue) 
+        => ((LoginEntry)bindable).Command = (ICommand)newValue;
 }

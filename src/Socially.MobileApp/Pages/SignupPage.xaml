@@ -23,19 +23,28 @@
               Padding="30, 20" >
 
             <c:LoginEntry Text="{Binding Model.Email}"
+                          x:Name="email"
+                          NextElement="{x:Reference username}"
                           Placeholder="Email" />
 
             <c:LoginEntry Text="{Binding Model.UserName}"
+                          x:Name="username"
+                          NextElement="{x:Reference password}"
                           Placeholder="Username"
                           Grid.Row="1" />
 
             <c:LoginEntry Placeholder="Password"
+                          x:Name="password"
+                          NextElement="{x:Reference confPassword}"
                           IsPassword="True"
                           Text="{Binding Model.Password}"
                           Grid.Row="2"/>
 
             <c:LoginEntry Placeholder="Confirm Password"
+                          x:Name="confPassword"
                           IsPassword="True"
+                          ReturnType="Go"
+                          Command="{Binding SubmitCommand}"
                           Text="{Binding Model.ConfirmPassword}"
                           Grid.Row="3"/>
 

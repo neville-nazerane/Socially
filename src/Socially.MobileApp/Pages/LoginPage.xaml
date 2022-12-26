@@ -25,12 +25,17 @@
 
 
             <c:LoginEntry Text="{Binding Model.UserName}"
-                          Placeholder="Username"/>
+                          x:Name="username"
+                          NextElement="{x:Reference password}"
+                          Placeholder="Username" />
 
             <c:LoginEntry Placeholder="Password"
+                          x:Name="password"
                           IsPassword="True"
+                          ReturnType="Go"
                           Text="{Binding Model.Password}"
-                          Grid.Row="1"/>
+                          Command="{Binding SubmitCommand}"
+                          Grid.Row="1" />
 
             <Label Text="Forgot Password?"
                    HorizontalOptions="End"
@@ -43,6 +48,7 @@
             </Label>
 
             <Button Command="{Binding SubmitCommand}"
+                    x:Name="submit"
                     Grid.Row="3"
                     Text="Login" />
 
