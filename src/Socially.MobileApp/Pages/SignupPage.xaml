@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:Socially.Mobile.Logic.ViewModels;assembly=Socially.Mobile.Logic"
              xmlns:c="clr-namespace:Socially.MobileApp.Components"
+             xmlns:conv="clr-namespace:Socially.MobileApp.Converters"
              x:Class="Socially.MobileApp.Pages.SignupPage"
              x:DataType="vm:SignupViewModel"
              Title="SignupPage">
@@ -25,16 +26,19 @@
             <c:LoginEntry Text="{Binding Model.Email}"
                           x:Name="email"
                           NextElement="{x:Reference username}"
+                          IsError="{Binding Validation, Converter={StaticResource invalidToBool}, ConverterParameter='Email'}"
                           Placeholder="Email" />
 
             <c:LoginEntry Text="{Binding Model.UserName}"
                           x:Name="username"
                           NextElement="{x:Reference password}"
+                          IsError="{Binding Validation, Converter={StaticResource invalidToBool}, ConverterParameter='UserName'}"
                           Placeholder="Username"
                           Grid.Row="1" />
 
             <c:LoginEntry Placeholder="Password"
                           x:Name="password"
+                          IsError="{Binding Validation, Converter={StaticResource invalidToBool}, ConverterParameter='Password'}"
                           NextElement="{x:Reference confPassword}"
                           IsPassword="True"
                           Text="{Binding Model.Password}"
@@ -42,6 +46,7 @@
 
             <c:LoginEntry Placeholder="Confirm Password"
                           x:Name="confPassword"
+                          IsError="{Binding Validation, Converter={StaticResource invalidToBool}, ConverterParameter='ConfirmPassword'}"
                           IsPassword="True"
                           ReturnType="Go"
                           Command="{Binding SubmitCommand}"

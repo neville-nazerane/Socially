@@ -2,7 +2,7 @@
 <AbsoluteLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Socially.MobileApp.Components.LoginEntry"
-                Padding="0">
+            Padding="0">
 
     <AbsoluteLayout.Resources>
 
@@ -16,28 +16,27 @@
             <Setter Property="StrokeThickness" Value="2" />
         </Style>
 
+        <Style TargetType="RoundRectangle" Class="error">
+            <Setter Property="Stroke" Value="{StaticResource Red}" />
+            <Setter Property="StrokeThickness" Value="2" />
+        </Style>
+
     </AbsoluteLayout.Resources>
-    
-    <RoundRectangle x:Name="roundRect" 
+
+
+        <RoundRectangle x:Name="roundRect" 
                     CornerRadius="5"
-                    StyleClass="unselected"
+                    StyleClass="unselected" 
                     AbsoluteLayout.LayoutFlags="SizeProportional"
                     AbsoluteLayout.LayoutBounds="0, 0, 1, 1" />
 
-    <Entry x:Name="entry"
-           
-           Completed="Entry_Completed"
-           Margin="0"
-           Focused="Entry_Focused"
-           Unfocused="Entry_Unfocused"
-           TextChanged="Entry_TextChanged"
-           AbsoluteLayout.LayoutFlags="SizeProportional"
-           AbsoluteLayout.LayoutBounds="10, 0, 1, 1" />
-
-
-    <!--<Rectangle 
-        IsVisible="False"
-        x:Name="rect"
-        AbsoluteLayout.LayoutFlags="WidthProportional" />-->
+        <Entry x:Name="entry"
+               Completed="Entry_Completed"
+               Margin="0"
+               Focused="Entry_Focused"
+               Unfocused="Entry_Unfocused"
+               TextChanged="Entry_TextChanged"
+               AbsoluteLayout.LayoutFlags="SizeProportional"
+               AbsoluteLayout.LayoutBounds="10, 0, 1, 1" />
 
 </AbsoluteLayout>
