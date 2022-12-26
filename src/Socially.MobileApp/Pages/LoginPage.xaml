@@ -9,7 +9,7 @@
 
     <Grid Padding="0"
           ColumnDefinitions="*"
-          RowDefinitions="3*, *, 4*">
+          RowDefinitions="2*, *, 4*">
 
         <!--Header-->
         <c:LoginHeader Text="Login" />
