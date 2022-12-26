@@ -12,8 +12,6 @@ public partial class LoginEntry : AbsoluteLayout
                                                                                    null,
                                                                                    BindingMode.TwoWay,
                                                                                    propertyChanged: TextChanged);
-    private Color parentColor;
-
     public bool IsPassword
     {
         get => entry.IsPassword;
@@ -32,43 +30,43 @@ public partial class LoginEntry : AbsoluteLayout
         set => SetValue(TextProperty, value);
     }
 
-    public Brush ParentColor
-    {
-        get => rect.Fill; 
-        set => rect.Fill = value;
-    }
+    //public Brush ParentColor
+    //{
+    //    get => rect.Fill; 
+    //    set => rect.Fill = value;
+    //}
 
     public LoginEntry()
     {
         InitializeComponent();
-        ParentColor = Brush.White;
+        //ParentColor = Brush.White;
     }
 
     protected override void OnSizeAllocated(double width, double height)
     {
-        AbsoluteLayout.SetLayoutBounds(roundRect, new()
-        {
-            X = 0,
-            Y = 0,
-            Width = 1,
-            Height = height - 15
-        });
+        //AbsoluteLayout.SetLayoutBounds(roundRect, new()
+        //{
+        //    X = 0,
+        //    Y = 0,
+        //    Width = 1,
+        //    Height = height - 5
+        //});
 
-        AbsoluteLayout.SetLayoutBounds(entry, new()
-        {
-            X = 4,
-            Y = 0,
-            Width = width - 4,
-            Height = height
-        });
+        //AbsoluteLayout.SetLayoutBounds(entry, new()
+        //{
+        //    X = 4,
+        //    Y = 0,
+        //    Width = width - 4,
+        //    Height = height
+        //});
 
-        AbsoluteLayout.SetLayoutBounds(rect, new()
-        {
-            X = 0,
-            Y = height - 12,
-            Width = 1,
-            Height = 7
-        });
+        //AbsoluteLayout.SetLayoutBounds(rect, new()
+        //{
+        //    X = 0,
+        //    Y = height - 12,
+        //    Width = 1,
+        //    Height = 7
+        //});
 
         base.OnSizeAllocated(width, height);
     }

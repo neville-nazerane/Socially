@@ -19,8 +19,8 @@
               VerticalOptions="End"
               Grid.Row="2" 
               ColumnDefinitions="*"
-              RowDefinitions="50, 50, 30, 40, 40, 40"
-              RowSpacing="10"
+              RowDefinitions="40, 40, 30, 40, 40, 40"
+              RowSpacing="15"
               Padding="30, 20" >
 
 

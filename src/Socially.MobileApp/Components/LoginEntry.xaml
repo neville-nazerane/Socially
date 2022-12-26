@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <AbsoluteLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Socially.MobileApp.Components.LoginEntry">
+             x:Class="Socially.MobileApp.Components.LoginEntry"
+                Padding="0">
     
     <RoundRectangle x:Name="roundRect" 
                     CornerRadius="5"
-                    AbsoluteLayout.LayoutFlags="WidthProportional"
+                    AbsoluteLayout.LayoutFlags="SizeProportional"
+                    AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
                     Stroke="#DDDEE9" />
+    
     <Entry x:Name="entry"
+           Margin="0"
            TextChanged="Entry_TextChanged"
-           AbsoluteLayout.LayoutFlags="None" />
-    <Rectangle 
-         x:Name="rect"
-        AbsoluteLayout.LayoutFlags="WidthProportional" />
+           AbsoluteLayout.LayoutFlags="SizeProportional"
+           AbsoluteLayout.LayoutBounds="10, 0, 1, 1" />
+    <!--<Rectangle 
+        IsVisible="False"
+        x:Name="rect"
+        AbsoluteLayout.LayoutFlags="WidthProportional" />-->
 
 </AbsoluteLayout>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Controls.Compatibility.Platform.Android;
 using Socially.Apps.Consumer.Services;
 using Socially.Apps.Consumer.Utils;
 using Socially.Mobile.Logic.Services;
@@ -15,8 +16,12 @@ namespace Socially.MobileApp
         public static MauiApp CreateMauiApp()
         {
 
-            // verify configs 
-            if (Configs.BaseURL is null)
+            Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("NoUnderline", (h, v) => {
+                h.PlatformView.BackgroundTintList = Android.Content.Res.ColorStateList.ValueOf(Colors.Transparent.ToAndroid());
+            });
+
+                // verify configs 
+                if (Configs.BaseURL is null)
             {
                 throw new Exception("Configuration not set");
             }
