@@ -32,6 +32,8 @@ namespace Socially.Mobile.Logic.ViewModels
         }
 
         public virtual Task OnNavigatedAsync() => Task.CompletedTask;
+        
+        public virtual Task OnValidationChangedAsync() => Task.CompletedTask;
 
     }
 
@@ -57,31 +59,34 @@ namespace Socially.Mobile.Logic.ViewModels
 
         public abstract void OnException(Exception ex);
 
-        public override Task OnNavigatedAsync() => GetAsync();
-
         [RelayCommand]
         public Task GetAsync() => ExecuteAndValidate(async () => Model = await GetFromServerAsync());
 
         [RelayCommand]
         public Task SubmitAsync()
         {
-            Validation.Clear();
             if (model is IValidatable validatable && !validatable.Validate(Validation))
+            {
+                OnPropertyChanged(nameof(Validation));
+                OnValidationChangedAsync();
                 return Task.CompletedTask;
-            return ExecuteAndValidate(() => SubmitToServerAsync(model));
+            }
+            return ExecuteAndValidate(() => SubmitToServerAsync(model), true);
         }
 
-        async Task ExecuteAndValidate(Func<Task> func)
+        async Task ExecuteAndValidate(Func<Task> func, bool requireValidation = false)
         {
             try
             {
                 await func();
+                await OnValidationChangedAsync();
             }
             catch (ErrorForClientException clientException)
             {
                 Validation = clientException.ToObservableCollection();
                 if (!Validation.Any() || clientException.Errors.SelectMany(e => e.Errors).Sum(s => s.Length) == 0)
                     ErrorMessage = ErrorWhenBadRequestEmpty;
+                await OnValidationChangedAsync();
             }
             catch (Exception ex)
             {

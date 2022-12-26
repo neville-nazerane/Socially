@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<AbsoluteLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Socially.MobileApp.Components.LoginHeader">
+
+    <AbsoluteLayout.Resources>
+
+        <Style TargetType="Path" x:Key="squared">
+            <Setter Property="StrokeThickness" Value="3" />
+            <Setter Property="Aspect" Value="Uniform" />
+            <Setter Property="Stroke" Value="{StaticResource MildShape}" />
+            <Setter Property="Data">
+                <Setter.Value>
+                    <GeometryGroup>
+                        <RoundRectangleGeometry CornerRadius="5"
+                                    Rect="0, 0, 30, 30" />
+                        <RoundRectangleGeometry CornerRadius="5"
+                                    Rect="20, 15, 30, 30" />
+                        <EllipseGeometry Center="60, 60" 
+                                         RadiusX="1"
+                                         RadiusY="1" />
+                        <!--<RectangleGeometry  />-->
+                    </GeometryGroup>
+                </Setter.Value>
+            </Setter>
+
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <RotateTransform CenterX="0"
+                        CenterY="0"
+                        Angle="5" />
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+
+    </AbsoluteLayout.Resources>
+
+
+    <!--Top left squares-->
+    <Path Style="{StaticResource squared}"
+          AbsoluteLayout.LayoutFlags="All"
+          AbsoluteLayout.LayoutBounds=".05, .2, .35, .35" />
+
+    <!--bottom left squares-->
+    <Path Style="{StaticResource squared}"
+          AbsoluteLayout.LayoutFlags="All"
+          AbsoluteLayout.LayoutBounds="-.1, .95, .35, .35" />
+
+    <!--Right squares-->
+    <Path Style="{StaticResource squared}"
+          AbsoluteLayout.LayoutFlags="All"
+          AbsoluteLayout.LayoutBounds="1.1, .7, .35, .35" />
+
+    <Image Source="logo_blue.png"
+           AbsoluteLayout.LayoutFlags="All"
+           AbsoluteLayout.LayoutBounds=".5, .2, .4, .4"
+           VerticalOptions="CenterAndExpand"
+           HorizontalOptions="CenterAndExpand" />
+
+    <Label x:Name="lbl"
+           AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional"
+           AbsoluteLayout.LayoutBounds=".5, .9, 1, 45"
+           FontSize="Title"
+           FontAttributes="Bold"
+           HorizontalTextAlignment="Center"
+           TextColor="{StaticResource Primary}" />
+
+</AbsoluteLayout>

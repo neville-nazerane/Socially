@@ -25,6 +25,8 @@ namespace Socially.Mobile.Logic.ViewModels
 
         public override void OnException(Exception ex) => _logger.LogException(ex);
 
+        public override Task OnNavigatedAsync() => GetAsync();
+
         public override async Task<ObservableCollection<PostDisplayModel>> GetFromServerAsync(CancellationToken cancellationToken = default)
             => new(await _apiConsumer.GetHomePostsAsync(10, null, cancellationToken).ToMobileModel());
 

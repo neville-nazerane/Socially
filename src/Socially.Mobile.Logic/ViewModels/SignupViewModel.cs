@@ -53,6 +53,16 @@ namespace Socially.Mobile.Logic.ViewModels
             await _navigation.GoToLoginAsync();
         }
 
+        public override Task OnValidationChangedAsync()
+        {
+            var error = Validation?.FirstOrDefault(v => !string.IsNullOrEmpty(v.ErrorMessage));
+            if (error is not null)
+            {
+                string field = error.MemberNames.FirstOrDefault();
+                return _messaging.DisplayAsync(field, error.ErrorMessage, "OK");
+            }
+            return Task.CompletedTask;
+        }
 
     }
 }

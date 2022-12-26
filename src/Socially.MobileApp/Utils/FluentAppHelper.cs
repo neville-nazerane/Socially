@@ -1,4 +1,5 @@
-﻿using Google.Android.Material.DatePicker;
+﻿using Android.Content.Res;
+using Google.Android.Material.DatePicker;
 using Kotlin.Text;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Socially.MobileApp.Utils
         public static XamlAppBuilder WithApp(this MauiAppBuilder builder) => new(builder);
 
 
-        
+
         public class XamlAppBuilder
         {
             private readonly MauiAppBuilder _builder;
@@ -54,38 +55,37 @@ namespace Socially.MobileApp.Utils
                     var builder = CurrentApp.GetService<XamlAppBuilder>();
                     var resourceDictionary = new ResourceDictionary();
 
-
-
                     foreach (var resourcepath in builder._resources)
                     {
-    var converter = new ResourceDictionary.RDSourceTypeConverter();
-    try
-    {
-        var c = converter.ConvertFromString(resourcepath);
-    }
-    catch (Exception ex)
-    {
-        // thrown not implimented exception
-    }
-    resourceDictionary.MergedDictionaries.Add(new()
-    {
-        Source = new Uri(resourcepath, UriKind.Relative)
-    });
+                        var converter = new ResourceDictionary.RDSourceTypeConverter();
+                        try
+                        {
+                            var c = converter.ConvertFromString(resourcepath);
+                        }
+                        catch (Exception ex)
+                        {
+                            // thrown not implimented exception
+                        }
+                        resourceDictionary.MergedDictionaries.Add(new()
+                        {
+                            Source = new Uri(resourcepath, UriKind.Relative)
+                        });
                     }
-                    Resources.Add(resourceDictionary); 
+
+                    Resources.Add(resourceDictionary);
 
                     MainPage = builder._mainPage;
                 }
 
 
                 static IServiceProvider CurrentApp =>
-                    #if ANDROID
+#if ANDROID
                         MauiApplication.Current.Services;
-                    #elif IOS || MACCATALYST
+#elif IOS || MACCATALYST
                         MauiUIApplicationDelegate.Current.Services;
-                    #else
+#else
                         null;
-                    #endif 
+#endif
             }
 
         }

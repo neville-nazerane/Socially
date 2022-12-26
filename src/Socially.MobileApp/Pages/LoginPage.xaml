@@ -6,50 +6,60 @@
              xmlns:c="clr-namespace:Socially.MobileApp.Components"
              x:Class="Socially.MobileApp.Pages.LoginPage"
              x:DataType="vm:LoginViewModel">
-
+    
     <Grid Padding="0"
           ColumnDefinitions="*"
-          RowDefinitions="3*, *, 4*">
+          RowDefinitions="2*, *, 4*">
 
         <!--Header-->
-        <c:LoginBanner LabelText="Login" />
-        
+        <c:LoginHeader Text="Login" />
         <!--Entry Body-->
         <Grid
               VerticalOptions="End"
               Grid.Row="2" 
               ColumnDefinitions="*"
-              RowDefinitions="50, 50, 30, 40, 40, 40"
-              RowSpacing="10"
+              RowDefinitions="20, 40, 40, 30, 40, 40, 40"
+              RowSpacing="15"
               Padding="30, 20" >
 
+            <Label Text="{Binding ErrorMessage}"
+                   TextColor="{StaticResource Red}" />
 
             <c:LoginEntry Text="{Binding Model.UserName}"
-                          Placeholder="Username"/>
+                          x:Name="username"
+                          IsError="{Binding Validation, Converter={StaticResource invalidToBool}, ConverterParameter='UserName'}"
+                          NextElement="{x:Reference password}"
+                          Placeholder="Username"
+                          Grid.Row="1" />
 
             <c:LoginEntry Placeholder="Password"
+                          x:Name="password"
                           IsPassword="True"
+                          ReturnType="Go"
                           Text="{Binding Model.Password}"
-                          Grid.Row="1"/>
+                          IsError="{Binding Validation, Converter={StaticResource invalidToBool}, ConverterParameter='Password'}"
+                          Command="{Binding SubmitCommand}"
+                          Grid.Row="2" />
 
             <Label Text="Forgot Password?"
                    HorizontalOptions="End"
                    VerticalOptions="CenterAndExpand"
                    TextColor="{StaticResource Red}"
-                   Grid.Row="2" >
+                   Grid.Row="3" >
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding GoToForgotPasswordCommand}" />
                 </Label.GestureRecognizers>
             </Label>
 
             <Button Command="{Binding SubmitCommand}"
-                    Grid.Row="3"
+                    x:Name="submit"
+                    Grid.Row="4"
                     Text="Login" />
 
             <Label Text="Don't have an account?"
                    VerticalOptions="CenterAndExpand"
                    HorizontalOptions="Center"
-                   Grid.Row="4" />
+                   Grid.Row="5" />
 
             <Button Text="Sign Up"
                     BorderColor="{StaticResource Primary}"
@@ -57,7 +67,7 @@
                     TextColor="{StaticResource Primary}"
                     Command="{Binding GoToSignupCommand}"
                     BorderWidth="1"
-                    Grid.Row="5" />
+                    Grid.Row="6" />
 
         </Grid>
         

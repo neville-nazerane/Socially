@@ -1,17 +1,42 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <AbsoluteLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Socially.MobileApp.Components.LoginEntry">
-    
-    <RoundRectangle x:Name="roundRect" 
+             x:Class="Socially.MobileApp.Components.LoginEntry"
+            Padding="0">
+
+    <AbsoluteLayout.Resources>
+
+        <Style TargetType="RoundRectangle" Class="unselected">
+            <Setter Property="Stroke" Value="{StaticResource EntryBorder}" />
+            <Setter Property="StrokeThickness" Value="1" />
+        </Style>
+
+        <Style TargetType="RoundRectangle" Class="selected">
+            <Setter Property="Stroke" Value="{StaticResource EntrySelectedBorder}" />
+            <Setter Property="StrokeThickness" Value="2" />
+        </Style>
+
+        <Style TargetType="RoundRectangle" Class="error">
+            <Setter Property="Stroke" Value="{StaticResource Red}" />
+            <Setter Property="StrokeThickness" Value="2" />
+        </Style>
+
+    </AbsoluteLayout.Resources>
+
+
+        <RoundRectangle x:Name="roundRect" 
                     CornerRadius="5"
-                    AbsoluteLayout.LayoutFlags="WidthProportional"
-                    Stroke="#DDDEE9" />
-    <Entry x:Name="entry"
-           TextChanged="Entry_TextChanged"
-           AbsoluteLayout.LayoutFlags="None" />
-    <Rectangle 
-         x:Name="rect"
-        AbsoluteLayout.LayoutFlags="WidthProportional" />
+                    StyleClass="unselected" 
+                    AbsoluteLayout.LayoutFlags="SizeProportional"
+                    AbsoluteLayout.LayoutBounds="0, 0, 1, 1" />
+
+        <Entry x:Name="entry"
+               Completed="Entry_Completed"
+               Margin="0"
+               Focused="Entry_Focused"
+               Unfocused="Entry_Unfocused"
+               TextChanged="Entry_TextChanged"
+               AbsoluteLayout.LayoutFlags="SizeProportional"
+               AbsoluteLayout.LayoutBounds="10, 0, 1, 1" />
 
 </AbsoluteLayout>

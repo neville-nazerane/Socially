@@ -35,15 +35,20 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" Color="#b1aac8" />
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" BaseSize="20,20" Color="#55D6BE" ForegroundScale="0.5" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\logo.svg" Color="#b1aac8" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Splash\logo.svg" BaseSize="50,50" Color="#55D6BE" ForegroundScale="0.65" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
 		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
+		<!--<MauiImage Update="Resources\Images\logo_blue.svg">
+		  <BaseSize>200,200</BaseSize>
+		  <TintColor>white</TintColor>
+		</MauiImage>-->
 		<MauiImage Update="Resources\Images\logo_white.svg" BaseSize="200,200" TintColor="white" />
+		<MauiImage Update="Resources\Images\logo_blue.svg" BaseSize="200,200" TintColor="#010C80" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -56,14 +61,13 @@
 	  <MauiImage Remove="Resources\Images\splash.svg" />
 	</ItemGroup>
 
-	<!--<ItemGroup>
-	  <None Remove="Resources\Images\logo_white.svg" />
-	</ItemGroup>-->
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="3.1.0" />
+		<PackageReference Include="CommunityToolkit.Maui.Markup" Version="2.1.0" />
 		<!--<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3">
 			<PrivateAssets>all</PrivateAssets>
@@ -87,6 +91,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Components\LoginEntry.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Components\LoginHeader.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\ForgotPasswordPage.xaml">

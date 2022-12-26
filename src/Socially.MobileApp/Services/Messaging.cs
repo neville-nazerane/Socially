@@ -9,9 +9,6 @@ namespace Socially.MobileApp.Services
 {
     internal class Messaging : IMessaging
     {
-        public Task DisplayAsync(string title, string message, string button)
-        {
-            throw new NotImplementedException();
-        }
+        public Task DisplayAsync(string title, string message, string button) => Shell.Current.DisplayAlert(title, message, button);
     }
 }
