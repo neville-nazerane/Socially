@@ -22,6 +22,7 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
             mockedAuthAccess = new Mock<IAuthAccess>();
             mockedLogger = new Mock<ISocialLogger>();
             mockedNavigation = new Mock<INavigationControl>();
+            mockedMessaging = new();
             viewModel = new LoginViewModel(mockedApiConsumer.Object,
                                            mockedAuthAccess.Object,
                                            mockedNavigation.Object,
