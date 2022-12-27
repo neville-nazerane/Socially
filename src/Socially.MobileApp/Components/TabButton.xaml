@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<AbsoluteLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Socially.MobileApp.Components.TabButton">
+
+
+    <Rectangle x:Name="rect"
+               AbsoluteLayout.LayoutFlags="None"
+               Fill="{StaticResource Primary}" />
+
+    <Image x:Name="img" 
+           AbsoluteLayout.LayoutFlags="None"
+           BackgroundColor="{StaticResource Primary}" />
+
+
+    <Ellipse x:Name="outterCircle"
+               AbsoluteLayout.LayoutFlags="None"
+             Stroke="{StaticResource Secondary}" />
+    
+    <Ellipse x:Name="innerCircle"
+             AbsoluteLayout.LayoutFlags="None"
+             Stroke="{StaticResource Primary}" />
+
+
+</AbsoluteLayout>

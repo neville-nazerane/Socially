@@ -28,7 +28,7 @@ namespace Socially.Mobile.Logic.ViewModels
         public override Task OnNavigatedAsync() => GetAsync();
 
         public override async Task<ObservableCollection<PostDisplayModel>> GetFromServerAsync(CancellationToken cancellationToken = default)
-            => new(await _apiConsumer.GetHomePostsAsync(10, null, cancellationToken).ToMobileModel());
+            => new(Enumerable.Repeat(await _apiConsumer.GetHomePostsAsync(10, null, cancellationToken).ToMobileModel(), 140).SelectMany(t => t));
 
     }
 }

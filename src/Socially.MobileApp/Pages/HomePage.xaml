@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:Socially.Mobile.Logic.ViewModels;assembly=Socially.Mobile.Logic"
              xmlns:m="clr-namespace:Socially.Mobile.Logic.Models;assembly=Socially.Mobile.Logic"
+             xmlns:comp="clr-namespace:Socially.MobileApp.Components"
              x:Class="Socially.MobileApp.Pages.HomePage"
              x:DataType="vm:HomeViewModel"
              Title="HomePage">
@@ -17,8 +18,8 @@
         </CollectionView>
 
 
-        <AbsoluteLayout AbsoluteLayout.LayoutFlags="YProportional,SizeProportional"
-                        AbsoluteLayout.LayoutBounds="0, 1, 1, .1" >
+        <AbsoluteLayout AbsoluteLayout.LayoutFlags="YProportional,WidthProportional"
+                        AbsoluteLayout.LayoutBounds="0, 1, 1, 70" >
 
             <RoundRectangle CornerRadius="50, 50, 0, 0"
                             AbsoluteLayout.LayoutFlags="YProportional,SizeProportional"
@@ -36,7 +37,7 @@
             <AbsoluteLayout AbsoluteLayout.LayoutFlags="PositionProportional"
                             AbsoluteLayout.LayoutBounds=".1, .7, 40, 40">
 
-                <Ellipse Stroke="{StaticResource Primary}" 
+                <Ellipse Stroke="{StaticResource Primary}"
                          StrokeThickness="2"
                          AbsoluteLayout.LayoutFlags="SizeProportional"
                          AbsoluteLayout.LayoutBounds="0, 0, 1, 1" />
@@ -85,12 +86,26 @@
 
             </AbsoluteLayout>
 
-            <Image AbsoluteLayout.LayoutFlags="PositionProportional"
+                            <!--FontFamily="faRegular" 
+                            Glyph="&#xf185;"-->
+            <comp:TabButton AbsoluteLayout.LayoutFlags="PositionProportional"
+                            AbsoluteLayout.LayoutBounds=".9, .7, 40, 40"
+                            
+                            FontFamily="faRegular" 
+                            Glyph="&#xf007;"
+                            
+                            IsSelected="True"
+                            SelectedThickness="10"
+                            OutterThickness="1"
+                            BorderThickness="2"
+                            ImageMargin="5" />
+
+            <!--<Image AbsoluteLayout.LayoutFlags="PositionProportional"
                    AbsoluteLayout.LayoutBounds=".9, .7, 30, 30">
                 <Image.Source>
                     <FontImageSource FontFamily="faRegular" Glyph="&#xf185;" Color="{StaticResource Primary}" />
                 </Image.Source>
-            </Image>
+            </Image>-->
 
         </AbsoluteLayout>
 
