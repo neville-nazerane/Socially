@@ -4,30 +4,49 @@
                 xmlns:comp="clr-namespace:Socially.MobileApp.Components"
                 x:Class="Socially.MobileApp.Components.TabMenu">
 
+    <AbsoluteLayout.Resources>
+
+        <x:Int32 x:Key="outterThickness">4</x:Int32>
+        <x:Int32 x:Key="selectedThickness">12</x:Int32>
+        <x:Int32 x:Key="borderThickness">2</x:Int32>
+        <x:Int32 x:Key="imageMargin">5</x:Int32>
+        <x:Int32 x:Key="selectedY">20</x:Int32>
+        
+    </AbsoluteLayout.Resources>
+
+    <RoundRectangle CornerRadius="150, 150, 0, 0"
+                    AbsoluteLayout.LayoutFlags="WidthProportional"
+                    AbsoluteLayout.LayoutBounds="0, 15, 1, 30"
+                    Margin="-1"
+                    Fill="{StaticResource Shadow}">
+    </RoundRectangle>
+
     <RoundRectangle CornerRadius="50, 50, 0, 0"
                             AbsoluteLayout.LayoutFlags="WidthProportional"
                             AbsoluteLayout.LayoutBounds="0, 25, 1, 90"
-                            Margin="-1"
-                            Fill="{StaticResource Secondary}">
-        <RoundRectangle.Shadow>
+                            Margin="-5"
+                            Fill="{StaticResource White}">
+        <!--<RoundRectangle.Shadow>
             <Shadow Brush="{StaticResource Shadow}"
-                Offset="111,-20"
-                Opacity="1" />
-        </RoundRectangle.Shadow>
+                Offset="0,-200"
+                Opacity=".5"
+                Radius="20"    />
+        </RoundRectangle.Shadow>-->
     </RoundRectangle>
 
     <!--Home-->
     <comp:TabButton AbsoluteLayout.LayoutFlags="XProportional"
-                    AbsoluteLayout.LayoutBounds=".1, 25, 30, 30"
+                    AbsoluteLayout.LayoutBounds=".1, 40, 30, 30"
                     x:Name="homeBtn"
                     
                     FontFamily="faSolid" 
                     Glyph="&#xf015;"
                             
-                    SelectedThickness="10"
-                    OutterThickness="1"
-                    BorderThickness="2"
-                    ImageMargin="5" >
+                    SelectedThickness="{StaticResource selectedThickness}"
+                    OutterThickness="{StaticResource outterThickness}"
+                    BorderThickness="{StaticResource borderThickness}"
+                    SelectedY="{StaticResource selectedY}"
+                    ImageMargin="{StaticResource imageMargin}" >
         <comp:TabButton.GestureRecognizers>
             <TapGestureRecognizer Tapped="Home_Tapped" />
         </comp:TabButton.GestureRecognizers>
@@ -35,16 +54,17 @@
 
     <!--Profile-->
     <comp:TabButton AbsoluteLayout.LayoutFlags="XProportional"
-                    AbsoluteLayout.LayoutBounds=".5, 35, 30, 30"
+                    AbsoluteLayout.LayoutBounds=".5, 40, 30, 30"
                     x:Name="profileBtn"
                             
                     FontFamily="faRegular" 
                     Glyph="&#xf007;"
                             
-                    SelectedThickness="10"
-                    OutterThickness="1"
-                    BorderThickness="2"
-                    ImageMargin="5" >
+                    SelectedThickness="{StaticResource selectedThickness}"
+                    OutterThickness="{StaticResource outterThickness}"
+                    BorderThickness="{StaticResource borderThickness}"
+                    SelectedY="{StaticResource selectedY}"
+                    ImageMargin="{StaticResource imageMargin}" >
         <comp:TabButton.GestureRecognizers>
             <TapGestureRecognizer Tapped="Profile_Tapped" />
         </comp:TabButton.GestureRecognizers>
@@ -53,16 +73,17 @@
     <!--Settings-->
 
     <comp:TabButton AbsoluteLayout.LayoutFlags="XProportional"
-                    AbsoluteLayout.LayoutBounds=".9, 35, 30, 30"
+                    AbsoluteLayout.LayoutBounds=".9, 40, 30, 30"
                     x:Name="settingsBtn"
                             
                     FontFamily="faSolid" 
                     Glyph="&#xf013;"
                             
-                    SelectedThickness="10"
-                    OutterThickness="1"
-                    BorderThickness="2"
-                    ImageMargin="5" >
+                    SelectedThickness="{StaticResource selectedThickness}"
+                    OutterThickness="{StaticResource outterThickness}"
+                    BorderThickness="{StaticResource borderThickness}"
+                    SelectedY="{StaticResource selectedY}"
+                    ImageMargin="{StaticResource imageMargin}" >
         <comp:TabButton.GestureRecognizers>
             <TapGestureRecognizer Tapped="Settings_Tapped" />
         </comp:TabButton.GestureRecognizers>

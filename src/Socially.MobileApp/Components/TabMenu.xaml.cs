@@ -33,8 +33,8 @@ public partial class TabMenu : AbsoluteLayout
     {
         btn.IsSelected = true;
 
-        var bounds = AbsoluteLayout.GetLayoutBounds(btn);
-        bounds.Height = -25;
+        //var bounds = AbsoluteLayout.GetLayoutBounds(btn);
+        //bounds.Y = 20;
         //AbsoluteLayout.SetLayoutBounds(btn, bounds);
 
     }

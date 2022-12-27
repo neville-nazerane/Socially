@@ -35,7 +35,7 @@
 
     <Ellipse x:Name="outterCircle"
                AbsoluteLayout.LayoutFlags="None"
-             Stroke="{StaticResource Secondary}" />
+             Stroke="{StaticResource White}" />
 
     <Ellipse x:Name="innerCircle"
              AbsoluteLayout.LayoutFlags="None"

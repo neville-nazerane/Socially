@@ -26,7 +26,7 @@ public partial class TabButton : AbsoluteLayout
 
     public string FontFamily
     {
-        get => _fontFamily; 
+        get => _fontFamily;
         set
         {
             _fontFamily = value;
@@ -40,7 +40,7 @@ public partial class TabButton : AbsoluteLayout
 
     public string Glyph
     {
-        get => _glyph; 
+        get => _glyph;
         set
         {
             _glyph = value;
@@ -105,6 +105,8 @@ public partial class TabButton : AbsoluteLayout
         }
     }
 
+    public int SelectedY { get; set; }
+
     //FontImageSource GetOrCreateFontImageSource()
     //{
     //    if (!(img.Source is FontImageSource imageSource))
@@ -133,7 +135,7 @@ public partial class TabButton : AbsoluteLayout
         AbsoluteLayout.SetLayoutBounds(img, new()
         {
             X = imageReduction,
-            Y = imageReduction,
+            Y = (IsSelected ? -SelectedY : 0) + imageReduction,
             Width = Width - imageReduction * 2,
             Height = Height - imageReduction * 2
         });
@@ -146,7 +148,7 @@ public partial class TabButton : AbsoluteLayout
             AbsoluteLayout.SetLayoutBounds(rect, new()
             {
                 X = 0,
-                Y = 0,
+                Y = -SelectedY,
                 Height = Height,
                 Width = Width
             });
@@ -156,7 +158,7 @@ public partial class TabButton : AbsoluteLayout
             AbsoluteLayout.SetLayoutBounds(outterCircle, new()
             {
                 X = -outterAddition,
-                Y = -outterAddition,
+                Y = -SelectedY - outterAddition,
                 Height = Height + outterAddition * 2,
                 Width = Width + outterAddition * 2
             });
@@ -167,7 +169,7 @@ public partial class TabButton : AbsoluteLayout
             AbsoluteLayout.SetLayoutBounds(innerCircle, new()
             {
                 X = -SelectedThickness,
-                Y = -SelectedThickness,
+                Y = -SelectedY - SelectedThickness,
                 Height = Height + SelectedThickness * 2,
                 Width = Width + SelectedThickness * 2
             });
