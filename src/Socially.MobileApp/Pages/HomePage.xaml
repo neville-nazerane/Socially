@@ -94,11 +94,15 @@
                             FontFamily="faRegular" 
                             Glyph="&#xf007;"
                             
-                            IsSelected="True"
+                            IsSelected="{Binding IsSelected}"
                             SelectedThickness="10"
                             OutterThickness="1"
                             BorderThickness="2"
-                            ImageMargin="5" />
+                            ImageMargin="5" >
+                <comp:TabButton.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SwapCommand}" />
+                </comp:TabButton.GestureRecognizers>
+            </comp:TabButton>
 
             <!--<Image AbsoluteLayout.LayoutFlags="PositionProportional"
                    AbsoluteLayout.LayoutBounds=".9, .7, 30, 30">

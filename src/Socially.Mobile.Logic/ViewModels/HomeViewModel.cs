@@ -1,4 +1,6 @@
-﻿using Socially.Apps.Consumer.Services;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Socially.Apps.Consumer.Services;
 using Socially.Mobile.Logic.Models;
 using Socially.Mobile.Logic.Models.Mappings;
 using Socially.Mobile.Logic.Services;
@@ -11,11 +13,17 @@ using System.Threading.Tasks;
 
 namespace Socially.Mobile.Logic.ViewModels
 {
-    public class HomeViewModel : ViewModelBase<ObservableCollection<PostDisplayModel>>
+    public partial class HomeViewModel : ViewModelBase<ObservableCollection<PostDisplayModel>>
     {
 
         private readonly ISocialLogger _logger;
         private readonly IApiConsumer _apiConsumer;
+
+        [ObservableProperty]
+        bool isSelected;
+
+        [RelayCommand]
+        void Swap() => IsSelected = !IsSelected;
 
         public HomeViewModel(ISocialLogger logger, IApiConsumer apiConsumer)
         {

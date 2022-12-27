@@ -1,40 +1,72 @@
 using Java.Nio.Channels;
+using Kotlin.Reflect;
+using Socially.MobileApp.Helpers;
 
 namespace Socially.MobileApp.Components;
 
 public partial class TabButton : AbsoluteLayout
 {
+
+    public static readonly BindableProperty IsSelectedProperty = BindableProperty.Create(nameof(IsSelected),
+                                                                                         typeof(bool),
+                                                                                         typeof(TabButton),
+                                                                                         propertyChanged: TabButtonChanged);
+
+    private static void TabButtonChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        ((TabButton)bindable).IsSelected = (bool)newValue;
+    }
+
     private bool _isSelected;
     private int _selectedThickness;
     private int _outterThickness;
     private int _borderThickness;
     private int _imageMargin;
-
+    private string _fontFamily;
+    private string _glyph;
 
     public string FontFamily
     {
-        get => (img.Source as FontImageSource).FontFamily;
-        set => GetOrCreateFontImageSource().FontFamily = value;
+        get => _fontFamily; 
+        set
+        {
+            _fontFamily = value;
+            RefreshImage();
+        }
     }
+    //{
+    //    get => (img.Source as FontImageSource).FontFamily;
+    //    set => GetOrCreateFontImageSource().FontFamily = value;
+    //}
 
     public string Glyph
     {
-        get => (img.Source as FontImageSource).Glyph;
-        set => GetOrCreateFontImageSource().Glyph = value;
+        get => _glyph; 
+        set
+        {
+            _glyph = value;
+            RefreshImage();
+        }
     }
+    //{
+    //    get => (img.Source as FontImageSource).Glyph;
+    //    set => GetOrCreateFontImageSource().Glyph = value;
+    //}
 
     public bool IsSelected
     {
-        get => _isSelected; 
+        get => (bool)GetValue(IsSelectedProperty);
         set
         {
-            _isSelected = value;
+            SetValue(IsSelectedProperty, value);
+            //_isSelected = value;
+            Reset();
         }
     }
 
     public int SelectedThickness
     {
-        get => _selectedThickness; 
+        get => _selectedThickness;
         set
         {
             _selectedThickness = value;
@@ -44,7 +76,7 @@ public partial class TabButton : AbsoluteLayout
 
     public int OutterThickness
     {
-        get => _outterThickness; 
+        get => _outterThickness;
         set
         {
             _outterThickness = value;
@@ -54,7 +86,7 @@ public partial class TabButton : AbsoluteLayout
 
     public int BorderThickness
     {
-        get => _borderThickness; 
+        get => _borderThickness;
         set
         {
             _borderThickness = value;
@@ -74,15 +106,15 @@ public partial class TabButton : AbsoluteLayout
         }
     }
 
-    FontImageSource GetOrCreateFontImageSource()
-    {
-        if (!(img.Source is FontImageSource imageSource))
-        {
-            imageSource = new();
-            img.Source = imageSource;
-        }
-        return imageSource;
-    }
+    //FontImageSource GetOrCreateFontImageSource()
+    //{
+    //    if (!(img.Source is FontImageSource imageSource))
+    //    {
+    //        imageSource = new();
+    //        img.Source = imageSource;
+    //    }
+    //    return imageSource;
+    //}
 
     public TabButton()
     {
@@ -107,6 +139,8 @@ public partial class TabButton : AbsoluteLayout
             Width = Width - imageReduction * 2,
             Height = Height - imageReduction * 2
         });
+        img.SetStyleClass(IsSelected ? "selected" : "unselected");
+        RefreshImage();
 
         if (IsSelected)
         {
@@ -147,18 +181,30 @@ public partial class TabButton : AbsoluteLayout
             // setting up INNER
             AbsoluteLayout.SetLayoutBounds(innerCircle, new()
             {
-                X = -SelectedThickness,
-                Y = -SelectedThickness,
+                X = 0,
+                Y = 0,
                 Height = Height,
                 Width = Width
             });
             innerCircle.StrokeThickness = BorderThickness;
         }
 
-
-        //rect.IsVisible = IsSelected;
-        //outterCircle.IsVisible = IsSelected;
-
+        rect.IsVisible = IsSelected;
+        outterCircle.IsVisible = IsSelected;
     }
 
+    void RefreshImage()
+    {
+        if (img.Source is FontImageSource imageSource && FontFamily is not null && Glyph is not null)
+        {
+            imageSource.FontFamily = FontFamily;
+            imageSource.Glyph = Glyph;
+        }
+    }
+
+    private void Img_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(Image.Source))
+            RefreshImage();
+    }
 }
