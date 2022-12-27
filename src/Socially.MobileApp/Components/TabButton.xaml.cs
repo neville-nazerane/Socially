@@ -17,7 +17,6 @@ public partial class TabButton : AbsoluteLayout
         ((TabButton)bindable).IsSelected = (bool)newValue;
     }
 
-    private bool _isSelected;
     private int _selectedThickness;
     private int _outterThickness;
     private int _borderThickness;
@@ -120,7 +119,6 @@ public partial class TabButton : AbsoluteLayout
     {
         InitializeComponent();
     }
-
 
     protected override void OnSizeAllocated(double width, double height)
     {

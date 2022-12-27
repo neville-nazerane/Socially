@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<AbsoluteLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:comp="clr-namespace:Socially.MobileApp.Components"
+                x:Class="Socially.MobileApp.Components.TabMenu"
+                HeightRequest="120">
+
+    <RoundRectangle CornerRadius="50, 50, 0, 0"
+                            AbsoluteLayout.LayoutFlags="WidthProportional"
+                            AbsoluteLayout.LayoutBounds="0, 10, 1, 90"
+                            Margin="-1"
+                            Fill="{StaticResource Secondary}">
+        <RoundRectangle.Shadow>
+            <Shadow Brush="Black"
+                Offset="190,-180"
+                Opacity="0.8" />
+        </RoundRectangle.Shadow>
+    </RoundRectangle>
+
+    <!--Home--> 
+    <comp:TabButton AbsoluteLayout.LayoutFlags="XProportional"
+                    AbsoluteLayout.LayoutBounds=".1, 25, 30, 30"
+                            
+                    FontFamily="faSolid" 
+                    Glyph="&#xf015;"
+                            
+                    IsSelected="False"
+                    SelectedThickness="10"
+                    OutterThickness="1"
+                    BorderThickness="2"
+                    ImageMargin="5" />
+
+    <!--Profile-->
+    <comp:TabButton AbsoluteLayout.LayoutFlags="XProportional"
+                    AbsoluteLayout.LayoutBounds=".5, 25, 30, 30"
+                            
+                    FontFamily="faRegular" 
+                    Glyph="&#xf007;"
+                            
+                    IsSelected="False"
+                    SelectedThickness="10"
+                    OutterThickness="1"
+                    BorderThickness="2"
+                    ImageMargin="5" />
+
+    <!--Settings-->
+    <comp:TabButton AbsoluteLayout.LayoutFlags="XProportional"
+                    AbsoluteLayout.LayoutBounds=".9, 25, 30, 30"
+                            
+                    FontFamily="faSolid" 
+                    Glyph="&#xf013;"
+                            
+                    IsSelected="False"
+                    SelectedThickness="10"
+                    OutterThickness="1"
+                    BorderThickness="2"
+                    ImageMargin="5" />
+
+
+</AbsoluteLayout>
