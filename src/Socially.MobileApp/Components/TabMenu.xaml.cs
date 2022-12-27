@@ -20,26 +20,23 @@ public partial class TabMenu : AbsoluteLayout
         switch (location)
         {
             case "//MainPage/home":
-                homeBtn.IsSelected = true;
+                SetAsSelected(homeBtn);
                 break;
             case "//MainPage/profile/posts":
-                profileBtn.IsSelected = true;
+                SetAsSelected(profileBtn);
                 break;
         }
 
-        var parentLayout = (Layout)Parent;
+    }
 
-        base.OnSizeAllocated(parentLayout.Width, 120);
+    void SetAsSelected(TabButton btn)
+    {
+        btn.IsSelected = true;
 
-        AbsoluteLayout.SetLayoutBounds(this, new()
-        {
-            X = 0,
-            Y = parentLayout.Height - 60,
-            Height = 120,
-            Width = parentLayout.Width
-        });
+        var bounds = AbsoluteLayout.GetLayoutBounds(btn);
+        bounds.Height = -25;
+        //AbsoluteLayout.SetLayoutBounds(btn, bounds);
 
-        IsVisible = true;
     }
 
     private async void Home_Tapped(object sender, TappedEventArgs e)
@@ -50,5 +47,10 @@ public partial class TabMenu : AbsoluteLayout
     private async void Profile_Tapped(object sender, TappedEventArgs e)
     {
         await _navigationControl.GoToProfilePostsAsync();
+    }
+
+    private async void Settings_Tapped(object sender, TappedEventArgs e)
+    {
+        await _navigationControl.GoToLoginAsync();
     }
 }

@@ -10,7 +10,7 @@ namespace Socially.MobileApp.Layouts
 {
     public class MainLayout : AbsoluteLayout
     {
-        const int menuHeight = 120;
+        const int menuHeight = 90;
 
         protected override void OnSizeAllocated(double width, double height)
         {

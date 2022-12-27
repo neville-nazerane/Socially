@@ -2,12 +2,11 @@
 <AbsoluteLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                 xmlns:comp="clr-namespace:Socially.MobileApp.Components"
-                x:Class="Socially.MobileApp.Components.TabMenu"
-                IsVisible="True">
+                x:Class="Socially.MobileApp.Components.TabMenu">
 
     <RoundRectangle CornerRadius="50, 50, 0, 0"
                             AbsoluteLayout.LayoutFlags="WidthProportional"
-                            AbsoluteLayout.LayoutBounds="0, 10, 1, 90"
+                            AbsoluteLayout.LayoutBounds="0, 25, 1, 90"
                             Margin="-1"
                             Fill="{StaticResource Secondary}">
         <RoundRectangle.Shadow>
@@ -36,7 +35,7 @@
 
     <!--Profile-->
     <comp:TabButton AbsoluteLayout.LayoutFlags="XProportional"
-                    AbsoluteLayout.LayoutBounds=".5, 25, 30, 30"
+                    AbsoluteLayout.LayoutBounds=".5, 35, 30, 30"
                     x:Name="profileBtn"
                             
                     FontFamily="faRegular" 
@@ -52,8 +51,9 @@
     </comp:TabButton>
 
     <!--Settings-->
+
     <comp:TabButton AbsoluteLayout.LayoutFlags="XProportional"
-                    AbsoluteLayout.LayoutBounds=".9, 25, 30, 30"
+                    AbsoluteLayout.LayoutBounds=".9, 35, 30, 30"
                     x:Name="settingsBtn"
                             
                     FontFamily="faSolid" 
@@ -62,7 +62,10 @@
                     SelectedThickness="10"
                     OutterThickness="1"
                     BorderThickness="2"
-                    ImageMargin="5" />
-
+                    ImageMargin="5" >
+        <comp:TabButton.GestureRecognizers>
+            <TapGestureRecognizer Tapped="Settings_Tapped" />
+        </comp:TabButton.GestureRecognizers>
+    </comp:TabButton>
 
 </AbsoluteLayout>
