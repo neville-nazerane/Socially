@@ -1,5 +1,6 @@
 ﻿using Socially.Apps.Consumer.Services;
 using Socially.Mobile.Logic.Services;
+using Socially.Mobile.Logic.ViewModels;
 using Socially.Models;
 using System;
 using System.Collections.Generic;
@@ -7,12 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Socially.Mobile.Logic.ComponentModels.Tests
+namespace Socially.Mobile.Logic.Tests.ViewModels
 {
-    public class ProfilePostsComponentModelTests
+    public class ProfilePostsViewModelTests
     {
 
-        ProfilePostsComponentModel viewModel;
+        ProfilePostsViewModel viewModel;
         Mock<ISocialLogger> mockedLogger;
         Mock<IApiConsumer> mockedApiConsumer;
 

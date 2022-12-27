@@ -2,7 +2,6 @@
 using Socially.Mobile.Logic.Models;
 using Socially.Mobile.Logic.Models.Mappings;
 using Socially.Mobile.Logic.Services;
-using Socially.Mobile.Logic.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,14 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Socially.Mobile.Logic.ComponentModels
+namespace Socially.Mobile.Logic.ViewModels
 {
-    public class ProfilePostsComponentModel : ViewModelBase<ObservableCollection<PostDisplayModel>>
+    public class ProfilePostsViewModel : ViewModelBase<ObservableCollection<PostDisplayModel>>
     {
         private readonly ISocialLogger _logger;
         private readonly IApiConsumer _apiConsumer;
 
-        public ProfilePostsComponentModel(ISocialLogger logger, IApiConsumer apiConsumer)
+        public ProfilePostsViewModel(ISocialLogger logger, IApiConsumer apiConsumer)
         {
             _logger = logger;
             _apiConsumer = apiConsumer;

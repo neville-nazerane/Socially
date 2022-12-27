@@ -11,6 +11,8 @@ namespace Socially.Mobile.Logic.Services
         Task GoToForgotPasswordAsync();
         Task GoToHomeAsync();
         Task GoToLoginAsync();
+        Task GoToProfileFriendsAsync();
+        Task GoToProfilePostsAsync();
         Task GoToSignupAsync();
     }
 }

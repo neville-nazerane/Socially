@@ -8,14 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Socially.Mobile.Logic.Tests.ComponentModels
+namespace Socially.Mobile.Logic.Tests.ViewModels
 {
-    public class ProfileFriendsComponentModelTests
+    public class ProfileFriendsViewModelTests
     {
 
         Mock<ISocialLogger> mockedLogger;
         Mock<IApiConsumer> mockedApiConsumer;
-        ProfileFriendsComponentModel viewModel;
+        ProfileFriendsViewModel viewModel;
 
         void Init()
         {

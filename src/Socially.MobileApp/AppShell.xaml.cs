@@ -11,7 +11,14 @@ namespace Socially.MobileApp
             Routing.RegisterRoute("signup", typeof(SignupPage));
             Routing.RegisterRoute("forgotPassword", typeof(ForgotPasswordPage));
             Routing.RegisterRoute("home", typeof(HomePage));
+            Routing.RegisterRoute("profile/posts", typeof(ProfilePostsPage));
+            Routing.RegisterRoute("profile/friends", typeof(ProfileFriendsPage));
             InitializeComponent();
+        }
+
+        protected override void OnNavigatedTo(NavigatedToEventArgs args)
+        {
+            base.OnNavigatedTo(args);
         }
 
         protected override void OnNavigated(ShellNavigatedEventArgs args)

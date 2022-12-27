@@ -3,7 +3,7 @@
                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                 xmlns:comp="clr-namespace:Socially.MobileApp.Components"
                 x:Class="Socially.MobileApp.Components.TabMenu"
-                HeightRequest="120">
+                IsVisible="True">
 
     <RoundRectangle CornerRadius="50, 50, 0, 0"
                             AbsoluteLayout.LayoutFlags="WidthProportional"
@@ -11,46 +11,54 @@
                             Margin="-1"
                             Fill="{StaticResource Secondary}">
         <RoundRectangle.Shadow>
-            <Shadow Brush="Black"
-                Offset="190,-180"
-                Opacity="0.8" />
+            <Shadow Brush="{StaticResource Shadow}"
+                Offset="111,-20"
+                Opacity="1" />
         </RoundRectangle.Shadow>
     </RoundRectangle>
 
-    <!--Home--> 
+    <!--Home-->
     <comp:TabButton AbsoluteLayout.LayoutFlags="XProportional"
                     AbsoluteLayout.LayoutBounds=".1, 25, 30, 30"
-                            
+                    x:Name="homeBtn"
+                    
                     FontFamily="faSolid" 
                     Glyph="&#xf015;"
                             
-                    IsSelected="False"
                     SelectedThickness="10"
                     OutterThickness="1"
                     BorderThickness="2"
-                    ImageMargin="5" />
+                    ImageMargin="5" >
+        <comp:TabButton.GestureRecognizers>
+            <TapGestureRecognizer Tapped="Home_Tapped" />
+        </comp:TabButton.GestureRecognizers>
+    </comp:TabButton>
 
     <!--Profile-->
     <comp:TabButton AbsoluteLayout.LayoutFlags="XProportional"
                     AbsoluteLayout.LayoutBounds=".5, 25, 30, 30"
+                    x:Name="profileBtn"
                             
                     FontFamily="faRegular" 
                     Glyph="&#xf007;"
                             
-                    IsSelected="False"
                     SelectedThickness="10"
                     OutterThickness="1"
                     BorderThickness="2"
-                    ImageMargin="5" />
+                    ImageMargin="5" >
+        <comp:TabButton.GestureRecognizers>
+            <TapGestureRecognizer Tapped="Profile_Tapped" />
+        </comp:TabButton.GestureRecognizers>
+    </comp:TabButton>
 
     <!--Settings-->
     <comp:TabButton AbsoluteLayout.LayoutFlags="XProportional"
                     AbsoluteLayout.LayoutBounds=".9, 25, 30, 30"
+                    x:Name="settingsBtn"
                             
                     FontFamily="faSolid" 
                     Glyph="&#xf013;"
                             
-                    IsSelected="False"
                     SelectedThickness="10"
                     OutterThickness="1"
                     BorderThickness="2"
