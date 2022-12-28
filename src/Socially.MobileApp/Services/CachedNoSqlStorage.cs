@@ -26,7 +26,7 @@ namespace Socially.MobileApp.Services
         public CachedNoSqlStorage()
         {
             var db = new LiteDatabase(Configs.NoSqlLocation);
-            collection = db.GetCollection<TValue>($"cached-{nameof(TValue)}");
+            collection = db.GetCollection<TValue>($"cached_{nameof(TValue)}");
         }
 
         public TValue Get(TKey id)

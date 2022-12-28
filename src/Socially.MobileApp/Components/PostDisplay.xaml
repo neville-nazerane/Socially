@@ -6,17 +6,17 @@
              x:DataType="cm:PostDisplayComponentModel"
              x:Class="Socially.MobileApp.Components.PostDisplay">
     <VerticalStackLayout>
-        <!--<Label 
+        <Label 
             VerticalOptions="Center" 
             HorizontalOptions="Center" >
             <Label.FormattedText>
                 <FormattedString>
-                    <Span Text="sdfs" />
+                    <Span Text="{Binding User.FirstName}" />
                 </FormattedString>
             </Label.FormattedText>
-        </Label>-->
+        </Label>
         <Label 
-            Text="{Binding User.FirstName}"
+            Text="{Binding Post.Text}"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
     </VerticalStackLayout>
