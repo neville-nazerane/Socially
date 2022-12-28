@@ -1,23 +1,74 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:m="clr-namespace:Socially.Mobile.Logic.Models;assembly=Socially.Mobile.Logic"
-             xmlns:cm="clr-namespace:Socially.Mobile.Logic.ComponentModels;assembly=Socially.Mobile.Logic"
-             x:DataType="cm:PostDisplayComponentModel"
-             x:Class="Socially.MobileApp.Components.PostDisplay">
-    <VerticalStackLayout>
-        <Label 
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" >
-            <Label.FormattedText>
-                <FormattedString>
-                    <Span Text="{Binding User.FirstName}" />
-                </FormattedString>
-            </Label.FormattedText>
-        </Label>
-        <Label 
-            Text="{Binding Post.Text}"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      xmlns:m="clr-namespace:Socially.Mobile.Logic.Models;assembly=Socially.Mobile.Logic"
+      xmlns:cm="clr-namespace:Socially.Mobile.Logic.ComponentModels;assembly=Socially.Mobile.Logic"
+      x:DataType="cm:PostDisplayComponentModel"
+      x:Class="Socially.MobileApp.Components.PostDisplay" >
+
+    <RoundRectangle CornerRadius="10"
+                    Stroke="{StaticResource EntryBorder}"
+                    Fill="{StaticResource Secondary}" />
+
+    <Grid RowDefinitions="40, auto, 15"
+          Padding="8">
+        
+        <!--Title--> 
+        <Grid ColumnDefinitions="30, auto, *, 10">
+
+            <!--Profile picture--> 
+            <Image Source="{Binding User.ProfilePicUrl, Converter={StaticResource nameToProfileImageUrl}}">
+                <Image.Clip>
+                    <RoundRectangleGeometry CornerRadius="10"
+                                            Rect="0, 0, 30, 30" />
+                </Image.Clip>
+            </Image>
+
+            <!--Name and created on--> 
+            <Label Grid.Column="1" 
+                    VerticalTextAlignment="Center" >
+                <Label.FormattedText>
+                    <FormattedString>
+                        <FormattedString.Spans>
+                            <Span Text="  " />
+                            <Span FontAttributes="Bold" Text="{Binding User.FirstName}" />
+                            <Span Text="  " />
+                            <Span FontAttributes="Italic" FontSize="Small" Text="{Binding Post.CreatedOn, Converter={StaticResource timeToDurationConverter}}" />
+                        </FormattedString.Spans>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <!--Delete icon--> 
+            <Image Grid.Column="3"
+                   VerticalOptions="StartAndExpand" >
+                <Image.Source>
+                    <FontImageSource FontFamily="faSolid" 
+                                        Glyph="&#xf2ed;"
+                                        Color="{StaticResource Red}" />
+                </Image.Source>
+            </Image>
+        
+        
+        </Grid>
+        
+        <!--Post test-->
+        <Label Text="{Binding Post.Text}"
+                Grid.Row="1" />
+
+
+        <!--Comment Header--> 
+        <Grid ColumnDefinitions="auto, *, auto" 
+              Grid.Row="2" >
+            <Label Text="Likes" />
+            
+            <Label Grid.Column="2"
+                   Text="{Binding Post.Comments.Count, StringFormat= '({0} Comments)'}" />
+        </Grid>
+
+    </Grid>
+    
+
+    
+
 </Grid>

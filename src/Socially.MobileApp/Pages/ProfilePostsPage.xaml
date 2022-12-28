@@ -11,7 +11,14 @@
              Title="ProfilePostsPage">
     <layout:MainLayout>
 
-        <CollectionView ItemsSource="{ Binding Model }">
+        <CollectionView ItemsSource="{ Binding Model }"   
+                        Margin="10"
+                        AbsoluteLayout.LayoutFlags="SizeProportional"
+                        AbsoluteLayout.LayoutBounds="0, 0, 1, 1" >
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="10" 
+                                   Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="m:PostDisplayModel">
                     <comp:PostDisplay Post="{Binding .}" />

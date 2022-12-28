@@ -40,7 +40,9 @@ namespace Socially.Mobile.Logic.ViewModels
            
         public override async Task<ObservableCollection<PostDisplayModel>> GetFromServerAsync(CancellationToken cancellationToken = default)
         {
-            var res = new ObservableCollection<PostDisplayModel>(await _apiConsumer.GetCurrentUserPostsAsync(20, null, cancellationToken).ToMobileModel());
+            var res = new ObservableCollection<PostDisplayModel>(
+                                (await _apiConsumer.GetCurrentUserPostsAsync(20, null, cancellationToken).ToMobileModel())
+                                .Reverse());
 
             return res;
         }
