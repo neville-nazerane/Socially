@@ -37,7 +37,7 @@ namespace Socially.Mobile.Logic.ViewModels
                                .ToImmutableArray();
             await _cachedContext.UpdateUserProfilesIfNotExistAsync(userIds);
         }
-
+           
         public override async Task<ObservableCollection<PostDisplayModel>> GetFromServerAsync(CancellationToken cancellationToken = default)
         {
             var res = new ObservableCollection<PostDisplayModel>(await _apiConsumer.GetCurrentUserPostsAsync(20, null, cancellationToken).ToMobileModel());

@@ -2,18 +2,20 @@
 using AndroidX.Startup;
 using LiteDB;
 using Socially.Apps.Consumer.Services;
+using Socially.Mobile.Logic.Services;
 using Socially.MobileApp.Utils;
 using Socially.Models.Utils;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Socially.MobileApp.Services
 {
-    internal class CachedNoSqlStorage<TKey, TValue>
+    internal class CachedNoSqlStorage<TKey, TValue> : ICachedNoSqlStorage<TKey, TValue>
         where TValue : class, ICachable<TKey, TValue>, new()
     {
 
@@ -31,12 +33,12 @@ namespace Socially.MobileApp.Services
         {
             return _data.GetOrAdd(id, id =>
             {
-                var res = collection.FindById((BsonValue)(object)id);
+                var res = collection.FindById(id.ToBsonValue());
                 return res ?? new();
             });
         }
 
-        public bool IsInitialized(params TKey[] ids) => collection.Exists(Query.In("_id", ids.Cast<BsonValue>()));
+        public bool IsInitialized(TKey id) => collection.Exists(Query.In("_id", id.ToBsonValue()));
 
         /// <summary>
         /// </summary>
@@ -64,7 +66,7 @@ namespace Socially.MobileApp.Services
                     var key = val.GetCacheKey();
                     if (_data.TryGetValue(key, out var existing))
                         existing.CopyFrom(val);
-                    collection.Upsert((BsonValue)(object)key, val);
+                    collection.Upsert(key.ToBsonValue(), val);
                 }
                 _lock = null;
                 localLock.TrySetResult();

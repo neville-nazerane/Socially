@@ -43,6 +43,8 @@ namespace Socially.MobileApp
             // internal services
             services.AddSingleton<IMessaging, Messaging>()
                     .AddSingleton<INavigationControl, NavigationControl>()
+                    .AddSingleton<ICachedContext, CachedContext>()
+                    .AddSingleton(typeof(ICachedNoSqlStorage<,>), typeof(CachedNoSqlStorage<,>))
                     .AddSingleton<ISocialLogger, SociallyLogger>();
 
             // calling auto generated function

@@ -38,5 +38,9 @@ namespace Socially.Mobile.Logic.Services
             await _userStorage.UpdateAsync(users.ToMobileModel());
         }
 
+        public Task ClearRAMAsync() => _userStorage.ClearAllInRamAsync();
+
+        public Task ClearDbAsync() => _userStorage.ClearDbAsync();
+
     }
 }

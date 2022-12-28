@@ -9,7 +9,7 @@ namespace Socially.Mobile.Logic.Services
         Task ClearAllInRamAsync();
         Task ClearDbAsync();
         TValue Get(TKey id);
-        bool IsInitialized(params TKey[] ids);
+        bool IsInitialized(TKey id);
         Task UpdateAsync(IEnumerable<TValue> updatedValues);
     }
 }

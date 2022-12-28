@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Maui.Behaviors;
+using Socially.Mobile.Logic.Services;
 using Socially.MobileApp.Pages;
+using Socially.MobileApp.Utils;
 
 namespace Socially.MobileApp
 {
@@ -16,9 +18,10 @@ namespace Socially.MobileApp
             InitializeComponent();
         }
 
-        protected override void OnNavigatedTo(NavigatedToEventArgs args)
+        protected override async void OnNavigating(ShellNavigatingEventArgs args)
         {
-            base.OnNavigatedTo(args);
+            await ServicesUtil.Get<ICachedContext>().ClearRAMAsync();
+            base.OnNavigating(args);
         }
 
         protected override void OnNavigated(ShellNavigatedEventArgs args)

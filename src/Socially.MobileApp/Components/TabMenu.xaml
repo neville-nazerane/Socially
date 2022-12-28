@@ -25,7 +25,7 @@
                             AbsoluteLayout.LayoutFlags="WidthProportional"
                             AbsoluteLayout.LayoutBounds="0, 25, 1, 90"
                             Margin="-5"
-                            Fill="{StaticResource White}">
+                            Fill="{StaticResource Secondary}">
         <!--<RoundRectangle.Shadow>
             <Shadow Brush="{StaticResource Shadow}"
                 Offset="0,-200"
