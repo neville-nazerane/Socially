@@ -75,7 +75,9 @@ async Task SetMauiPageDefaultsAsync()
 {
     var genPath = FileUtils.GrabPath(mobilePath, "Generated");
     var genPagePath = FileUtils.GrabPathAndClear(genPath, "Pages");
+    var genComponentsPath = FileUtils.GrabPathAndClear(genPath, "Components");
     var pagePath = FileUtils.GrabPath(mobilePath, "Pages");
+    var componentsPath = FileUtils.GrabPath(mobilePath, "Components");
     var vmPath = FileUtils.GrabPath(mobileLogicPath, "ViewModels");
 
     var pages = Directory.GetFiles(pagePath)
@@ -83,14 +85,26 @@ async Task SetMauiPageDefaultsAsync()
                          .Select(p => new FileInfo(p).Name[..^"Page.xaml.cs".Length])
                          .ToArray();
 
+    var components = Directory.GetFiles(componentsPath)
+                     .Where(p => p.EndsWith("xaml.cs"))
+                     .Select(p => new FileInfo(p).Name[..^".xaml.cs".Length])
+                     .ToArray();
+
     var viewModels = Assembly.Load("Socially.Mobile.Logic")
                              .GetTypes()
                              .Where(t => t.Name.EndsWith("ViewModel"))
                              .ToArray();
 
+    var componentModels = Assembly.Load("Socially.Mobile.Logic")
+                             .GetTypes()
+                             .Where(t => t.Name.EndsWith("ComponentModel"))
+                             .ToArray();
+
+
     // delete all from page
 
     var injectablePages = new List<string>();
+    var injectableComponents = new List<string>();
 
     foreach (var vm in viewModels)
     {
@@ -110,9 +124,22 @@ async Task SetMauiPageDefaultsAsync()
         }
     }
 
+    foreach (var cm in componentModels)
+    {
+        var comp = components.SingleOrDefault(c => c == cm.Name[..^"ComponentModel".Length]);
+        if (comp is not null)
+        {
+            injectableComponents.Add(comp);
+            Console.WriteLine("Generating for Component: " + comp);
+            var filePath = Path.Combine(genComponentsPath, $"{comp}.g.cs");
+            var classContent = GenerateCode.MakeComponentClass(comp);
+            await File.WriteAllTextAsync(filePath, classContent);
+        }
+    }
+
     Console.WriteLine("Creating MAUI Program");
 
-    var mainCode = GenerateCode.MakeMauiPartialProgram(pages);
+    var mainCode = GenerateCode.MakeMauiPartialProgram(injectablePages, injectableComponents);
     var mainPath = Path.Combine(genPath, "MauiProgram.g.cs");
     await File.WriteAllTextAsync(mainPath, mainCode);
 

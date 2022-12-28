@@ -9,15 +9,18 @@ namespace Socially.MobileApp.Generator
     public static class GenerateCode
     {
 
-        public static string MakeMauiPartialProgram(IEnumerable<string> pages)
+        public static string MakeMauiPartialProgram(IEnumerable<string> pages, IEnumerable<string> components)
         {
 
-            var pageInjections = pages.Select(p => $".AddTransient<{p}Page>().AddTransient<{p}ViewModel>()")
+            var injections = pages.Select(p => $".AddTransient<{p}Page>().AddTransient<{p}ViewModel>()")
+                                  .Union(components.Select(c => $".AddTransient<{c}>().AddTransient<{c}ComponentModel>()"))
                                       .ToArray();
 
             var str = $@"
 
+using Socially.Mobile.Logic.ComponentModels;
 using Socially.Mobile.Logic.ViewModels;
+using Socially.MobileApp.Components;
 using Socially.MobileApp.Pages;
 
 namespace Socially.MobileApp;
@@ -27,7 +30,7 @@ public static partial class MauiProgram
 
     static partial void AppPageInjections(IServiceCollection services)
     {{
-        services{string.Join("\n", pageInjections)};
+        services{string.Join("\n", injections)};
     }}
         
 }}
@@ -80,6 +83,28 @@ namespace {pageNamespace}
 ";
 
             return classContent;
+        }
+
+        public static string MakeComponentClass(string componentName)
+        {
+
+            var classContent = $@"
+using Socially.Mobile.Logic.ComponentModels;
+using Socially.MobileApp.Utils;
+
+namespace Socially.MobileApp.Components;
+
+public partial class {componentName} 
+{{
+
+    private {componentName}ComponentModel _componentModel;
+    public {componentName}ComponentModel ComponentModel => _componentModel ??= ServicesUtil.Get<{componentName}ComponentModel>();
+
+}}
+
+";
+            return classContent;
+
         }
 
 

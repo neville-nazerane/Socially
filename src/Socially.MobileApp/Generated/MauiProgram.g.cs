@@ -1,6 +1,8 @@
 
 
+using Socially.Mobile.Logic.ComponentModels;
 using Socially.Mobile.Logic.ViewModels;
+using Socially.MobileApp.Components;
 using Socially.MobileApp.Pages;
 
 namespace Socially.MobileApp;
@@ -16,7 +18,8 @@ public static partial class MauiProgram
 .AddTransient<LoginPage>().AddTransient<LoginViewModel>()
 .AddTransient<ProfileFriendsPage>().AddTransient<ProfileFriendsViewModel>()
 .AddTransient<ProfilePostsPage>().AddTransient<ProfilePostsViewModel>()
-.AddTransient<SignupPage>().AddTransient<SignupViewModel>();
+.AddTransient<SignupPage>().AddTransient<SignupViewModel>()
+.AddTransient<PostDisplay>().AddTransient<PostDisplayComponentModel>();
     }
         
 }
