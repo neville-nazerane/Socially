@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:m="clr-namespace:Socially.Mobile.Logic.Models;assembly=Socially.Mobile.Logic"
+             x:DataType="m:PostDisplayModel"
+             x:Class="Socially.MobileApp.Components.PostDisplay">
+    <VerticalStackLayout>
+        <Label 
+            Text="{Binding Text}"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+    </VerticalStackLayout>
+</Grid>

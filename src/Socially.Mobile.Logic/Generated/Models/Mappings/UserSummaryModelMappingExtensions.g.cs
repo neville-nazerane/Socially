@@ -35,6 +35,15 @@ namespace Socially.Mobile.Logic.Models.Mappings
             return dest;
         }
 
+        public static Socially.Mobile.Logic.Models.UserSummaryModel Clone(this Socially.Mobile.Logic.Models.UserSummaryModel model, Socially.Mobile.Logic.Models.UserSummaryModel dest)
+        {
+            dest.Id = model.Id;
+            dest.FirstName = model.FirstName;
+            dest.LastName = model.LastName;
+            dest.ProfilePicUrl = model.ProfilePicUrl;
+            return dest;
+        }
+
         public static async Task<IEnumerable<Socially.Mobile.Logic.Models.UserSummaryModel>> ToMobileModel(this Task<IEnumerable<Socially.Models.UserSummaryModel>> modelTask)
             => (await modelTask).ToMobileModel();
 

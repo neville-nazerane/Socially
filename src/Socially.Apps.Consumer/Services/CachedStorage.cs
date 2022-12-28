@@ -1,4 +1,5 @@
 ﻿using Socially.Models.Utils;
+using Socially.Website.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Socially.Website.Services
+namespace Socially.Apps.Consumer.Services
 {
     public class CachedStorage<TKey, TValue> : ICachedStorage<TKey, TValue>
         where TValue : class, ICachable<TKey, TValue>, new()
@@ -38,7 +39,8 @@ namespace Socially.Website.Services
         public async Task UpdateAsync(IEnumerable<TValue> updatedValues)
         {
             await AwaitLockAsync();
-            _lock = new TaskCompletionSource();
+            var localLock = new TaskCompletionSource();
+            _lock = localLock;
 
             try
             {
@@ -50,17 +52,40 @@ namespace Socially.Website.Services
                         existing.CopyFrom(value);
                         return existing;
                     });
+                    _initialized.Add(value.GetCacheKey());
                 }
-                _lock.TrySetResult();
+                _lock = null;
+                localLock.TrySetResult();
             }
             catch (Exception ex)
             {
-                _lock.SetException(ex);
+                _lock = null;
+                localLock.TrySetException(ex);
             }
         }
 
         public bool IsInitialized(params TKey[] ids)
-            => _initialized.Intersect(ids).Count() == ids.Count();
+            => _initialized.Intersect(ids).Count() == ids.Length;
+
+        public async Task ClearAllAsync()
+        {
+            await AwaitLockAsync();
+            var localLock = new TaskCompletionSource();
+            _lock = localLock;
+            try
+            {
+
+                _data.Clear();
+                _initialized.Clear();
+            }
+            finally
+            {
+                _lock = null;
+                localLock.TrySetResult();
+            }
+
+
+        }
 
     }
 }

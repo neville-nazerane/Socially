@@ -1,6 +1,7 @@
 ﻿using Socially.Apps.Consumer.Services;
 using Socially.Mobile.Logic.ComponentModels;
 using Socially.Mobile.Logic.Services;
+using Socially.Mobile.Logic.ViewModels;
 using Socially.Models;
 using System;
 using System.Collections.Generic;

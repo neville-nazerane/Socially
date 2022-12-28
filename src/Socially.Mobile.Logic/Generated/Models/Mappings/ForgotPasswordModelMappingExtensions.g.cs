@@ -35,6 +35,15 @@ namespace Socially.Mobile.Logic.Models.Mappings
             return dest;
         }
 
+        public static Socially.Mobile.Logic.Models.ForgotPasswordModel Clone(this Socially.Mobile.Logic.Models.ForgotPasswordModel model, Socially.Mobile.Logic.Models.ForgotPasswordModel dest)
+        {
+            dest.UserName = model.UserName;
+            dest.Token = model.Token;
+            dest.NewPassword = model.NewPassword;
+            dest.ConfirmPassword = model.ConfirmPassword;
+            return dest;
+        }
+
         public static async Task<IEnumerable<Socially.Mobile.Logic.Models.ForgotPasswordModel>> ToMobileModel(this Task<IEnumerable<Socially.Models.ForgotPasswordModel>> modelTask)
             => (await modelTask).ToMobileModel();
 

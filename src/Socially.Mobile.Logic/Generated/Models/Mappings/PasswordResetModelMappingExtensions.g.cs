@@ -33,6 +33,14 @@ namespace Socially.Mobile.Logic.Models.Mappings
             return dest;
         }
 
+        public static Socially.Mobile.Logic.Models.PasswordResetModel Clone(this Socially.Mobile.Logic.Models.PasswordResetModel model, Socially.Mobile.Logic.Models.PasswordResetModel dest)
+        {
+            dest.NewPassword = model.NewPassword;
+            dest.ConfirmPassword = model.ConfirmPassword;
+            dest.CurrentPassword = model.CurrentPassword;
+            return dest;
+        }
+
         public static async Task<IEnumerable<Socially.Mobile.Logic.Models.PasswordResetModel>> ToMobileModel(this Task<IEnumerable<Socially.Models.PasswordResetModel>> modelTask)
             => (await modelTask).ToMobileModel();
 

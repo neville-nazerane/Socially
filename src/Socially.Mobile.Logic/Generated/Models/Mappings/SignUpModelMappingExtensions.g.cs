@@ -35,6 +35,15 @@ namespace Socially.Mobile.Logic.Models.Mappings
             return dest;
         }
 
+        public static Socially.Mobile.Logic.Models.SignUpModel Clone(this Socially.Mobile.Logic.Models.SignUpModel model, Socially.Mobile.Logic.Models.SignUpModel dest)
+        {
+            dest.Email = model.Email;
+            dest.UserName = model.UserName;
+            dest.Password = model.Password;
+            dest.ConfirmPassword = model.ConfirmPassword;
+            return dest;
+        }
+
         public static async Task<IEnumerable<Socially.Mobile.Logic.Models.SignUpModel>> ToMobileModel(this Task<IEnumerable<Socially.Models.SignUpModel>> modelTask)
             => (await modelTask).ToMobileModel();
 

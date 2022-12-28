@@ -35,6 +35,15 @@ namespace Socially.Mobile.Logic.Models.Mappings
             return dest;
         }
 
+        public static Socially.Mobile.Logic.Models.ProfileUpdateModel Clone(this Socially.Mobile.Logic.Models.ProfileUpdateModel model, Socially.Mobile.Logic.Models.ProfileUpdateModel dest)
+        {
+            dest.FirstName = model.FirstName;
+            dest.LastName = model.LastName;
+            dest.DateOfBirth = model.DateOfBirth;
+            dest.ProfilePictureFileName = model.ProfilePictureFileName;
+            return dest;
+        }
+
         public static async Task<IEnumerable<Socially.Mobile.Logic.Models.ProfileUpdateModel>> ToMobileModel(this Task<IEnumerable<Socially.Models.ProfileUpdateModel>> modelTask)
             => (await modelTask).ToMobileModel();
 

@@ -39,6 +39,17 @@ namespace Socially.Mobile.Logic.Models.Mappings
             return dest;
         }
 
+        public static Socially.Mobile.Logic.Models.PostDisplayModel Clone(this Socially.Mobile.Logic.Models.PostDisplayModel model, Socially.Mobile.Logic.Models.PostDisplayModel dest)
+        {
+            dest.Id = model.Id;
+            dest.Text = model.Text;
+            dest.CreatorId = model.CreatorId;
+            dest.CreatedOn = model.CreatedOn;
+            dest.Comments = model.Comments;
+            dest.LikeCount = model.LikeCount;
+            return dest;
+        }
+
         public static async Task<IEnumerable<Socially.Mobile.Logic.Models.PostDisplayModel>> ToMobileModel(this Task<IEnumerable<Socially.Models.PostDisplayModel>> modelTask)
             => (await modelTask).ToMobileModel();
 

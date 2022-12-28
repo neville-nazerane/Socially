@@ -14,7 +14,7 @@
         <CollectionView ItemsSource="{ Binding Model }">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="m:PostDisplayModel">
-                    <Label Text="{ Binding Text }" />
+                    <comp:PostDisplay BindingContext="{Binding .}" />
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

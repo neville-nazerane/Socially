@@ -115,6 +115,9 @@ namespace {mappingNameSpace}
         public static {srcName} To{srcLabel}(this {destName} model, {srcName} dest)
         {updateMethodBody}
 
+        public static {destName} Clone(this {destName} model, {destName} dest)
+        {updateMethodBody}
+
         public static async Task<IEnumerable<{destName}>> To{destLabel}(this Task<IEnumerable<{srcName}>> modelTask)
             => (await modelTask).To{destLabel}();
 

@@ -33,6 +33,14 @@ namespace Socially.Mobile.Logic.Models.Mappings
             return dest;
         }
 
+        public static Socially.Mobile.Logic.Models.LoginModel Clone(this Socially.Mobile.Logic.Models.LoginModel model, Socially.Mobile.Logic.Models.LoginModel dest)
+        {
+            dest.UserName = model.UserName;
+            dest.Password = model.Password;
+            dest.Source = model.Source;
+            return dest;
+        }
+
         public static async Task<IEnumerable<Socially.Mobile.Logic.Models.LoginModel>> ToMobileModel(this Task<IEnumerable<Socially.Models.LoginModel>> modelTask)
             => (await modelTask).ToMobileModel();
 
