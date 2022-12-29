@@ -19,6 +19,7 @@ public static partial class MauiProgram
 .AddTransient<ProfileFriendsPage>().AddTransient<ProfileFriendsViewModel>()
 .AddTransient<ProfilePostsPage>().AddTransient<ProfilePostsViewModel>()
 .AddTransient<SignupPage>().AddTransient<SignupViewModel>()
+.AddTransient<CommentDisplay>().AddTransient<CommentDisplayComponentModel>()
 .AddTransient<PostDisplay>().AddTransient<PostDisplayComponentModel>();
     }
         

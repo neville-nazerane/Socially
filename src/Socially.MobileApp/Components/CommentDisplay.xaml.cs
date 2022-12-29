@@ -14,7 +14,11 @@ public partial class CommentDisplay : Grid
     public DisplayCommentModel Comment
     {
         get => (DisplayCommentModel)GetValue(CommentProperty);
-        set => SetValue(CommentProperty, value);
+        set
+        {
+            SetValue(CommentProperty, value);
+            ComponentModel.Comment = value;
+        }
     }
 
     public CommentDisplay()

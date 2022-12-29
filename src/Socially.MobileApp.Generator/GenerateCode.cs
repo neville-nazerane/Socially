@@ -98,7 +98,7 @@ public partial class {componentName}
 {{
 
     private {componentName}ComponentModel _componentModel;
-    public {componentName}ComponentModel ComponentModel => _componentModel ??= ServicesUtil.Get<{componentName}ComponentModel>();
+    public {componentName}ComponentModel ComponentModel => _componentModel ??= ({componentName}ComponentModel)(BindingContext = ServicesUtil.Get<{componentName}ComponentModel>());
 
 }}
 

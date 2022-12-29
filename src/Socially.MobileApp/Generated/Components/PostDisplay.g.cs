@@ -8,19 +8,7 @@ public partial class PostDisplay
 {
 
     private PostDisplayComponentModel _componentModel;
-    public PostDisplayComponentModel ComponentModel
-    {
-        get
-        {
-            if (_componentModel is null)
-            {
-                _componentModel = ServicesUtil.Get<PostDisplayComponentModel>();
-                BindingContext = _componentModel;
-            }
-            return _componentModel;
-        }
-    }
-        
-        
+    public PostDisplayComponentModel ComponentModel => _componentModel ??= (PostDisplayComponentModel)(BindingContext = ServicesUtil.Get<PostDisplayComponentModel>());
+
 }
 
