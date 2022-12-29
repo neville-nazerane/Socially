@@ -17,8 +17,12 @@ public partial class ProfileHeader : AbsoluteLayout
         base.OnParentSet();
     }
 
-    protected override void OnSizeAllocated(double width, double height)
+    protected override void OnSizeAllocated(double orgWidth, double orgHeight)
     {
+
+
+        var width = orgWidth;
+        var height = orgHeight;
         var imageSize = Math.Min(width, height) / 2;
         var imageX = (width - imageSize) / 2;
         var imageY = (height - imageSize) / 3;
@@ -60,7 +64,7 @@ public partial class ProfileHeader : AbsoluteLayout
         });
 
 
-        base.OnSizeAllocated(width, height);
+        base.OnSizeAllocated(orgWidth, orgHeight);
     }
 
 }

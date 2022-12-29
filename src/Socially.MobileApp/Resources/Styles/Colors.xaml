@@ -13,6 +13,7 @@
     <Color x:Key="EntryBorder">#DDDEE9</Color>
     <Color x:Key="EntrySelectedBorder">#A5D0A8</Color>
     <Color x:Key="ProfilePicBackground">#5261CC</Color>
+    <Color x:Key="ProfileButton">#979797</Color>
     
     <LinearGradientBrush x:Key="Shadow" EndPoint="0,1" >
         <GradientStop Color="White"

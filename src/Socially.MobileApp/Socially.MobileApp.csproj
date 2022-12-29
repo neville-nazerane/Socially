@@ -114,6 +114,9 @@
 	  <MauiXaml Update="Components\ProfileHeader.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Components\ProfileNavButton.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Components\TabButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

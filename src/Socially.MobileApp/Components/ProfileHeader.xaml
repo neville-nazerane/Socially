@@ -2,14 +2,16 @@
 <AbsoluteLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                 xmlns:cm="clr-namespace:Socially.Mobile.Logic.ComponentModels;assembly=Socially.Mobile.Logic"
+                xmlns:c="clr-namespace:Socially.MobileApp.Components"
                 x:DataType="cm:ProfileHeaderComponentModel"
                 x:Class="Socially.MobileApp.Components.ProfileHeader"
-                HeightRequest="250">
+                HeightRequest="300">
 
-    <RoundRectangle CornerRadius="0, 0, 40, 40"
+    <RoundRectangle x:Name="backgroundRect"
+                    CornerRadius="0, 0, 40, 40"
                     Fill="{StaticResource Primary}"
-                    AbsoluteLayout.LayoutFlags="SizeProportional"
-                    AbsoluteLayout.LayoutBounds="0, 0, 1, 1" />
+                    AbsoluteLayout.LayoutFlags="WidthProportional"
+                    AbsoluteLayout.LayoutBounds="0, 0, 1, 250" />
 
     <Image x:Name="img"
            Aspect="Center"
@@ -35,5 +37,29 @@
             </FormattedString>
         </Label.FormattedText>
     </Label>
+
+    <Grid AbsoluteLayout.LayoutFlags="SizeProportional"
+          AbsoluteLayout.LayoutBounds="0, 200, 1, .4"
+          
+          ColumnSpacing="20"
+          Padding="20"
+          ColumnDefinitions="*, *, *">
+        
+        <c:ProfileNavButton Text="Posts"
+                            FontFamily="faSolid"
+                            Glyph="&#xf15c;"/>
+
+        <c:ProfileNavButton Grid.Column="1"
+                            Text="Friends"
+                            FontFamily="faSolid"
+                            Glyph="&#xf500;"/>
+
+        <c:ProfileNavButton Grid.Column="2"
+                            Text="Requests"
+                            FontFamily="faSolid"
+                            Glyph="&#xf234;" />
+        
+    </Grid>
+
 
 </AbsoluteLayout>
