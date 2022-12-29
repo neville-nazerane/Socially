@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:comp="clr-namespace:Socially.MobileApp.Components"
+             xmlns:cm="clr-namespace:Socially.Mobile.Logic.ComponentModels;assembly=Socially.Mobile.Logic"
+             x:DataType="cm:CommentDisplayComponentModel"
+             x:Class="Socially.MobileApp.Components.CommentDisplay"
+      
+      RowDefinitions="40, auto, 15, 10, 40, 5, auto"
+      Padding="8">
+
+
+    <!--Title-->
+    <Grid ColumnDefinitions="30, auto, *, 10, auto">
+
+        <!--Profile picture-->
+        <Image Source="{Binding User.ProfilePicUrl, Converter={StaticResource nameToProfileImageUrl}}">
+            <Image.Clip>
+                <RoundRectangleGeometry CornerRadius="10"
+                                            Rect="0, 0, 30, 30" />
+            </Image.Clip>
+        </Image>
+
+        <!--Name and created on-->
+        <Label Grid.Column="1" 
+                    VerticalTextAlignment="Center" >
+            <Label.FormattedText>
+                <FormattedString>
+                    <FormattedString.Spans>
+                        <Span Text="  " />
+                        <Span FontAttributes="Bold" Text="{Binding User.FirstName}" />
+                        <Span Text="  " />
+                        <!--<Span FontAttributes="Italic" FontSize="Small" Text="{Binding Comment., Converter={StaticResource timeToDurationConverter}}" />-->
+                    </FormattedString.Spans>
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+
+        <!--Delete icon-->
+        <Image Grid.Column="3"
+                   VerticalOptions="StartAndExpand" >
+            <Image.Source>
+                <FontImageSource FontFamily="faSolid" 
+                                        Glyph="&#xf2ed;"
+                                        Color="{StaticResource Red}" />
+            </Image.Source>
+        </Image>
+
+
+    </Grid>
+
+    <!--Comment text-->
+    <Label Text="{Binding Comment.Text}"
+               Margin="0, 0, 0, 10"
+                Grid.Row="1" />
+
+    <comp:CommentEntry Grid.Row="4" />
+
+    <!--Comments-->
+    <CollectionView Grid.Row="6"
+                    Margin="2, 0, 0, 0"
+                    ItemsSource="{Binding Comment.Comments}">
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <comp:CommentDisplay Comment="{Binding .}" />
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+
+
+</Grid>

@@ -10,22 +10,23 @@ using System.Threading.Tasks;
 
 namespace Socially.Mobile.Logic.ComponentModels
 {
-    public partial class PostDisplayComponentModel : ViewModelBase
+    public partial class CommentDisplayComponentModel : ViewModelBase
     {
+
         private readonly ICachedContext _cachedContext;
 
         [ObservableProperty]
-        PostDisplayModel post;
+        DisplayCommentModel comment;
 
         [ObservableProperty]
         UserSummaryModel user;
 
-        public PostDisplayComponentModel(ICachedContext cachedContext)
+        public CommentDisplayComponentModel(ICachedContext cachedContext)
         {
             _cachedContext = cachedContext;
         }
 
-        partial void OnPostChanging(PostDisplayModel value)
+        partial void OnCommentChanging(DisplayCommentModel value)
         {
             User = _cachedContext.GetUser(value.CreatorId);
         }
