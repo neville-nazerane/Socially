@@ -23,7 +23,7 @@ namespace Socially.Mobile.Logic.Models
             System.String text;
 
             [ObservableProperty]
-            System.Collections.Generic.ICollection<Socially.Models.DisplayCommentModel> comments;
+            System.Collections.Generic.ICollection<Socially.Mobile.Logic.Models.DisplayCommentModel> comments;
 
             [ObservableProperty]
             System.Int32 likeCount;

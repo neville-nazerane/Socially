@@ -13,6 +13,12 @@ namespace Socially.Mobile.Logic.Models.Mappings
         public static IEnumerable<Socially.Models.UserSummaryModel> ToModel(this IEnumerable<Socially.Mobile.Logic.Models.UserSummaryModel> model)
             => model == null ? null : model.Select(m => m.ToModel()).ToArray();
 
+        public static async Task<ICollection<Socially.Models.UserSummaryModel>> ToModel(this Task<ICollection<Socially.Mobile.Logic.Models.UserSummaryModel>> modelTask)
+            => (await modelTask).ToModel();
+
+        public static ICollection<Socially.Models.UserSummaryModel> ToModel(this ICollection<Socially.Mobile.Logic.Models.UserSummaryModel> model)
+            => model == null ? null : model.Select(m => m.ToModel()).ToArray();
+
         public static async Task<Socially.Models.UserSummaryModel> ToModel(this Task<Socially.Mobile.Logic.Models.UserSummaryModel> modelTask)
             => (await modelTask).ToModel();
 
@@ -48,6 +54,12 @@ namespace Socially.Mobile.Logic.Models.Mappings
             => (await modelTask).ToMobileModel();
 
         public static IEnumerable<Socially.Mobile.Logic.Models.UserSummaryModel> ToMobileModel(this IEnumerable<Socially.Models.UserSummaryModel> model)
+            => model == null ? null : model.Select(m => m.ToMobileModel()).ToArray();   
+
+        public static async Task<ICollection<Socially.Mobile.Logic.Models.UserSummaryModel>> ToMobileModel(this Task<ICollection<Socially.Models.UserSummaryModel>> modelTask)
+            => (await modelTask).ToMobileModel();
+
+        public static ICollection<Socially.Mobile.Logic.Models.UserSummaryModel> ToMobileModel(this ICollection<Socially.Models.UserSummaryModel> model)
             => model == null ? null : model.Select(m => m.ToMobileModel()).ToArray();   
 
         public static async Task<Socially.Mobile.Logic.Models.UserSummaryModel> ToMobileModel(this Task<Socially.Models.UserSummaryModel> modelTask)

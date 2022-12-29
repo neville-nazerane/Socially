@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Socially.Utils.GeneratorCommon;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace Socially.Mobile.Logic.Generator
             var fieldStrings = type.GetProperties()
                                       .Select(p => $@"
             [ObservableProperty]
-            {p.PropertyType.GetFullName()} {p.Name.LowerFirstLetter()};
+            {p.PropertyType.GetFullName().Replace("Socially.Models.", "Socially.Mobile.Logic.Models.")} {p.Name.LowerFirstLetter()};
 ")
                                       .ToArray();
 
@@ -65,28 +66,66 @@ namespace {destNameSpace}
             string srcName = srcType.FullName;
             string destName = $"{destNameSpace}.{srcType.Name}";
 
-            var fields = srcType.GetProperties()
+            var fieldsTo = srcType.GetProperties()
                                 .Select(p => $@"
-                    {p.Name} = model.{p.Name}
+                    {p.Name} = model.{p.Name}{(p.IsOfNamespace("Socially.Models") ? ".ToMobileModel()" : null)}
 ".ClearNewLines())
                     .ToArray();
 
-            var updateFields = srcType.GetProperties()
+            var fieldsFrom = srcType.GetProperties()
+                    .Select(p => $@"
+                    {p.Name} = model.{p.Name}{(p.IsOfNamespace("Socially.Models") ? ".ToModel()" : null)}
+".ClearNewLines())
+        .ToArray();
+
+
+            var cloneFields = srcType.GetProperties()
                                 .Select(p => $@"
                     dest.{p.Name} = model.{p.Name};
 ".ClearNewLines())
                     .ToArray();
 
+            var updateFieldsTo = srcType.GetProperties()
+                                .Select(p => $@"
+                    dest.{p.Name} = model.{p.Name}{(p.IsOfNamespace("Socially.Models") ? ".ToMobileModel()" : null)};
+".ClearNewLines())
+                    .ToArray();
 
-            string methodBody = $@"=> model is null ? null : 
+            var updateFieldsFrom = srcType.GetProperties()
+                    .Select(p => $@"
+                    dest.{p.Name} = model.{p.Name}{(p.IsOfNamespace("Socially.Models") ? ".ToModel()" : null)};
+".ClearNewLines())
+        .ToArray();
+
+
+
+            string methodBodyTo = $@"=> model is null ? null : 
               new() 
               {{
-                  {string.Join(",\n                  ", fields).TrimStart()}
+                  {string.Join(",\n                  ", fieldsTo).TrimStart()}
               }};";
 
-            string updateMethodBody = $@"
+            string methodBodyFrom = $@"=> model is null ? null : 
+              new() 
+              {{
+                  {string.Join(",\n                  ", fieldsFrom).TrimStart()}
+              }};";
+
+            string updateMethodBodyTo = $@"
         {{
-            {string.Join("\n            ", updateFields).TrimStart()}
+            {string.Join("\n            ", updateFieldsTo).TrimStart()}
+            return dest;
+        }}".TrimStart();
+
+            string updateMethodBodyFrom = $@"
+        {{
+            {string.Join("\n            ", updateFieldsFrom).TrimStart()}
+            return dest;
+        }}".TrimStart();
+
+            string cloneMethodBody = $@"
+        {{
+            {string.Join("\n            ", cloneFields).TrimStart()}
             return dest;
         }}".TrimStart();
 
@@ -106,17 +145,23 @@ namespace {mappingNameSpace}
         public static IEnumerable<{srcName}> To{srcLabel}(this IEnumerable<{destName}> model)
             => model == null ? null : model.Select(m => m.To{srcLabel}()).ToArray();
 
+        public static async Task<ICollection<{srcName}>> To{srcLabel}(this Task<ICollection<{destName}>> modelTask)
+            => (await modelTask).To{srcLabel}();
+
+        public static ICollection<{srcName}> To{srcLabel}(this ICollection<{destName}> model)
+            => model == null ? null : model.Select(m => m.To{srcLabel}()).ToArray();
+
         public static async Task<{srcName}> To{srcLabel}(this Task<{destName}> modelTask)
             => (await modelTask).To{srcLabel}();
 
         public static {srcName} To{srcLabel}(this {destName} model)
-            {methodBody}
+            {methodBodyFrom}
 
         public static {srcName} To{srcLabel}(this {destName} model, {srcName} dest)
-        {updateMethodBody}
+        {updateMethodBodyFrom}
 
         public static {destName} Clone(this {destName} model, {destName} dest)
-        {updateMethodBody}
+        {cloneMethodBody}
 
         public static async Task<IEnumerable<{destName}>> To{destLabel}(this Task<IEnumerable<{srcName}>> modelTask)
             => (await modelTask).To{destLabel}();
@@ -124,14 +169,20 @@ namespace {mappingNameSpace}
         public static IEnumerable<{destName}> To{destLabel}(this IEnumerable<{srcName}> model)
             => model == null ? null : model.Select(m => m.To{destLabel}()).ToArray();   
 
+        public static async Task<ICollection<{destName}>> To{destLabel}(this Task<ICollection<{srcName}>> modelTask)
+            => (await modelTask).To{destLabel}();
+
+        public static ICollection<{destName}> To{destLabel}(this ICollection<{srcName}> model)
+            => model == null ? null : model.Select(m => m.To{destLabel}()).ToArray();   
+
         public static async Task<{destName}> To{destLabel}(this Task<{srcName}> modelTask)
             => (await modelTask).To{destLabel}();
 
         public static {destName} To{destLabel}(this {srcName} model)
-            {methodBody}
+            {methodBodyTo}
 
         public static {destName} To{destLabel}(this {srcName} model, {destName} dest)
-        {updateMethodBody}
+        {updateMethodBodyTo}
 
     }}
 

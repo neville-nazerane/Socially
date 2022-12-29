@@ -26,7 +26,7 @@ namespace Socially.Mobile.Logic.Models
             System.Nullable<System.DateTime> createdOn;
 
             [ObservableProperty]
-            System.Collections.Generic.ICollection<Socially.Models.DisplayCommentModel> comments;
+            System.Collections.Generic.ICollection<Socially.Mobile.Logic.Models.DisplayCommentModel> comments;
 
             [ObservableProperty]
             System.Int32 likeCount;

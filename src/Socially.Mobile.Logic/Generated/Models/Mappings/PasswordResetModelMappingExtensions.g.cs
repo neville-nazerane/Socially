@@ -13,6 +13,12 @@ namespace Socially.Mobile.Logic.Models.Mappings
         public static IEnumerable<Socially.Models.PasswordResetModel> ToModel(this IEnumerable<Socially.Mobile.Logic.Models.PasswordResetModel> model)
             => model == null ? null : model.Select(m => m.ToModel()).ToArray();
 
+        public static async Task<ICollection<Socially.Models.PasswordResetModel>> ToModel(this Task<ICollection<Socially.Mobile.Logic.Models.PasswordResetModel>> modelTask)
+            => (await modelTask).ToModel();
+
+        public static ICollection<Socially.Models.PasswordResetModel> ToModel(this ICollection<Socially.Mobile.Logic.Models.PasswordResetModel> model)
+            => model == null ? null : model.Select(m => m.ToModel()).ToArray();
+
         public static async Task<Socially.Models.PasswordResetModel> ToModel(this Task<Socially.Mobile.Logic.Models.PasswordResetModel> modelTask)
             => (await modelTask).ToModel();
 
@@ -45,6 +51,12 @@ namespace Socially.Mobile.Logic.Models.Mappings
             => (await modelTask).ToMobileModel();
 
         public static IEnumerable<Socially.Mobile.Logic.Models.PasswordResetModel> ToMobileModel(this IEnumerable<Socially.Models.PasswordResetModel> model)
+            => model == null ? null : model.Select(m => m.ToMobileModel()).ToArray();   
+
+        public static async Task<ICollection<Socially.Mobile.Logic.Models.PasswordResetModel>> ToMobileModel(this Task<ICollection<Socially.Models.PasswordResetModel>> modelTask)
+            => (await modelTask).ToMobileModel();
+
+        public static ICollection<Socially.Mobile.Logic.Models.PasswordResetModel> ToMobileModel(this ICollection<Socially.Models.PasswordResetModel> model)
             => model == null ? null : model.Select(m => m.ToMobileModel()).ToArray();   
 
         public static async Task<Socially.Mobile.Logic.Models.PasswordResetModel> ToMobileModel(this Task<Socially.Models.PasswordResetModel> modelTask)

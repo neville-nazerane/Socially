@@ -13,6 +13,12 @@ namespace Socially.Mobile.Logic.Models.Mappings
         public static IEnumerable<Socially.Models.ProfileUpdateModel> ToModel(this IEnumerable<Socially.Mobile.Logic.Models.ProfileUpdateModel> model)
             => model == null ? null : model.Select(m => m.ToModel()).ToArray();
 
+        public static async Task<ICollection<Socially.Models.ProfileUpdateModel>> ToModel(this Task<ICollection<Socially.Mobile.Logic.Models.ProfileUpdateModel>> modelTask)
+            => (await modelTask).ToModel();
+
+        public static ICollection<Socially.Models.ProfileUpdateModel> ToModel(this ICollection<Socially.Mobile.Logic.Models.ProfileUpdateModel> model)
+            => model == null ? null : model.Select(m => m.ToModel()).ToArray();
+
         public static async Task<Socially.Models.ProfileUpdateModel> ToModel(this Task<Socially.Mobile.Logic.Models.ProfileUpdateModel> modelTask)
             => (await modelTask).ToModel();
 
@@ -48,6 +54,12 @@ namespace Socially.Mobile.Logic.Models.Mappings
             => (await modelTask).ToMobileModel();
 
         public static IEnumerable<Socially.Mobile.Logic.Models.ProfileUpdateModel> ToMobileModel(this IEnumerable<Socially.Models.ProfileUpdateModel> model)
+            => model == null ? null : model.Select(m => m.ToMobileModel()).ToArray();   
+
+        public static async Task<ICollection<Socially.Mobile.Logic.Models.ProfileUpdateModel>> ToMobileModel(this Task<ICollection<Socially.Models.ProfileUpdateModel>> modelTask)
+            => (await modelTask).ToMobileModel();
+
+        public static ICollection<Socially.Mobile.Logic.Models.ProfileUpdateModel> ToMobileModel(this ICollection<Socially.Models.ProfileUpdateModel> model)
             => model == null ? null : model.Select(m => m.ToMobileModel()).ToArray();   
 
         public static async Task<Socially.Mobile.Logic.Models.ProfileUpdateModel> ToMobileModel(this Task<Socially.Models.ProfileUpdateModel> modelTask)

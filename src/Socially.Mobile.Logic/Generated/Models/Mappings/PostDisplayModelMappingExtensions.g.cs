@@ -13,6 +13,12 @@ namespace Socially.Mobile.Logic.Models.Mappings
         public static IEnumerable<Socially.Models.PostDisplayModel> ToModel(this IEnumerable<Socially.Mobile.Logic.Models.PostDisplayModel> model)
             => model == null ? null : model.Select(m => m.ToModel()).ToArray();
 
+        public static async Task<ICollection<Socially.Models.PostDisplayModel>> ToModel(this Task<ICollection<Socially.Mobile.Logic.Models.PostDisplayModel>> modelTask)
+            => (await modelTask).ToModel();
+
+        public static ICollection<Socially.Models.PostDisplayModel> ToModel(this ICollection<Socially.Mobile.Logic.Models.PostDisplayModel> model)
+            => model == null ? null : model.Select(m => m.ToModel()).ToArray();
+
         public static async Task<Socially.Models.PostDisplayModel> ToModel(this Task<Socially.Mobile.Logic.Models.PostDisplayModel> modelTask)
             => (await modelTask).ToModel();
 
@@ -24,7 +30,7 @@ namespace Socially.Mobile.Logic.Models.Mappings
                   Text = model.Text,
                   CreatorId = model.CreatorId,
                   CreatedOn = model.CreatedOn,
-                  Comments = model.Comments,
+                  Comments = model.Comments.ToModel(),
                   LikeCount = model.LikeCount
               };
 
@@ -34,7 +40,7 @@ namespace Socially.Mobile.Logic.Models.Mappings
             dest.Text = model.Text;
             dest.CreatorId = model.CreatorId;
             dest.CreatedOn = model.CreatedOn;
-            dest.Comments = model.Comments;
+            dest.Comments = model.Comments.ToModel();
             dest.LikeCount = model.LikeCount;
             return dest;
         }
@@ -56,6 +62,12 @@ namespace Socially.Mobile.Logic.Models.Mappings
         public static IEnumerable<Socially.Mobile.Logic.Models.PostDisplayModel> ToMobileModel(this IEnumerable<Socially.Models.PostDisplayModel> model)
             => model == null ? null : model.Select(m => m.ToMobileModel()).ToArray();   
 
+        public static async Task<ICollection<Socially.Mobile.Logic.Models.PostDisplayModel>> ToMobileModel(this Task<ICollection<Socially.Models.PostDisplayModel>> modelTask)
+            => (await modelTask).ToMobileModel();
+
+        public static ICollection<Socially.Mobile.Logic.Models.PostDisplayModel> ToMobileModel(this ICollection<Socially.Models.PostDisplayModel> model)
+            => model == null ? null : model.Select(m => m.ToMobileModel()).ToArray();   
+
         public static async Task<Socially.Mobile.Logic.Models.PostDisplayModel> ToMobileModel(this Task<Socially.Models.PostDisplayModel> modelTask)
             => (await modelTask).ToMobileModel();
 
@@ -67,7 +79,7 @@ namespace Socially.Mobile.Logic.Models.Mappings
                   Text = model.Text,
                   CreatorId = model.CreatorId,
                   CreatedOn = model.CreatedOn,
-                  Comments = model.Comments,
+                  Comments = model.Comments.ToMobileModel(),
                   LikeCount = model.LikeCount
               };
 
@@ -77,7 +89,7 @@ namespace Socially.Mobile.Logic.Models.Mappings
             dest.Text = model.Text;
             dest.CreatorId = model.CreatorId;
             dest.CreatedOn = model.CreatedOn;
-            dest.Comments = model.Comments;
+            dest.Comments = model.Comments.ToMobileModel();
             dest.LikeCount = model.LikeCount;
             return dest;
         }
