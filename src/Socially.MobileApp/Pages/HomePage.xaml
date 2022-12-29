@@ -10,16 +10,19 @@
              x:DataType="vm:HomeViewModel"
              Title="HomePage">
     <layouts:MainLayout>
-        
+
         <CollectionView ItemsSource="{ Binding Model }"
-                        Margin="10"
                         AbsoluteLayout.LayoutFlags="SizeProportional"
-                       AbsoluteLayout.LayoutBounds="0, 0, 1, 1" >
+                       AbsoluteLayout.LayoutBounds="0, 0, 1, 1">
+
+
+            
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="m:PostDisplayModel">
                     <comp:PostDisplay Post="{Binding .}" />
                 </DataTemplate>
             </CollectionView.ItemTemplate>
+
         </CollectionView>
 
 

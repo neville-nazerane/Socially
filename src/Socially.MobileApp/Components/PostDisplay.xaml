@@ -5,7 +5,9 @@
       xmlns:cm="clr-namespace:Socially.Mobile.Logic.ComponentModels;assembly=Socially.Mobile.Logic"
       xmlns:comp="clr-namespace:Socially.MobileApp.Components"
       x:DataType="cm:PostDisplayComponentModel"
-      x:Class="Socially.MobileApp.Components.PostDisplay">
+      x:Class="Socially.MobileApp.Components.PostDisplay"
+      
+      Padding="10">
 
     <RoundRectangle CornerRadius="10"
                     Stroke="{StaticResource EntryBorder}"

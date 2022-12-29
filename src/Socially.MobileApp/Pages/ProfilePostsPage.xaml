@@ -12,9 +12,17 @@
     <layout:MainLayout>
 
         <CollectionView ItemsSource="{ Binding Model }"   
-                        Margin="10"
+                        Header=""
+                        Margin="-1"
                         AbsoluteLayout.LayoutFlags="SizeProportional"
                         AbsoluteLayout.LayoutBounds="0, 0, 1, 1" >
+
+            <CollectionView.HeaderTemplate>
+                <DataTemplate>
+                    <comp:ProfileHeader />
+                </DataTemplate>
+            </CollectionView.HeaderTemplate>
+
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout ItemSpacing="10" 
                                    Orientation="Vertical" />

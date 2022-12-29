@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<AbsoluteLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                x:Class="Socially.MobileApp.Components.ProfileHeader"
+                HeightRequest="250">
+
+    <RoundRectangle CornerRadius="0, 0, 40, 40"
+                    Fill="{StaticResource ProfilePicBackground}"
+                    AbsoluteLayout.LayoutFlags="SizeProportional"
+                    AbsoluteLayout.LayoutBounds="0, 0, 1, 1" />
+
+    <Image Source="" 
+           Margin="2"
+           Aspect="AspectFit"
+           AbsoluteLayout.LayoutFlags="All"
+           AbsoluteLayout.LayoutBounds=".5, .5, .5, .5" />
+
+    <RoundRectangle CornerRadius="10"
+                    Stroke="{StaticResource White}"
+                    StrokeThickness="10"
+                    AbsoluteLayout.LayoutFlags="All"
+                    AbsoluteLayout.LayoutBounds=".5, .5, .5, .5" />
+
+</AbsoluteLayout>

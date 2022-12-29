@@ -111,6 +111,9 @@
 	  <MauiXaml Update="Components\PostDisplay.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Components\ProfileHeader.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Components\TabButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
