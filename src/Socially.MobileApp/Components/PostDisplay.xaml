@@ -55,16 +55,32 @@
         
         <!--Post test-->
         <Label Text="{Binding Post.Text}"
+               Margin="0, 0, 0, 10"
                 Grid.Row="1" />
 
 
         <!--Comment Header--> 
         <Grid ColumnDefinitions="auto, *, auto" 
               Grid.Row="2" >
-            <Label Text="Likes" />
-            
-            <Label Grid.Column="2"
-                   Text="{Binding Post.Comments.Count, StringFormat= '({0} Comments)'}" />
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span FontFamily="faRegular">&#xf164;</Span>
+                        <Span Text="  " />
+                        <Span>Likes</Span>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <Label Grid.Column="2" >
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span FontFamily="faRegular">&#xf075;</Span>
+                        <Span Text=" " />
+                        <Span Text="{Binding Post.Comments.Count, StringFormat= '({0} Comments)'}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
         </Grid>
 
         <comp:CommentEntry Grid.Row="4" />
