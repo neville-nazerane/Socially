@@ -41,7 +41,7 @@ namespace Socially.Mobile.Logic.Models.Mappings
             return dest;
         }
 
-        public static Socially.Mobile.Logic.Models.UserSummaryModel Clone(this Socially.Mobile.Logic.Models.UserSummaryModel model, Socially.Mobile.Logic.Models.UserSummaryModel dest)
+        public static Socially.Mobile.Logic.Models.UserSummaryModel CloneFrom(this Socially.Mobile.Logic.Models.UserSummaryModel dest, Socially.Mobile.Logic.Models.UserSummaryModel model)
         {
             dest.Id = model.Id;
             dest.FirstName = model.FirstName;

@@ -45,7 +45,7 @@ namespace Socially.Mobile.Logic.Models.Mappings
             return dest;
         }
 
-        public static Socially.Mobile.Logic.Models.PostDisplayModel Clone(this Socially.Mobile.Logic.Models.PostDisplayModel model, Socially.Mobile.Logic.Models.PostDisplayModel dest)
+        public static Socially.Mobile.Logic.Models.PostDisplayModel CloneFrom(this Socially.Mobile.Logic.Models.PostDisplayModel dest, Socially.Mobile.Logic.Models.PostDisplayModel model)
         {
             dest.Id = model.Id;
             dest.Text = model.Text;

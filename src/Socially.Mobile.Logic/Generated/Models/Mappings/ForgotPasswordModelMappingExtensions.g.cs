@@ -41,7 +41,7 @@ namespace Socially.Mobile.Logic.Models.Mappings
             return dest;
         }
 
-        public static Socially.Mobile.Logic.Models.ForgotPasswordModel Clone(this Socially.Mobile.Logic.Models.ForgotPasswordModel model, Socially.Mobile.Logic.Models.ForgotPasswordModel dest)
+        public static Socially.Mobile.Logic.Models.ForgotPasswordModel CloneFrom(this Socially.Mobile.Logic.Models.ForgotPasswordModel dest, Socially.Mobile.Logic.Models.ForgotPasswordModel model)
         {
             dest.UserName = model.UserName;
             dest.Token = model.Token;

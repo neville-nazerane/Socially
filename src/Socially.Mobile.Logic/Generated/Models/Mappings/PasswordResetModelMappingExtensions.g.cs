@@ -39,7 +39,7 @@ namespace Socially.Mobile.Logic.Models.Mappings
             return dest;
         }
 
-        public static Socially.Mobile.Logic.Models.PasswordResetModel Clone(this Socially.Mobile.Logic.Models.PasswordResetModel model, Socially.Mobile.Logic.Models.PasswordResetModel dest)
+        public static Socially.Mobile.Logic.Models.PasswordResetModel CloneFrom(this Socially.Mobile.Logic.Models.PasswordResetModel dest, Socially.Mobile.Logic.Models.PasswordResetModel model)
         {
             dest.NewPassword = model.NewPassword;
             dest.ConfirmPassword = model.ConfirmPassword;

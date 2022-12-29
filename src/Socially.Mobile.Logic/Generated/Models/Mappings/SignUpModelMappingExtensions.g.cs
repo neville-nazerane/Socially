@@ -41,7 +41,7 @@ namespace Socially.Mobile.Logic.Models.Mappings
             return dest;
         }
 
-        public static Socially.Mobile.Logic.Models.SignUpModel Clone(this Socially.Mobile.Logic.Models.SignUpModel model, Socially.Mobile.Logic.Models.SignUpModel dest)
+        public static Socially.Mobile.Logic.Models.SignUpModel CloneFrom(this Socially.Mobile.Logic.Models.SignUpModel dest, Socially.Mobile.Logic.Models.SignUpModel model)
         {
             dest.Email = model.Email;
             dest.UserName = model.UserName;

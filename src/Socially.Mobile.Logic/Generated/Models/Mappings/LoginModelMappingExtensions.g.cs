@@ -39,7 +39,7 @@ namespace Socially.Mobile.Logic.Models.Mappings
             return dest;
         }
 
-        public static Socially.Mobile.Logic.Models.LoginModel Clone(this Socially.Mobile.Logic.Models.LoginModel model, Socially.Mobile.Logic.Models.LoginModel dest)
+        public static Socially.Mobile.Logic.Models.LoginModel CloneFrom(this Socially.Mobile.Logic.Models.LoginModel dest, Socially.Mobile.Logic.Models.LoginModel model)
         {
             dest.UserName = model.UserName;
             dest.Password = model.Password;

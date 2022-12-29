@@ -53,7 +53,7 @@ namespace Socially.MobileApp.Services
             return false;
         }
 
-        public async Task UpdateAsync(IEnumerable<TValue> updatedValues)
+        public async Task UpdateAsync(params TValue[] updatedValues)
         {
             await AwaitLockAsync();
             var localLock = new TaskCompletionSource();

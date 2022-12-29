@@ -12,7 +12,7 @@
     <Color x:Key="LogoBackground">#55D6BE</Color>
     <Color x:Key="EntryBorder">#DDDEE9</Color>
     <Color x:Key="EntrySelectedBorder">#A5D0A8</Color>
-    <Color x:Key="ProfilePicBackground">#263072</Color>
+    <Color x:Key="ProfilePicBackground">#5261CC</Color>
     
     <LinearGradientBrush x:Key="Shadow" EndPoint="0,1" >
         <GradientStop Color="White"

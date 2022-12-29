@@ -10,8 +10,7 @@ namespace Socially.Mobile.Logic.Models
 {
     public partial class UserSummaryModel : ICachable<int, UserSummaryModel>
     {
-
-        public void CopyFrom(UserSummaryModel data) => this.Clone(data);
+        public void CopyFrom(UserSummaryModel data) => this.CloneFrom(data);
 
         public int GetCacheKey() => Id;
 

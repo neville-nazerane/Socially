@@ -160,7 +160,7 @@ namespace {mappingNameSpace}
         public static {srcName} To{srcLabel}(this {destName} model, {srcName} dest)
         {updateMethodBodyFrom}
 
-        public static {destName} Clone(this {destName} model, {destName} dest)
+        public static {destName} CloneFrom(this {destName} dest, {destName} model)
         {cloneMethodBody}
 
         public static async Task<IEnumerable<{destName}>> To{destLabel}(this Task<IEnumerable<{srcName}>> modelTask)

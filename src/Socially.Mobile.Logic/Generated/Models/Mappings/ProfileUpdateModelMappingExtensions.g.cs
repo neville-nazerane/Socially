@@ -41,7 +41,7 @@ namespace Socially.Mobile.Logic.Models.Mappings
             return dest;
         }
 
-        public static Socially.Mobile.Logic.Models.ProfileUpdateModel Clone(this Socially.Mobile.Logic.Models.ProfileUpdateModel model, Socially.Mobile.Logic.Models.ProfileUpdateModel dest)
+        public static Socially.Mobile.Logic.Models.ProfileUpdateModel CloneFrom(this Socially.Mobile.Logic.Models.ProfileUpdateModel dest, Socially.Mobile.Logic.Models.ProfileUpdateModel model)
         {
             dest.FirstName = model.FirstName;
             dest.LastName = model.LastName;

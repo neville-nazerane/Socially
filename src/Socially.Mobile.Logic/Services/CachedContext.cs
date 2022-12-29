@@ -15,11 +15,25 @@ namespace Socially.Mobile.Logic.Services
         private readonly IApiConsumer _apiConsumer;
         private readonly ICachedNoSqlStorage<int, UserSummaryModel> _userStorage;
 
+        private int currentUserId;
+
         public CachedContext(IApiConsumer apiConsumer,
                              ICachedNoSqlStorage<int, UserSummaryModel> userStorage)
         {
             _apiConsumer = apiConsumer;
             _userStorage = userStorage;
+        }
+
+        public async Task<UserSummaryModel> GetCurrentUserAsync()
+        {
+            if (currentUserId == 0)
+            {
+                var user = await _apiConsumer.GetCurrentUserSummary().ToMobileModel();
+                await _userStorage.UpdateAsync(user);
+                currentUserId = user.Id;
+                return user;
+            }
+            else return GetUser(currentUserId);
         }
 
         public async Task UpdateUserProfilesIfNotExistAsync(IEnumerable<int> ids)
@@ -35,7 +49,7 @@ namespace Socially.Mobile.Logic.Services
         public async Task ForceUpdateUserProfilesAsync(IEnumerable<int> ids)
         {
             var users = await _apiConsumer.GetUsersByIdsAsync(ids);
-            await _userStorage.UpdateAsync(users.ToMobileModel());
+            await _userStorage.UpdateAsync(users.ToMobileModel().ToArray());
         }
 
         public Task ClearRAMAsync() => _userStorage.ClearAllInRamAsync();

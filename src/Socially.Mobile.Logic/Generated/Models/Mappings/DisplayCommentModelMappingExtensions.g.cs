@@ -43,7 +43,7 @@ namespace Socially.Mobile.Logic.Models.Mappings
             return dest;
         }
 
-        public static Socially.Mobile.Logic.Models.DisplayCommentModel Clone(this Socially.Mobile.Logic.Models.DisplayCommentModel model, Socially.Mobile.Logic.Models.DisplayCommentModel dest)
+        public static Socially.Mobile.Logic.Models.DisplayCommentModel CloneFrom(this Socially.Mobile.Logic.Models.DisplayCommentModel dest, Socially.Mobile.Logic.Models.DisplayCommentModel model)
         {
             dest.Id = model.Id;
             dest.CreatorId = model.CreatorId;
