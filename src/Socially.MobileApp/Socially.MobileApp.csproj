@@ -93,6 +93,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Components\CommentEntry.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Components\LoginBanner.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

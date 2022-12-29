@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<AbsoluteLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Socially.MobileApp.Components.CommentEntry">
+
+
+    <RoundRectangle x:Name="roundRect" 
+                    CornerRadius="5"
+                    StyleClass="unselected" 
+                    Stroke="{StaticResource EntryBorder}"
+                    AbsoluteLayout.LayoutFlags="SizeProportional"
+                    AbsoluteLayout.LayoutBounds="0, 0, 1, 1" />
+
+    <Entry x:Name="entry"
+           Margin="0"
+           Placeholder="Write a comment"
+           ReturnType="Go" 
+           Completed="Entry_Completed"
+           AbsoluteLayout.LayoutFlags="SizeProportional"
+           AbsoluteLayout.LayoutBounds="10, 0, 1, 1" />
+
+    <Image AbsoluteLayout.LayoutFlags="XProportional,SizeProportional"
+           HorizontalOptions="End"
+           Margin="0, 6, 6, 6"
+           AbsoluteLayout.LayoutBounds="1, 0, 1, 1">
+        <Image.Source>
+            <FontImageSource FontFamily="faSolid" 
+                             Glyph="&#xf35a;"
+                             Color="{StaticResource Primary}" />
+        </Image.Source>
+    </Image>
+
+</AbsoluteLayout>

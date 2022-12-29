@@ -12,6 +12,11 @@ namespace Socially.MobileApp.Layouts
     {
         const int menuHeight = 90;
 
+        public MainLayout()
+        {
+            Padding = 10;
+        }
+
         protected override void OnSizeAllocated(double width, double height)
         {
 
