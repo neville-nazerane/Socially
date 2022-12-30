@@ -8,6 +8,7 @@ namespace Socially.Mobile.Logic.Services
 {
     public interface INavigationControl
     {
+        Task GoToAccountAsync();
         Task GoToForgotPasswordAsync();
         Task GoToHomeAsync();
         Task GoToLoginAsync();

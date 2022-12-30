@@ -8,6 +8,7 @@ namespace Socially.Mobile.Logic.Services
 {
     public interface IMessaging
     {
+        Task<string> DisplayActionSheet(string title, string message, params string[] buttons);
         Task DisplayAsync(string title, string message, string button);
     }
 }

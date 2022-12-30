@@ -10,5 +10,9 @@ namespace Socially.MobileApp.Services
     internal class Messaging : IMessaging
     {
         public Task DisplayAsync(string title, string message, string button) => Shell.Current.DisplayAlert(title, message, button);
+        public Task<string> DisplayActionSheet(string title, string message, params string[] buttons) => Shell.Current.DisplayActionSheet(title, message, null, buttons);
+
+        
+
     }
 }

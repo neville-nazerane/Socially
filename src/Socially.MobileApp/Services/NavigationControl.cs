@@ -13,6 +13,8 @@ namespace Socially.MobileApp.Services
 
         public Task GoToLoginAsync() => GoToAsync("login");
 
+        public Task GoToAccountAsync() => GoToAsync("account");
+
         public Task GoToProfilePostsAsync() => GoToAsync("profile/posts");
 
         public Task GoToProfileFriendsAsync() => GoToAsync("profile/friends");

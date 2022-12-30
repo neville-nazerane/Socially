@@ -27,6 +27,8 @@ namespace Socially.Mobile.Logic.ViewModels
             _logger = logger;
         }
 
+        public override Task OnNavigatedAsync() => GetAsync();
+
         public override void OnException(Exception ex) => _logger.LogException(ex);
 
         public override async Task<ProfileUpdateModel> GetFromServerAsync(CancellationToken cancellationToken = default)

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.Behaviors;
 using Socially.Mobile.Logic.Services;
+using Socially.MobileApp.Components;
 using Socially.MobileApp.Pages;
 using Socially.MobileApp.Utils;
 
@@ -13,6 +14,7 @@ namespace Socially.MobileApp
             Routing.RegisterRoute("signup", typeof(SignupPage));
             Routing.RegisterRoute("forgotPassword", typeof(ForgotPasswordPage));
             Routing.RegisterRoute("home", typeof(HomePage));
+            Routing.RegisterRoute("account", typeof(AccountPage));
             Routing.RegisterRoute("profile/posts", typeof(ProfilePostsPage));
             Routing.RegisterRoute("profile/friends", typeof(ProfileFriendsPage));
             Routing.RegisterRoute("profile/requests", typeof(ProfileRequestsPage));
