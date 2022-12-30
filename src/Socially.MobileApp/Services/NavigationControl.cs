@@ -5,18 +5,19 @@ namespace Socially.MobileApp.Services
     internal class NavigationControl : INavigationControl
     {
 
-        public Task GoToSignupAsync() => NavigationControl.GoToAsync("signup");
+        public Task GoToSignupAsync() => GoToAsync("signup");
 
-        public Task GoToForgotPasswordAsync() => NavigationControl.GoToAsync("forgotPassword");
+        public Task GoToForgotPasswordAsync() => GoToAsync("forgotPassword");
 
-        public Task GoToHomeAsync() => NavigationControl.GoToAsync("home");
+        public Task GoToHomeAsync() => GoToAsync("home");
 
-        public Task GoToLoginAsync() => NavigationControl.GoToAsync("login");
+        public Task GoToLoginAsync() => GoToAsync("login");
 
-        public Task GoToProfilePostsAsync() => NavigationControl.GoToAsync("profile/posts");
+        public Task GoToProfilePostsAsync() => GoToAsync("profile/posts");
 
-        public Task GoToProfileFriendsAsync() => NavigationControl.GoToAsync("profile/friends");
-
+        public Task GoToProfileFriendsAsync() => GoToAsync("profile/friends");
+        
+        public Task GoToProfileRequestsAsync() => GoToAsync("profile/requests");
 
         static Task GoToAsync(string path, bool animate = false)
             => Shell.Current.GoToAsync($"//MainPage/{path}", animate);

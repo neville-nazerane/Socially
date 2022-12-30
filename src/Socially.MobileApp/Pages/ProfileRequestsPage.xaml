@@ -5,9 +5,10 @@
              xmlns:layout="clr-namespace:Socially.MobileApp.Layouts"
              xmlns:m="clr-namespace:Socially.Mobile.Logic.Models;assembly=Socially.Mobile.Logic"
              xmlns:vm="clr-namespace:Socially.Mobile.Logic.ViewModels;assembly=Socially.Mobile.Logic"
-             x:Class="Socially.MobileApp.Pages.ProfileFriendsPage"
-             x:DataType="vm:ProfileFriendsViewModel"
-             Title="ProfileFriendsPage">
+             x:DataType="vm:ProfileRequestsViewModel"
+             x:Class="Socially.MobileApp.Pages.ProfileRequestsPage"
+             Title="ProfileRequestsPage">
+
 
     <layout:MainLayout>
 
@@ -31,7 +32,7 @@
                 <DataTemplate x:DataType="m:UserSummaryModel">
                     <Grid Padding="20"
                           ColumnSpacing="10"
-                          ColumnDefinitions="35, auto, *, auto" >
+                          ColumnDefinitions="35, auto, *, auto, auto" >
 
                         <Image Source="{Binding ProfilePicUrl, Converter={StaticResource nameToProfileImageUrl}}">
                             <Image.Clip>
@@ -55,6 +56,15 @@
                                      BackgroundColor="Transparent" >
                             <ImageButton.Source>
                                 <FontImageSource FontFamily="faSolid"
+                                                 Glyph="&#xf055;"
+                                                 Color="{StaticResource Primary}" />
+                            </ImageButton.Source>
+                        </ImageButton>
+
+                        <ImageButton Grid.Column="4"
+                                     BackgroundColor="Transparent" >
+                            <ImageButton.Source>
+                                <FontImageSource FontFamily="faSolid"
                                                  Glyph="&#xf056;"
                                                  Color="{StaticResource Red}" />
                             </ImageButton.Source>
@@ -71,5 +81,5 @@
 
 
     </layout:MainLayout>
-    
+
 </ContentPage>

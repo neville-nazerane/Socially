@@ -13,6 +13,7 @@ namespace Socially.Mobile.Logic.Services
         Task GoToLoginAsync();
         Task GoToProfileFriendsAsync();
         Task GoToProfilePostsAsync();
+        Task GoToProfileRequestsAsync();
         Task GoToSignupAsync();
     }
 }

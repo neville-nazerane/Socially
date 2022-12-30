@@ -1,4 +1,6 @@
 using Microsoft.Maui.Controls.Shapes;
+using Socially.Mobile.Logic.Services;
+using Socially.MobileApp.Utils;
 
 namespace Socially.MobileApp.Components;
 
@@ -6,9 +8,11 @@ public partial class ProfileHeader : AbsoluteLayout
 {
 
     const int buttonCount = 3;
+    private readonly INavigationControl _navigation;
 
     public ProfileHeader()
     {
+        _navigation = ServicesUtil.Get<INavigationControl>();
         InitializeComponent();
     }
 
@@ -82,5 +86,21 @@ public partial class ProfileHeader : AbsoluteLayout
 
         base.OnSizeAllocated(orgWidth, orgHeight);
     }
+
+    private async void Posts_Tapped(object sender, TappedEventArgs e)
+    {
+        await _navigation.GoToProfilePostsAsync();
+    }
+
+    private async void Friends_Tapped(object sender, TappedEventArgs e)
+    {
+        await _navigation.GoToProfileFriendsAsync();
+    }
+
+    private async void Requests_Tapped(object sender, TappedEventArgs e)
+    {
+        await _navigation.GoToProfileRequestsAsync();
+    }
+
 
 }

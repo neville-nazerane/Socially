@@ -15,6 +15,7 @@ namespace Socially.MobileApp
             Routing.RegisterRoute("home", typeof(HomePage));
             Routing.RegisterRoute("profile/posts", typeof(ProfilePostsPage));
             Routing.RegisterRoute("profile/friends", typeof(ProfileFriendsPage));
+            Routing.RegisterRoute("profile/requests", typeof(ProfileRequestsPage));
             InitializeComponent();
         }
 

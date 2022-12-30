@@ -41,21 +41,33 @@
     <Grid x:Name="btnGrid"
           ColumnSpacing="25"
           Padding="30, 0">
-        
+
         <c:ProfileNavButton Text="Posts"
                             FontFamily="faSolid"
-                            Glyph="&#xf15c;"/>
+                            Glyph="&#xf15c;">
+            <c:ProfileNavButton.GestureRecognizers>
+                <TapGestureRecognizer Tapped="Posts_Tapped" />
+            </c:ProfileNavButton.GestureRecognizers>   
+        </c:ProfileNavButton>
 
         <c:ProfileNavButton Grid.Column="1"
                             Text="Friends"
                             FontFamily="faSolid"
-                            Glyph="&#xf500;"/>
+                            Glyph="&#xf500;">
+            <c:ProfileNavButton.GestureRecognizers>
+                <TapGestureRecognizer Tapped="Friends_Tapped" />
+            </c:ProfileNavButton.GestureRecognizers>
+        </c:ProfileNavButton>
 
         <c:ProfileNavButton Grid.Column="2"
                             Text="Requests"
                             FontFamily="faSolid"
-                            Glyph="&#xf234;" />
-        
+                            Glyph="&#xf234;" >
+            <c:ProfileNavButton.GestureRecognizers>
+                <TapGestureRecognizer Tapped="Requests_Tapped" />
+            </c:ProfileNavButton.GestureRecognizers>
+        </c:ProfileNavButton>
+
     </Grid>
 
 
