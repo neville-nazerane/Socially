@@ -24,15 +24,10 @@ public partial class ProfileHeader : AbsoluteLayout
     {
         var buttonSize = orgWidth / buttonCount - btnGrid.ColumnSpacing * (buttonCount - 1);
 
-        var cols = Enumerable.Repeat(buttonSize, 3)
+        var cols = Enumerable.Repeat(GridLength.Star, 3)
                              .Select(s => new ColumnDefinition(s))
                              .ToArray();
         btnGrid.ColumnDefinitions = new(cols);
-
-        btnGrid.RowDefinitions = new RowDefinitionCollection
-        {
-            new(buttonSize)
-        };
 
         AbsoluteLayout.SetLayoutBounds(btnGrid, new()
         {
@@ -43,7 +38,7 @@ public partial class ProfileHeader : AbsoluteLayout
         });
 
         var width = orgWidth;
-        var height = orgHeight - buttonSize * (2 / 3);
+        var height = orgHeight - buttonSize * .5;
         var imageSize = Math.Min(width, height) / 3;
         var imageX = (width - imageSize) / 2;
         var imageY = (height - imageSize) / 3;
