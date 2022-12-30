@@ -38,12 +38,9 @@
         </Label.FormattedText>
     </Label>
 
-    <Grid AbsoluteLayout.LayoutFlags="SizeProportional"
-          AbsoluteLayout.LayoutBounds="0, 200, 1, .4"
-          
-          ColumnSpacing="20"
-          Padding="20"
-          ColumnDefinitions="*, *, *">
+    <Grid x:Name="btnGrid"
+          ColumnSpacing="25"
+          Padding="20, 0">
         
         <c:ProfileNavButton Text="Posts"
                             FontFamily="faSolid"

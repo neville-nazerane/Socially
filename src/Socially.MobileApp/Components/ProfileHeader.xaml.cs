@@ -4,6 +4,9 @@ namespace Socially.MobileApp.Components;
 
 public partial class ProfileHeader : AbsoluteLayout
 {
+
+    const int buttonCount = 3;
+
     public ProfileHeader()
     {
         InitializeComponent();
@@ -19,11 +22,29 @@ public partial class ProfileHeader : AbsoluteLayout
 
     protected override void OnSizeAllocated(double orgWidth, double orgHeight)
     {
+        var buttonSize = orgWidth / buttonCount - btnGrid.ColumnSpacing * (buttonCount - 1);
 
+        var cols = Enumerable.Repeat(buttonSize, 3)
+                             .Select(s => new ColumnDefinition(s))
+                             .ToArray();
+        btnGrid.ColumnDefinitions = new(cols);
+
+        btnGrid.RowDefinitions = new RowDefinitionCollection
+        {
+            new(buttonSize)
+        };
+
+        AbsoluteLayout.SetLayoutBounds(btnGrid, new()
+        {
+            X = 0,
+            Y = orgHeight - buttonSize,
+            Width = orgWidth,
+            Height = buttonSize
+        });
 
         var width = orgWidth;
-        var height = orgHeight;
-        var imageSize = Math.Min(width, height) / 2;
+        var height = orgHeight - buttonSize * (2 / 3);
+        var imageSize = Math.Min(width, height) / 3;
         var imageX = (width - imageSize) / 2;
         var imageY = (height - imageSize) / 3;
 
