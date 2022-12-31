@@ -57,6 +57,10 @@ namespace Socially.Mobile.Logic.ViewModels
 
         public virtual Task<TModel> GetFromServerAsync(CancellationToken cancellationToken = default) => throw new NotImplementedException("Get not implimented");
 
+        public virtual void OnModelUpdated(TModel model) { }
+
+        partial void OnModelChanged(TModel value) => OnModelUpdated(value);
+
         public abstract void OnException(Exception ex);
 
         [RelayCommand]

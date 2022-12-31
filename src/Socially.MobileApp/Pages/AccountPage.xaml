@@ -13,11 +13,11 @@
         <ScrollView 
                     AbsoluteLayout.LayoutFlags="WidthProportional"
                     AbsoluteLayout.LayoutBounds="0, 0, 1, 900">
-            <Grid Padding="10, 40, 10, 0"
+            <Grid Padding="10, 40, 10, 10"
                   
                   ColumnDefinitions="*, 80"
-                  RowSpacing="20"
-                  RowDefinitions="40, 50, 50, 50, 70, 40, 50, 50, 50">
+                  RowSpacing="15"
+                  RowDefinitions="40, 50, 50, 50, 50, 10, 40, 50, 50, 50, 50">
 
                 <Label Grid.ColumnSpan="2" 
                        Text="Edit your account"
@@ -35,37 +35,53 @@
                                  Text="{Binding Model.LastName}"
                                  Placeholder="Last Name" />
 
+                <!--DOB picker--> 
+                <Grid Grid.Row="3"
+                      ColumnSpacing="8"
+                      Margin="20, 0, 0, 0"
+                      ColumnDefinitions="20, auto, *, auto" >
+                    
+                    <CheckBox IsChecked="{Binding HasDob, Mode=TwoWay}" />
+                    <Label Grid.Column="1"
+                           VerticalTextAlignment="Center"
+                           Text="Store Date of Birth" />
 
-                <Button Grid.Row="3"
+                    <DatePicker Grid.Column="3"
+                                IsVisible="{Binding HasDob}"
+                                Date="{Binding Model.DateOfBirth}" />
+                </Grid>
+
+                <Button Grid.Row="4"
                         Grid.Column="1"
-                        Text="Save Changes" />
+                        Text="Save Changes"
+                        Command="{Binding SubmitCommand}" />
 
 
-                <Label Grid.Row="5"
+                <Label Grid.Row="6"
                        Grid.ColumnSpan="2"
                        FontSize="Large"
                        FontAttributes="Bold"
                        Text="Change Password" />
 
 
-                <comp:LoginEntry Grid.Row="6" 
+                <comp:LoginEntry Grid.Row="7" 
                                  Grid.ColumnSpan="2"
                                  IsPassword="True"
                                  Placeholder="Current Password" />
 
-                <comp:LoginEntry Grid.Row="7"
+                <comp:LoginEntry Grid.Row="8"
                                  Grid.ColumnSpan="2"
                                  IsPassword="True"
                                  Placeholder="New Password" />
 
-                <comp:LoginEntry Grid.Row="8"
+                <comp:LoginEntry Grid.Row="9"
                                  Grid.ColumnSpan="2"
                                  IsPassword="True"
                                  Placeholder="Confirm Password" />
 
 
 
-                <Button Grid.Row="9"
+                <Button Grid.Row="10"
                         Grid.Column="1"
                         Text="Update Password" />
 

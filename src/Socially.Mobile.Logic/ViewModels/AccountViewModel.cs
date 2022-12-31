@@ -21,10 +21,31 @@ namespace Socially.Mobile.Logic.ViewModels
         private readonly IApiConsumer _apiConsumer;
         private readonly ISocialLogger _logger;
 
+        [ObservableProperty]
+        bool hasDob;
+
         public AccountViewModel(IApiConsumer apiConsumer, ISocialLogger logger)
         {
             _apiConsumer = apiConsumer;
             _logger = logger;
+        }
+
+        partial void OnHasDobChanged(bool value)
+        {
+            if (Model is not null)
+            {
+                if (value)
+                {
+                    if (!Model.DateOfBirth.HasValue)
+                        Model.DateOfBirth = DateTime.Now;
+                }
+                else Model.DateOfBirth = null;
+            }
+        }
+
+        public override void OnModelUpdated(ProfileUpdateModel model)
+        {
+            HasDob = model?.DateOfBirth is not null;
         }
 
         public override Task OnNavigatedAsync() => GetAsync();
