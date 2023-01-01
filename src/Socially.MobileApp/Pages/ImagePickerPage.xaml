@@ -7,7 +7,14 @@
              Title="ImagePickerPage">
 
     <CollectionView ItemsSource="{Binding Model}"
-                    Header="">
+                    Header=""
+                    Margin="15">
+        <CollectionView.ItemsLayout>
+            <GridItemsLayout Span="2"
+                             HorizontalItemSpacing="10"
+                             VerticalItemSpacing="10"
+                             Orientation="Vertical" />
+        </CollectionView.ItemsLayout>
         <CollectionView.HeaderTemplate>
             <DataTemplate>
                 <Label Text="Pick an image" />
@@ -15,9 +22,19 @@
         </CollectionView.HeaderTemplate>
         <CollectionView.ItemTemplate>
             <DataTemplate>
-                <Image Source="{Binding ., Converter={StaticResource nameToProfileImageUrl}}"
-                       HeightRequest="100"
-                       WidthRequest="100" />
+                <Grid>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectCommand, Source={x:RelativeSource AncestorType={x:Type vm:ImagePickerViewModel}}}"
+                                              CommandParameter="{Binding .}" />
+                    </Grid.GestureRecognizers>
+                    <Image Source="{Binding ., Converter={StaticResource nameToProfileImageUrl}}"
+                           Aspect="AspectFill" />
+                    <RoundRectangle CornerRadius="10"
+                                    StrokeThickness="4"
+                                    Stroke="{StaticResource White}"
+                                    VerticalOptions="CenterAndExpand" 
+                                    HorizontalOptions="CenterAndExpand" />
+                </Grid>
             </DataTemplate>
         </CollectionView.ItemTemplate>
     </CollectionView>

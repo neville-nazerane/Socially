@@ -35,12 +35,12 @@
                                  Text="{Binding Model.LastName}"
                                  Placeholder="Last Name" />
 
-                <!--DOB picker--> 
+                <!--DOB picker-->
                 <Grid Grid.Row="3"
                       ColumnSpacing="8"
                       Margin="20, 0, 0, 0"
                       ColumnDefinitions="20, auto, *, auto" >
-                    
+
                     <CheckBox IsChecked="{Binding HasDob, Mode=TwoWay}" />
                     <Label Grid.Column="1"
                            VerticalTextAlignment="Center"
@@ -51,7 +51,7 @@
                                 Date="{Binding Model.DateOfBirth}" />
                 </Grid>
 
-                <!--Account buttons--> 
+                <!--Account buttons-->
                 <Grid Grid.Row="4"
                       ColumnSpacing="10"
                       ColumnDefinitions="*, 100, 110" >
@@ -60,11 +60,11 @@
                             Text="Pick image"
                             BackgroundColor="{StaticResource LogoBackground}"
                             Command="{Binding UpdatePicCommand}" />
-                    
+
                     <Button Grid.Column="2"
                             Text="Save Changes"
                             Command="{Binding SubmitCommand}" />
-                    
+
                 </Grid>
 
 
@@ -90,12 +90,12 @@
                                  IsPassword="True"
                                  Placeholder="Confirm Password" />
 
-
                 <Grid Grid.Row="10"
                       ColumnDefinitions="*, 120">
-                    
-                <Button Grid.Column="1"
+
+                    <Button Grid.Column="1"
                         Text="Update Password" />
+                    
                 </Grid>
 
 

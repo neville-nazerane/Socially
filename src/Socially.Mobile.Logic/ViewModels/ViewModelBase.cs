@@ -48,6 +48,8 @@ namespace Socially.Mobile.Logic.ViewModels
 
         public virtual string ErrorWhenBadRequestEmpty => "Failed. Please try again";
 
+        public override Task OnNavigatedAsync() => GetAsync();
+
         public ViewModelBase()
         {
             Model = new();
