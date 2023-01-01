@@ -15,7 +15,7 @@
                     AbsoluteLayout.LayoutBounds="0, 0, 1, 900">
             <Grid Padding="10, 40, 10, 10"
                   
-                  ColumnDefinitions="*, 80"
+                  ColumnDefinitions="*"
                   RowSpacing="15"
                   RowDefinitions="40, 50, 50, 50, 50, 10, 40, 50, 50, 50, 50">
 
@@ -51,10 +51,21 @@
                                 Date="{Binding Model.DateOfBirth}" />
                 </Grid>
 
-                <Button Grid.Row="4"
-                        Grid.Column="1"
-                        Text="Save Changes"
-                        Command="{Binding SubmitCommand}" />
+                <!--Account buttons--> 
+                <Grid Grid.Row="4"
+                      ColumnSpacing="10"
+                      ColumnDefinitions="*, 100, 110" >
+
+                    <Button Grid.Column="1"
+                            Text="Pick image"
+                            BackgroundColor="{StaticResource LogoBackground}"
+                            Command="{Binding UpdatePicCommand}" />
+                    
+                    <Button Grid.Column="2"
+                            Text="Save Changes"
+                            Command="{Binding SubmitCommand}" />
+                    
+                </Grid>
 
 
                 <Label Grid.Row="6"
@@ -80,10 +91,13 @@
                                  Placeholder="Confirm Password" />
 
 
-
-                <Button Grid.Row="10"
-                        Grid.Column="1"
+                <Grid Grid.Row="10"
+                      ColumnDefinitions="*, 120">
+                    
+                <Button Grid.Column="1"
                         Text="Update Password" />
+                </Grid>
+
 
 
             </Grid>

@@ -11,21 +11,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Socially.Mobile.Logic.ComponentModels
+namespace Socially.Mobile.Logic.ViewModels
 {
-    public partial class ImagePickerComponentModel : ViewModelBase<ObservableCollection<string>>
+    public partial class ImagePickerViewModel : ViewModelBase<ObservableCollection<string>>
     {
         private readonly IApiConsumer _apiConsumer;
         private readonly ISocialLogger _logger;
+        private readonly INavigationControl _navigationControl;
         private readonly IMessaging _messaging;
 
-        public ImagePickerComponentModel(IApiConsumer apiConsumer,
+        public ImagePickerViewModel(IApiConsumer apiConsumer,
                                          ISocialLogger logger,
+                                         INavigationControl navigationControl,
                                          IMessaging messaging)
         {
             _apiConsumer = apiConsumer;
             _logger = logger;
+            _navigationControl = navigationControl;
             _messaging = messaging;
+        }
+
+        [RelayCommand]
+        void Cancel()
+        {
+            _navigationControl.ImagePopupResponse.TrySetResult(null);
+        }
+
+        [RelayCommand]
+        void Select(string image)
+        {
+            _navigationControl.ImagePopupResponse.TrySetResult(image);
         }
 
         public override void OnException(Exception ex)

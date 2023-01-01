@@ -21,6 +21,7 @@ public static partial class MauiProgram
 .AddTransient<ProfilePostsPage>().AddTransient<ProfilePostsViewModel>()
 .AddTransient<ProfileRequestsPage>().AddTransient<ProfileRequestsViewModel>()
 .AddTransient<SignupPage>().AddTransient<SignupViewModel>()
+.AddTransient<ImagePickerPage>().AddTransient<ImagePickerViewModel>()
 .AddTransient<CommentDisplay>().AddTransient<CommentDisplayComponentModel>()
 .AddTransient<PostDisplay>().AddTransient<PostDisplayComponentModel>()
 .AddTransient<ProfileHeader>().AddTransient<ProfileHeaderComponentModel>();

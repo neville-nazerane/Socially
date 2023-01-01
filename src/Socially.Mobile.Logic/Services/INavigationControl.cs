@@ -8,6 +8,8 @@ namespace Socially.Mobile.Logic.Services
 {
     public interface INavigationControl
     {
+        TaskCompletionSource<string> ImagePopupResponse { get; }
+
         Task GoToAccountAsync();
         Task GoToForgotPasswordAsync();
         Task GoToHomeAsync();
@@ -16,5 +18,6 @@ namespace Socially.Mobile.Logic.Services
         Task GoToProfilePostsAsync();
         Task GoToProfileRequestsAsync();
         Task GoToSignupAsync();
+        Task<string> OpenImagePickerAsync();
     }
 }

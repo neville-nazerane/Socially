@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Socially.Apps.Consumer.Exceptions;
 using Socially.Apps.Consumer.Services;
 using Socially.Mobile.Logic.Models;
@@ -20,14 +21,18 @@ namespace Socially.Mobile.Logic.ViewModels
     {
         private readonly IApiConsumer _apiConsumer;
         private readonly ISocialLogger _logger;
+        private readonly INavigationControl _navigationControl;
 
         [ObservableProperty]
         bool hasDob;
 
-        public AccountViewModel(IApiConsumer apiConsumer, ISocialLogger logger)
+        public AccountViewModel(IApiConsumer apiConsumer,
+                                ISocialLogger logger,
+                                INavigationControl navigationControl)
         {
             _apiConsumer = apiConsumer;
             _logger = logger;
+            _navigationControl = navigationControl;
         }
 
         partial void OnHasDobChanged(bool value)
@@ -40,6 +45,16 @@ namespace Socially.Mobile.Logic.ViewModels
                         Model.DateOfBirth = DateTime.Now;
                 }
                 else Model.DateOfBirth = null;
+            }
+        }
+
+        [RelayCommand]
+        async Task UpdatePicAsync()
+        {
+            var image = await _navigationControl.OpenImagePickerAsync();
+            if (image is not null)
+            {
+                Model.ProfilePictureFileName = image;
             }
         }
 

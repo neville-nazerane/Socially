@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Socially.Mobile.Logic.ViewModels;assembly=Socially.Mobile.Logic"
+             x:Class="Socially.MobileApp.Pages.ImagePickerPage"
+             x:DataType="vm:ImagePickerViewModel"
+             Title="ImagePickerPage">
+
+    <CollectionView ItemsSource="{Binding Model}"
+                    Header="">
+        <CollectionView.HeaderTemplate>
+            <DataTemplate>
+                <Label Text="Pick an image" />
+            </DataTemplate>
+        </CollectionView.HeaderTemplate>
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <Image Source="{Binding ., Converter={StaticResource nameToProfileImageUrl}}"
+                       HeightRequest="100"
+                       WidthRequest="100" />
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+
+</ContentPage>

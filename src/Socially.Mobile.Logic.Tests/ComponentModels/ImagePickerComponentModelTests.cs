@@ -15,7 +15,7 @@ namespace Socially.Mobile.Logic.ComponentModels.Tests
         private Mock<IApiConsumer> mockedApiConsumer;
         private Mock<ISocialLogger> mockedLogger;
         private Mock<IMessaging> mockedMessaging;
-        private ImagePickerComponentModel viewModel;
+        private ImagePickerViewModel viewModel;
 
         void Init()
         {
