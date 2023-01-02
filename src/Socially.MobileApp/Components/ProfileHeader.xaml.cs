@@ -97,9 +97,9 @@ public partial class ProfileHeader : AbsoluteLayout
         await _navigation.GoToProfileFriendsAsync();
     }
 
-    private async void Requests_Tapped(object sender, TappedEventArgs e)
+    private async void Images_Tapped(object sender, TappedEventArgs e)
     {
-        await _navigation.GoToProfileRequestsAsync();
+        await _navigation.GoToProfileImagesAsync();
     }
 
 

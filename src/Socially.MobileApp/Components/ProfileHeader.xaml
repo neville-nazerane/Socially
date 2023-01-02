@@ -64,7 +64,7 @@
                             FontFamily="faSolid"
                             Glyph="&#xf302;" >
             <c:ProfileNavButton.GestureRecognizers>
-                <TapGestureRecognizer Tapped="Requests_Tapped" />
+                <TapGestureRecognizer Tapped="Images_Tapped" />
             </c:ProfileNavButton.GestureRecognizers>
         </c:ProfileNavButton>
 

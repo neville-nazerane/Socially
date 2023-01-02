@@ -23,7 +23,7 @@ namespace Socially.MobileApp.Services
 
         public Task GoToProfileFriendsAsync() => GoToAsync("profile/friends");
         
-        public Task GoToProfileRequestsAsync() => GoToAsync("profile/requests");
+        public Task GoToProfileImagesAsync() => GoToAsync("profile/images");
 
         public async Task<string> OpenImagePickerAsync()
         {

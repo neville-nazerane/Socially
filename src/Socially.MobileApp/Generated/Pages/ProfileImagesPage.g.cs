@@ -5,12 +5,12 @@ using Socially.Mobile.Logic.ViewModels;
 namespace Socially.MobileApp.Pages 
 {
 
-    public partial class ProfileRequestsPage
+    public partial class ProfileImagesPage
     {
 
-        public ProfileRequestsViewModel ViewModel { get; }
+        public ProfileImagesViewModel ViewModel { get; }
                     
-        public ProfileRequestsPage(ProfileRequestsViewModel viewModel)
+        public ProfileImagesPage(ProfileImagesViewModel viewModel)
 	    {
 		    InitializeComponent();
             BindingContext = viewModel;
