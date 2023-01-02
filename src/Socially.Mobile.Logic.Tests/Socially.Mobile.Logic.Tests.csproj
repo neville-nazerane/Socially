@@ -25,4 +25,8 @@
     <ProjectReference Include="..\Socially.Mobile.Logic\Socially.Mobile.Logic.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ComponentModels\" />
+  </ItemGroup>
+
 </Project>

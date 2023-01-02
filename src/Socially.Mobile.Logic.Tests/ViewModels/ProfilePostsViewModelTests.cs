@@ -16,13 +16,16 @@ namespace Socially.Mobile.Logic.Tests.ViewModels
         ProfilePostsViewModel viewModel;
         Mock<ISocialLogger> mockedLogger;
         Mock<IApiConsumer> mockedApiConsumer;
+        Mock<ICachedContext> mockedCachedContext;
 
         void Init()
         {
             mockedLogger = new();
             mockedApiConsumer = new();
+            mockedCachedContext = new();
             viewModel = new(mockedLogger.Object,
-                            mockedApiConsumer.Object);
+                            mockedApiConsumer.Object,
+                            mockedCachedContext.Object);
         }
 
         [Fact]

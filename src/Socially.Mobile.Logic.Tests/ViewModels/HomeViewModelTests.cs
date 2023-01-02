@@ -12,15 +12,20 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
 {
     public class HomeViewModelTests
     {
-        private Mock<ISocialLogger> mockedLogger;
-        private Mock<IApiConsumer> mockedApiConsumer;
+        Mock<ISocialLogger> mockedLogger;
+        Mock<IApiConsumer> mockedApiConsumer;
+        Mock<ICachedContext> mockedCacheContext;
         HomeViewModel viewModel;
 
         void Init()
         {
             mockedLogger = new();
             mockedApiConsumer = new();
-            viewModel = new(mockedLogger.Object, mockedApiConsumer.Object);
+            mockedCacheContext = new();
+
+            viewModel = new(mockedLogger.Object,
+                            mockedApiConsumer.Object,
+                            mockedCacheContext.Object);
         }
 
         [Fact]

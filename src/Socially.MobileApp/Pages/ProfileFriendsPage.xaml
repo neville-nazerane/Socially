@@ -11,7 +11,7 @@
 
     <layout:MainLayout>
 
-        <CollectionView ItemsSource="{ Binding Model }"   
+        <CollectionView ItemsSource="{ Binding Model.Friends }"   
                         Header=""
                         Margin="-1"
                         AbsoluteLayout.LayoutFlags="SizeProportional"

@@ -13,10 +13,22 @@ using System.Threading.Tasks;
 
 namespace Socially.Mobile.Logic.ViewModels;
 
-public partial class ProfileFriendsViewModel : ViewModelBase<ObservableCollection<UserSummaryModel>>
+public partial class ProfileFriendsViewModel : ViewModelBase
 {
     private readonly ISocialLogger _logger;
     private readonly IApiConsumer _apiConsumer;
+
+    [ObservableProperty]
+    ObservableCollection<UserSummaryModel> friends;
+
+    [ObservableProperty]
+    ObservableCollection<UserSummaryModel> friendRequests;
+
+    [ObservableProperty]
+    bool isFriendsLoading;
+
+    [ObservableProperty]
+    bool isFriendRequestsLoading;
 
     public ProfileFriendsViewModel(ISocialLogger logger, IApiConsumer apiConsumer)
     {
@@ -24,11 +36,43 @@ public partial class ProfileFriendsViewModel : ViewModelBase<ObservableCollectio
         _apiConsumer = apiConsumer;
     }
 
-    public override void OnException(Exception ex) => _logger.LogException(ex);
+    public override async Task OnNavigatedAsync()
+    {
+        await Task.WhenAll(LoadFriendRequestAsync(), LoadFriendsAsync());
+    }
 
-    public override Task OnNavigatedAsync() => GetAsync();
+    async Task LoadFriendRequestAsync()
+    {
+        isFriendRequestsLoading = true;
+        try
+        {
+            friendRequests = new(await _apiConsumer.GetFriendRequestsAsync().ToMobileModel());
+        }
+        catch (Exception ex)
+        {
+            _logger.LogException(ex);
+        }
+        finally
+        {
+            isFriendRequestsLoading = false;
+        }
+    }
 
-    public override async Task<ObservableCollection<UserSummaryModel>> GetFromServerAsync(CancellationToken cancellationToken = default)
-        => new(await _apiConsumer.GetFriendsAsync(cancellationToken).ToMobileModel());
+    async Task LoadFriendsAsync()
+    {
+        IsFriendsLoading = true;
+        try
+        {
+            friends = new(await _apiConsumer.GetFriendsAsync().ToMobileModel());
+        }
+        catch (Exception ex)
+        {
+            _logger.LogException(ex);
+        }
+        finally
+        {
+            IsFriendsLoading = false;
+        }
+    }
 
 }
