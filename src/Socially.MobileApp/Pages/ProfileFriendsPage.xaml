@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:comp="clr-namespace:Socially.MobileApp.Components"
+             xmlns:layout="clr-namespace:Socially.MobileApp.Layouts"
+             xmlns:m="clr-namespace:Socially.Mobile.Logic.Models;assembly=Socially.Mobile.Logic"
+             xmlns:vm="clr-namespace:Socially.Mobile.Logic.ViewModels;assembly=Socially.Mobile.Logic"
+             x:Class="Socially.MobileApp.Pages.ProfileFriendsPage"
+             x:DataType="vm:ProfileFriendsViewModel"
+             Title="ProfileFriendsPage">
+
+    <layout:MainLayout>
+
+        <CollectionView ItemsSource="{ Binding GroupedData }"   
+                        IsGrouped="True"
+                        Header=""
+                        Margin="-1"
+                        AbsoluteLayout.LayoutFlags="SizeProportional"
+                        AbsoluteLayout.LayoutBounds="0, 0, 1, 1" >
+
+            <CollectionView.HeaderTemplate>
+                <DataTemplate>
+                    <comp:ProfileHeader />
+                </DataTemplate>
+            </CollectionView.HeaderTemplate>
+
+            <CollectionView.GroupHeaderTemplate>
+                <DataTemplate x:DataType="m:GroupedUsers">
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding Name}" />
+                                <Span Text="{Binding Count, StringFormat=' ({0})'}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </DataTemplate>
+            </CollectionView.GroupHeaderTemplate>
+
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="10" 
+                                   Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.EmptyView>
+                <Label Text="No one to see here" />
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="m:UserSummaryModel">
+                    <Grid Padding="20"
+                          ColumnSpacing="10"
+                          ColumnDefinitions="35, auto, *, auto" >
+
+                        <Image Source="{Binding ProfilePicUrl, Converter={StaticResource nameToProfileImageUrl}}">
+                            <Image.Clip>
+                                <RoundRectangleGeometry CornerRadius="10"
+                                                        Rect="0, 0, 35, 35" />
+                            </Image.Clip>
+                        </Image>
+
+                        <Label Grid.Column="1"
+                               VerticalTextAlignment="Center" >
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding FirstName}" />
+                                    <Span Text=" " />
+                                    <Span Text="{Binding LastName}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                        <ImageButton Grid.Column="3"
+                                     BackgroundColor="Transparent" >
+                            <ImageButton.Source>
+                                <FontImageSource FontFamily="faSolid"
+                                                 Glyph="&#xf056;"
+                                                 Color="{StaticResource Red}" />
+                            </ImageButton.Source>
+                        </ImageButton>
+
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+
+
+        <comp:TabMenu />
+
+
+    </layout:MainLayout>
+    
+</ContentPage>

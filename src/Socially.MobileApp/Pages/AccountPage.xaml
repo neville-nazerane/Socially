@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:layouts="clr-namespace:Socially.MobileApp.Layouts"
+             xmlns:comp="clr-namespace:Socially.MobileApp.Components"
+             xmlns:vm="clr-namespace:Socially.Mobile.Logic.ViewModels;assembly=Socially.Mobile.Logic"
+             x:Class="Socially.MobileApp.Pages.AccountPage"
+             x:DataType="vm:AccountViewModel"
+             Title="AccountPage">
+
+    <layouts:MainLayout>
+
+        <ScrollView 
+                    AbsoluteLayout.LayoutFlags="WidthProportional"
+                    AbsoluteLayout.LayoutBounds="0, 0, 1, 900">
+            <Grid Padding="10, 40, 10, 10"
+                  
+                  ColumnDefinitions="*"
+                  RowSpacing="15"
+                  RowDefinitions="40, 50, 50, 50, 50, 10, 40, 50, 50, 50, 50">
+
+                <Label Grid.ColumnSpan="2" 
+                       Text="Edit your account"
+                       FontSize="Large"
+                       FontAttributes="Bold" />
+
+                <comp:LoginEntry Grid.Row="1" 
+                                 Grid.ColumnSpan="2"
+                                 Text="{Binding Model.FirstName}"
+                                 Placeholder="First Name" />
+
+                <comp:LoginEntry Grid.Row="2"
+                                 Grid.ColumnSpan="2"
+                                 x:Name="lastName"
+                                 Text="{Binding Model.LastName}"
+                                 Placeholder="Last Name" />
+
+                <!--DOB picker-->
+                <Grid Grid.Row="3"
+                      ColumnSpacing="8"
+                      Margin="20, 0, 0, 0"
+                      ColumnDefinitions="20, auto, *, auto" >
+
+                    <CheckBox IsChecked="{Binding HasDob, Mode=TwoWay}" />
+                    <Label Grid.Column="1"
+                           VerticalTextAlignment="Center"
+                           Text="Store Date of Birth" />
+
+                    <DatePicker Grid.Column="3"
+                                IsVisible="{Binding HasDob}"
+                                Date="{Binding Model.DateOfBirth}" />
+                </Grid>
+
+                <!--Account buttons-->
+                <Grid Grid.Row="4"
+                      ColumnSpacing="10"
+                      ColumnDefinitions="*, 100, 110" >
+
+                    <Button Grid.Column="1"
+                            Text="Pick image"
+                            BackgroundColor="{StaticResource LogoBackground}"
+                            Command="{Binding UpdatePicCommand}" />
+
+                    <Button Grid.Column="2"
+                            Text="Save Changes"
+                            Command="{Binding SubmitCommand}" />
+
+                </Grid>
+
+
+                <Label Grid.Row="6"
+                       Grid.ColumnSpan="2"
+                       FontSize="Large"
+                       FontAttributes="Bold"
+                       Text="Change Password" />
+
+
+                <comp:LoginEntry Grid.Row="7" 
+                                 Grid.ColumnSpan="2"
+                                 IsPassword="True"
+                                 Placeholder="Current Password" />
+
+                <comp:LoginEntry Grid.Row="8"
+                                 Grid.ColumnSpan="2"
+                                 IsPassword="True"
+                                 Placeholder="New Password" />
+
+                <comp:LoginEntry Grid.Row="9"
+                                 Grid.ColumnSpan="2"
+                                 IsPassword="True"
+                                 Placeholder="Confirm Password" />
+
+                <Grid Grid.Row="10"
+                      ColumnDefinitions="*, 120">
+
+                    <Button Grid.Column="1"
+                        Text="Update Password" />
+                    
+                </Grid>
+
+
+
+            </Grid>
+        </ScrollView>
+
+        <comp:TabMenu />
+
+    </layouts:MainLayout>
+</ContentPage>

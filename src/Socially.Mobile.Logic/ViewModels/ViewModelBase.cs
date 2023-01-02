@@ -48,6 +48,8 @@ namespace Socially.Mobile.Logic.ViewModels
 
         public virtual string ErrorWhenBadRequestEmpty => "Failed. Please try again";
 
+        public override Task OnNavigatedAsync() => GetAsync();
+
         public ViewModelBase()
         {
             Model = new();
@@ -57,10 +59,19 @@ namespace Socially.Mobile.Logic.ViewModels
 
         public virtual Task<TModel> GetFromServerAsync(CancellationToken cancellationToken = default) => throw new NotImplementedException("Get not implimented");
 
+        public virtual void OnModelUpdated(TModel model) { }
+
+        partial void OnModelChanged(TModel value) => OnModelUpdated(value);
+
         public abstract void OnException(Exception ex);
 
         [RelayCommand]
-        public Task GetAsync() => ExecuteAndValidate(async () => Model = await GetFromServerAsync());
+        public async Task GetAsync()
+        {
+            IsLoading = true;
+            await ExecuteAndValidate(async () => Model = await GetFromServerAsync());
+            IsLoading = false;
+        }
 
         [RelayCommand]
         public Task SubmitAsync()
@@ -71,10 +82,10 @@ namespace Socially.Mobile.Logic.ViewModels
                 OnValidationChangedAsync();
                 return Task.CompletedTask;
             }
-            return ExecuteAndValidate(() => SubmitToServerAsync(model), true);
+            return ExecuteAndValidate(() => SubmitToServerAsync(model));
         }
 
-        async Task ExecuteAndValidate(Func<Task> func, bool requireValidation = false)
+        async Task ExecuteAndValidate(Func<Task> func)
         {
             try
             {

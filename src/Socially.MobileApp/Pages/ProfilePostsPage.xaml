@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Socially.Mobile.Logic.ViewModels;assembly=Socially.Mobile.Logic"
+             xmlns:m="clr-namespace:Socially.Mobile.Logic.Models;assembly=Socially.Mobile.Logic"
+             xmlns:comp="clr-namespace:Socially.MobileApp.Components"
+             xmlns:layout="clr-namespace:Socially.MobileApp.Layouts"
+             x:Class="Socially.MobileApp.Pages.ProfilePostsPage"
+             x:DataType="vm:ProfilePostsViewModel"
+             Title="ProfilePostsPage">
+    <layout:MainLayout>
+
+        <CollectionView ItemsSource="{ Binding Model }"   
+                        Header=""
+                        Margin="-1"
+                        AbsoluteLayout.LayoutFlags="SizeProportional"
+                        AbsoluteLayout.LayoutBounds="0, 0, 1, 1" >
+
+            <CollectionView.HeaderTemplate>
+                <DataTemplate>
+                    <comp:ProfileHeader />
+                </DataTemplate>
+            </CollectionView.HeaderTemplate>
+
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="10" 
+                                   Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="m:PostDisplayModel">
+                    <comp:PostDisplay Post="{Binding .}" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+
+        <comp:TabMenu />
+
+
+    </layout:MainLayout>
+</ContentPage>

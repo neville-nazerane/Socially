@@ -86,7 +86,11 @@ public partial class LoginEntry : AbsoluteLayout
     public string Text
     {
         get => (string)GetValue(TextProperty);
-        set => SetValue(TextProperty, value);
+        set
+        {
+            SetValue(TextProperty, value);
+            entry.Text = value;
+        }
     }
 
     public LoginEntry()

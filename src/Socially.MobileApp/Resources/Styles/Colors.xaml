@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <?xaml-comp compile="true" ?>
-<ResourceDictionary 
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <Color x:Key="Primary">#010C80</Color>
     <Color x:Key="Secondary">#F5F5F5</Color>
@@ -13,6 +12,19 @@
     <Color x:Key="LogoBackground">#55D6BE</Color>
     <Color x:Key="EntryBorder">#DDDEE9</Color>
     <Color x:Key="EntrySelectedBorder">#A5D0A8</Color>
+    <Color x:Key="ProfilePicBackground">#5261CC</Color>
+    <Color x:Key="ProfileButton">#979797b3</Color>
+    
+    <LinearGradientBrush x:Key="Shadow" EndPoint="0,1" >
+        <GradientStop Color="White"
+                          Offset="0.05" />
+        <GradientStop Color="#E1E1E1"
+                          Offset="0.1" />
+        <GradientStop Color="#C8C8C8"
+                          Offset="0.3" />
+        <GradientStop Color="#ACACAC"
+                          Offset="0.7" />
+    </LinearGradientBrush>
     
     
     <Color x:Key="White">White</Color>

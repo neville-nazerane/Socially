@@ -1,9 +1,12 @@
-﻿using Socially.Apps.Consumer.Services;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Socially.Apps.Consumer.Services;
 using Socially.Mobile.Logic.Models;
 using Socially.Mobile.Logic.Models.Mappings;
 using Socially.Mobile.Logic.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
@@ -11,24 +14,39 @@ using System.Threading.Tasks;
 
 namespace Socially.Mobile.Logic.ViewModels
 {
-    public class HomeViewModel : ViewModelBase<ObservableCollection<PostDisplayModel>>
+    public partial class HomeViewModel : ViewModelBase<ObservableCollection<PostDisplayModel>>
     {
 
         private readonly ISocialLogger _logger;
         private readonly IApiConsumer _apiConsumer;
+        private readonly ICachedContext _cachedContext;
+        [ObservableProperty]
+        bool isSelected;
 
-        public HomeViewModel(ISocialLogger logger, IApiConsumer apiConsumer)
+        [RelayCommand]
+        void Swap() => IsSelected = !IsSelected;
+
+        public HomeViewModel(ISocialLogger logger, IApiConsumer apiConsumer, ICachedContext cachedContext)
         {
             _logger = logger;
             _apiConsumer = apiConsumer;
+            _cachedContext = cachedContext;
         }
 
         public override void OnException(Exception ex) => _logger.LogException(ex);
 
-        public override Task OnNavigatedAsync() => GetAsync();
+        public override async Task OnNavigatedAsync()
+        {
+            await GetAsync();
+            var userids = Model.SelectMany(c => c.Comments.Select(c => c.CreatorId))
+                               .Union(Model.Select(p => p.CreatorId))
+                               .ToImmutableArray();
+            await _cachedContext.UpdateUserProfilesIfNotExistAsync(userids);
+        }
 
         public override async Task<ObservableCollection<PostDisplayModel>> GetFromServerAsync(CancellationToken cancellationToken = default)
-            => new(await _apiConsumer.GetHomePostsAsync(10, null, cancellationToken).ToMobileModel());
+            => new((await _apiConsumer.GetHomePostsAsync(10, null, cancellationToken).ToMobileModel())
+                    .Reverse());
 
     }
 }

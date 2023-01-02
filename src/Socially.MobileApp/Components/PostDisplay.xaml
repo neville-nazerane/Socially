@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      xmlns:m="clr-namespace:Socially.Mobile.Logic.Models;assembly=Socially.Mobile.Logic"
+      xmlns:cm="clr-namespace:Socially.Mobile.Logic.ComponentModels;assembly=Socially.Mobile.Logic"
+      xmlns:comp="clr-namespace:Socially.MobileApp.Components"
+      x:DataType="cm:PostDisplayComponentModel"
+      x:Class="Socially.MobileApp.Components.PostDisplay"
+      
+      Padding="10">
+
+    <RoundRectangle CornerRadius="10"
+                    Stroke="{StaticResource EntryBorder}"
+                    Fill="{StaticResource Secondary}" />
+
+    <Grid RowDefinitions="40, auto, 15, 10, 40, 5, auto"
+          Padding="8">
+        
+        <!--Title--> 
+        <Grid ColumnDefinitions="30, auto, *, 10, auto">
+
+            <!--Profile picture--> 
+            <Image Source="{Binding User.ProfilePicUrl, Converter={StaticResource nameToProfileImageUrl}}">
+                <Image.Clip>
+                    <RoundRectangleGeometry CornerRadius="10"
+                                            Rect="0, 0, 30, 30" />
+                </Image.Clip>
+            </Image>
+
+            <!--Name and created on--> 
+            <Label Grid.Column="1" 
+                    VerticalTextAlignment="Center" >
+                <Label.FormattedText>
+                    <FormattedString>
+                        <FormattedString.Spans>
+                            <Span Text="  " />
+                            <Span FontAttributes="Bold" Text="{Binding User.FirstName}" />
+                            <Span Text="  " />
+                            <Span FontAttributes="Italic" FontSize="Small" Text="{Binding Post.CreatedOn, Converter={StaticResource timeToDurationConverter}}" />
+                        </FormattedString.Spans>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <!--Delete icon--> 
+            <Image Grid.Column="3"
+                   VerticalOptions="StartAndExpand" >
+                <Image.Source>
+                    <FontImageSource FontFamily="faSolid" 
+                                        Glyph="&#xf2ed;"
+                                        Color="{StaticResource Red}" />
+                </Image.Source>
+            </Image>
+        
+        
+        </Grid>
+        
+        <!--Post text-->
+        <Label Text="{Binding Post.Text}"
+               Margin="0, 0, 0, 10"
+                Grid.Row="1" />
+
+
+        <!--Comment Header--> 
+        <Grid ColumnDefinitions="auto, *, auto" 
+              Grid.Row="2" >
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span FontFamily="faRegular">&#xf164;</Span>
+                        <Span Text="  " />
+                        <Span>Likes</Span>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <Label Grid.Column="2" >
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span FontFamily="faRegular">&#xf075;</Span>
+                        <Span Text=" " />
+                        <Span Text="{Binding Post.Comments.Count, StringFormat= '({0} Comments)'}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </Grid>
+
+        <comp:CommentEntry Grid.Row="4" />
+
+        <!--Comments--> 
+        <CollectionView Grid.Row="6"
+                        Margin="2, 0, 0, 0"
+                        ItemsSource="{Binding Post.Comments}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <comp:CommentDisplay Comment="{Binding .}" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        
+    </Grid>
+    
+
+    
+
+</Grid>

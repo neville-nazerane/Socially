@@ -1,6 +1,8 @@
 ﻿using Microsoft.Maui.Controls.Shapes;
 using Microsoft.Maui.Handlers;
 using Microsoft.Maui.Platform;
+using Socially.Mobile.Logic.Services;
+using Socially.MobileApp.Utils;
 
 namespace Socially.MobileApp
 {
@@ -11,5 +13,12 @@ namespace Socially.MobileApp
             InitializeComponent();
             MainPage = new AppShell();
         }
+
+        protected override async void OnStart()
+        {
+            await ServicesUtil.Get<ICachedContext>().ClearDbAsync();
+            base.OnStart();
+        }
+
     }
 }

@@ -18,17 +18,21 @@ namespace Socially.MobileApp
         public static MauiApp CreateMauiApp()
         {
 
-            Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("NoUnderline", (h, v) => {
+            Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("NoUnderline", (h, v) =>
+            {
 #if ANDROID
                 h.PlatformView.BackgroundTintList = Android.Content.Res.ColorStateList.ValueOf(Colors.Transparent.ToAndroid());
 #endif
             });
 
-                // verify configs 
-                if (Configs.BaseURL is null)
+            // verify configs 
+            if (Configs.BaseURL is null)
             {
                 throw new Exception("Configuration not set");
             }
+
+            
+
 
             var builder = MauiApp.CreateBuilder();
 
@@ -39,6 +43,8 @@ namespace Socially.MobileApp
             // internal services
             services.AddSingleton<IMessaging, Messaging>()
                     .AddSingleton<INavigationControl, NavigationControl>()
+                    .AddSingleton<ICachedContext, CachedContext>()
+                    .AddSingleton(typeof(ICachedNoSqlStorage<,>), typeof(CachedNoSqlStorage<,>))
                     .AddSingleton<ISocialLogger, SociallyLogger>();
 
             // calling auto generated function
@@ -79,6 +85,8 @@ namespace Socially.MobileApp
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("fa-solid-900.otf", "faSolid");
+                    fonts.AddFont("fa-regular-400.otf", "faRegular");
                 });
         }
 

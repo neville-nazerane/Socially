@@ -8,23 +8,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Socially.Mobile.Logic.ComponentModels.Tests
+namespace Socially.Mobile.Logic.ViewModels.Tests
 {
-    public class ImagePickerComponentModelTests
+    public class ImagePickerViewModelTests
     {
-        private Mock<IApiConsumer> mockedApiConsumer;
-        private Mock<ISocialLogger> mockedLogger;
-        private Mock<IMessaging> mockedMessaging;
-        private ImagePickerComponentModel viewModel;
+        Mock<IApiConsumer> mockedApiConsumer;
+        Mock<ISocialLogger> mockedLogger;
+        Mock<IMessaging> mockedMessaging;
+        Mock<INavigationControl> mockedNavigation;
+        ImagePickerViewModel viewModel;
 
         void Init()
         {
-            mockedApiConsumer = new Mock<IApiConsumer>();
-            mockedLogger = new Mock<ISocialLogger>();
-            mockedMessaging = new Mock<IMessaging>();
+            mockedApiConsumer = new();
+            mockedLogger = new();
+            mockedMessaging = new();
+            mockedNavigation = new();
 
             viewModel = new(mockedApiConsumer.Object,
                             mockedLogger.Object,
+                            mockedNavigation.Object,
                             mockedMessaging.Object);
         }
 
@@ -61,7 +64,7 @@ namespace Socially.Mobile.Logic.ComponentModels.Tests
             await viewModel.GetAsync();
 
             // ASSERT
-            mockedLogger.Verify(l => l.LogException(It.IsAny<Exception>(), It.IsAny<string>()), 
+            mockedLogger.Verify(l => l.LogException(It.IsAny<Exception>(), It.IsAny<string>()),
                                 Times.Never);
 
             Assert.Equal(res, viewModel.Model);
@@ -98,11 +101,11 @@ namespace Socially.Mobile.Logic.ComponentModels.Tests
 
             // ASSERT
             mockedApiConsumer.Verify(c => c.GetAllImagesOfUserAsync(It.IsAny<CancellationToken>()),
-                                     Times.Once);        
+                                     Times.Once);
 
         }
 
-        
+
         private void VerifyExceptionThrown(Exception exception)
         {
             mockedLogger.Verify(l => l.LogException(exception, It.IsAny<string>()), Times.Once);

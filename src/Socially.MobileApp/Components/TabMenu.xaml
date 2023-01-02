@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<AbsoluteLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:comp="clr-namespace:Socially.MobileApp.Components"
+                x:Class="Socially.MobileApp.Components.TabMenu">
+
+    <AbsoluteLayout.Resources>
+
+        <x:Int32 x:Key="outterThickness">4</x:Int32>
+        <x:Int32 x:Key="selectedThickness">12</x:Int32>
+        <x:Int32 x:Key="borderThickness">2</x:Int32>
+        <x:Int32 x:Key="imageMargin">5</x:Int32>
+        <x:Int32 x:Key="selectedY">20</x:Int32>
+        
+    </AbsoluteLayout.Resources>
+
+    <RoundRectangle CornerRadius="150, 150, 0, 0"
+                    AbsoluteLayout.LayoutFlags="WidthProportional"
+                    AbsoluteLayout.LayoutBounds="0, 15, 1, 30"
+                    Margin="-1"
+                    Fill="{StaticResource Shadow}">
+    </RoundRectangle>
+
+    <RoundRectangle CornerRadius="50, 50, 0, 0"
+                            AbsoluteLayout.LayoutFlags="WidthProportional"
+                            AbsoluteLayout.LayoutBounds="0, 25, 1, 90"
+                            Margin="-5"
+                            Fill="{StaticResource Secondary}">
+        <!--<RoundRectangle.Shadow>
+            <Shadow Brush="{StaticResource Shadow}"
+                Offset="0,-200"
+                Opacity=".5"
+                Radius="20"    />
+        </RoundRectangle.Shadow>-->
+    </RoundRectangle>
+
+    <!--Home-->
+    <comp:TabButton AbsoluteLayout.LayoutFlags="XProportional"
+                    AbsoluteLayout.LayoutBounds=".1, 40, 30, 30"
+                    x:Name="homeBtn"
+                    
+                    FontFamily="faSolid" 
+                    Glyph="&#xf015;"
+                            
+                    SelectedThickness="{StaticResource selectedThickness}"
+                    OutterThickness="{StaticResource outterThickness}"
+                    BorderThickness="{StaticResource borderThickness}"
+                    SelectedY="{StaticResource selectedY}"
+                    ImageMargin="{StaticResource imageMargin}" >
+        <comp:TabButton.GestureRecognizers>
+            <TapGestureRecognizer Tapped="Home_Tapped" />
+        </comp:TabButton.GestureRecognizers>
+    </comp:TabButton>
+
+    <!--Profile-->
+    <comp:TabButton AbsoluteLayout.LayoutFlags="XProportional"
+                    AbsoluteLayout.LayoutBounds=".5, 40, 30, 30"
+                    x:Name="profileBtn"
+                            
+                    FontFamily="faRegular" 
+                    Glyph="&#xf007;"
+                            
+                    SelectedThickness="{StaticResource selectedThickness}"
+                    OutterThickness="{StaticResource outterThickness}"
+                    BorderThickness="{StaticResource borderThickness}"
+                    SelectedY="{StaticResource selectedY}"
+                    ImageMargin="{StaticResource imageMargin}" >
+        <comp:TabButton.GestureRecognizers>
+            <TapGestureRecognizer Tapped="Profile_Tapped" />
+        </comp:TabButton.GestureRecognizers>
+    </comp:TabButton>
+
+    <!--Settings-->
+
+    <comp:TabButton AbsoluteLayout.LayoutFlags="XProportional"
+                    AbsoluteLayout.LayoutBounds=".9, 40, 30, 30"
+                    x:Name="settingsBtn"
+                            
+                    FontFamily="faSolid" 
+                    Glyph="&#xf013;"
+                            
+                    SelectedThickness="{StaticResource selectedThickness}"
+                    OutterThickness="{StaticResource outterThickness}"
+                    BorderThickness="{StaticResource borderThickness}"
+                    SelectedY="{StaticResource selectedY}"
+                    ImageMargin="{StaticResource imageMargin}" >
+        <comp:TabButton.GestureRecognizers>
+            <TapGestureRecognizer Tapped="Settings_Tapped" />
+        </comp:TabButton.GestureRecognizers>
+    </comp:TabButton>
+
+</AbsoluteLayout>

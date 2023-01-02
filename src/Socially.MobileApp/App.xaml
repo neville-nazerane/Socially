@@ -2,19 +2,32 @@
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:conv="clr-namespace:Socially.MobileApp.Converters"
-             xmlns:local="clr-namespace:Socially.MobileApp"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="Socially.MobileApp.App">
     <Application.Resources>
-    <ResourceDictionary>
-        <ResourceDictionary.MergedDictionaries>
-            <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
-            <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
-        </ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+                <!--<ResourceDictionary Source="Resources/Styles/Converters.xaml" />-->
+            </ResourceDictionary.MergedDictionaries>
 
-        <conv:FailedValidationToBoolConverter x:Key="invalidToBool" />
-        <conv:FailedValidationToStringConverter x:Key="invalidToString" />
-        
-    </ResourceDictionary>
+            <conv:FailedValidationToBoolConverter x:Key="invalidToBool" />
+            <conv:FailedValidationToStringConverter x:Key="invalidToString" />
+            <conv:CacheToUserConverter x:Key="cacheToUser" />
+            <conv:NameToProfileImageUrlConverter x:Key="nameToProfileImageUrl" />
+            <conv:TimeToDurationConverter x:Key="timeToDurationConverter" />
+            <conv:DateTimeToBoolConverter x:Key="dateTimeToBoolConverter" />
+
+            <!--<Style TargetType="ContentPage" ApplyToDerivedTypes="True">
+                <Setter Property="Behaviors">
+                    <Setter.Value>
+                        <toolKitBehave:StatusBarBehavior StatusBarColor="{StaticResource Primary}" />
+                    </Setter.Value>
+                </Setter>
+            </Style>-->
+
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
  

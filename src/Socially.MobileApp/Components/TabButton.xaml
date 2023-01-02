@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<AbsoluteLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                x:Class="Socially.MobileApp.Components.TabButton">
+
+    <AbsoluteLayout.Resources>
+
+        <Style TargetType="Image" Class="selected">
+            <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+            <Setter Property="Source">
+                <Setter.Value>
+                    <FontImageSource />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Image" Class="unselected">
+            <Setter Property="Source">
+                <Setter.Value>
+                    <FontImageSource Color="{StaticResource Primary}" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </AbsoluteLayout.Resources>
+
+    <Rectangle x:Name="rect"
+               Fill="{StaticResource Primary}"
+               AbsoluteLayout.LayoutFlags="None" />
+
+    <Image x:Name="img" 
+           PropertyChanged="Img_PropertyChanged"
+           AbsoluteLayout.LayoutFlags="None" />
+
+
+    <Ellipse x:Name="outterCircle"
+               AbsoluteLayout.LayoutFlags="None"
+             Stroke="{StaticResource White}" />
+
+    <Ellipse x:Name="innerCircle"
+             AbsoluteLayout.LayoutFlags="None"
+             Stroke="{StaticResource Primary}" />
+
+
+</AbsoluteLayout>

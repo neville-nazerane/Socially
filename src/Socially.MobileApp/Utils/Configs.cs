@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace Socially.MobileApp.Utils
 {
-    public partial class Configs
+    public static partial class Configs
     {
+        private static string _noSqlLocation;
 
         public static string BaseURL { get; }
         public static string ImageBase { get; }
+        public static string NoSqlLocation => _noSqlLocation ??= $"{FileSystem.Current.AppDataDirectory}/nosql.db";
 
 #if RELEASE
         static Configs()

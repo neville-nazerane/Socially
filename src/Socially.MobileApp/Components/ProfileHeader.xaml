@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<AbsoluteLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:cm="clr-namespace:Socially.Mobile.Logic.ComponentModels;assembly=Socially.Mobile.Logic"
+                xmlns:c="clr-namespace:Socially.MobileApp.Components"
+                x:DataType="cm:ProfileHeaderComponentModel"
+                x:Class="Socially.MobileApp.Components.ProfileHeader"
+                HeightRequest="300">
+
+    <RoundRectangle x:Name="backgroundRect"
+                    CornerRadius="0, 0, 40, 40"
+                    Fill="{StaticResource Primary}"
+                    AbsoluteLayout.LayoutFlags="WidthProportional"
+                    AbsoluteLayout.LayoutBounds="0, 0, 1, 250" />
+
+    <Image x:Name="img"
+           Aspect="Center"
+           Source="{Binding User.ProfilePicUrl, Converter={StaticResource nameToProfileImageUrl}}" 
+           Margin="2" />
+
+
+    <RoundRectangle x:Name="imgBorder" 
+                    CornerRadius="20"
+                    Stroke="{StaticResource White}"
+                    StrokeThickness="4" />
+
+    <Label x:Name="name" 
+           FontAttributes="Bold"
+           HorizontalTextAlignment="Center"
+           FontSize="Large"
+           TextColor="{StaticResource Secondary}" >
+        <Label.FormattedText>
+            <FormattedString>
+                <Span Text="{Binding User.FirstName}" />
+                <Span Text=" " />
+                <Span Text="{Binding User.LastName}" />
+            </FormattedString>
+        </Label.FormattedText>
+    </Label>
+
+    <Grid x:Name="btnGrid"
+          ColumnSpacing="25"
+          Padding="30, 0">
+
+        <c:ProfileNavButton Text="Posts"
+                            FontFamily="faSolid"
+                            Glyph="&#xf15c;">
+            <c:ProfileNavButton.GestureRecognizers>
+                <TapGestureRecognizer Tapped="Posts_Tapped" />
+            </c:ProfileNavButton.GestureRecognizers>   
+        </c:ProfileNavButton>
+
+        <c:ProfileNavButton Grid.Column="1"
+                            Text="Friends"
+                            FontFamily="faSolid"
+                            Glyph="&#xf500;">
+            <c:ProfileNavButton.GestureRecognizers>
+                <TapGestureRecognizer Tapped="Friends_Tapped" />
+            </c:ProfileNavButton.GestureRecognizers>
+        </c:ProfileNavButton>
+
+        <c:ProfileNavButton Grid.Column="2"
+                            Text="Photos"
+                            FontFamily="faSolid"
+                            Glyph="&#xf302;" >
+            <c:ProfileNavButton.GestureRecognizers>
+                <TapGestureRecognizer Tapped="Images_Tapped" />
+            </c:ProfileNavButton.GestureRecognizers>
+        </c:ProfileNavButton>
+
+    </Grid>
+
+
+</AbsoluteLayout>
