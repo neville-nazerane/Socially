@@ -7,6 +7,7 @@ using Socially.Mobile.Logic.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,23 +31,29 @@ public partial class ProfileFriendsViewModel : ViewModelBase
     [ObservableProperty]
     bool isFriendRequestsLoading;
 
+    [ObservableProperty]
+    ObservableCollection<GroupedUsers> groupedData;
+
     public ProfileFriendsViewModel(ISocialLogger logger, IApiConsumer apiConsumer)
     {
         _logger = logger;
         _apiConsumer = apiConsumer;
+
+        GroupedData = new();
     }
 
-    public override async Task OnNavigatedAsync()
-    {
-        await Task.WhenAll(LoadFriendRequestAsync(), LoadFriendsAsync());
-    }
+    partial void OnFriendRequestsChanged(ObservableCollection<UserSummaryModel> value) => GroupedData.Insert(1, new(value, "Friend Requests"));
+
+    partial void OnFriendsChanged(ObservableCollection<UserSummaryModel> value) => GroupedData.Insert(0, new(value, "Friends"));
+
+    public override Task OnNavigatedAsync() => Task.WhenAll(LoadFriendRequestAsync(), LoadFriendsAsync());
 
     async Task LoadFriendRequestAsync()
     {
-        isFriendRequestsLoading = true;
+        IsFriendRequestsLoading = true;
         try
         {
-            friendRequests = new(await _apiConsumer.GetFriendRequestsAsync().ToMobileModel());
+            FriendRequests = new(await _apiConsumer.GetFriendRequestsAsync().ToMobileModel());
         }
         catch (Exception ex)
         {
@@ -54,7 +61,7 @@ public partial class ProfileFriendsViewModel : ViewModelBase
         }
         finally
         {
-            isFriendRequestsLoading = false;
+            IsFriendRequestsLoading = false;
         }
     }
 
@@ -63,7 +70,7 @@ public partial class ProfileFriendsViewModel : ViewModelBase
         IsFriendsLoading = true;
         try
         {
-            friends = new(await _apiConsumer.GetFriendsAsync().ToMobileModel());
+            Friends = new(await _apiConsumer.GetFriendsAsync().ToMobileModel());
         }
         catch (Exception ex)
         {

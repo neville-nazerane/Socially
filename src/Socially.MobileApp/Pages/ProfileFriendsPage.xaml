@@ -11,7 +11,8 @@
 
     <layout:MainLayout>
 
-        <CollectionView ItemsSource="{ Binding Model.Friends }"   
+        <CollectionView ItemsSource="{ Binding GroupedData }"   
+                        IsGrouped="True"
                         Header=""
                         Margin="-1"
                         AbsoluteLayout.LayoutFlags="SizeProportional"
@@ -23,10 +24,26 @@
                 </DataTemplate>
             </CollectionView.HeaderTemplate>
 
+            <CollectionView.GroupHeaderTemplate>
+                <DataTemplate x:DataType="m:GroupedUsers">
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding Name}" />
+                                <Span Text="{Binding Count, StringFormat=' ({0})'}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </DataTemplate>
+            </CollectionView.GroupHeaderTemplate>
+
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout ItemSpacing="10" 
                                    Orientation="Vertical" />
             </CollectionView.ItemsLayout>
+            <CollectionView.EmptyView>
+                <Label Text="Batman" />
+            </CollectionView.EmptyView>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="m:UserSummaryModel">
                     <Grid Padding="20"

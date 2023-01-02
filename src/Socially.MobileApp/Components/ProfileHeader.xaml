@@ -60,9 +60,9 @@
         </c:ProfileNavButton>
 
         <c:ProfileNavButton Grid.Column="2"
-                            Text="Requests"
+                            Text="Photos"
                             FontFamily="faSolid"
-                            Glyph="&#xf234;" >
+                            Glyph="&#xf302;" >
             <c:ProfileNavButton.GestureRecognizers>
                 <TapGestureRecognizer Tapped="Requests_Tapped" />
             </c:ProfileNavButton.GestureRecognizers>
