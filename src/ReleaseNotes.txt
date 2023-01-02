@@ -1,1 +1,1 @@
-Testing android trigger: even more tests 
+Initial UI setup
