@@ -42,7 +42,7 @@
                                    Orientation="Vertical" />
             </CollectionView.ItemsLayout>
             <CollectionView.EmptyView>
-                <Label Text="Batman" />
+                <Label Text="No one to see here" />
             </CollectionView.EmptyView>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="m:UserSummaryModel">
