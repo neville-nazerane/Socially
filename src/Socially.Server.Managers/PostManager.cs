@@ -222,10 +222,8 @@ namespace Socially.Server.Managers
 
                 if (comment.ParentCommentId == parentId) result.Add(dictonary[comment.Id]);
             }
-
             return result;
         }
-
 
     }
 
