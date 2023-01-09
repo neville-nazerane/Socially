@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Socially.Apps.Consumer.Services;
 using Socially.Models;
 using Socially.Website.Services;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,9 +43,14 @@ namespace Socially.Website.Components
             StateHasChanged();
         }
 
-        async Task LikeAsync(int postId)
+        async Task LikeAsync(PostDisplayModel post)
         {
-            await Consumer.SwapPostLikeAsync(postId);
+            await Consumer.SwapPostLikeAsync(post.Id);
+            if (post.IsLikedByCurrentUser)
+                post.LikeCount--;
+            else
+                post.LikeCount++;
+            post.IsLikedByCurrentUser = !post.IsLikedByCurrentUser;
         }
 
     }

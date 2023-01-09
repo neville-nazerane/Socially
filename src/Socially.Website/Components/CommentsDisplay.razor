@@ -64,7 +64,7 @@
                         <!-- Comment react -->
                         <ul class="nav nav-divider py-2 small">
                             <li class="nav-item">
-                                <a class="nav-link" href="#" @onclick:preventDefault @onclick=@(() => LikeAsync(comment))> 
+                                <a class="nav-link @(comment?.IsLikedByCurrentUser == true ? "active" : string.Empty)" href="#" @onclick:preventDefault @onclick=@(() => LikeAsync(comment))>
                                     Like (@comment?.LikeCount)
                                 </a>
                             </li>

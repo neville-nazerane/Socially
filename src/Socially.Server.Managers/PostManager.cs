@@ -215,6 +215,7 @@ namespace Socially.Server.Managers
             Dictionary<int, bool> likeMapping = new();
             await foreach (var item in data)
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 postResults.Add(item.Post);
                 allComments.AddRange(item.Comments);
                 foreach (var mapping in item.CommentLikes)
