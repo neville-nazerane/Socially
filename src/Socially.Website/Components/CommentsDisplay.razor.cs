@@ -67,6 +67,11 @@ namespace Socially.Website.Components
             StateHasChanged();
         }
 
+        async Task LikeAsync(DisplayCommentModel comment)
+        {
+            await Consumer.SwapCommentLikeAsync(PostId, comment.Id);
+        }
+
         AddCommentModel BuildNewModel() => new AddCommentModel
         {
             PostId = PostId,
