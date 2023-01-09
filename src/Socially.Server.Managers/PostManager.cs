@@ -146,7 +146,7 @@ namespace Socially.Server.Managers
                                                                               DateTime? since = null,
                                                                               CancellationToken cancellationToken = default)
             => await ProjectPostAsync(_dbContext.Posts.Where(p => p.CreatorId == userId),
-                                          pageSize, 
+                                          pageSize,
                                           since,
                                           cancellationToken);
 
@@ -176,8 +176,8 @@ namespace Socially.Server.Managers
         //return postResults;
 
         public async Task<IEnumerable<PostDisplayModel>> GetHomePostsAsync(int pageSize,
-                                                                              DateTime? since = null,
-                                                                              CancellationToken cancellationToken = default)
+                                                                           DateTime? since = null,
+                                                                           CancellationToken cancellationToken = default)
             => await ProjectPostAsync(_dbContext.Posts.Where(p => p.Creator.Friends.Select(f => f.FriendUserId).Contains(_currentContext.UserId)),
                                       pageSize, since, cancellationToken);
 
@@ -186,13 +186,18 @@ namespace Socially.Server.Managers
                                                                    DateTime? since = null,
                                                                    CancellationToken cancellationToken = default)
         {
-            var data = await querablePosts.AsNoTracking()
+            var data = querablePosts.AsNoTracking()
                                           .Where(p => since == null || p.CreatedOn > since)
                                           .OrderBy(p => p.CreatedOn)
                                           .Take(pageSize)
                                                     .Select(p => new
                                                     {
                                                         Comments = p.Comments.ToArray(),
+                                                        CommentLikes = p.Comments.Select(c => new
+                                                        {
+                                                            c.Id,
+                                                            IsLikedByCurrentUser = c.Likes.Any(l => l.UserId == _currentContext.UserId)
+                                                        }),
                                                         Post = new PostDisplayModel
                                                         {
                                                             Id = p.Id,
@@ -203,21 +208,31 @@ namespace Socially.Server.Managers
                                                             IsLikedByCurrentUser = p.Likes.Any(l => l.UserId == _currentContext.UserId)
                                                         }
                                                     })
-                                                        .ToArrayAsync(cancellationToken);
+                                                    .AsAsyncEnumerable();
 
-            var allComments = data.SelectMany(r => r.Comments).ToArray();
-            var postResults = data.Select(r => r.Post).ToArray();
+            List<PostDisplayModel> postResults = new();
+            List<Comment> allComments = new();
+            Dictionary<int, bool> likeMapping = new();
+            await foreach (var item in data)
+            {
+                postResults.Add(item.Post);
+                allComments.AddRange(item.Comments);
+                foreach (var mapping in item.CommentLikes)
+                    likeMapping.Add(mapping.Id, mapping.IsLikedByCurrentUser);
+            }
 
             foreach (var p in postResults)
-                p.Comments = MapComments(allComments.Where(c => c.PostId == p.Id).ToArray()).ToList();
+                p.Comments = MapComments(allComments.Where(c => c.PostId == p.Id).ToArray(), likeMapping).ToList();
 
             return postResults;
         }
 
-        static IEnumerable<DisplayCommentModel> MapComments(IEnumerable<Comment> comments, int? parentId = null)
+        static IEnumerable<DisplayCommentModel> MapComments(IEnumerable<Comment> comments,
+                                                            Dictionary<int, bool> likeMapping,
+                                                            int? parentId = null)
         {
             var result = new List<DisplayCommentModel>();
-            var dictonary = comments.ToDictionary(c => c.Id, c => c.ToDisplayModel());
+            var dictonary = comments.ToDictionary(c => c.Id, c => c.ToDisplayModel(likeMapping[c.Id]));
             foreach (var comment in comments)
             {
                 if (comment.ParentCommentId.HasValue && dictonary.ContainsKey(comment.ParentCommentId.Value))
