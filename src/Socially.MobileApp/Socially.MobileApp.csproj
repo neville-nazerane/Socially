@@ -83,6 +83,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Socially.Apps.Consumer\Socially.Apps.Consumer.csproj" />
+		<ProjectReference Include="..\Socially.ClientUtils\Socially.ClientUtils.csproj" />
 		<ProjectReference Include="..\Socially.Mobile.Logic\Socially.Mobile.Logic.csproj" />
 	</ItemGroup>
 

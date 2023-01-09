@@ -17,7 +17,7 @@
                         <div>
                             <div class="nav nav-divider">
                                 <h6 class="nav-item card-title mb-0"> <a href="#!"> @CachedContext.GetUser(post.CreatorId).FirstName @CachedContext.GetUser(post.CreatorId).LastName </a></h6>
-                                <span class="nav-item small"> 2hr</span>
+                                <span class="nav-item small">@post.CreatedOn.ToDuration()</span>
                             </div>
                         </div>
                     </div>
