@@ -41,5 +41,10 @@ namespace Socially.Website.Components
             StateHasChanged();
         }
 
+        async Task LikeAsync(int postId)
+        {
+            await Consumer.SwapPostLikeAsync(postId);
+        }
+
     }
 }

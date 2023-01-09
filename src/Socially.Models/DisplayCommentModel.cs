@@ -18,5 +18,6 @@ namespace Socially.Models
         public ICollection<DisplayCommentModel> Comments { get; set; }
         public int LikeCount { get; set; }
         public DateTime CreatedOn { get; set; }
+        public bool IsLikedByCurrentUser { get; set; }
     }
 }
