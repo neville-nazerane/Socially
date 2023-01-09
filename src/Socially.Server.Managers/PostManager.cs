@@ -146,7 +146,9 @@ namespace Socially.Server.Managers
                                                                               DateTime? since = null,
                                                                               CancellationToken cancellationToken = default)
             => await ProjectPostAsync(_dbContext.Posts.Where(p => p.CreatorId == userId),
-                                          pageSize, since, cancellationToken);
+                                          pageSize, 
+                                          since,
+                                          cancellationToken);
 
         //var data = await _dbContext.Posts.AsNoTracking()
         //                                .Where(p => p.CreatorId == userId && (since == null || p.CreatedOn > since))
@@ -197,7 +199,8 @@ namespace Socially.Server.Managers
                                                             Text = p.Text,
                                                             CreatorId = p.CreatorId.Value,
                                                             CreatedOn = p.CreatedOn,
-                                                            LikeCount = p.LikeCount ?? 0,
+                                                            LikeCount = p.Likes.Count(),
+                                                            IsLikedByCurrentUser = p.Likes.Any(l => l.UserId == _currentContext.UserId)
                                                         }
                                                     })
                                                         .ToArrayAsync(cancellationToken);
