@@ -47,8 +47,8 @@
                 <!-- Feed react START -->
                 <ul class="nav nav-stack py-3 small">
                     <li class="nav-item">
-                        <a class="nav-link" href="#" @onclick:preventDefault=true @onclick=@(() => LikeAsync(post?.Id ?? 0))>
-                            <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked (@post?.LikeCount)
+                        <a class="nav-link@(post?.IsLikedByCurrentUser == true ? "active" : string.Empty)" href="#" @onclick:preventDefault=true @onclick=@(() => LikeAsync(post))>
+                            <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Like (@post?.LikeCount)
                         </a>
                     </li>
                     <li class="nav-item">
