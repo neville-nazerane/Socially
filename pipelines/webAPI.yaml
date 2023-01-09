@@ -11,6 +11,7 @@ trigger:
       - src/Socially.Core
       - src/Socially.Server.DataAccess
       - src/Socially.Server.Services
+      - src/Socially.Server.Managers
       - src/Socially.WebAPI
       - pipelines/webAPI.yaml
 
