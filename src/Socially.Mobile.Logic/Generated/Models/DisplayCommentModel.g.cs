@@ -27,6 +27,12 @@ namespace Socially.Mobile.Logic.Models
 
             [ObservableProperty]
             System.Int32 likeCount;
+
+            [ObservableProperty]
+            System.DateTime createdOn;
+
+            [ObservableProperty]
+            System.Boolean isLikedByCurrentUser;
         
 
 

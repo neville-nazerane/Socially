@@ -29,6 +29,7 @@ namespace Socially.Mobile.Logic.Models.Mappings
                   Id = model.Id,
                   FirstName = model.FirstName,
                   LastName = model.LastName,
+                  UserName = model.UserName,
                   ProfilePicUrl = model.ProfilePicUrl
               };
 
@@ -37,6 +38,7 @@ namespace Socially.Mobile.Logic.Models.Mappings
             dest.Id = model.Id;
             dest.FirstName = model.FirstName;
             dest.LastName = model.LastName;
+            dest.UserName = model.UserName;
             dest.ProfilePicUrl = model.ProfilePicUrl;
             return dest;
         }
@@ -46,6 +48,7 @@ namespace Socially.Mobile.Logic.Models.Mappings
             dest.Id = model.Id;
             dest.FirstName = model.FirstName;
             dest.LastName = model.LastName;
+            dest.UserName = model.UserName;
             dest.ProfilePicUrl = model.ProfilePicUrl;
             return dest;
         }
@@ -72,6 +75,7 @@ namespace Socially.Mobile.Logic.Models.Mappings
                   Id = model.Id,
                   FirstName = model.FirstName,
                   LastName = model.LastName,
+                  UserName = model.UserName,
                   ProfilePicUrl = model.ProfilePicUrl
               };
 
@@ -80,6 +84,7 @@ namespace Socially.Mobile.Logic.Models.Mappings
             dest.Id = model.Id;
             dest.FirstName = model.FirstName;
             dest.LastName = model.LastName;
+            dest.UserName = model.UserName;
             dest.ProfilePicUrl = model.ProfilePicUrl;
             return dest;
         }

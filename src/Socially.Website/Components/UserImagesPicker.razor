@@ -46,7 +46,7 @@
                             <!-- likes -->
                             <ul class="nav nav-stack py-2 small">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#" @onclick:preventDefault @onclick=@(async () => DeleteAsync(@img))> <i class="bi bi-heart-fill text-danger pe-1"></i>Delete</a>
+                                    <a class="nav-link" href="#" @onclick:stopPropagation @onclick:preventDefault @onclick=@(async () => DeleteAsync(@img))> <i class="bi bi-heart-fill text-danger pe-1"></i>Delete</a>
                                 </li>
                             </ul>
                   

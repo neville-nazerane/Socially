@@ -15,6 +15,7 @@ namespace Socially.Server.ModelMappings
             => users.Select(u => new UserSummaryModel
             {
                 Id = u.Id,
+                UserName = u.UserName,
                 FirstName = u.FirstName,
                 LastName = u.LastName,
                 ProfilePicUrl = u.ProfilePicture.FileName

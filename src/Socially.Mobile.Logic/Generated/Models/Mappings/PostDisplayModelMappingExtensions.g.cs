@@ -31,7 +31,8 @@ namespace Socially.Mobile.Logic.Models.Mappings
                   CreatorId = model.CreatorId,
                   CreatedOn = model.CreatedOn,
                   Comments = model.Comments.ToModel(),
-                  LikeCount = model.LikeCount
+                  LikeCount = model.LikeCount,
+                  IsLikedByCurrentUser = model.IsLikedByCurrentUser
               };
 
         public static Socially.Models.PostDisplayModel ToModel(this Socially.Mobile.Logic.Models.PostDisplayModel model, Socially.Models.PostDisplayModel dest)
@@ -42,6 +43,7 @@ namespace Socially.Mobile.Logic.Models.Mappings
             dest.CreatedOn = model.CreatedOn;
             dest.Comments = model.Comments.ToModel();
             dest.LikeCount = model.LikeCount;
+            dest.IsLikedByCurrentUser = model.IsLikedByCurrentUser;
             return dest;
         }
 
@@ -53,6 +55,7 @@ namespace Socially.Mobile.Logic.Models.Mappings
             dest.CreatedOn = model.CreatedOn;
             dest.Comments = model.Comments;
             dest.LikeCount = model.LikeCount;
+            dest.IsLikedByCurrentUser = model.IsLikedByCurrentUser;
             return dest;
         }
 
@@ -80,7 +83,8 @@ namespace Socially.Mobile.Logic.Models.Mappings
                   CreatorId = model.CreatorId,
                   CreatedOn = model.CreatedOn,
                   Comments = model.Comments.ToMobileModel(),
-                  LikeCount = model.LikeCount
+                  LikeCount = model.LikeCount,
+                  IsLikedByCurrentUser = model.IsLikedByCurrentUser
               };
 
         public static Socially.Mobile.Logic.Models.PostDisplayModel ToMobileModel(this Socially.Models.PostDisplayModel model, Socially.Mobile.Logic.Models.PostDisplayModel dest)
@@ -91,6 +95,7 @@ namespace Socially.Mobile.Logic.Models.Mappings
             dest.CreatedOn = model.CreatedOn;
             dest.Comments = model.Comments.ToMobileModel();
             dest.LikeCount = model.LikeCount;
+            dest.IsLikedByCurrentUser = model.IsLikedByCurrentUser;
             return dest;
         }
 

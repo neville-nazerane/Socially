@@ -36,7 +36,7 @@
                                         <CurrentUserProfilePicture />
                                     </div>
                                     <!-- Info -->
-                                    <h5 class="mb-0"> <a @onclick:preventDefault href="#!">@currentUser?.FirstName @currentUser?.LastName</a> </h5>
+                                    <h5 class="mb-0"> <a @onclick:preventDefault href="#!">@currentUser?.GetDisplayName()</a> </h5>
 
                                 </div>
 
@@ -102,7 +102,7 @@
                                         </div>
                                         <!-- Title -->
                                         <div class="overflow-hidden">
-                                            <a class="h6 mb-0" href="#!">@user.FirstName @user.LastName</a>
+                                            <a class="h6 mb-0" href="#!">@user.GetDisplayName()</a>
                                         </div>
                                         <!-- Button -->
                                         <a class="btn btn-primary-soft rounded-circle icon-md ms-auto" @onclick=@(() => RespondFriendRequest(user.Id, true)) @onclick:preventDefault href="#"><i class="fa-solid fa-plus"> </i></a>

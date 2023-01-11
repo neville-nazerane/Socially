@@ -23,6 +23,9 @@ namespace Socially.Mobile.Logic.Models
             System.String lastName;
 
             [ObservableProperty]
+            System.String userName;
+
+            [ObservableProperty]
             System.String profilePicUrl;
         
 
