@@ -44,7 +44,7 @@
                     <div class="ms-2">
                         <div class="bg-light p-3 rounded">
                             <div class="d-flex justify-content-between">
-                                <h6 class="mb-1"> <a href="#!"> @CachedContext.GetUser(comment.CreatorId).FirstName @CachedContext.GetUser(comment.CreatorId).LastName </a> </h6>
+                                <h6 class="mb-1"> <a href="#!"> @CachedContext.GetUser(comment.CreatorId).GetDisplayName()</a> </h6>
                                 <small class="ms-2">@comment.CreatedOn.ToDuration()</small>
                             </div>
                             <p class="small mb-0">@comment.Text</p>

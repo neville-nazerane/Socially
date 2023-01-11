@@ -30,7 +30,9 @@ namespace Socially.Mobile.Logic.Models.Mappings
                   CreatorId = model.CreatorId,
                   Text = model.Text,
                   Comments = model.Comments.ToModel(),
-                  LikeCount = model.LikeCount
+                  LikeCount = model.LikeCount,
+                  CreatedOn = model.CreatedOn,
+                  IsLikedByCurrentUser = model.IsLikedByCurrentUser
               };
 
         public static Socially.Models.DisplayCommentModel ToModel(this Socially.Mobile.Logic.Models.DisplayCommentModel model, Socially.Models.DisplayCommentModel dest)
@@ -40,6 +42,8 @@ namespace Socially.Mobile.Logic.Models.Mappings
             dest.Text = model.Text;
             dest.Comments = model.Comments.ToModel();
             dest.LikeCount = model.LikeCount;
+            dest.CreatedOn = model.CreatedOn;
+            dest.IsLikedByCurrentUser = model.IsLikedByCurrentUser;
             return dest;
         }
 
@@ -50,6 +54,8 @@ namespace Socially.Mobile.Logic.Models.Mappings
             dest.Text = model.Text;
             dest.Comments = model.Comments;
             dest.LikeCount = model.LikeCount;
+            dest.CreatedOn = model.CreatedOn;
+            dest.IsLikedByCurrentUser = model.IsLikedByCurrentUser;
             return dest;
         }
 
@@ -76,7 +82,9 @@ namespace Socially.Mobile.Logic.Models.Mappings
                   CreatorId = model.CreatorId,
                   Text = model.Text,
                   Comments = model.Comments.ToMobileModel(),
-                  LikeCount = model.LikeCount
+                  LikeCount = model.LikeCount,
+                  CreatedOn = model.CreatedOn,
+                  IsLikedByCurrentUser = model.IsLikedByCurrentUser
               };
 
         public static Socially.Mobile.Logic.Models.DisplayCommentModel ToMobileModel(this Socially.Models.DisplayCommentModel model, Socially.Mobile.Logic.Models.DisplayCommentModel dest)
@@ -86,6 +94,8 @@ namespace Socially.Mobile.Logic.Models.Mappings
             dest.Text = model.Text;
             dest.Comments = model.Comments.ToMobileModel();
             dest.LikeCount = model.LikeCount;
+            dest.CreatedOn = model.CreatedOn;
+            dest.IsLikedByCurrentUser = model.IsLikedByCurrentUser;
             return dest;
         }
 
