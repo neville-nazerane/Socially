@@ -1,4 +1,4 @@
-﻿namespace System
+﻿namespace Socially.ClientUtils
 {
     public static class DateExtensions
     {

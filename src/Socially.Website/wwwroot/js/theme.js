@@ -234,6 +234,8 @@ var e = {
     // START: 02 Navbar dropdown hover
     navbarDropdownHover: function () {
         e.onAll('.dropdown-menu a.dropdown-item.dropdown-toggle', 'click', function (event) {
+            console.log(34234, event);
+            return;
             var element = this;
             event.preventDefault();
             event.stopImmediatePropagation();
