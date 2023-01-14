@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using Socially.Models;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Socially.Models
+namespace Socially.ClientUtils
 {
     public static class PostExtensions
     {
