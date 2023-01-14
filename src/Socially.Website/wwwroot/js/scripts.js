@@ -1,6 +1,7 @@
 ﻿
 function init() {
 
+    // theme switching
     delegate(document, 'click', '#darkModeSwitch', () => {
         let theme = localStorage.getItem('data-theme'); // Retrieve saved them from local storage
         if (theme === 'dark') {
@@ -8,6 +9,14 @@ function init() {
         } else {
             changeThemeToDark()
         }
+    });
+
+    // close nav on clicking item
+    delegate(document, 'click', '.dropdown-item', () => {
+        document.getElementsByClassName('dropdown-menu')[0]
+                .classList
+                .remove('show');
+
     });
 
     setupThemes();
