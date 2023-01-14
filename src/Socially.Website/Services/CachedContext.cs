@@ -32,13 +32,15 @@ namespace Socially.Website.Services
             _userStorage = userStorage;
         }
 
-        private void AuthProvider_AuthenticationStateChanged(Task<Microsoft.AspNetCore.Components.Authorization.AuthenticationState> task)
+        private void AuthProvider_AuthenticationStateChanged(Task<AuthenticationState> task)
         {
             _currentProfileInfo = null;
         }
 
         public async ValueTask<UserSummaryModel> GetCurrentProfileInfoAsync()
         {
+            var state = await _authProvider.GetAuthenticationStateAsync();
+            if (state?.User?.Claims?.Count() < 1) return null;
             if (_currentProfileInfo is null)
             {
                 if (_currentProfileLock is not null)
