@@ -19,13 +19,17 @@ namespace Socially.Website.Services
         private readonly ICachedStorage<int, UserSummaryModel> _userStorage;
         private readonly AuthenticationStateProvider _authProvider;
         UserSummaryModel _currentProfileInfo;
-        TaskCompletionSource _currentProfileLock;
+
+        readonly AsyncLocker _currentProfileLock;
+        readonly AsyncLocker _updatesLock;
 
 
         public CachedContext(IApiConsumer consumer,
                              ICachedStorage<int, UserSummaryModel> userStorage,
                              AuthenticationStateProvider authProvider)
         {
+            _updatesLock = new();
+            _currentProfileLock = new();
             _authProvider = authProvider;
             _authProvider.AuthenticationStateChanged += AuthProvider_AuthenticationStateChanged;
             _consumer = consumer;
@@ -41,38 +45,24 @@ namespace Socially.Website.Services
         {
             var state = await _authProvider.GetAuthenticationStateAsync();
             if (state?.User?.Claims?.Count() < 1) return null;
+            using var _ = await _currentProfileLock.WaitAndBeginLockAsync();
             if (_currentProfileInfo is null)
             {
-                if (_currentProfileLock is not null)
-                    await _currentProfileLock.Task;
-                if (_currentProfileInfo is null)
-                {
-                    _currentProfileLock = new TaskCompletionSource();
-                    try
-                    {
-                        _currentProfileInfo = await _consumer.GetCurrentUserSummary();
-                        await _userStorage.UpdateAsync(_currentProfileInfo.ToSingleItemArray());
-                        _currentProfileLock.TrySetResult();
-                    }
-                    catch (Exception ex)
-                    {
-                        _currentProfileLock?.TrySetException(ex);
-                    }
-                    finally
-                    {
-                        _currentProfileLock = null;
-                    }
-                }
+                _currentProfileInfo = await _consumer.GetCurrentUserSummary();
+                await _userStorage.UpdateAsync(_currentProfileInfo.ToSingleItemArray());
             }
             return _currentProfileInfo;
         }
 
         public async Task UpdateUserProfilesIfNotExistAsync(IEnumerable<int> ids)
         {
-            await _userStorage.AwaitLockAsync();
+            using var _ = await _updatesLock.WaitAndBeginLockAsync();
+
             var missingIds = ids.Where(id => !_userStorage.IsInitialized(id));
             if (missingIds.Any())
+            {
                 await ForceUpdateUserProfilesAsync(missingIds);
+            }
         }
 
         public UserSummaryModel GetUser(int id) => _userStorage.Get(id);
@@ -82,7 +72,6 @@ namespace Socially.Website.Services
             var users = await _consumer.GetUsersByIdsAsync(ids);
             await _userStorage.UpdateAsync(users);
         }
-    
 
     }
 }
