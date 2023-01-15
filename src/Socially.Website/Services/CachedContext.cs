@@ -20,7 +20,7 @@ namespace Socially.Website.Services
         private readonly AuthenticationStateProvider _authProvider;
         UserSummaryModel _currentProfileInfo;
 
-        TaskCompletionSource _currentProfileLock;
+        readonly AsyncLocker _currentProfileLock;
         readonly AsyncLocker _updatesLock;
 
 
@@ -29,6 +29,7 @@ namespace Socially.Website.Services
                              AuthenticationStateProvider authProvider)
         {
             _updatesLock = new();
+            _currentProfileLock = new();
             _authProvider = authProvider;
             _authProvider.AuthenticationStateChanged += AuthProvider_AuthenticationStateChanged;
             _consumer = consumer;
@@ -44,28 +45,11 @@ namespace Socially.Website.Services
         {
             var state = await _authProvider.GetAuthenticationStateAsync();
             if (state?.User?.Claims?.Count() < 1) return null;
+            using var _ = await _currentProfileLock.WaitAndBeginLockAsync();
             if (_currentProfileInfo is null)
             {
-                if (_currentProfileLock is not null)
-                    await _currentProfileLock.Task;
-                if (_currentProfileInfo is null)
-                {
-                    _currentProfileLock = new TaskCompletionSource();
-                    try
-                    {
-                        _currentProfileInfo = await _consumer.GetCurrentUserSummary();
-                        await _userStorage.UpdateAsync(_currentProfileInfo.ToSingleItemArray());
-                        _currentProfileLock.TrySetResult();
-                    }
-                    catch (Exception ex)
-                    {
-                        _currentProfileLock?.TrySetException(ex);
-                    }
-                    finally
-                    {
-                        _currentProfileLock = null;
-                    }
-                }
+                _currentProfileInfo = await _consumer.GetCurrentUserSummary();
+                await _userStorage.UpdateAsync(_currentProfileInfo.ToSingleItemArray());
             }
             return _currentProfileInfo;
         }
