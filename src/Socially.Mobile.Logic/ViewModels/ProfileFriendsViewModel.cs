@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Socially.Apps.Consumer.Services;
 using Socially.Mobile.Logic.Models;
 using Socially.Mobile.Logic.Models.Mappings;
@@ -46,7 +47,14 @@ public partial class ProfileFriendsViewModel : ViewModelBase
 
     partial void OnFriendsChanged(ObservableCollection<UserSummaryModel> value) => GroupedData.Insert(0, new(value, "Friends"));
 
-    public override Task OnNavigatedAsync() => Task.WhenAll(LoadFriendRequestAsync(), LoadFriendsAsync());
+    public override Task OnNavigatedAsync() => RefreshAsync();
+
+    [RelayCommand]
+    Task RefreshAsync()
+    {
+        GroupedData.Clear();
+        return Task.WhenAll(LoadFriendRequestAsync(), LoadFriendsAsync());
+    }
 
     async Task LoadFriendRequestAsync()
     {

@@ -11,23 +11,27 @@
              Title="HomePage">
     <layouts:MainLayout>
 
-        <CollectionView ItemsSource="{ Binding Model }"
-                        AbsoluteLayout.LayoutFlags="SizeProportional"
-                       AbsoluteLayout.LayoutBounds="0, 0, 1, 1">
+        <RefreshView Command="{Binding RefreshCommand}"
+                     IsRefreshing="{Binding RefreshCommand.IsRunning}"
+                     AbsoluteLayout.LayoutFlags="SizeProportional"
+                    AbsoluteLayout.LayoutBounds="0, 0, 1, 1">
+            <CollectionView ItemsSource="{ Binding Model }"
+                             >
 
-            <CollectionView.EmptyView>
-                <Label Margin="20, 20, 0, 0" 
-                       FontSize="Large"
-                       Text="No posts to see here yet" />
-            </CollectionView.EmptyView>
+                <CollectionView.EmptyView>
+                    <Label Margin="20, 20, 0, 0" 
+                           FontSize="Large"
+                           Text="No posts to see here yet" />
+                </CollectionView.EmptyView>
             
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="m:PostDisplayModel">
-                    <comp:PostDisplay Post="{Binding .}" />
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="m:PostDisplayModel">
+                        <comp:PostDisplay Post="{Binding .}" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
 
-        </CollectionView>
+            </CollectionView>
+        </RefreshView>
 
 
         <comp:TabMenu />
