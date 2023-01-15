@@ -1,4 +1,5 @@
-﻿using Socially.Apps.Consumer.Services;
+﻿using CommunityToolkit.Mvvm.Input;
+using Socially.Apps.Consumer.Services;
 using Socially.Mobile.Logic.Services;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Socially.Mobile.Logic.ViewModels
 {
-    public class ProfileImagesViewModel : ViewModelBase<ObservableCollection<string>>
+    public partial class ProfileImagesViewModel : ViewModelBase<ObservableCollection<string>>
     {
         private readonly ISocialLogger _socialLogger;
         private readonly IApiConsumer _apiConsumer;
@@ -20,6 +21,9 @@ namespace Socially.Mobile.Logic.ViewModels
             _socialLogger = socialLogger;
             _apiConsumer = apiConsumer;
         }
+
+        [RelayCommand]
+        Task RefreshAsync() => GetAsync();
 
         public override void OnException(Exception ex) => _socialLogger.LogException(ex);
 

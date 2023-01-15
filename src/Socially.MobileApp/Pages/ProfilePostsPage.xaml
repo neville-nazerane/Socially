@@ -10,28 +10,34 @@
              Title="ProfilePostsPage">
     <layout:MainLayout>
 
-        <CollectionView ItemsSource="{ Binding Model }"   
-                        Header=""
-                        Margin="-1"
-                        AbsoluteLayout.LayoutFlags="SizeProportional"
-                        AbsoluteLayout.LayoutBounds="0, 0, 1, 1" >
+        <RefreshView Command="{Binding RefreshCommand}"
+                     IsRefreshing="{Binding RefreshCommand.IsRunning}"
+                     AbsoluteLayout.LayoutFlags="SizeProportional"
+                     AbsoluteLayout.LayoutBounds="0, 0, 1, 1" >
+            
+            <CollectionView ItemsSource="{ Binding Model }"   
+                            Header=""
+                            Margin="-1"
+                            >
 
-            <CollectionView.HeaderTemplate>
-                <DataTemplate>
-                    <comp:ProfileHeader />
-                </DataTemplate>
-            </CollectionView.HeaderTemplate>
+                <CollectionView.HeaderTemplate>
+                    <DataTemplate>
+                        <comp:ProfileHeader />
+                    </DataTemplate>
+                </CollectionView.HeaderTemplate>
 
-            <CollectionView.ItemsLayout>
-                <LinearItemsLayout ItemSpacing="10" 
-                                   Orientation="Vertical" />
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="m:PostDisplayModel">
-                    <comp:PostDisplay Post="{Binding .}" />
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="10" 
+                                       Orientation="Vertical" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="m:PostDisplayModel">
+                        <comp:PostDisplay Post="{Binding .}" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </RefreshView>
 
 
         <comp:TabMenu />

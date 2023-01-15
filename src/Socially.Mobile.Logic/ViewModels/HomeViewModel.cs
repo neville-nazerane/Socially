@@ -37,6 +37,12 @@ namespace Socially.Mobile.Logic.ViewModels
 
         public override async Task OnNavigatedAsync()
         {
+            await RefreshAsync();
+        }
+
+        [RelayCommand]
+        private async Task RefreshAsync()
+        {
             await GetAsync();
             var userids = Model.SelectMany(c => c.Comments.Select(c => c.CreatorId))
                                .Union(Model.Select(p => p.CreatorId))

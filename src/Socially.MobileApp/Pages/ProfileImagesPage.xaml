@@ -10,43 +10,49 @@
 
     <l:MainLayout>
 
-        <CollectionView ItemsSource="{Binding Model}"
-                        Header=""
-                        Margin="-1"
-                        AbsoluteLayout.LayoutFlags="SizeProportional"
-                        AbsoluteLayout.LayoutBounds="0, 0, 1, 1" >
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout Span="2"
-                             HorizontalItemSpacing="10"
-                             VerticalItemSpacing="10"
-                             Orientation="Vertical" />
-            </CollectionView.ItemsLayout>
-            
-            <CollectionView.HeaderTemplate>
-                <DataTemplate>
-                    <c:ProfileHeader />
-                </DataTemplate>
-            </CollectionView.HeaderTemplate>
+        <RefreshView Command="{Binding RefreshCommand}"
+                     IsRefreshing="{Binding RefreshCommand.IsRunning}" 
+                     AbsoluteLayout.LayoutFlags="SizeProportional"
+                        AbsoluteLayout.LayoutBounds="0, 0, 1, 1"  >
 
-            <CollectionView.EmptyView>
-                <Label Text="No images to show" />
-            </CollectionView.EmptyView>
-
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="{x:Type x:String}">
-                    <Grid>
-                        <Image Source="{Binding ., Converter={StaticResource nameToProfileImageUrl}}"
-                           Aspect="AspectFill" />
-                        <RoundRectangle CornerRadius="10"
-                                    StrokeThickness="4"
-                                    Stroke="{StaticResource White}"
-                                    VerticalOptions="CenterAndExpand" 
-                                    HorizontalOptions="CenterAndExpand" />
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
+            <CollectionView ItemsSource="{Binding Model}"
+                            Header=""
+                            Margin="-1"
+                            >
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Span="2"
+                                 HorizontalItemSpacing="10"
+                                 VerticalItemSpacing="10"
+                                 Orientation="Vertical" />
+                </CollectionView.ItemsLayout>
             
-        </CollectionView>
+                <CollectionView.HeaderTemplate>
+                    <DataTemplate>
+                        <c:ProfileHeader />
+                    </DataTemplate>
+                </CollectionView.HeaderTemplate>
+
+                <CollectionView.EmptyView>
+                    <Label Text="No images to show" />
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type x:String}">
+                        <Grid>
+                            <Image Source="{Binding ., Converter={StaticResource nameToProfileImageUrl}}"
+                               Aspect="AspectFill" />
+                            <RoundRectangle CornerRadius="10"
+                                        StrokeThickness="4"
+                                        Stroke="{StaticResource White}"
+                                        VerticalOptions="CenterAndExpand" 
+                                        HorizontalOptions="CenterAndExpand" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            
+            </CollectionView>
+
+        </RefreshView>
 
         <c:TabMenu />
 

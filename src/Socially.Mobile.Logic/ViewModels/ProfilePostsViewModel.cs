@@ -1,4 +1,5 @@
-﻿using Socially.Apps.Consumer.Services;
+﻿using CommunityToolkit.Mvvm.Input;
+using Socially.Apps.Consumer.Services;
 using Socially.Mobile.Logic.Models;
 using Socially.Mobile.Logic.Models.Mappings;
 using Socially.Mobile.Logic.Services;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Socially.Mobile.Logic.ViewModels
 {
-    public class ProfilePostsViewModel : ViewModelBase<ObservableCollection<PostDisplayModel>>
+    public partial class ProfilePostsViewModel : ViewModelBase<ObservableCollection<PostDisplayModel>>
     {
         private readonly ISocialLogger _logger;
         private readonly IApiConsumer _apiConsumer;
@@ -31,13 +32,19 @@ namespace Socially.Mobile.Logic.ViewModels
 
         public override async Task OnNavigatedAsync()
         {
+            await RefreshAsync();
+        }
+
+        [RelayCommand]
+        private async Task RefreshAsync()
+        {
             await GetAsync();
             var userIds = Model.SelectMany(p => p.Comments.Select(c => c.CreatorId))
                                .Union(Model.Select(p => p.CreatorId))
                                .ToImmutableArray();
             await _cachedContext.UpdateUserProfilesIfNotExistAsync(userIds);
         }
-           
+
         public override async Task<ObservableCollection<PostDisplayModel>> GetFromServerAsync(CancellationToken cancellationToken = default)
         {
             var res = new ObservableCollection<PostDisplayModel>(
