@@ -13,9 +13,9 @@ function init() {
 
     // close nav on clicking item
     delegate(document, 'click', '.dropdown-item', () => {
-        document.getElementsByClassName('dropdown-menu')[0]
-                .classList
-                .remove('show');
+        var dropdown = document.getElementsByClassName('dropdown-menu');
+        if (dropdown && dropdown[0])
+            dropdown[0].classList.remove('show');
 
     });
 

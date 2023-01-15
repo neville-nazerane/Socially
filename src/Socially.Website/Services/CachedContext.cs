@@ -19,13 +19,16 @@ namespace Socially.Website.Services
         private readonly ICachedStorage<int, UserSummaryModel> _userStorage;
         private readonly AuthenticationStateProvider _authProvider;
         UserSummaryModel _currentProfileInfo;
+
         TaskCompletionSource _currentProfileLock;
+        readonly AsyncLocker _updatesLock;
 
 
         public CachedContext(IApiConsumer consumer,
                              ICachedStorage<int, UserSummaryModel> userStorage,
                              AuthenticationStateProvider authProvider)
         {
+            _updatesLock = new();
             _authProvider = authProvider;
             _authProvider.AuthenticationStateChanged += AuthProvider_AuthenticationStateChanged;
             _consumer = consumer;
@@ -69,10 +72,13 @@ namespace Socially.Website.Services
 
         public async Task UpdateUserProfilesIfNotExistAsync(IEnumerable<int> ids)
         {
-            await _userStorage.AwaitLockAsync();
+            using var _ = await _updatesLock.WaitAndBeginLockAsync();
+
             var missingIds = ids.Where(id => !_userStorage.IsInitialized(id));
             if (missingIds.Any())
+            {
                 await ForceUpdateUserProfilesAsync(missingIds);
+            }
         }
 
         public UserSummaryModel GetUser(int id) => _userStorage.Get(id);
@@ -82,7 +88,6 @@ namespace Socially.Website.Services
             var users = await _consumer.GetUsersByIdsAsync(ids);
             await _userStorage.UpdateAsync(users);
         }
-    
 
     }
 }
