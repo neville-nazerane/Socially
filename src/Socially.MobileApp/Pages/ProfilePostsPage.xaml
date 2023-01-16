@@ -9,7 +9,7 @@
              x:DataType="vm:ProfilePostsViewModel"
              Title="ProfilePostsPage">
     <layout:MainLayout>
-
+        
         <RefreshView Command="{Binding RefreshCommand}"
                      IsRefreshing="{Binding RefreshCommand.IsRunning}"
                      AbsoluteLayout.LayoutFlags="SizeProportional"
@@ -17,8 +17,7 @@
             
             <CollectionView ItemsSource="{ Binding Model }"   
                             Header=""
-                            Margin="-1"
-                            >
+                            Margin="-1" >
 
                 <CollectionView.HeaderTemplate>
                     <DataTemplate>

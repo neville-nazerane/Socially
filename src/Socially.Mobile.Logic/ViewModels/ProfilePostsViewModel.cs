@@ -1,12 +1,15 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Socially.Apps.Consumer.Services;
 using Socially.Mobile.Logic.Models;
 using Socially.Mobile.Logic.Models.Mappings;
 using Socially.Mobile.Logic.Services;
+using Socially.Models.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,10 +22,14 @@ namespace Socially.Mobile.Logic.ViewModels
         private readonly IApiConsumer _apiConsumer;
         private readonly ICachedContext _cachedContext;
 
+        [ObservableProperty]
+        AddPostModel addPostModel;
+
         public ProfilePostsViewModel(ISocialLogger logger,
                                      IApiConsumer apiConsumer,
                                      ICachedContext cachedContext)
         {
+            AddPostModel = new();
             _logger = logger;
             _apiConsumer = apiConsumer;
             _cachedContext = cachedContext;
@@ -54,7 +61,15 @@ namespace Socially.Mobile.Logic.ViewModels
             return res;
         }
 
-
+        [RelayCommand]
+        public async Task AddPostAsync()
+        {
+            if (AddPostModel.Validate(Validation))
+            {
+                await ExecuteAndValidate(() => _apiConsumer.AddPostAsync(AddPostModel.ToModel()));
+                await RefreshAsync();
+            }
+        }
 
     }
 }

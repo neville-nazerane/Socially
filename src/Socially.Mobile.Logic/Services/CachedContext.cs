@@ -31,10 +31,12 @@ namespace Socially.Mobile.Logic.Services
                 var user = await _apiConsumer.GetCurrentUserSummary().ToMobileModel();
                 await _userStorage.UpdateAsync(user);
                 currentUserId = user.Id;
-                return user;
             }
-            else return GetUser(currentUserId);
+            
+            return GetUser(currentUserId);
         }
+
+        public UserSummaryModel GetCurrentUser() => GetUser(currentUserId);
 
         public async Task UpdateUserProfilesIfNotExistAsync(IEnumerable<int> ids)
         {

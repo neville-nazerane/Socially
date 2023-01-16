@@ -14,9 +14,15 @@
         <RefreshView Command="{Binding RefreshCommand}"
                      IsRefreshing="{Binding RefreshCommand.IsRunning}"
                      AbsoluteLayout.LayoutFlags="SizeProportional"
-                    AbsoluteLayout.LayoutBounds="0, 0, 1, 1">
-            <CollectionView ItemsSource="{ Binding Model }"
-                             >
+                     AbsoluteLayout.LayoutBounds="0, 0, 1, 1">
+            <CollectionView ItemsSource="{ Binding Model }" 
+                            Header="" >
+
+                <CollectionView.HeaderTemplate>
+                    <DataTemplate>
+                        <comp:AddPostEditor HeightRequest="150" />
+                    </DataTemplate>
+                </CollectionView.HeaderTemplate>
 
                 <CollectionView.EmptyView>
                     <Label Margin="20, 20, 0, 0" 
@@ -32,7 +38,6 @@
 
             </CollectionView>
         </RefreshView>
-
 
         <comp:TabMenu />
 

@@ -19,6 +19,8 @@ var mobileModels = AggregatedType
                         .Add<UserSummaryModel>()
                         .Add<PostDisplayModel>()
                         .Add<DisplayCommentModel>()
+                        .Add<AddPostModel>()
+                        .Add<AddCommentModel>()
                         .ToEnumerable();
 
 await SetMobileModelsAsync(mobileModels);
