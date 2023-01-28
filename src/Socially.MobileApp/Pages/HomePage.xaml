@@ -16,20 +16,19 @@
                      AbsoluteLayout.LayoutFlags="SizeProportional"
                      AbsoluteLayout.LayoutBounds="0, 0, 1, 1">
             <CollectionView ItemsSource="{ Binding Model }" 
-                            Header="" >
+                            Header="{Binding .}" >
 
                 <CollectionView.HeaderTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="vm:HomeViewModel">
                         <Grid RowDefinitions="120, 50"
                               ColumnDefinitions="*, 100"
                               RowSpacing="8"
-                              HeightRequest="200"
-                              BindingContext="{Binding ., Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}}" >
-                            <comp:AddPostEditor Text="{Binding NewPostText, Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}}" Grid.ColumnSpan="2" />
+                              HeightRequest="200" >
+                            <comp:AddPostEditor Text="{Binding NewPostText}" Grid.ColumnSpan="2" />
                             <Button Text="Add" 
                                     Grid.Row="1"
                                     Grid.Column="1"
-                                    Command="{Binding AddPostCommand, Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}}"
+                                    Command="{Binding AddPostCommand}"
                                     Margin="0, 0, 4, 0" />
                         </Grid>
                     </DataTemplate>
