@@ -20,8 +20,12 @@ namespace Socially.Mobile.Logic.ViewModels
         private readonly ISocialLogger _logger;
         private readonly IApiConsumer _apiConsumer;
         private readonly ICachedContext _cachedContext;
+
         [ObservableProperty]
         bool isSelected;
+
+        [ObservableProperty]
+        string newPostText;
 
         [RelayCommand]
         void Swap() => IsSelected = !IsSelected;
@@ -48,6 +52,20 @@ namespace Socially.Mobile.Logic.ViewModels
                                .Union(Model.Select(p => p.CreatorId))
                                .ToImmutableArray();
             await _cachedContext.UpdateUserProfilesIfNotExistAsync(userids);
+        }
+
+        [RelayCommand]
+        async Task AddPostAsync()
+        {
+            if (!string.IsNullOrEmpty(NewPostText))
+            {
+                await _apiConsumer.AddPostAsync(new Socially.Models.AddPostModel
+                {
+                    Text = NewPostText
+                });
+                await RefreshAsync();
+                NewPostText = null;
+            }
         }
 
         public override async Task<ObservableCollection<PostDisplayModel>> GetFromServerAsync(CancellationToken cancellationToken = default)

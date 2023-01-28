@@ -13,6 +13,13 @@
         AbsoluteLayout.LayoutFlags="SizeProportional" 
         AbsoluteLayout.LayoutBounds="0, 0, 1, 1" />
 
+    <Editor x:Name="editor"
+            TextChanged="Editor_TextChanged"
+            AbsoluteLayout.LayoutFlags="SizeProportional" 
+            AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+            Margin="65, 0, 0, 0"
+            FontSize="Large" />
+
     <c:CurrentProfilePic
         BorderThickness="4"
         AbsoluteLayout.LayoutBounds="10, 10, 55, 55" />
