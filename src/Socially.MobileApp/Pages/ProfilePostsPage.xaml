@@ -16,12 +16,26 @@
                      AbsoluteLayout.LayoutBounds="0, 0, 1, 1" >
             
             <CollectionView ItemsSource="{ Binding Model }"   
-                            Header=""
+                            Header="{Binding .}"
                             Margin="-1" >
 
                 <CollectionView.HeaderTemplate>
-                    <DataTemplate>
-                        <comp:ProfileHeader />
+                    <DataTemplate x:DataType="vm:ProfilePostsViewModel">
+                        <Grid RowDefinitions="200, 50, 120, 50"
+                              ColumnDefinitions="*, 100"
+                              RowSpacing="8"
+                              HeightRequest="460">
+                            <comp:ProfileHeader HeightRequest="200"
+                                                Grid.Column="0" Grid.Row="0"
+                                                Grid.ColumnSpan="2"/>
+                            <comp:AddPostEditor Text="{Binding AddPostModel.Text}"
+                                                Grid.ColumnSpan="2"
+                                                Grid.Column="0" Grid.Row="2" />
+                            <Button Text="Add" 
+                                    Grid.Row="3" Grid.Column="1"
+                                    Command="{Binding AddPostCommand}"
+                                    Margin="0, 0, 4, 0" />
+                        </Grid>
                     </DataTemplate>
                 </CollectionView.HeaderTemplate>
 

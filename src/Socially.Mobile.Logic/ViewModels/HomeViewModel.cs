@@ -25,16 +25,20 @@ namespace Socially.Mobile.Logic.ViewModels
         bool isSelected;
 
         [ObservableProperty]
-        string newPostText;
+        AddPostModel addPostModel;
 
         [RelayCommand]
         void Swap() => IsSelected = !IsSelected;
 
-        public HomeViewModel(ISocialLogger logger, IApiConsumer apiConsumer, ICachedContext cachedContext)
+        public HomeViewModel(ISocialLogger logger,
+                             IApiConsumer apiConsumer,
+                             ICachedContext cachedContext)
         {
             _logger = logger;
             _apiConsumer = apiConsumer;
             _cachedContext = cachedContext;
+
+            AddPostModel = new();
         }
 
         public override void OnException(Exception ex) => _logger.LogException(ex);
@@ -57,14 +61,11 @@ namespace Socially.Mobile.Logic.ViewModels
         [RelayCommand]
         async Task AddPostAsync()
         {
-            if (!string.IsNullOrEmpty(NewPostText))
+            if (AddPostModel.Validate(Validation))
             {
-                await _apiConsumer.AddPostAsync(new Socially.Models.AddPostModel
-                {
-                    Text = NewPostText
-                });
+                await ExecuteAndValidate(() => _apiConsumer.AddPostAsync(AddPostModel.ToModel()));
                 await RefreshAsync();
-                NewPostText = null;
+                AddPostModel = new();
             }
         }
 

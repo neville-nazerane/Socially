@@ -24,7 +24,7 @@
                               ColumnDefinitions="*, 100"
                               RowSpacing="8"
                               HeightRequest="200" >
-                            <comp:AddPostEditor Text="{Binding NewPostText}" Grid.ColumnSpan="2" />
+                            <comp:AddPostEditor Text="{Binding AddPostModel.Text}" Grid.ColumnSpan="2" />
                             <Button Text="Add" 
                                     Grid.Row="1"
                                     Grid.Column="1"
