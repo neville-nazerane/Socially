@@ -20,17 +20,25 @@ namespace Socially.Mobile.Logic.ViewModels
         private readonly ISocialLogger _logger;
         private readonly IApiConsumer _apiConsumer;
         private readonly ICachedContext _cachedContext;
+
         [ObservableProperty]
         bool isSelected;
+
+        [ObservableProperty]
+        AddPostModel addPostModel;
 
         [RelayCommand]
         void Swap() => IsSelected = !IsSelected;
 
-        public HomeViewModel(ISocialLogger logger, IApiConsumer apiConsumer, ICachedContext cachedContext)
+        public HomeViewModel(ISocialLogger logger,
+                             IApiConsumer apiConsumer,
+                             ICachedContext cachedContext)
         {
             _logger = logger;
             _apiConsumer = apiConsumer;
             _cachedContext = cachedContext;
+
+            AddPostModel = new();
         }
 
         public override void OnException(Exception ex) => _logger.LogException(ex);
@@ -48,6 +56,17 @@ namespace Socially.Mobile.Logic.ViewModels
                                .Union(Model.Select(p => p.CreatorId))
                                .ToImmutableArray();
             await _cachedContext.UpdateUserProfilesIfNotExistAsync(userids);
+        }
+
+        [RelayCommand]
+        async Task AddPostAsync()
+        {
+            if (AddPostModel.Validate(Validation))
+            {
+                await ExecuteAndValidate(() => _apiConsumer.AddPostAsync(AddPostModel.ToModel()));
+                await RefreshAsync();
+                AddPostModel = new();
+            }
         }
 
         public override async Task<ObservableCollection<PostDisplayModel>> GetFromServerAsync(CancellationToken cancellationToken = default)

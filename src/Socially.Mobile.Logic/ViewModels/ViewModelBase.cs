@@ -85,7 +85,7 @@ namespace Socially.Mobile.Logic.ViewModels
             return ExecuteAndValidate(() => SubmitToServerAsync(model));
         }
 
-        async Task ExecuteAndValidate(Func<Task> func)
+        protected async Task ExecuteAndValidate(Func<Task> func)
         {
             try
             {

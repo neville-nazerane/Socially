@@ -30,7 +30,7 @@
                         <Span Text="  " />
                         <Span FontAttributes="Bold" Text="{Binding User.FirstName}" />
                         <Span Text="  " />
-                        <!--<Span FontAttributes="Italic" FontSize="Small" Text="{Binding Comment., Converter={StaticResource timeToDurationConverter}}" />-->
+                        <Span FontAttributes="Italic" FontSize="Small" Text="{Binding Comment.CreatedOn, Converter={StaticResource timeToDurationConverter}}" />
                     </FormattedString.Spans>
                 </FormattedString>
             </Label.FormattedText>
@@ -54,7 +54,7 @@
                Margin="0, 0, 0, 10"
                 Grid.Row="1" />
 
-    <comp:CommentEntry Grid.Row="4" />
+    <comp:CommentEntry Command="{Binding AddCommentCommand}" x:Name="commentEntry" Grid.Row="4" />
 
     <!--Comments-->
     <CollectionView Grid.Row="6"
@@ -62,7 +62,8 @@
                     ItemsSource="{Binding Comment.Comments}">
         <CollectionView.ItemTemplate>
             <DataTemplate>
-                <comp:CommentDisplay Comment="{Binding .}" />
+                <comp:CommentDisplay PostId="{Binding PostId, Source={RelativeSource AncestorType={x:Type cm:CommentDisplayComponentModel}}}"
+                                     Comment="{Binding .}" />
             </DataTemplate>
         </CollectionView.ItemTemplate>
     </CollectionView>

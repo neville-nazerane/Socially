@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Socially.MobileApp.Components.ProfileImage">
+
+    <RoundRectangle x:Name="border"
+                    Fill="{StaticResource EntryBorder}"
+                    CornerRadius="10"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="CenterAndExpand" />
+    
+    <Image x:Name="img"
+           Source="{Binding ., Converter={StaticResource nameToProfileImageUrl}}"
+           Aspect="AspectFill" >
+        <Image.Clip>
+            <RoundRectangleGeometry x:Name="imageClip"
+                                    CornerRadius="10" />
+        </Image.Clip>
+    </Image>
+
+
+</Grid>

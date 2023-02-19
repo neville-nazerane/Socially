@@ -25,6 +25,13 @@ namespace Socially.MobileApp
 #endif
             });
 
+            Microsoft.Maui.Handlers.EditorHandler.Mapper.AppendToMapping("NoUnderline", (h, v) =>
+            {
+#if ANDROID
+                h.PlatformView.BackgroundTintList = Android.Content.Res.ColorStateList.ValueOf(Colors.Transparent.ToAndroid());
+#endif
+            });
+
             // verify configs 
             if (Configs.BaseURL is null)
             {

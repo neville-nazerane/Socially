@@ -1,10 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Socially.Apps.Consumer.Services;
 using Socially.Mobile.Logic.Models;
 using Socially.Mobile.Logic.Services;
 using Socially.Mobile.Logic.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,6 +17,7 @@ namespace Socially.Mobile.Logic.ComponentModels
     {
 
         private readonly ICachedContext _cachedContext;
+        private readonly IApiConsumer _apiConsumer;
 
         [ObservableProperty]
         DisplayCommentModel comment;
@@ -21,14 +25,30 @@ namespace Socially.Mobile.Logic.ComponentModels
         [ObservableProperty]
         UserSummaryModel user;
 
-        public CommentDisplayComponentModel(ICachedContext cachedContext)
+        public int PostId { get; set; }
+
+        public CommentDisplayComponentModel(ICachedContext cachedContext, 
+                                            IApiConsumer apiConsumer)
         {
             _cachedContext = cachedContext;
+            _apiConsumer = apiConsumer;
         }
 
         partial void OnCommentChanging(DisplayCommentModel value)
         {
             User = _cachedContext.GetUser(value.CreatorId);
+        }
+
+
+        [RelayCommand]
+        public async Task AddCommentAsync(string text, CancellationToken cancellationToken = default)
+        {
+            await _apiConsumer.AddCommentAsync(new()
+            {
+                Text = text,
+                ParentCommentId = Comment.Id,
+                PostId = PostId
+            }, cancellationToken);
         }
 
     }

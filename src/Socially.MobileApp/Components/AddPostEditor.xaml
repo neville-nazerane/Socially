@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<AbsoluteLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:c="clr-namespace:Socially.MobileApp.Components"
+                x:Class="Socially.MobileApp.Components.AddPostEditor">
+
+    <RoundRectangle
+        CornerRadius="10"
+        StrokeThickness="2"
+        Stroke="{StaticResource EntryBorder}"
+        Fill="{StaticResource Secondary}"
+        Margin="4"
+        AbsoluteLayout.LayoutFlags="SizeProportional" 
+        AbsoluteLayout.LayoutBounds="0, 0, 1, 1" />
+
+    <Editor x:Name="editor"
+            TextChanged="Editor_TextChanged"
+            AbsoluteLayout.LayoutFlags="SizeProportional" 
+            AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+            Margin="65, 0, 0, 0"
+            FontSize="Large" />
+
+    <c:CurrentProfilePic
+        BorderThickness="4"
+        AbsoluteLayout.LayoutBounds="10, 10, 55, 55" />
+
+</AbsoluteLayout>
