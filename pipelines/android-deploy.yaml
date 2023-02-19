@@ -19,7 +19,7 @@ variables:
 
   projectPath: src/Socially.MobileApp
   apkName: com.sociallyconnections.app-Signed.apk
-  keyStoreFile: socially.jks
+  keyStoreFile: internet.jks
   appCenterSlug: live.neville-live.com/Socially-Connections
   appCenterGroup: d25fb82e-30c5-47ec-86a9-f59d5e2d8fe6
   artifactName: androidApp
