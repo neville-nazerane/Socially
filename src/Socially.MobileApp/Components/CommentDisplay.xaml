@@ -30,7 +30,7 @@
                         <Span Text="  " />
                         <Span FontAttributes="Bold" Text="{Binding User.FirstName}" />
                         <Span Text="  " />
-                        <!--<Span FontAttributes="Italic" FontSize="Small" Text="{Binding Comment., Converter={StaticResource timeToDurationConverter}}" />-->
+                        <Span FontAttributes="Italic" FontSize="Small" Text="{Binding Comment.CreatedOn, Converter={StaticResource timeToDurationConverter}}" />
                     </FormattedString.Spans>
                 </FormattedString>
             </Label.FormattedText>

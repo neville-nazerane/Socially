@@ -57,8 +57,26 @@ namespace Socially.Mobile.Logic.ViewModels
             var res = new ObservableCollection<PostDisplayModel>(
                                 (await _apiConsumer.GetCurrentUserPostsAsync(20, null, cancellationToken).ToMobileModel())
                                 .Reverse());
+            
+            foreach (var post in res)
+            {
+                post.Comments = ReverseComments(post.Comments);
+            }
 
             return res;
+        }
+
+        ICollection<DisplayCommentModel> ReverseComments(IEnumerable<DisplayCommentModel> commentModels)
+        {
+            if (commentModels is null)
+                return null;
+
+            var result = commentModels.Reverse().ToList();
+
+            foreach (var comment in commentModels)
+                comment.Comments = ReverseComments(comment.Comments);
+
+            return result;
         }
 
         [RelayCommand]
