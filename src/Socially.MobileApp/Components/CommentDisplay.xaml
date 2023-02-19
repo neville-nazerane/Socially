@@ -54,7 +54,7 @@
                Margin="0, 0, 0, 10"
                 Grid.Row="1" />
 
-    <comp:CommentEntry x:Name="commentEntry" Grid.Row="4" />
+    <comp:CommentEntry Command="{Binding AddCommentCommand}" x:Name="commentEntry" Grid.Row="4" />
 
     <!--Comments-->
     <CollectionView Grid.Row="6"
@@ -62,8 +62,7 @@
                     ItemsSource="{Binding Comment.Comments}">
         <CollectionView.ItemTemplate>
             <DataTemplate>
-                <comp:CommentDisplay AddCommand="{Binding AddCommentCommand, Source={RelativeSource AncestorType={x:Type cm:CommentDisplayComponentModel}}}" 
-                                     PostId="{Binding PostId, Source={RelativeSource AncestorType={x:Type cm:CommentDisplayComponentModel}}}"
+                <comp:CommentDisplay PostId="{Binding PostId, Source={RelativeSource AncestorType={x:Type cm:CommentDisplayComponentModel}}}"
                                      Comment="{Binding .}" />
             </DataTemplate>
         </CollectionView.ItemTemplate>

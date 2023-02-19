@@ -94,7 +94,6 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <comp:CommentDisplay PostId="{Binding Post.Id, Source={RelativeSource AncestorType={x:Type cm:PostDisplayComponentModel}}}" 
-                                         AddCommand="{Binding AddCommentCommand, Source={RelativeSource AncestorType={x:Type cm:PostDisplayComponentModel}}}"
                                          Comment="{Binding .}" />
                 </DataTemplate>
             </CollectionView.ItemTemplate>
