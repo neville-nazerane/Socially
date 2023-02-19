@@ -1,3 +1,6 @@
+using Javax.Security.Auth;
+using Microsoft.Maui.Layouts;
+using System.Collections.Concurrent;
 using System.Windows.Input;
 
 namespace Socially.MobileApp.Components;
@@ -10,7 +13,6 @@ public partial class CommentEntry : AbsoluteLayout
                                                                                   typeof(ICommand),
                                                                                   typeof(CommentEntry),
                                                                                   propertyChanged: CommandPropertyChanged);
-
 
     public ICommand Command
     {
@@ -28,6 +30,7 @@ public partial class CommentEntry : AbsoluteLayout
 
     private void Entry_Completed(object sender, EventArgs e)
     {
-        if (Command?.CanExecute(null) == true) Command.Execute(null);
+        if (Command?.CanExecute(entry.Text) == true) Command.Execute(entry.Text);
     }
+
 }

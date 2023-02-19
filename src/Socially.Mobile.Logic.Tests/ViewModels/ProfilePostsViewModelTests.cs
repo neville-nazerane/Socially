@@ -73,5 +73,22 @@ namespace Socially.Mobile.Logic.Tests.ViewModels
 
         }
 
+        [Fact]
+        public async Task AddPost_ApiResponds_Refreshes()
+        {
+            // ARRANGE
+            Init();
+
+            // ACT
+            await viewModel.AddPostAsync();
+
+            // ASSERT
+            mockedApiConsumer.Verify(a => a.GetCurrentUserPostsAsync(It.IsAny<int>(),
+                                                                     It.IsAny<DateTime?>(),
+                                                                     It.IsAny<CancellationToken>()),
+                                     Times.Once);
+
+        }
+
     }
 }

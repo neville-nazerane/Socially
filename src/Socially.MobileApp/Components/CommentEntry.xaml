@@ -28,6 +28,9 @@
                              Glyph="&#xf35a;"
                              Color="{StaticResource Primary}" />
         </Image.Source>
+        <Image.GestureRecognizers>
+            <TapGestureRecognizer Tapped="Entry_Completed" />
+        </Image.GestureRecognizers>
     </Image>
 
 </AbsoluteLayout>
