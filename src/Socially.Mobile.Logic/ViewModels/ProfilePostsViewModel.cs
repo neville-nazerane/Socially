@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Socially.Apps.Consumer.Services;
 using Socially.Mobile.Logic.Models;
 using Socially.Mobile.Logic.Models.Mappings;
+using Socially.Mobile.Logic.Models.PubMessages;
 using Socially.Mobile.Logic.Services;
 using Socially.Models.Exceptions;
 using System;
@@ -20,6 +21,7 @@ namespace Socially.Mobile.Logic.ViewModels
     {
         private readonly ISocialLogger _logger;
         private readonly IApiConsumer _apiConsumer;
+        private readonly IPubSubService _pubSubService;
         private readonly ICachedContext _cachedContext;
 
         [ObservableProperty]
@@ -27,11 +29,13 @@ namespace Socially.Mobile.Logic.ViewModels
 
         public ProfilePostsViewModel(ISocialLogger logger,
                                      IApiConsumer apiConsumer,
+                                     IPubSubService pubSubService,
                                      ICachedContext cachedContext)
         {
             AddPostModel = new();
             _logger = logger;
             _apiConsumer = apiConsumer;
+            _pubSubService = pubSubService;
             _cachedContext = cachedContext;
         }
 
@@ -40,6 +44,13 @@ namespace Socially.Mobile.Logic.ViewModels
         public override async Task OnNavigatedAsync()
         {
             await RefreshAsync();
+            _pubSubService.Subscribe<RefreshPostMessage>(this, m => Task.Run(RefreshAsync));
+        }
+
+        public override Task OnNavigatedFromAsync()
+        {
+            _pubSubService.UnSubscribe<RefreshPostMessage>(this);
+            return Task.CompletedTask;
         }
 
         [RelayCommand]
