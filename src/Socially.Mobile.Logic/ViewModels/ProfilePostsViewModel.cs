@@ -5,6 +5,7 @@ using Socially.Mobile.Logic.Models;
 using Socially.Mobile.Logic.Models.Mappings;
 using Socially.Mobile.Logic.Models.PubMessages;
 using Socially.Mobile.Logic.Services;
+using Socially.Mobile.Logic.Utils;
 using Socially.Models.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -65,30 +66,28 @@ namespace Socially.Mobile.Logic.ViewModels
         
         public override async Task<ObservableCollection<PostDisplayModel>> GetFromServerAsync(CancellationToken cancellationToken = default)
         {
-            var res = new ObservableCollection<PostDisplayModel>(
+            return new ObservableCollection<PostDisplayModel>(
                                 (await _apiConsumer.GetCurrentUserPostsAsync(20, null, cancellationToken).ToMobileModel())
-                                .Reverse());
+                                .ReverseRecursive());
             
-            foreach (var post in res)
-            {
-                post.Comments = ReverseComments(post.Comments);
-            }
+            //foreach (var post in res)
+            //    post.Comments = ReverseComments(post.Comments);
 
-            return res;
+            //return res;
         }
 
-        ICollection<DisplayCommentModel> ReverseComments(IEnumerable<DisplayCommentModel> commentModels)
-        {
-            if (commentModels is null)
-                return null;
+        //ICollection<DisplayCommentModel> ReverseComments(IEnumerable<DisplayCommentModel> commentModels)
+        //{
+        //    if (commentModels is null)
+        //        return null;
 
-            var result = commentModels.Reverse().ToList();
+        //    var result = commentModels.Reverse().ToList();
 
-            foreach (var comment in commentModels)
-                comment.Comments = ReverseComments(comment.Comments);
+        //    foreach (var comment in commentModels)
+        //        comment.Comments = ReverseComments(comment.Comments);
 
-            return result;
-        }
+        //    return result;
+        //}
 
         [RelayCommand]
         public async Task AddPostAsync()
