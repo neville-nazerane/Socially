@@ -3,7 +3,9 @@ using CommunityToolkit.Mvvm.Input;
 using Socially.Apps.Consumer.Services;
 using Socially.Mobile.Logic.Models;
 using Socially.Mobile.Logic.Models.Mappings;
+using Socially.Mobile.Logic.Models.PubMessages;
 using Socially.Mobile.Logic.Services;
+using Socially.Mobile.Logic.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -19,6 +21,7 @@ namespace Socially.Mobile.Logic.ViewModels
 
         private readonly ISocialLogger _logger;
         private readonly IApiConsumer _apiConsumer;
+        private readonly IPubSubService _pubSubService;
         private readonly ICachedContext _cachedContext;
 
         [ObservableProperty]
@@ -32,10 +35,12 @@ namespace Socially.Mobile.Logic.ViewModels
 
         public HomeViewModel(ISocialLogger logger,
                              IApiConsumer apiConsumer,
+                             IPubSubService pubSubService,
                              ICachedContext cachedContext)
         {
             _logger = logger;
             _apiConsumer = apiConsumer;
+            _pubSubService = pubSubService;
             _cachedContext = cachedContext;
 
             AddPostModel = new();
@@ -46,6 +51,7 @@ namespace Socially.Mobile.Logic.ViewModels
         public override async Task OnNavigatedAsync()
         {
             await RefreshAsync();
+            _pubSubService.Subscribe<RefreshPostMessage>(_id, m => Task.Run(RefreshAsync));
         }
 
         [RelayCommand]
@@ -71,7 +77,7 @@ namespace Socially.Mobile.Logic.ViewModels
 
         public override async Task<ObservableCollection<PostDisplayModel>> GetFromServerAsync(CancellationToken cancellationToken = default)
             => new((await _apiConsumer.GetHomePostsAsync(10, null, cancellationToken).ToMobileModel())
-                    .Reverse());
+                                      .ReverseRecursive());
 
     }
 }

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Socially.Apps.Consumer.Services;
 using Socially.Mobile.Logic.Models;
+using Socially.Mobile.Logic.Models.PubMessages;
 using Socially.Mobile.Logic.Services;
 using Socially.Mobile.Logic.ViewModels;
 using System;
@@ -17,17 +18,20 @@ namespace Socially.Mobile.Logic.ComponentModels
     {
         private readonly ICachedContext _cachedContext;
         private readonly IApiConsumer _apiConsumer;
-        
+        private readonly IPubSubService _pubSubService;
         [ObservableProperty]
         PostDisplayModel post;
 
         [ObservableProperty]
         UserSummaryModel user;
 
-        public PostDisplayComponentModel(ICachedContext cachedContext, IApiConsumer apiConsumer)
+        public PostDisplayComponentModel(ICachedContext cachedContext,
+                                         IApiConsumer apiConsumer,
+                                         IPubSubService pubSubService)
         {
             _cachedContext = cachedContext;
             _apiConsumer = apiConsumer;
+            _pubSubService = pubSubService;
         }
 
         partial void OnPostChanging(PostDisplayModel value)
@@ -44,6 +48,10 @@ namespace Socially.Mobile.Logic.ComponentModels
                 ParentCommentId = null,
                 PostId = Post.Id
             }, cancellationToken);
+            await _pubSubService.PublishAsync(new RefreshPostMessage
+            {
+                PostId = Post.Id,
+            });
         }
 
     }

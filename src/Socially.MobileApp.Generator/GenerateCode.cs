@@ -74,6 +74,12 @@ namespace {pageNamespace}
             base.OnNavigatedTo(args);
         }}
 
+        protected override async void OnNavigatedFrom(NavigatedFromEventArgs args)
+        {{
+            await ViewModel.OnNavigatedFromAsync();
+            base.OnNavigatedFrom(args);
+        }}
+
     }}
 
 

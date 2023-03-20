@@ -79,7 +79,7 @@ namespace Socially.Apps.Consumer.Services
         {
             var res = await _httpClient.PostAsJsonAsync("users/getById", userIds, cancellationToken);
             res.EnsureSuccessStatusCode();
-            return await res.Content.ReadFromJsonAsync<IEnumerable<UserSummaryModel>>();
+            return await res.Content.ReadFromJsonAsync<IEnumerable<UserSummaryModel>>(cancellationToken: cancellationToken);
         }
 
         public Task<IEnumerable<SearchedUserModel>> SearchUserAsync(string q, CancellationToken cancellationToken = default)
@@ -137,7 +137,7 @@ namespace Socially.Apps.Consumer.Services
         {
             var res = await _httpClient.PostAsJsonAsync("post/comment", model, cancellationToken);
             res.EnsureSuccessStatusCode();
-            return int.Parse(await res.Content.ReadAsStringAsync());
+            return int.Parse(await res.Content.ReadAsStringAsync(cancellationToken));
         }
 
         public Task<HttpResponseMessage> DeleteCommentAsync(int id,
