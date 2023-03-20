@@ -17,6 +17,8 @@ namespace Socially.Mobile.Logic.ViewModels
     public partial class ViewModelBase : ObservableObject
     {
 
+        protected readonly Guid _id = Guid.NewGuid();
+
         [ObservableProperty]
         ObservableCollection<ValidationResult> validation;
 

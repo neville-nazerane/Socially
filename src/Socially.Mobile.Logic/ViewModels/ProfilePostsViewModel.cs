@@ -45,12 +45,12 @@ namespace Socially.Mobile.Logic.ViewModels
         public override async Task OnNavigatedAsync()
         {
             await RefreshAsync();
-            _pubSubService.Subscribe<RefreshPostMessage>(this, m => Task.Run(RefreshAsync));
+            _pubSubService.Subscribe<RefreshPostMessage>(_id, m => Task.Run(RefreshAsync));
         }
 
         public override Task OnNavigatedFromAsync()
         {
-            _pubSubService.UnSubscribe<RefreshPostMessage>(this);
+            _pubSubService.Unsubscribe<RefreshPostMessage>(_id);
             return Task.CompletedTask;
         }
 

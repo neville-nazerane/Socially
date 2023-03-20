@@ -48,7 +48,7 @@ namespace Socially.Mobile.Logic.ComponentModels
                 ParentCommentId = null,
                 PostId = Post.Id
             }, cancellationToken);
-            _pubSubService.Publish(new RefreshPostMessage
+            await _pubSubService.PublishAsync(new RefreshPostMessage
             {
                 PostId = Post.Id,
             });
