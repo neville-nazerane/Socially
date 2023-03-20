@@ -12,6 +12,9 @@ namespace Socially.MobileApp.Utils
 
         public static string BaseURL { get; }
         public static string ImageBase { get; }
+
+        public static string AppCenter { get; }
+
         public static string NoSqlLocation => _noSqlLocation ??= $"{FileSystem.Current.AppDataDirectory}/nosql.db";
 
 #if RELEASE
