@@ -1,4 +1,6 @@
-﻿using Socially.Mobile.Logic.Services;
+﻿using Microsoft.AppCenter;
+using Microsoft.AppCenter.Crashes;
+using Socially.Mobile.Logic.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,11 @@ namespace Socially.MobileApp.Services
     {
         public void LogException(Exception ex, string message = null)
         {
+            var properties = new Dictionary<string, string>
+            {
+                { nameof(message), message },
+            };
+            Crashes.TrackError(ex, properties);
         }
     }
 }

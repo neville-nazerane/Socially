@@ -29,7 +29,7 @@ namespace Socially.Mobile.Logic.ComponentModels
         {
             _cachedContext = cachedContext;
             _apiConsumer = apiConsumer;
-        }
+        } 
 
         partial void OnPostChanging(PostDisplayModel value)
         {
