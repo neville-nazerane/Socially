@@ -24,7 +24,8 @@ namespace Socially.Mobile.Logic.ComponentModels
         [ObservableProperty]
         UserSummaryModel user;
 
-        public PostDisplayComponentModel(ICachedContext cachedContext, IApiConsumer apiConsumer)
+        public PostDisplayComponentModel(ICachedContext cachedContext,
+                                         IApiConsumer apiConsumer)
         {
             _cachedContext = cachedContext;
             _apiConsumer = apiConsumer;
