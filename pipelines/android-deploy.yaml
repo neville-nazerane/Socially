@@ -26,6 +26,24 @@ variables:
   compileLocation: $(Build.ArtifactStagingDirectory)/published
   androidManifestLocation: $(projectPath)/Platforms/Android/AndroidManifest.xml
   releaseNotesPath: src/ReleaseNotes.txt
+  configPath: src/Socially.MobileApp/Utils/Configs.nogit.cs
+
+parameters:
+  - name: configFileContent
+    type: string
+    default: |
+      namespace Socially.MobileApp.Utils
+      {
+          public partial class Configs
+          {
+
+              static Configs()
+              {
+                  AppCenter = $(appCenterSecret);
+              }
+
+          }
+      }
 
 stages:
   - stage: Compile
@@ -45,6 +63,13 @@ stages:
               versionCode: $(Build.BuildId)
               versionName: $(Build.BuildNumber)
               printFile: true
+
+          - task: file-creator@5
+            displayName: Create config file
+            inputs:
+              filepath: $(configPath)
+              fileoverwrite: true
+              filecontent: ${{ parameters.configFileContent }}
 
           - script: dotnet publish -c release -f net7.0-android -o $(compileLocation)
             displayName: Compile MAUI android

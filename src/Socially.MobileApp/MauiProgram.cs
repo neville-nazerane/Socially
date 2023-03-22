@@ -42,8 +42,6 @@ namespace Socially.MobileApp
             }
 
             
-
-
             var builder = MauiApp.CreateBuilder();
 
             AppSetup(builder);
