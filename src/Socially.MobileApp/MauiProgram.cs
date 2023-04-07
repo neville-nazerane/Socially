@@ -1,5 +1,8 @@
 ﻿using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Markup;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
+using Microsoft.AppCenter;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls.Compatibility.Platform.Android;
@@ -39,8 +42,6 @@ namespace Socially.MobileApp
             }
 
             
-
-
             var builder = MauiApp.CreateBuilder();
 
             AppSetup(builder);
@@ -80,6 +81,8 @@ namespace Socially.MobileApp
 
         private static void AppSetup(MauiAppBuilder builder)
         {
+            AppCenter.Start(Configs.AppCenter, typeof(Analytics), typeof(Crashes));
+
             builder
                 //.WithApp()
                 //    .SetMainPage(new AppShell())
