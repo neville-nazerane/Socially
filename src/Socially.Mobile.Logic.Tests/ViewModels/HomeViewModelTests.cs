@@ -15,6 +15,7 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
         Mock<ISocialLogger> mockedLogger;
         Mock<IApiConsumer> mockedApiConsumer;
         Mock<ICachedContext> mockedCacheContext;
+        Mock<IPubSubService> mockedPubSubContext;
         HomeViewModel viewModel;
 
         void Init()
@@ -22,9 +23,11 @@ namespace Socially.Mobile.Logic.ViewModels.Tests
             mockedLogger = new();
             mockedApiConsumer = new();
             mockedCacheContext = new();
+            mockedPubSubContext = new();
 
             viewModel = new(mockedLogger.Object,
                             mockedApiConsumer.Object,
+                            mockedPubSubContext.Object,
                             mockedCacheContext.Object);
         }
 

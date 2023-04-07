@@ -23,6 +23,12 @@ namespace Socially.MobileApp.Pages
             base.OnNavigatedTo(args);
         }
 
+        protected override async void OnNavigatedFrom(NavigatedFromEventArgs args)
+        {
+            await ViewModel.OnNavigatedFromAsync();
+            base.OnNavigatedFrom(args);
+        }
+
     }
 
 

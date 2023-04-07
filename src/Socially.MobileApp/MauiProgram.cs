@@ -52,6 +52,7 @@ namespace Socially.MobileApp
             services.AddSingleton<IMessaging, Messaging>()
                     .AddSingleton<INavigationControl, NavigationControl>()
                     .AddSingleton<ICachedContext, CachedContext>()
+                    .AddSingleton<IPubSubService, PubSubService>()
                     .AddSingleton(typeof(ICachedNoSqlStorage<,>), typeof(CachedNoSqlStorage<,>))
                     .AddSingleton<ISocialLogger, SociallyLogger>();
 
