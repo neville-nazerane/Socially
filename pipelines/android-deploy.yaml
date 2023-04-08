@@ -71,6 +71,8 @@ stages:
               fileoverwrite: true
               filecontent: ${{ parameters.configFileContent }}
 
+          - script: cat $(configPath)
+
           - script: dotnet publish -c release -f net7.0-android -o $(compileLocation)
             displayName: Compile MAUI android
             workingDirectory: $(projectPath)
