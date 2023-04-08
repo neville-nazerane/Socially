@@ -70,18 +70,18 @@ stages:
               filepath: $(configPath)
               fileoverwrite: true
               filecontent: |
-      namespace Socially.MobileApp.Utils
-      {
-          public partial class Configs
-          {
+                namespace Socially.MobileApp.Utils
+                {
+                    public partial class Configs
+                    {
 
-              static Configs()
-              {
-                  AppCenter = "$(appCenterSecret)";
-              }
+                        static Configs()
+                        {
+                            AppCenter = "$(appCenterSecret)";
+                        }
 
-          }
-      }
+                    }
+                }
 
           - script: cat $(configPath)
 
