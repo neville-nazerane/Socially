@@ -51,6 +51,12 @@ namespace Socially.Mobile.Logic.ViewModels
 
         public override void OnException(Exception ex) => _socialLogger.LogException(ex);
 
+        public override Task OnNavigatedAsync()
+        {
+            ErrorMessage = null;
+            return Task.CompletedTask;
+        }
+
         public override async Task SubmitToServerAsync(LoginModel model, CancellationToken cancellationToken = default)
         {
             // exceptions for the below should be caught by base submit async function
