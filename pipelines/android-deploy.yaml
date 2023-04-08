@@ -69,7 +69,19 @@ stages:
             inputs:
               filepath: $(configPath)
               fileoverwrite: true
-              filecontent: ${{ parameters.configFileContent }}
+              filecontent: |
+      namespace Socially.MobileApp.Utils
+      {
+          public partial class Configs
+          {
+
+              static Configs()
+              {
+                  AppCenter = "$(appCenterSecret)";
+              }
+
+          }
+      }
 
           - script: cat $(configPath)
 
