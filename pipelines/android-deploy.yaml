@@ -39,7 +39,7 @@ parameters:
 
               static Configs()
               {
-                  AppCenter = $(appCenterSecret);
+                  AppCenter = "$(appCenterSecret)";
               }
 
           }
@@ -69,7 +69,21 @@ stages:
             inputs:
               filepath: $(configPath)
               fileoverwrite: true
-              filecontent: ${{ parameters.configFileContent }}
+              filecontent: |
+                namespace Socially.MobileApp.Utils
+                {
+                    public partial class Configs
+                    {
+
+                        partial void InnerInit()
+                        {
+                            AppCenter = "$(appCenterSecret)";
+                        }
+
+                    }
+                }
+
+          - script: cat $(configPath)
 
           - script: dotnet publish -c release -f net7.0-android -o $(compileLocation)
             displayName: Compile MAUI android
