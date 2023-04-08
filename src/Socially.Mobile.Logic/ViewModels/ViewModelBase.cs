@@ -17,6 +17,8 @@ namespace Socially.Mobile.Logic.ViewModels
     public partial class ViewModelBase : ObservableObject
     {
 
+        protected readonly Guid _id = Guid.NewGuid();
+
         [ObservableProperty]
         ObservableCollection<ValidationResult> validation;
 
@@ -32,6 +34,7 @@ namespace Socially.Mobile.Logic.ViewModels
         }
 
         public virtual Task OnNavigatedAsync() => Task.CompletedTask;
+        public virtual Task OnNavigatedFromAsync() => Task.CompletedTask;
         
         public virtual Task OnValidationChangedAsync() => Task.CompletedTask;
 

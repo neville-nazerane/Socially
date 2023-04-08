@@ -1,20 +1,16 @@
-﻿using Socially.Models;
-using System.Collections;
+﻿using Socially.Mobile.Logic.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Socially.ClientUtils
+namespace Socially.Mobile.Logic.Utils
 {
     public static class PostExtensions
     {
 
-        public static IEnumerable<int> GetAllCreatedIds(this IEnumerable<PostDisplayModel> posts)
-            => posts.Select(p => p.CreatorId)
-                    .Union(posts.SelectMany(p => p.Comments.Select(p => p.CreatorId)))
-                    .Distinct()
-                    .ToArray();
-
-        public static IEnumerable<PostDisplayModel> Reverse(this IEnumerable<PostDisplayModel> posts)
+        public static IEnumerable<PostDisplayModel> ReverseRecursive(this IEnumerable<PostDisplayModel> posts)
         {
             foreach (var post in posts)
                 post.Comments.ReverseRecursive();
