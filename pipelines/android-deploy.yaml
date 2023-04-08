@@ -39,7 +39,7 @@ parameters:
 
               static Configs()
               {
-                  AppCenter = $(appCenterSecret);
+                  AppCenter = "$(appCenterSecret)";
               }
 
           }
