@@ -75,7 +75,7 @@ stages:
                     public partial class Configs
                     {
 
-                        static Configs()
+                        partial void InnerInit()
                         {
                             AppCenter = "$(appCenterSecret)";
                         }
