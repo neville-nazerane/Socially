@@ -90,4 +90,32 @@ public partial class ProfileFriendsViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
+    async Task RequestFriendAsync(int forUserId, CancellationToken cancellationToken = default)
+    {
+        await _apiConsumer.RequestFriendAsync(forUserId, cancellationToken);
+        await RefreshAsync();
+    }
+
+    [RelayCommand]
+    async Task AcceptFriendRequestAsync(int userId,  CancellationToken cancellationToken = default)
+    {
+        await _apiConsumer.RespondToFriendRequestAsync(userId, true, cancellationToken);
+        await RefreshAsync();
+    }
+
+    [RelayCommand]
+    async Task RejectFriendRequestAsync(int userId, CancellationToken cancellationToken = default)
+    {
+        await _apiConsumer.RespondToFriendRequestAsync(userId, false, cancellationToken);
+        await RefreshAsync();
+    }
+
+    [RelayCommand]
+    async Task RemoveFriendAsync(int userId, CancellationToken cancellationToken = default)
+    {
+        await _apiConsumer.RemoveFriendAsync(userId, cancellationToken);
+        await RefreshAsync();
+    }
+
 }
