@@ -43,9 +43,11 @@ public partial class ProfileFriendsViewModel : ViewModelBase
         GroupedData = new();
     }
 
-    partial void OnFriendRequestsChanged(ObservableCollection<UserSummaryModel> value) => GroupedData.Insert(1, new(value, "Friend Requests"));
+    partial void OnFriendRequestsChanged(ObservableCollection<UserSummaryModel> value) 
+        => GroupedData.Insert(1, new(value.Select(v => new DetailedUser(UserType.Request, v)), "Friend Requests"));
 
-    partial void OnFriendsChanged(ObservableCollection<UserSummaryModel> value) => GroupedData.Insert(0, new(value, "Friends"));
+    partial void OnFriendsChanged(ObservableCollection<UserSummaryModel> value)
+        => GroupedData.Insert(0, new(value.Select(v => new DetailedUser(UserType.Friend, v)), "Friends"));
 
     public override Task OnNavigatedAsync() => RefreshAsync();
 

@@ -3,11 +3,111 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:comp="clr-namespace:Socially.MobileApp.Components"
              xmlns:layout="clr-namespace:Socially.MobileApp.Layouts"
+             xmlns:selector="clr-namespace:Socially.MobileApp.TemplateSelectors"
              xmlns:m="clr-namespace:Socially.Mobile.Logic.Models;assembly=Socially.Mobile.Logic"
              xmlns:vm="clr-namespace:Socially.Mobile.Logic.ViewModels;assembly=Socially.Mobile.Logic"
              x:Class="Socially.MobileApp.Pages.ProfileFriendsPage"
              x:DataType="vm:ProfileFriendsViewModel"
              Title="ProfileFriendsPage">
+
+    <ContentPage.Resources>
+
+        <selector:FriendTemplateSelector x:Key="friendsDataTemplate" >
+            <selector:FriendTemplateSelector.FriendTemplate>
+                <DataTemplate x:DataType="m:DetailedUser">
+                    <Grid Padding="20"
+                              ColumnSpacing="10"
+                              ColumnDefinitions="35, auto, *, auto" >
+
+                        <Image Source="{Binding User.ProfilePicUrl, Converter={StaticResource nameToProfileImageUrl}}">
+                            <Image.Clip>
+                                <RoundRectangleGeometry CornerRadius="10"
+                                                            Rect="0, 0, 35, 35" />
+                            </Image.Clip>
+                        </Image>
+
+                        <Label Grid.Column="1"
+                                   VerticalTextAlignment="Center" >
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding User.FirstName}" />
+                                    <Span Text=" " />
+                                    <Span Text="{Binding User.LastName}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                        <ImageButton Grid.Column="3"
+                                     BackgroundColor="Transparent" >
+                            <ImageButton.Source>
+                                <FontImageSource FontFamily="faSolid"
+                                                     Glyph="&#xf056;"
+                                                     Color="{StaticResource Red}" />
+                            </ImageButton.Source>
+                            <ImageButton.GestureRecognizers>
+                                <TapGestureRecognizer CommandParameter="{Binding User.Id}"
+                                                      Command="{Binding RemoveFriendCommand, Source={x:RelativeSource AncestorType={x:Type vm:ProfileFriendsViewModel}}}" />
+                            </ImageButton.GestureRecognizers>
+                        </ImageButton>
+
+                    </Grid>
+                </DataTemplate>
+            </selector:FriendTemplateSelector.FriendTemplate>
+            <selector:FriendTemplateSelector.RequestTemplate>
+                <DataTemplate x:DataType="m:DetailedUser">
+                    <Grid Padding="20"
+                              ColumnSpacing="10"
+                              ColumnDefinitions="35, auto, *, auto, auto" >
+
+                        <Image Source="{Binding User.ProfilePicUrl, Converter={StaticResource nameToProfileImageUrl}}">
+                            <Image.Clip>
+                                <RoundRectangleGeometry CornerRadius="10"
+                                                            Rect="0, 0, 35, 35" />
+                            </Image.Clip>
+                        </Image>
+
+                        <Label Grid.Column="1"
+                               VerticalTextAlignment="Center" >
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding User.FirstName}" />
+                                    <Span Text=" " />
+                                    <Span Text="{Binding User.LastName}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                        <ImageButton Grid.Column="3"
+                                     BackgroundColor="Transparent" >
+                            <ImageButton.Source>
+                                <FontImageSource FontFamily="faSolid"
+                                                     Glyph="&#xf056;"
+                                                     Color="{StaticResource Red}" />
+                            </ImageButton.Source>
+                            <ImageButton.GestureRecognizers>
+                                <TapGestureRecognizer CommandParameter="{Binding User.Id}"
+                                                      Command="{Binding RejectFriendRequestCommand, Source={x:RelativeSource AncestorType={x:Type vm:ProfileFriendsViewModel}}}" />
+                            </ImageButton.GestureRecognizers>
+                        </ImageButton>
+
+                        <ImageButton Grid.Column="4"
+                                     BackgroundColor="Transparent" >
+                            <ImageButton.Source>
+                                <FontImageSource FontFamily="faSolid"
+                                                     Glyph="&#xf055;"
+                                                     Color="{StaticResource Secondary}" />
+                            </ImageButton.Source>
+                            <ImageButton.GestureRecognizers>
+                                <TapGestureRecognizer CommandParameter="{Binding User.Id}"
+                                                      Command="{Binding AcceptFriendRequestCommand, Source={x:RelativeSource AncestorType={x:Type vm:ProfileFriendsViewModel}}}" />
+                            </ImageButton.GestureRecognizers>
+                        </ImageButton>
+
+                    </Grid>
+                </DataTemplate>
+            </selector:FriendTemplateSelector.RequestTemplate>
+        </selector:FriendTemplateSelector>
+    </ContentPage.Resources>
 
     <layout:MainLayout>
 
@@ -17,6 +117,7 @@
                      AbsoluteLayout.LayoutBounds="0, 0, 1, 1">
 
             <CollectionView ItemsSource="{ Binding GroupedData }"   
+                            ItemTemplate="{ StaticResource friendsDataTemplate }"
                             IsGrouped="True"
                             Header=""
                             Margin="-1" >
@@ -47,42 +148,7 @@
                 <CollectionView.EmptyView>
                     <Label Text="No one to see here" />
                 </CollectionView.EmptyView>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="m:UserSummaryModel">
-                        <Grid Padding="20"
-                              ColumnSpacing="10"
-                              ColumnDefinitions="35, auto, *, auto" >
 
-                            <Image Source="{Binding ProfilePicUrl, Converter={StaticResource nameToProfileImageUrl}}">
-                                <Image.Clip>
-                                    <RoundRectangleGeometry CornerRadius="10"
-                                                            Rect="0, 0, 35, 35" />
-                                </Image.Clip>
-                            </Image>
-
-                            <Label Grid.Column="1"
-                                   VerticalTextAlignment="Center" >
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="{Binding FirstName}" />
-                                        <Span Text=" " />
-                                        <Span Text="{Binding LastName}" />
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-
-                            <ImageButton Grid.Column="3"
-                                         BackgroundColor="Transparent" >
-                                <ImageButton.Source>
-                                    <FontImageSource FontFamily="faSolid"
-                                                     Glyph="&#xf056;"
-                                                     Color="{StaticResource Red}" />
-                                </ImageButton.Source>
-                            </ImageButton>
-
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
             </CollectionView>
         </RefreshView>
 
@@ -92,5 +158,5 @@
 
 
     </layout:MainLayout>
-    
+
 </ContentPage>

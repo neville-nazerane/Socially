@@ -6,28 +6,28 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Socially.Mobile.Logic.Models
 {
-    
+
     public partial class UserSummaryModel : ObservableObject, IValidatable
     {
 
         private readonly Socially.Models.UserSummaryModel model;
 
-        
-            [ObservableProperty]
-            System.Int32 id;
 
-            [ObservableProperty]
-            System.String firstName;
+        [ObservableProperty]
+        System.Int32 id;
 
-            [ObservableProperty]
-            System.String lastName;
+        [ObservableProperty]
+        System.String firstName;
 
-            [ObservableProperty]
-            System.String userName;
+        [ObservableProperty]
+        System.String lastName;
 
-            [ObservableProperty]
-            System.String profilePicUrl;
-        
+        [ObservableProperty]
+        System.String userName;
+
+        [ObservableProperty]
+        System.String profilePicUrl;
+
 
 
         public UserSummaryModel()
