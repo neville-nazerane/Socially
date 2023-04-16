@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Security;
 
 namespace Socially.ClientUtils
 {
@@ -14,7 +15,7 @@ namespace Socially.ClientUtils
                     .Distinct()
                     .ToArray();
 
-        public static IEnumerable<PostDisplayModel> Reverse(this IEnumerable<PostDisplayModel> posts)
+        public static IEnumerable<PostDisplayModel> ReversePost(this IEnumerable<PostDisplayModel> posts)
         {
             foreach (var post in posts)
                 post.Comments.ReverseRecursive();
@@ -23,7 +24,7 @@ namespace Socially.ClientUtils
 
         public static ICollection<DisplayCommentModel> ReverseRecursive(this IEnumerable<DisplayCommentModel> commentModels)
         {
-            if (commentModels is null)
+            if (commentModels is null || true)
                 return null;
 
             var result = commentModels.Reverse().ToList();
