@@ -43,9 +43,11 @@ public partial class ProfileFriendsViewModel : ViewModelBase
         GroupedData = new();
     }
 
-    partial void OnFriendRequestsChanged(ObservableCollection<UserSummaryModel> value) => GroupedData.Insert(1, new(value, "Friend Requests"));
+    partial void OnFriendRequestsChanged(ObservableCollection<UserSummaryModel> value) 
+        => GroupedData.Insert(1, new(value.Select(v => new DetailedUser(UserType.Request, v)), "Friend Requests"));
 
-    partial void OnFriendsChanged(ObservableCollection<UserSummaryModel> value) => GroupedData.Insert(0, new(value, "Friends"));
+    partial void OnFriendsChanged(ObservableCollection<UserSummaryModel> value)
+        => GroupedData.Insert(0, new(value.Select(v => new DetailedUser(UserType.Friend, v)), "Friends"));
 
     public override Task OnNavigatedAsync() => RefreshAsync();
 
@@ -88,6 +90,34 @@ public partial class ProfileFriendsViewModel : ViewModelBase
         {
             IsFriendsLoading = false;
         }
+    }
+
+    [RelayCommand]
+    async Task RequestFriendAsync(int forUserId, CancellationToken cancellationToken = default)
+    {
+        await _apiConsumer.RequestFriendAsync(forUserId, cancellationToken);
+        await RefreshAsync();
+    }
+
+    [RelayCommand]
+    async Task AcceptFriendRequestAsync(int userId,  CancellationToken cancellationToken = default)
+    {
+        await _apiConsumer.RespondToFriendRequestAsync(userId, true, cancellationToken);
+        await RefreshAsync();
+    }
+
+    [RelayCommand]
+    async Task RejectFriendRequestAsync(int userId, CancellationToken cancellationToken = default)
+    {
+        await _apiConsumer.RespondToFriendRequestAsync(userId, false, cancellationToken);
+        await RefreshAsync();
+    }
+
+    [RelayCommand]
+    async Task RemoveFriendAsync(int userId, CancellationToken cancellationToken = default)
+    {
+        await _apiConsumer.RemoveFriendAsync(userId, cancellationToken);
+        await RefreshAsync();
     }
 
 }

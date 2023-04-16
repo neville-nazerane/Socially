@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 
 namespace Socially.Mobile.Logic.Models
 {
-    public class GroupedUsers : ObservableCollection<UserSummaryModel>
+    public class GroupedUsers : ObservableCollection<DetailedUser>
     {
         public string Name { get; set; }
 
-        //public int Order { get; set; }
 
-        public GroupedUsers(IEnumerable<UserSummaryModel> collection, string name) : base(collection)
+        public UserType Type { get; set; }
+
+        public GroupedUsers(IEnumerable<DetailedUser> collection, string name) : base(collection)
         {
             Name = name;
             //Order = order;
