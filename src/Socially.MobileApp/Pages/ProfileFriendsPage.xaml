@@ -95,7 +95,7 @@
                             <ImageButton.Source>
                                 <FontImageSource FontFamily="faSolid"
                                                      Glyph="&#xf055;"
-                                                     Color="{StaticResource Secondary}" />
+                                                     Color="{StaticResource PrimaryButton}" />
                             </ImageButton.Source>
                             <ImageButton.GestureRecognizers>
                                 <TapGestureRecognizer CommandParameter="{Binding User.Id}"
