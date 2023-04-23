@@ -42,29 +42,6 @@ namespace Socially.Website.Pages.Profile
             await CachedContext.UpdateUserProfilesIfNotExistAsync(requiredUserIds);
         }
 
-        async Task AddPostAsyc()
-        {
-            if (string.IsNullOrEmpty(addPostModel.Text)) return;
-
-            int id = await Consumer.AddPostAsync(addPostModel);
-            posts.Add(new PostDisplayModel
-            {
-                Id = id,
-                Text = addPostModel.Text,
-                CreatorId = (await CachedContext.GetCurrentProfileInfoAsync()).Id
-            });
-            addPostModel = new AddPostModel();
-            StateHasChanged();
-        }
-
-        async Task DeletePostAsync(int postId)
-        {
-            var res = await Consumer.DeletePostAsync(postId);
-            res.EnsureSuccessStatusCode();
-            posts = posts.Where(p => p.Id != postId).ToList();
-            StateHasChanged();
-        }
-
         static Task RunAllAsync(params Func<Task>[] tasks)
         {
             return Task.WhenAll(tasks.Select(t => t()));
