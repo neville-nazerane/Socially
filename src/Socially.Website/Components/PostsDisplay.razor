@@ -1,8 +1,9 @@
 ﻿
 @if (Posts is not null)
 {
-    foreach(var post in Posts.ReversePost())
+    foreach(var postId in Posts.ReversePost().Select(p => p.Id))
     {
+        var post = PostsCache.Get(postId);
         <!-- Card feed item START -->
         <div class="card">
             <!-- Card header START -->

@@ -23,6 +23,9 @@ namespace Socially.Website.Components
         [Inject]
         public CachedContext CachedContext { get; set; }
 
+        [Inject]
+        public ICachedStorage<int, PostDisplayModel> PostsCache { get; set; }
+
         UserSummaryModel currentUser;
 
         //protected override async Task OnInitializedAsync()
@@ -33,7 +36,10 @@ namespace Socially.Website.Components
         {
             currentUser ??= await CachedContext.GetCurrentProfileInfoAsync();
             if (Posts is not null)
+            {
+                await PostsCache.UpdateAsync(Posts);
                 await CachedContext.UpdateUserProfilesIfNotExistAsync(Posts.GetAllCreatedIds());
+            }
         }
 
         async Task DeleteAsync(int postId)
