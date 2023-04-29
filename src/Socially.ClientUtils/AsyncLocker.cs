@@ -9,37 +9,28 @@ namespace Socially.ClientUtils
     public class AsyncLocker
     {
 
-        private TaskCompletionSource _lock;
+        private readonly SemaphoreSlim _locker = new(1, 1);
 
-        public Task WaitForLockAsync()
-        {
-            if (_lock is not null) 
-                return _lock.Task;
-            return Task.CompletedTask;
-        }
+        public Task WaitAsync() => _locker.WaitAsync();
 
         public async Task<IDisposable> WaitAndBeginLockAsync()
         {
-            await WaitForLockAsync();
+            await _locker.WaitAsync();
             return new Locker(this);
         }
 
         class Locker : IDisposable
         {
             private readonly AsyncLocker _src;
-            private readonly TaskCompletionSource _innerLock;
 
             public Locker(AsyncLocker src)
             {
                 _src = src;
-                _innerLock = new();
-                _src._lock = _innerLock;
             }
 
             public void Dispose()
             {
-                _innerLock.SetResult();
-                _src._lock = null;
+                _src._locker.Release();
             }
 
         }

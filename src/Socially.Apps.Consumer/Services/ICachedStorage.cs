@@ -8,7 +8,7 @@ public interface ICachedStorage<TKey, TValue> where TValue : class, ICachable<TK
 {
     IEnumerable<TKey> ExistingIds { get; }
 
-    Task<bool> AwaitLockAsync();
+    Task AwaitLockAsync();
     TValue Get(TKey id);
     bool IsInitialized(params TKey[] ids);
     Task UpdateAsync(IEnumerable<TValue> updatedValues);

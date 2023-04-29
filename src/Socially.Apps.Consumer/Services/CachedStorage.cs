@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Socially.Apps.Consumer.Services
@@ -16,7 +17,7 @@ namespace Socially.Apps.Consumer.Services
         readonly ConcurrentDictionary<TKey, TValue> _data = new();
         readonly ConcurrentBag<TKey> _initialized = new();
 
-        private TaskCompletionSource _lock;
+        private readonly SemaphoreSlim _locker = new(1, 1);
 
         public TValue Get(TKey id) => _data.GetOrAdd(id, id => new());
 
@@ -26,22 +27,11 @@ namespace Socially.Apps.Consumer.Services
         /// <summary>
         /// </summary>
         /// <returns>true if there was a lock</returns>
-        public async Task<bool> AwaitLockAsync()
-        {
-            if (_lock is not null)
-            {
-                await _lock.Task;
-                return true;
-            }
-            return false;
-        }
+        public Task AwaitLockAsync() => _locker.WaitAsync();
 
         public async Task UpdateAsync(IEnumerable<TValue> updatedValues)
         {
-            await AwaitLockAsync();
-            var localLock = new TaskCompletionSource();
-            _lock = localLock;
-
+            await _locker.WaitAsync();
             try
             {
                 foreach (var value in updatedValues)
@@ -54,13 +44,10 @@ namespace Socially.Apps.Consumer.Services
                     });
                     _initialized.Add(value.GetCacheKey());
                 }
-                _lock = null;
-                localLock.TrySetResult();
             }
-            catch (Exception ex)
+            finally
             {
-                _lock = null;
-                localLock.TrySetException(ex);
+                _locker.Release();
             }
         }
 
@@ -70,20 +57,15 @@ namespace Socially.Apps.Consumer.Services
         public async Task ClearAllAsync()
         {
             await AwaitLockAsync();
-            var localLock = new TaskCompletionSource();
-            _lock = localLock;
             try
             {
-
                 _data.Clear();
                 _initialized.Clear();
             }
             finally
             {
-                _lock = null;
-                localLock.TrySetResult();
+                _locker.Release();
             }
-
 
         }
 
