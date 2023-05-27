@@ -1,5 +1,4 @@
-﻿using DnsClient.Internal;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using Socially.Models;

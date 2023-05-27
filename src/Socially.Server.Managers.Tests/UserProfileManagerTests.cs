@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MongoDB.Bson.Serialization.Serializers;
 using Socially.Models;
 using Socially.Models.Enums;
 using Socially.Server.DataAccess;
