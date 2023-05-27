@@ -47,11 +47,10 @@ namespace Socially.Server.Managers
         }
 
         public async IAsyncEnumerable<string> GetConnectionIdsAsync(string listenerTag, 
-                                                                    int pageSize,
-                                                                    [EnumeratorCancellation] CancellationToken cancellationToken = default)
+                                                                    int pageSize)
         {
             var elements = _tableAccess.ListByPartitionAsync(LISTENER_TABLE_NAME, listenerTag, pageSize);
-            await foreach (var element in elements.WithCancellation(cancellationToken))
+            await foreach (var element in elements)
                 yield return element.RowKey;
         }
 
