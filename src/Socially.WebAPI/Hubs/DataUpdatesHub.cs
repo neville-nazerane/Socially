@@ -9,7 +9,7 @@ namespace Socially.WebAPI.Hubs
 
         public DataUpdatesHub(ISignalRStateManager stateManager)
         {
-            this._stateManager = stateManager;
+            _stateManager = stateManager;
         }
 
     }
