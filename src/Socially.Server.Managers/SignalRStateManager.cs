@@ -11,19 +11,23 @@ using System.Threading.Tasks;
 
 namespace Socially.Server.Managers
 {
-    public class RealtimeStateManager
+    public class SignalRStateManager : ISignalRStateManager
     {
 
         private const string LISTENER_TABLE_NAME = "signalRListeners";
-        private const string LISTENER_REVERSE_TABLE_NAME = "signalRListeners";
-
+        private const string LISTENER_REVERSE_TABLE_NAME = "signalRListenersReverse";
 
         private readonly ITableAccess _tableAccess;
-        
 
-        public RealtimeStateManager(ITableAccess tableAccess)
+        public SignalRStateManager(ITableAccess tableAccess)
         {
             _tableAccess = tableAccess;
+        }
+
+        public async Task InitAsync(CancellationToken cancellationToken = default)
+        {
+            await _tableAccess.CreateTableIfNotExistAsync(LISTENER_TABLE_NAME, cancellationToken);
+            await _tableAccess.CreateTableIfNotExistAsync(LISTENER_REVERSE_TABLE_NAME, cancellationToken);
         }
 
         public async Task RegisterAsync(IEnumerable<string> listenerTags,
@@ -46,7 +50,7 @@ namespace Socially.Server.Managers
             await _tableAccess.DeleteAllWithPartitionAsync(LISTENER_REVERSE_TABLE_NAME, connectionId);
         }
 
-        public async IAsyncEnumerable<string> GetConnectionIdsAsync(string listenerTag, 
+        public async IAsyncEnumerable<string> GetConnectionIdsAsync(string listenerTag,
                                                                     int pageSize)
         {
             var elements = _tableAccess.ListByPartitionAsync(LISTENER_TABLE_NAME, listenerTag, pageSize);

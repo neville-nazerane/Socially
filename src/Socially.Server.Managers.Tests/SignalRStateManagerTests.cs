@@ -12,15 +12,15 @@ using Xunit;
 
 namespace Socially.Server.Managers.Tests
 {
-    public class RealtimeStateManagerTests : TestBase
+    public class SignalRStateManagerTests : TestBase
     {
         private readonly Mock<ITableAccess> mockedTableAccess;
-        private readonly RealtimeStateManager manager;
+        private readonly SignalRStateManager manager;
 
-        public RealtimeStateManagerTests()
+        public SignalRStateManagerTests()
         {
             mockedTableAccess = new Mock<ITableAccess>();
-            manager = new RealtimeStateManager(mockedTableAccess.Object);
+            manager = new SignalRStateManager(mockedTableAccess.Object);
         }
 
         [Fact]

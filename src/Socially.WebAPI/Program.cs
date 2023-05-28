@@ -26,14 +26,14 @@ var configuration = builder.Configuration;
 services.AddCors();
 services.AddApplicationInsightsTelemetry(o => o.ConnectionString = configuration["appinsights"]);
 
-services.AddSingleton<IBlobAccess>(p => new BlobAccess(configuration["blobConnString"]));
-services.AddDbContext<ApplicationDbContext>(c => c.UseSqlServer(configuration.GetConnectionString("db")));
-services.AddSingleton(p =>
-{
-    var template = new ConfigsSettings();
-    configuration.GetSection("settings").Bind(template);
-    return template;
-});
+
+services.AddAzBlob(configuration["blobConnString"])
+        .AddAzStorage(configuration["storageConnString"])
+        .AddSqlServerDbContext(configuration.GetConnectionString("db"))
+        .AddSettings(configuration.GetSection("settings"))
+        .AddAzSignalR(configuration["signalR"]);
+
+
 services.AddIdentity<User, UserRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders();

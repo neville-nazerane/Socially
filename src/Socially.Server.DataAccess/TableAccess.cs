@@ -24,6 +24,12 @@ namespace Socially.Server.DataAccess
         TableClient GetTableClient(string tableName)
             => _clients.GetOrAdd(tableName, t => _tableServiceClient.GetTableClient(tableName));
 
+        public Task CreateTableIfNotExistAsync(string tableName, CancellationToken cancellationToken = default)
+        {
+            var tableClient = GetTableClient(tableName);
+            return tableClient.CreateIfNotExistsAsync(cancellationToken);
+        }
+
         public Task AddAsync(string tableName,
                              ITableEntity entity,
                              CancellationToken cancellationToken = default)
