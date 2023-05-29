@@ -181,6 +181,13 @@ namespace Socially.Server.Managers
             => await ProjectPostAsync(_dbContext.Posts.Where(p => p.Creator.Friends.Select(f => f.FriendUserId).Contains(_currentContext.UserId)),
                                       pageSize, since, cancellationToken);
 
+        public async Task<PostDisplayModel> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        {
+            var queryable = _dbContext.Posts.Where(p => p.Id == id);
+            var results = await ProjectPostAsync(queryable, 1, null, cancellationToken);
+            return results.SingleOrDefault();
+        }
+
         async Task<IEnumerable<PostDisplayModel>> ProjectPostAsync(IQueryable<Post> querablePosts,
                                                                    int pageSize,
                                                                    DateTime? since = null,

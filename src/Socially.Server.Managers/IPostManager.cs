@@ -16,5 +16,6 @@ namespace Socially.Server.Managers
         Task<IEnumerable<PostDisplayModel>> GetCurrentUserPostsAsync(int pageSize, DateTime? since = null, CancellationToken cancellationToken = default);
         Task<bool> SwapLikeAsync(int postId, int? commentId, CancellationToken cancellationToken = default);
         Task<IEnumerable<PostDisplayModel>> GetProfilePostsAsync(int userId, int pageSize, DateTime? since = null, CancellationToken cancellationToken = default);
+        Task<PostDisplayModel> GetByIdAsync(int id, CancellationToken cancellationToken = default);
     }
 }

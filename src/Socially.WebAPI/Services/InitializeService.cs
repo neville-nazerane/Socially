@@ -1,4 +1,5 @@
 ﻿using Socially.Server.Managers;
+using Socially.WebAPI.Services;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,7 +11,8 @@ namespace Socially.Website.Services
         private readonly IImageManager _imageManager;
         private readonly ISignalRStateManager _signalRStateManager;
 
-        public InitializeService(IImageManager imageManager, ISignalRStateManager signalRStateManager)
+        public InitializeService(IImageManager imageManager,
+                                 ISignalRStateManager signalRStateManager)
         {
             _imageManager = imageManager;
             _signalRStateManager = signalRStateManager;

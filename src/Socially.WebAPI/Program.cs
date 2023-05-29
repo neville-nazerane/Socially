@@ -15,6 +15,8 @@ using Socially.Website.Models;
 using Socially.Website.Services;
 using Socially.Server.Entities;
 using Microsoft.Extensions.Azure;
+using Socially.WebAPI.Services;
+using System.Threading.Tasks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -87,7 +89,13 @@ app.MapCustom<PostEndpoints>();
 await using (var scope = app.Services.CreateAsyncScope())
     await scope.ServiceProvider.GetService<InitializeService>().InitAsync();
 
-await app.RunAsync();
+
+var signalRPublisher = app.Services.GetService<SignalRPublisher>();
+
+await Task.WhenAll(
+    signalRPublisher.KeepRunningAsync(),
+    app.RunAsync()
+);
 
 public partial class Program { }
 
