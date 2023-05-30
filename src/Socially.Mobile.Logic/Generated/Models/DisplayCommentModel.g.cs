@@ -32,7 +32,7 @@ namespace Socially.Mobile.Logic.Models
             System.DateTime createdOn;
 
             [ObservableProperty]
-            System.Boolean isLikedByCurrentUser;
+            System.Nullable<System.Boolean> isLikedByCurrentUser;
         
 
 
