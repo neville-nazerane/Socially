@@ -13,15 +13,7 @@ stages:
           - template: runtest.yml
             parameters:
               path: src/Socially.Server.Managers.Tests
-
-      - job: IntegrationTests
-        displayName: Web API integration tests
-        steps:
-
-          - template: runtest.yml
-            parameters:
-              path: src/Socially.WebAPI.IntegrationTests
-
+              
       - job: MauiUnitTest
         displayName: Mobile unit tests
         steps:
@@ -29,3 +21,14 @@ stages:
           - template: runtest.yml
             parameters:
               path: src/Socially.Mobile.Logic.Tests
+
+      - job: IntegrationTests
+        displayName: Web API integration tests
+        dependsOn:
+          - APIUnitTests
+          - MauiUnitTest
+        steps:
+
+          - template: runtest.yml
+            parameters:
+              path: src/Socially.WebAPI.IntegrationTests
