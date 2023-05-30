@@ -68,10 +68,17 @@ namespace Socially.WebAPI.Endpoints
             return res;
         }
 
-        Task DeleteCommentAsync(IPostManager manager,
-                                int id,
-                                CancellationToken cancellationToken = default)
-            => manager.DeleteCommentAsync(id, cancellationToken);
+        async Task DeleteCommentAsync(IPostManager manager,
+                                      SignalRPublisher signalRPublisher,
+                                      int id,
+                                      CancellationToken cancellationToken = default)
+        {
+            int? postId = await manager.GetPostIdForCommentAsync(id, cancellationToken);
+            await manager.DeleteCommentAsync(id, cancellationToken);
+            cancellationToken.ThrowIfCancellationRequested();
+            if (postId.HasValue) 
+                signalRPublisher.EnqueuePost(postId.Value);
+        }
 
         Task<bool> SwapLikeAsync(IPostManager manager,
                            int postId,

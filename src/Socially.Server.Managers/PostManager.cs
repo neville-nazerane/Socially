@@ -50,6 +50,12 @@ namespace Socially.Server.Managers
             return entity.Id;
         }
 
+        public Task<int?> GetPostIdForCommentAsync(int commentId, CancellationToken cancellationToken = default)
+            => _dbContext.Comments
+                         .Where(c => c.Id == commentId)
+                         .Select(c => c.PostId)
+                         .SingleOrDefaultAsync(cancellationToken);
+
         public async Task DeleteAsync(int postId, CancellationToken cancellationToken = default)
         {
             int userId = _currentContext.UserId;
