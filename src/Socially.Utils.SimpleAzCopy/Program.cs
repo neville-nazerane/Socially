@@ -1,7 +1,6 @@
 ﻿
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using Microsoft.AspNetCore.StaticFiles;
 using MimeTypes.Core;
 using System.ComponentModel;
 using System.IO;
