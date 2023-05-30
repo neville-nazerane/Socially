@@ -66,6 +66,6 @@ steps:
         settings__imageBase: $(Config.settings__imageBase)
 
         signalR: $(Config.signalR)
-
+        storageConnString: $(Config.storageConnString)
 
 
