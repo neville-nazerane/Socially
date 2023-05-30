@@ -70,7 +70,7 @@ namespace Socially.Website.Components
         async Task LikeAsync(DisplayCommentModel comment)
         {
             await Consumer.SwapCommentLikeAsync(PostId, comment.Id);
-            if (comment.IsLikedByCurrentUser)
+            if (comment.IsLikedByCurrentUser.Value)
                 comment.LikeCount--;
             else
                 comment.LikeCount++;

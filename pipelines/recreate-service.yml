@@ -65,5 +65,7 @@ steps:
         settings__forgotPasswordTemplate: $(Secrets.settings__forgotPasswordTemplate)
         settings__imageBase: $(Config.settings__imageBase)
 
+        signalR: $(Config.signalR)
+
 
 

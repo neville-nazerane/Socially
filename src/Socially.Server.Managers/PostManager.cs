@@ -50,6 +50,12 @@ namespace Socially.Server.Managers
             return entity.Id;
         }
 
+        public Task<int?> GetPostIdForCommentAsync(int commentId, CancellationToken cancellationToken = default)
+            => _dbContext.Comments
+                         .Where(c => c.Id == commentId)
+                         .Select(c => c.PostId)
+                         .SingleOrDefaultAsync(cancellationToken);
+
         public async Task DeleteAsync(int postId, CancellationToken cancellationToken = default)
         {
             int userId = _currentContext.UserId;
@@ -81,7 +87,7 @@ namespace Socially.Server.Managers
             return entity.Id;
         }
 
-        public async Task DeleteCommentAsync(int commentId,
+        public async Task<DisplayCommentModel> DeleteCommentAsync(int commentId,
                                              CancellationToken cancellationToken = default)
         {
             int userId = _currentContext.UserId;
@@ -90,10 +96,11 @@ namespace Socially.Server.Managers
             if (comment == null)
             {
                 _logger.LogWarning("Did not find comment {commentId} to delete with user {userId}", commentId, userId);
-                return;
+                return null;
             }
             _dbContext.Comments.Remove(comment);
             await _dbContext.SaveChangesAsync(CancellationToken.None);
+            return comment.ToDisplayModel();
         }
 
         public async Task<bool> SwapLikeAsync(int postId,
@@ -180,6 +187,13 @@ namespace Socially.Server.Managers
                                                                            CancellationToken cancellationToken = default)
             => await ProjectPostAsync(_dbContext.Posts.Where(p => p.Creator.Friends.Select(f => f.FriendUserId).Contains(_currentContext.UserId)),
                                       pageSize, since, cancellationToken);
+
+        public async Task<PostDisplayModel> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        {
+            var queryable = _dbContext.Posts.Where(p => p.Id == id);
+            var results = await ProjectPostAsync(queryable, 1, null, cancellationToken);
+            return results.SingleOrDefault();
+        }
 
         async Task<IEnumerable<PostDisplayModel>> ProjectPostAsync(IQueryable<Post> querablePosts,
                                                                    int pageSize,

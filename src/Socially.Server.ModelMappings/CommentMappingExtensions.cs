@@ -11,7 +11,7 @@ namespace Socially.Server.ModelMappings
     public static class CommentMappingExtensions
     {
 
-        public static DisplayCommentModel ToDisplayModel(this Comment comment, bool isLikedByCurrent)
+        public static DisplayCommentModel ToDisplayModel(this Comment comment, bool? isLikedByCurrent = null)
         {
             if (comment is null) return null;
             return new DisplayCommentModel

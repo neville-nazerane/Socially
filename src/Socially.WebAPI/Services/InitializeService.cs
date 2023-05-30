@@ -1,4 +1,5 @@
 ﻿using Socially.Server.Managers;
+using Socially.WebAPI.Services;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -8,15 +9,20 @@ namespace Socially.Website.Services
     {
 
         private readonly IImageManager _imageManager;
+        private readonly ISignalRStateManager _signalRStateManager;
 
-        public InitializeService(IImageManager imageManager)
+        public InitializeService(IImageManager imageManager,
+                                 ISignalRStateManager signalRStateManager)
         {
             _imageManager = imageManager;
+            _signalRStateManager = signalRStateManager;
         }
 
-        public Task InitAsync(CancellationToken cancellationToken = default)
+
+        public async Task InitAsync(CancellationToken cancellationToken = default)
         {
-            return _imageManager.InitAsync(cancellationToken);
+            await _imageManager.InitAsync(cancellationToken);
+            await _signalRStateManager.InitAsync(cancellationToken);
         }
 
     }

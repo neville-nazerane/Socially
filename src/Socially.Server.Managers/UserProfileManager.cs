@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Scaffolding;
-using MongoDB.Bson.Serialization.Serializers;
 using Socially.Models;
 using Socially.Models.Enums;
 using Socially.Server.DataAccess;

@@ -15,6 +15,8 @@ using Socially.Website.Models;
 using Socially.Website.Services;
 using Socially.Server.Entities;
 using Microsoft.Extensions.Azure;
+using Socially.WebAPI.Services;
+using System.Threading.Tasks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,14 +28,14 @@ var configuration = builder.Configuration;
 services.AddCors();
 services.AddApplicationInsightsTelemetry(o => o.ConnectionString = configuration["appinsights"]);
 
-services.AddSingleton<IBlobAccess>(p => new BlobAccess(configuration["blobConnString"]));
-services.AddDbContext<ApplicationDbContext>(c => c.UseSqlServer(configuration.GetConnectionString("db")));
-services.AddSingleton(p =>
-{
-    var template = new ConfigsSettings();
-    configuration.GetSection("settings").Bind(template);
-    return template;
-});
+
+services.AddAzBlob(configuration["blobConnString"])
+        .AddAzStorage(configuration["storageConnString"])
+        .AddSqlServerDbContext(configuration.GetConnectionString("db"))
+        .AddSettings(configuration.GetSection("settings"))
+        .AddAzSignalR(configuration["signalR"]);
+
+
 services.AddIdentity<User, UserRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders();
@@ -87,7 +89,13 @@ app.MapCustom<PostEndpoints>();
 await using (var scope = app.Services.CreateAsyncScope())
     await scope.ServiceProvider.GetService<InitializeService>().InitAsync();
 
-await app.RunAsync();
+
+var signalRPublisher = app.Services.GetService<SignalRPublisher>();
+
+await Task.WhenAll(
+    signalRPublisher.KeepRunningAsync(),
+    app.RunAsync()
+);
 
 public partial class Program { }
 
