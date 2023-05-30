@@ -12,6 +12,7 @@ using Socially.Server.Entities;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Socially.WebAPI.Services;
 
 namespace Socially.WebAPI.Endpoints
 {
@@ -57,10 +58,15 @@ namespace Socially.WebAPI.Endpoints
                          CancellationToken cancellationToken = default)
             => manager.DeleteAsync(id, cancellationToken);
 
-        Task<int> AddCommentAsync(IPostManager manager,
-                            AddCommentModel model,
-                            CancellationToken cancellationToken = default)
-            => manager.AddCommentAsync(model, cancellationToken);
+        async Task<int> AddCommentAsync(IPostManager manager,
+                                        SignalRPublisher signalRPublisher,
+                                        AddCommentModel model,
+                                        CancellationToken cancellationToken = default)
+        {
+            var res = await manager.AddCommentAsync(model, cancellationToken);
+            signalRPublisher.EnqueuePost(model.PostId);
+            return res;
+        }
 
         Task DeleteCommentAsync(IPostManager manager,
                                 int id,
