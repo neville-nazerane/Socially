@@ -47,6 +47,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             services.ReplaceServiceWithMock<ISendGridClient>()
                     .ReplaceServiceWithMock<IBlobAccess>()
                     .ReplaceServiceWithMock<ITableAccess>()
+                    .ReplaceServiceWithMock<ISignalRPublisher>()
                     .ReplaceServiceWithMock<ICurrentContextProvider>();
 
             // Set context as singleton

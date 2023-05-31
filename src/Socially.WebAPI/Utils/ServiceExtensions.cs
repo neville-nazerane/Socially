@@ -82,7 +82,7 @@ namespace Socially.WebAPI.Utils
                             .AddTransient<IImagesService, ImagesService>()
                             .AddSingleton<ICurrentContextProvider, CurrentContextProvider>()
                             .AddScoped<CurrentContext>()
-                            .AddSingleton<SignalRPublisher>()
+                            .AddSingleton<ISignalRPublisher, SignalRPublisher>()
                             .AddScoped<InitializeService>();
         }
         

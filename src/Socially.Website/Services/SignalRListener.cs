@@ -9,12 +9,15 @@ namespace Socially.Website.Services
     public class SignalRListener
     {
         private readonly IAuthAccess _authAccess;
+        private readonly ICacheUpdater _cacheUpdater;
         private readonly HubConnection _dataUpdateConn;
 
         public SignalRListener(IAuthAccess authAccess, 
+                               ICacheUpdater cacheUpdater,
                                IConfiguration configuration)
         {
             _authAccess = authAccess;
+            _cacheUpdater = cacheUpdater;
             _dataUpdateConn = new HubConnectionBuilder().WithUrl($"{configuration["baseURL"]}/hubs/dataUpdates", o => o.AccessTokenProvider = GetToken)
                                                         .WithAutomaticReconnect()
                                                         .Build();
@@ -40,10 +43,7 @@ namespace Socially.Website.Services
 
         void SetupListeners()
         {
-            _dataUpdateConn.On<PostDisplayModel>("PostUpdated", p =>
-            {
-                
-            });
+            _dataUpdateConn.On<PostDisplayModel>("PostUpdated", _cacheUpdater.UpdatePostAsync);
         }
     }
 }

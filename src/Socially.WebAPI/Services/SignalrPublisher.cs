@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Socially.WebAPI.Services
 {
-    public class SignalRPublisher
+    public class SignalRPublisher : ISignalRPublisher
     {
         private readonly ISignalRStateManager _stateManager;
         private readonly ILogger<SignalRPublisher> _logger;
@@ -103,7 +103,7 @@ namespace Socially.WebAPI.Services
         }
 
         record QueueContext(int Id, QueuedItemType Type);
-        
+
         enum QueuedItemType
         {
             Post, User
