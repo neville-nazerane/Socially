@@ -28,6 +28,13 @@ builder.Services
 
                 .AddSingleton<AuthenticationStateProvider, AuthProvider>()
                 .AddSingleton(p => (IAuthAccess) p.GetService<AuthenticationStateProvider>())
-                .AddScoped<CachedContext>();
+                .AddScoped<CachedContext>()
+                
+                .AddSingleton<ICacheUpdater, CacheUpdater>()
+                .AddSingleton<SignalRListener>();
 
-await builder.Build().RunAsync();
+var app = builder.Build();
+
+app.Services.GetService<SignalRListener>().StartListeners();
+
+await app.RunAsync();
