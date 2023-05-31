@@ -1,5 +1,7 @@
 ﻿using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +13,7 @@ using Socially.WebAPI.Services;
 using Socially.Website.Models;
 using Socially.Website.Services;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Socially.WebAPI.Utils
 {
@@ -96,6 +99,24 @@ namespace Socially.WebAPI.Utils
                             RequireExpirationTime = true,
                             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configs["secret"]))
                         };
+
+                        o.Events = new JwtBearerEvents
+                        {
+                            OnMessageReceived = context =>
+                            {
+                                var accessToken = context.Request.Query["access_token"];
+
+                                // If the request is for our hub...
+                                var path = context.HttpContext.Request.Path;
+                                if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs/"))
+                                {
+                                    // Read the token out of the query string
+                                    context.Token = accessToken;
+                                }
+                                return Task.CompletedTask;
+                            }
+                        };
+
                     });
                         services.AddAuthorization(o =>
                             o.DefaultPolicy = new AuthorizationPolicyBuilder()
