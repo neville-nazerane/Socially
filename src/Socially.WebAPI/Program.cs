@@ -17,6 +17,7 @@ using Socially.Server.Entities;
 using Microsoft.Extensions.Azure;
 using Socially.WebAPI.Services;
 using System.Threading.Tasks;
+using Socially.WebAPI.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -86,11 +87,14 @@ app.MapCustom<ImagesEndpoints>();
 app.MapCustom<FriendEndpoints>();
 app.MapCustom<PostEndpoints>();
 
+app.MapHub<DataUpdatesHub>("/hubs/dataUpdates")
+   .RequireAuthorization();
+
 await using (var scope = app.Services.CreateAsyncScope())
     await scope.ServiceProvider.GetService<InitializeService>().InitAsync();
 
 
-var signalRPublisher = app.Services.GetService<SignalRPublisher>();
+var signalRPublisher = app.Services.GetService<ISignalRPublisher>();
 
 await Task.WhenAll(
     signalRPublisher.KeepRunningAsync(),

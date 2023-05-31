@@ -59,7 +59,7 @@ namespace Socially.WebAPI.Endpoints
             => manager.DeleteAsync(id, cancellationToken);
 
         async Task<int> AddCommentAsync(IPostManager manager,
-                                        SignalRPublisher signalRPublisher,
+                                        ISignalRPublisher signalRPublisher,
                                         AddCommentModel model,
                                         CancellationToken cancellationToken = default)
         {
@@ -69,7 +69,7 @@ namespace Socially.WebAPI.Endpoints
         }
 
         async Task DeleteCommentAsync(IPostManager manager,
-                                      SignalRPublisher signalRPublisher,
+                                      ISignalRPublisher signalRPublisher,
                                       int id,
                                       CancellationToken cancellationToken = default)
         {
