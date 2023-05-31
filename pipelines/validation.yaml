@@ -5,7 +5,8 @@ variables:
   unitTestOutput: $(System.DefaultWorkingDirectory)/uitests
 
 stages:
-  - stage: AutomatedTests
+  - stage: UnitTests
+    displayName: Unit tests
     jobs:
       - job: APIUnitTests
         displayName: Web API unit tests
@@ -17,16 +18,15 @@ stages:
       - job: MauiUnitTest
         displayName: Mobile unit tests
         steps:
-          
           - template: runtest.yml
             parameters:
               path: src/Socially.Mobile.Logic.Tests
 
+  - stage: ApiIntegrationTest
+    displayName: API Integration Test
+    jobs:
       - job: IntegrationTests
         displayName: Web API integration tests
-        dependsOn:
-          - APIUnitTests
-          - MauiUnitTest
         steps:
 
           - template: runtest.yml
