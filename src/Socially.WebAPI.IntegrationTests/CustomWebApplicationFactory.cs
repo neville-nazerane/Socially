@@ -22,17 +22,20 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
 
-        builder.ConfigureAppConfiguration(configBuilder =>
-        {
-            configBuilder.Sources.Clear();
-            configBuilder.AddInMemoryCollection(new Dictionary<string, string>
+        Dictionary<string, string> configs = new()
             {
                 {"authOptions:secret", "ahyujnhgctufihopktgjuerwfdmklsfjerdf43ew435teygih68iuvyguhoijnklhjlskdfdkjaflsdkj" },
                 {"authOptions:audiences", "tester" },
                 {"authOptions:issuer", "integration_tests" },
-                { "sendGridApiKey", "IamNotNull" },
-                { "signalR", "signalTests" }
-            });
+                { "sendGridApiKey", "IamNotNull" }
+            };
+
+        builder.UseConfiguration(new ConfigurationBuilder().AddInMemoryCollection(configs).Build());
+
+        builder.ConfigureAppConfiguration(configBuilder =>
+        {
+            configBuilder.Sources.Clear();
+            configBuilder.AddInMemoryCollection(configs);
         });
 
         builder.ConfigureServices(services =>

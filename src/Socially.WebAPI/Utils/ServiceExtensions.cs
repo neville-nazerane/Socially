@@ -24,7 +24,9 @@ namespace Socially.WebAPI.Utils
         public static IServiceCollection AddAzSignalR(this IServiceCollection services,
                                                       string connString)
         {
-            services.AddSignalR().AddAzureSignalR(connString);
+            // condition to handle integration tests
+            if (connString is not null)
+                services.AddSignalR().AddAzureSignalR(connString);
 
             return services;
         }
