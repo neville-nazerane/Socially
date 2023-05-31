@@ -30,7 +30,8 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
                 {"authOptions:secret", "ahyujnhgctufihopktgjuerwfdmklsfjerdf43ew435teygih68iuvyguhoijnklhjlskdfdkjaflsdkj" },
                 {"authOptions:audiences", "tester" },
                 {"authOptions:issuer", "integration_tests" },
-                { "sendGridApiKey", "IamNotNull" }
+                { "sendGridApiKey", "IamNotNull" },
+                { "signalR", "signalTests" }
             });
         });
 
