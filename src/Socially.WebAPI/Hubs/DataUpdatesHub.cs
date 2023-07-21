@@ -21,7 +21,7 @@ namespace Socially.WebAPI.Hubs
             _stateManager = stateManager;
         }
 
-        public Task ListenForPostsAsync(IEnumerable<int> ids, CancellationToken cancellationToken = default)
+        public Task ListenForPosts(IEnumerable<int> ids, CancellationToken cancellationToken = default)
         {
             var tags = ids.Select(id => $"post_{id}").ToList();
             return _stateManager.RegisterAsync(tags, Context.ConnectionId, cancellationToken);

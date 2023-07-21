@@ -35,6 +35,9 @@ builder.Services
 
 var app = builder.Build();
 
-app.Services.GetService<SignalRListener>().StartListeners();
+var signalr = app.Services.GetService<SignalRListener>();
+
+await signalr.InitAsync();
+signalr.StartListeners();
 
 await app.RunAsync();

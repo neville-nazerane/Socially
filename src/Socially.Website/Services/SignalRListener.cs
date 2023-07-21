@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
 using Socially.Apps.Consumer.Services;
 using Socially.Models;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Socially.Website.Services
@@ -53,14 +55,18 @@ namespace Socially.Website.Services
             return info.AccessToken;
         }
 
-        //public Task InitAsync()
-        //{
-        //    return _dataUpdateConn.StartAsync();
-        //}
+        public Task InitAsync()
+        {
+            return _dataUpdateConn.StartAsync();
+        }
 
         void SetupListeners()
         {
             _dataUpdateConn.On<PostDisplayModel>("PostUpdated", _cacheUpdater.UpdatePostAsync);
         }
+
+        public Task ListenForPostsAsync(IEnumerable<int> ids, CancellationToken cancellationToken = default) 
+            => _dataUpdateConn.InvokeAsync("ListenForPostsAsync", ids, cancellationToken);
+
     }
 }
