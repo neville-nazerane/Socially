@@ -22,13 +22,23 @@ namespace Socially.Website.Pages
         [Inject]
         public CachedContext CachedContext { get; set; }
 
+        [Inject]
+        public SignalRListener SignalR { get; set; }
+
         protected override Task OnInitializedAsync()
         {
             return RunAllAsync(
                 async () => friendRequests = await Consumer.GetFriendRequestsAsync(),
                 async () => currentUser = await CachedContext.GetCurrentProfileInfoAsync(),
-                async () => posts = (await Consumer.GetHomePostsAsync(20)).ToList()
-                );
+                GetPostsAsync
+            );
+        }
+
+        async Task GetPostsAsync()
+        {
+            posts = (await Consumer.GetHomePostsAsync(20)).ToList();
+            var postIds = posts.Select(p => p.Id).ToList();
+            await SignalR.ListenForPostsAsync(postIds);
         }
 
         Task RunAllAsync(params Func<Task>[] funcs) => Task.WhenAll(funcs.Select(f => f()));

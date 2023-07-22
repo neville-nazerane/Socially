@@ -88,7 +88,8 @@ namespace Socially.Server.DataAccess
             await foreach (var page in pages)
             {
                 var actions = page.Values.Select(e => new TableTransactionAction(TableTransactionActionType.Delete, e)).ToList();
-                await tableClient.SubmitTransactionAsync(actions);
+                if (actions.Any())
+                    await tableClient.SubmitTransactionAsync(actions);
             }
         }
 

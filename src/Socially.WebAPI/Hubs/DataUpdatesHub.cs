@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.AspNetCore.SignalR;
 using Socially.Server.Managers;
@@ -21,8 +22,9 @@ namespace Socially.WebAPI.Hubs
             _stateManager = stateManager;
         }
 
-        public Task ListenForPostsAsync(IEnumerable<int> ids, CancellationToken cancellationToken = default)
+        public Task ListenForPosts(string idsStr, CancellationToken cancellationToken = default)
         {
+            var ids = idsStr.Split(',').Select(i => i.Trim()).ToArray();
             var tags = ids.Select(id => $"post_{id}").ToList();
             return _stateManager.RegisterAsync(tags, Context.ConnectionId, cancellationToken);
         }
