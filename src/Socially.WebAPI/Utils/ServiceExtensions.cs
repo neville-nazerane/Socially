@@ -26,7 +26,7 @@ namespace Socially.WebAPI.Utils
         {
             // condition to handle integration tests
             if (connString is not null)
-                services.AddSignalR().AddAzureSignalR(connString);
+                services.AddSignalR(o => o.EnableDetailedErrors = true).AddAzureSignalR(connString);
             else
                 services.AddSignalR();
 

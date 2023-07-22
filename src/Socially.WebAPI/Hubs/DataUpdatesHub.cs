@@ -22,11 +22,15 @@ namespace Socially.WebAPI.Hubs
             _stateManager = stateManager;
         }
 
-        public Task ListenForPosts(string idsStr, CancellationToken cancellationToken = default)
+        public override Task OnConnectedAsync()
         {
-            var ids = idsStr.Split(',').Select(i => i.Trim()).ToArray();
+            return base.OnConnectedAsync();
+        }
+
+        public async Task ListenForPosts(IEnumerable<int> ids)
+        {
             var tags = ids.Select(id => $"post_{id}").ToList();
-            return _stateManager.RegisterAsync(tags, Context.ConnectionId, cancellationToken);
+            await _stateManager.RegisterAsync(tags, Context.ConnectionId);
         }
 
         public override Task OnDisconnectedAsync(Exception exception) => _stateManager.UnregisterAsync(Context.ConnectionId);
