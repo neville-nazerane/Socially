@@ -18,6 +18,8 @@ using Microsoft.Extensions.Azure;
 using Socially.WebAPI.Services;
 using System.Threading.Tasks;
 using Socially.WebAPI.Hubs;
+using Socially.Server.Managers;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -101,5 +103,5 @@ await Task.WhenAll(
     app.RunAsync()
 );
 
-public partial class Program { }
 
+public partial class Program { }

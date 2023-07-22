@@ -37,11 +37,18 @@ namespace Socially.Website.Services
 
         private async void SignalRListener_AuthenticationStateChanged(Task<AuthenticationState> task)
         {
-            var state = await task;
-            if (state.User is null)
-                await _dataUpdateConn.StopAsync();
-            else
-                await _dataUpdateConn.StartAsync();
+            try
+            {
+                var state = await task;
+                if (state.User is null)
+                    await _dataUpdateConn.StopAsync();
+                else
+                    await _dataUpdateConn.StartAsync();
+            }
+            catch
+            {
+                System.Console.WriteLine("Failed to listen");
+            }
         }
 
         private Task Reconnected(string arg)
@@ -51,13 +58,27 @@ namespace Socially.Website.Services
 
         private async Task<string> GetToken()
         {
-            var info = await _authAccess.GetStoredTokenAsync();
-            return info.AccessToken;
+            try
+            {
+                var info = await _authAccess.GetStoredTokenAsync();
+                return info.AccessToken;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
-        public Task InitAsync()
+        public async Task InitAsync()
         {
-            return _dataUpdateConn.StartAsync();
+            try
+            {
+                await _dataUpdateConn.StartAsync();
+            }
+            catch
+            {
+                System.Console.WriteLine("FAILED signalr");
+            }
         }
 
         void SetupListeners()
@@ -66,7 +87,7 @@ namespace Socially.Website.Services
         }
 
         public Task ListenForPostsAsync(IEnumerable<int> ids, CancellationToken cancellationToken = default) 
-            => _dataUpdateConn.InvokeAsync("ListenForPostsAsync", ids, cancellationToken);
+            => _dataUpdateConn.InvokeAsync("ListenForPostsAsync", string.Join(",", ids), cancellationToken);
 
     }
 }
