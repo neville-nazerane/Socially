@@ -53,7 +53,7 @@ namespace Socially.WebAPI.Services
         async Task KeepDequeueingAsync(CancellationToken cancellationToken = default)
         {
             int deQueueLimit = 10;
-            while (cancellationToken.IsCancellationRequested)
+            while (!cancellationToken.IsCancellationRequested)
             {
                 for (int i = 0; i < deQueueLimit; i++)
                 {
