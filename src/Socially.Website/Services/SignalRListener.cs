@@ -78,7 +78,7 @@ namespace Socially.Website.Services
             }
             catch
             {
-                System.Console.WriteLine("FAILED signalr");
+                Console.WriteLine("FAILED signalr");
             }
         }
 
