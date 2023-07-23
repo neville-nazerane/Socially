@@ -88,7 +88,7 @@ namespace Socially.Website.Services
         }
 
         public Task ListenForPostsAsync(IEnumerable<int> ids, CancellationToken cancellationToken = default)
-            => _dataUpdateConn.InvokeAsync("ListenForPosts", ids, cancellationToken);
+            => _dataUpdateConn.InvokeAsync("ListenForPosts2", ids, cancellationToken);
 
     }
 }
