@@ -27,7 +27,7 @@ namespace Socially.WebAPI.Hubs
             return base.OnConnectedAsync();
         }
 
-        public async Task ListenForPosts(IEnumerable<int> ids)
+        public async Task ListenForPosts2(IEnumerable<int> ids)
         {
             var tags = ids.Select(id => $"post_{id}").ToList();
             await _stateManager.RegisterAsync(tags, Context.ConnectionId);
