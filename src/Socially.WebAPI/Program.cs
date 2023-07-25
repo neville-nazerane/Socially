@@ -42,6 +42,7 @@ services.AddAzBlob(configuration["blobConnString"])
 services.AddIdentity<User, UserRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders();
+services.AddDbContext<RealTimeDbContext>(o => o.UseInMemoryDatabase("realtime"));
 services.AddHealthChecks()
         .AddAzureBlobStorage(configuration["blobConnString"])
         .AddSendGrid(configuration["sendGridApiKey"])
