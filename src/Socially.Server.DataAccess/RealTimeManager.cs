@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Socially.Server.DataAccess
 {
-    public class RealTimeManager
+    public class RealTimeManager : IRealTimeManager
     {
         private readonly RealTimeDbContext _dbContext;
 
@@ -29,7 +29,13 @@ namespace Socially.Server.DataAccess
             }).ToList();
             await _dbContext.Posts.AddRangeAsync(entities, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
-        }        
+        }
+
+        public IAsyncEnumerable<string> GetPostConnectionIdsAsync(int postId) 
+            => _dbContext.Posts
+                          .Where(p => p.PostId == postId)
+                          .Select(p => p.ConnectionId)
+                          .AsAsyncEnumerable();
 
         public Task UnsubscribeForConnectionAsync(string connectionId,
                                                   CancellationToken cancellationToken = default)
