@@ -32,13 +32,24 @@ namespace Socially.WebAPI.Hubs
             await provider.RealTimeManager.SubscribeForPostsAsync(Context.ConnectionId, postIds);
         }
 
-        public async Task AddComment(AddCommentModel comment)
+        public async Task AddComment(Guid requestId, AddCommentModel comment)
         {
             await using var provider = CreateScopeProvider();
-            var createdComment = await provider.PostManager.AddCommentAsync(comment);
-            var connectionIds = provider.RealTimeManager.GetPostConnectionIdsAsync(comment.PostId);
-            await SendToAllAsync(connectionIds, "CommentAdded", createdComment);
+            try
+            {
+                var createdComment = await provider.PostManager.AddCommentAsync(comment);
+                var connectionIds = provider.RealTimeManager.GetPostConnectionIdsAsync(comment.PostId);
+                await SendToAllAsync(connectionIds, "CommentAdded", createdComment);
+            }
+            catch (Exception ex)
+            {
+                await SendErrorAsync(requestId, ex.Message);
+            }
         }
+
+        private Task SendErrorAsync(Guid requestId, string errorMessage)
+            => Clients.Client(Context.ConnectionId)
+                      .SendAsync("ErrorOccurred", requestId, errorMessage);
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {

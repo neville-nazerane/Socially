@@ -23,12 +23,14 @@ namespace Socially.Website.Components
         [Parameter]
         public ICollection<DisplayCommentModel> Comments { get; set; }
 
-
         [Inject]
         public CachedContext CachedContext { get; set; }
 
         [Inject]
         public IApiConsumer Consumer { get; set; }
+
+        [Inject]
+        public SignalRListener SignalRListener { get; set; }
 
 
         AddCommentModel addModel = new();
@@ -49,14 +51,15 @@ namespace Socially.Website.Components
         async Task AddCommentAsync()
         {
             if (addModel.Text == null) return;
-            int id = await Consumer.AddCommentAsync(addModel);
-            Comments.Add(new DisplayCommentModel
-            {
-                Text = addModel.Text,
-                Id = id,
-                CreatorId = currentUser.Id
-            });
-            addModel = BuildNewModel();
+            await SignalRListener.AddCommentAsync(addModel);
+            //int id = await Consumer.AddCommentAsync(addModel);
+            //Comments.Add(new DisplayCommentModel
+            //{
+            //    Text = addModel.Text,
+            //    Id = id,
+            //    CreatorId = currentUser.Id
+            //});
+            //addModel = BuildNewModel();
             StateHasChanged();
         }
 
@@ -90,7 +93,6 @@ namespace Socially.Website.Components
 
         void ShowLogo() => isShowingLogo = true;
         void HideLogo() => isShowingLogo = false;
-
 
     }
 }

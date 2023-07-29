@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Socially.Website.Services
 {
-    public class SignalRListener
+    public partial class SignalRListener
     {
         private readonly IAuthAccess _authAccess;
         private readonly ICacheUpdater _cacheUpdater;
