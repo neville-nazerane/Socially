@@ -35,24 +35,32 @@ namespace Socially.WebAPI.Hubs
         public async Task AddComment(AddCommentModel comment)
         {
             await using var provider = CreateScopeProvider();
-            var commentId = await provider.PostManager.AddCommentAsync(comment);
+            var createdComment = await provider.PostManager.AddCommentAsync(comment);
             var connectionIds = provider.RealTimeManager.GetPostConnectionIdsAsync(comment.PostId);
+            await SendToAllAsync(connectionIds, "CommentAdded", createdComment);
+        }
+
+        public override async Task OnDisconnectedAsync(Exception exception)
+        {
+            await using var provider = CreateScopeProvider();
+            await provider.RealTimeManager.UnsubscribeForConnectionAsync(Context.ConnectionId);
+        }
+
+        private async Task SendToAllAsync(IAsyncEnumerable<string> connectionIds, string methodName, object data)
+        {
             var processingIds = new List<string>();
             await foreach (var id in connectionIds)
             {
                 processingIds.Add(id);
-                if (processingIds.Count > 30)
+                if (processingIds.Count > 50)
                 {
-                    await Clients.Clients(processingIds).SendAsync("CommentAdded");
+                    await Clients.Clients(processingIds).SendAsync(methodName, data);
                     processingIds.Clear();
                 }
             }
             if (processingIds.Any())
-                await Clients.Clients(processingIds).SendAsync("CommentAdded");
+                await Clients.Clients(processingIds).SendAsync(methodName, data);
         }
-
-        Task RunOnPostManagerAsync(Func<IPostManager, IRealTimeManager, Task> func)
-            => _serviceProvider.RunScopedLogicAsync(func);
 
         ManagersProvider CreateScopeProvider() => new(_serviceProvider);
 
@@ -69,13 +77,6 @@ namespace Socially.WebAPI.Hubs
 
         }
 
-        //public async Task ListenForPosts2(IEnumerable<int> ids)
-        //{
-        //    var tags = ids.Select(id => $"post_{id}").ToList();
-        //    await _stateManager.RegisterAsync(tags, Context.ConnectionId);
-        //}
-
-        //public override Task OnDisconnectedAsync(Exception exception) => _stateManager.UnregisterAsync(Context.ConnectionId);
 
     }
 }

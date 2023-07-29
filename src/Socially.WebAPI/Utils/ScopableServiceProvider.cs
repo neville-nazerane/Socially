@@ -44,7 +44,7 @@ namespace Socially.WebAPI.Utils
             }
         }
 
-        ~ScopableServices()
+        ~ScopableServiceProvider()
         {
             Dispose(false);
         }
