@@ -71,7 +71,7 @@ namespace Socially.Server.Managers
             await _dbContext.SaveChangesAsync(CancellationToken.None);
         }
 
-        public async Task<int> AddCommentAsync(AddCommentModel model, CancellationToken cancellationToken = default)
+        public async Task<DisplayCommentModel> AddCommentAsync(AddCommentModel model, CancellationToken cancellationToken = default)
         {
             var entity = new Comment
             {
@@ -84,11 +84,11 @@ namespace Socially.Server.Managers
             await _dbContext.AddAsync(entity, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            return entity.Id;
+            return entity.ToDisplayModel();
         }
 
         public async Task<DisplayCommentModel> DeleteCommentAsync(int commentId,
-                                             CancellationToken cancellationToken = default)
+                                                                  CancellationToken cancellationToken = default)
         {
             int userId = _currentContext.UserId;
             var comment = await _dbContext.Comments.SingleOrDefaultAsync(s => s.CreatorId == userId && s.Id == commentId,

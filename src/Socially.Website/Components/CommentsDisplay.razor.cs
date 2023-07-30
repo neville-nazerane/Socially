@@ -1,15 +1,18 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Socially.Apps.Consumer.Services;
 using Socially.Models;
+using Socially.Website.Models.RealtimeEventArgs;
 using Socially.Website.Services;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Socially.Website.Components
 {
-    public partial class CommentsDisplay
+    public partial class CommentsDisplay : IDisposable
     {
 
         bool isShowingLogo = false;
@@ -23,21 +26,56 @@ namespace Socially.Website.Components
         [Parameter]
         public ICollection<DisplayCommentModel> Comments { get; set; }
 
-
         [Inject]
         public CachedContext CachedContext { get; set; }
 
         [Inject]
         public IApiConsumer Consumer { get; set; }
 
+        [Inject]
+        public SignalRListener SignalRListener { get; set; }
+
+
 
         AddCommentModel addModel = new();
 
         UserSummaryModel currentUser;
 
+        SemaphoreSlim locker = new(1, 1);
+        bool isAddCommentLoading;
+        Guid addCommentRequestId;
+
         protected override async Task OnInitializedAsync()
         {
+            SignalRListener.OnCommentAdded += CommentAdded;
+            SignalRListener.OnCompleted += OnCompleted;
             currentUser = await CachedContext.GetCurrentProfileInfoAsync();
+        }
+
+        private async void OnCompleted(object sender, CompletedEventArgs e)
+        {
+            await locker.WaitAsync();
+            try
+            {
+                if (addCommentRequestId.Equals(e.RequestId))
+                {
+                    isAddCommentLoading = false;
+                    addModel = BuildNewModel();
+                    StateHasChanged();
+                }
+
+            }
+            finally
+            {
+                locker.Release();
+            }
+        }
+
+        private void CommentAdded(object sender, CommentAddedEventArgs e)
+        {
+            if (PostId == e.PostId && ParentCommentId == e.ParentCommentId)
+                Comments.Add(e.Comment);
+            StateHasChanged();
         }
 
 
@@ -48,16 +86,17 @@ namespace Socially.Website.Components
 
         async Task AddCommentAsync()
         {
-            if (addModel.Text == null) return;
-            int id = await Consumer.AddCommentAsync(addModel);
-            Comments.Add(new DisplayCommentModel
+            await locker.WaitAsync();
+            try
             {
-                Text = addModel.Text,
-                Id = id,
-                CreatorId = currentUser.Id
-            });
-            addModel = BuildNewModel();
-            StateHasChanged();
+                if (addModel.Text == null) return;
+                addCommentRequestId = await SignalRListener.AddCommentAsync(addModel);
+                isAddCommentLoading = true;
+            }
+            finally
+            {
+                locker.Release();
+            }
         }
 
         async Task DeleteAsync(DisplayCommentModel comment)
@@ -91,6 +130,9 @@ namespace Socially.Website.Components
         void ShowLogo() => isShowingLogo = true;
         void HideLogo() => isShowingLogo = false;
 
-
+        public void Dispose()
+        {
+            SignalRListener.OnCommentAdded -= CommentAdded;
+        }
     }
 }

@@ -132,12 +132,12 @@ namespace Socially.Apps.Consumer.Services
                          CancellationToken cancellationToken = default)
             => _httpClient.DeleteAsync($"/post/{id}", cancellationToken);
 
-        public async Task<int> AddCommentAsync(AddCommentModel model,
+        public async Task<DisplayCommentModel> AddCommentAsync(AddCommentModel model,
                                                          CancellationToken cancellationToken = default)
         {
             var res = await _httpClient.PostAsJsonAsync("post/comment", model, cancellationToken);
             res.EnsureSuccessStatusCode();
-            return int.Parse(await res.Content.ReadAsStringAsync(cancellationToken));
+            return await res.Content.ReadFromJsonAsync<DisplayCommentModel>(cancellationToken: cancellationToken);
         }
 
         public Task<HttpResponseMessage> DeleteCommentAsync(int id,

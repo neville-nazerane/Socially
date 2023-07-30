@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Socially.Website.Services
 {
-    public class SignalRListener
+    public partial class SignalRListener
     {
         private readonly IAuthAccess _authAccess;
         private readonly ICacheUpdater _cacheUpdater;
@@ -34,6 +34,7 @@ namespace Socially.Website.Services
         {
             // TODO event needs to be abstracted to IAuthAccess when service is used with MAUI
             ((AuthProvider)_authAccess).AuthenticationStateChanged += SignalRListener_AuthenticationStateChanged;
+            ListenToAll();
         }
 
         private async void SignalRListener_AuthenticationStateChanged(Task<AuthenticationState> task)
@@ -87,8 +88,8 @@ namespace Socially.Website.Services
             _dataUpdateConn.On<PostDisplayModel>("PostUpdated", _cacheUpdater.UpdatePostAsync);
         }
 
-        public Task ListenForPostsAsync(IEnumerable<int> ids, CancellationToken cancellationToken = default)
-            => _dataUpdateConn.InvokeAsync("ListenForPosts2", ids, cancellationToken);
+        //public Task ListenForPostsAsync(IEnumerable<int> ids, CancellationToken cancellationToken = default)
+        //    => _dataUpdateConn.InvokeAsync("ListenForPosts2", ids, cancellationToken);
 
     }
 }

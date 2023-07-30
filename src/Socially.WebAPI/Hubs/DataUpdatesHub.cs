@@ -2,7 +2,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
+using Socially.Models;
+using Socially.Server.DataAccess;
 using Socially.Server.Managers;
+using Socially.Server.Managers.Utils;
+using Socially.WebAPI.Services;
+using Socially.WebAPI.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,25 +21,67 @@ namespace Socially.WebAPI.Hubs
 
     public class DataUpdatesHub : Hub
     {
-        private readonly ISignalRStateManager _stateManager;
 
-        public DataUpdatesHub(ISignalRStateManager stateManager)
+        private readonly IServiceProvider _serviceProvider;
+        private readonly ILogger<DataUpdatesHub> _logger;
+
+        public DataUpdatesHub(IServiceProvider serviceProvider, ILogger<DataUpdatesHub> logger)
         {
-            _stateManager = stateManager;
+            _serviceProvider = serviceProvider;
+            _logger = logger;
         }
 
-        public override Task OnConnectedAsync()
+        public async Task ListenToPosts(IEnumerable<int> postIds)
         {
-            return base.OnConnectedAsync();
+            await using var provider = CreateHubScope(null);
+            await provider.RealTimeManager.SubscribeForPostsAsync(Context.ConnectionId, postIds);
         }
 
-        public async Task ListenForPosts2(IEnumerable<int> ids)
+        public async Task AddComment(Guid requestId, AddCommentModel comment)
         {
-            var tags = ids.Select(id => $"post_{id}").ToList();
-            await _stateManager.RegisterAsync(tags, Context.ConnectionId);
+            await using var scope = CreateHubScope(requestId);
+            try
+            {
+                var createdComment = await scope.PostManager.AddCommentAsync(comment);
+                var connectionIds = scope.RealTimeManager.GetPostConnectionIdsAsync(comment.PostId);
+                await SendToAllAsync(connectionIds, c => c.SendAsync("CommentAdded", comment.PostId, comment.ParentCommentId, createdComment));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to add comment");
+                await scope.SendErrorAsync("Failed to add comment");
+            }
         }
 
-        public override Task OnDisconnectedAsync(Exception exception) => _stateManager.UnregisterAsync(Context.ConnectionId);
+        public override async Task OnDisconnectedAsync(Exception exception)
+        {
+            await using var provider = CreateHubScope(null);
+            await provider.RealTimeManager.UnsubscribeForConnectionAsync(Context.ConnectionId);
+        }
+
+        private async Task SendToAllAsync(IAsyncEnumerable<string> connectionIds, Func<IClientProxy, Task> sendFunc)
+        {
+            // send to current first
+            var currentId = Context.ConnectionId;
+            await sendFunc(Clients.Client(currentId));
+            var processingIds = new List<string>();
+            await foreach (var id in connectionIds)
+            {
+                if (id != currentId) processingIds.Add(id);
+                if (processingIds.Count > 50)
+                {
+                    await sendFunc(Clients.Clients(processingIds));
+                    processingIds.Clear();
+                }
+            }
+            if (processingIds.Any())
+                await sendFunc(Clients.Clients(processingIds));
+        }
+
+        HubScope CreateHubScope(Guid? requestId) => new(_serviceProvider, this, requestId);
+
+
+
 
     }
 }
