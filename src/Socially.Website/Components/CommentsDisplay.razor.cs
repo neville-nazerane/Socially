@@ -35,8 +35,6 @@ namespace Socially.Website.Components
         [Inject]
         public SignalRListener SignalRListener { get; set; }
 
-
-
         AddCommentModel addModel = new();
 
         UserSummaryModel currentUser;
@@ -44,13 +42,28 @@ namespace Socially.Website.Components
         SemaphoreSlim locker = new(1, 1);
         bool isAddCommentLoading;
         Guid addCommentRequestId;
-        string addCommentError;
+        string addCommentErrorMessage;
 
         protected override async Task OnInitializedAsync()
         {
             SignalRListener.OnCommentAdded += CommentAdded;
             SignalRListener.OnCompleted += OnCompleted;
+            SignalRListener.OnError += OnError;
             currentUser = await CachedContext.GetCurrentProfileInfoAsync();
+        }
+
+        private async void OnError(object sender, ErrorEventArgs e)
+        {
+            await locker.WaitAsync();
+            try
+            {
+                if (addCommentRequestId == e.RequestId)
+                    addCommentErrorMessage = e.ErrorMessage;
+            }
+            finally
+            {
+                locker.Release();
+            }
         }
 
         private async void OnCompleted(object sender, CompletedEventArgs e)
@@ -61,7 +74,8 @@ namespace Socially.Website.Components
                 if (addCommentRequestId.Equals(e.RequestId))
                 {
                     isAddCommentLoading = false;
-                    addModel = BuildNewModel();
+                    if (addCommentErrorMessage is null)
+                        addModel = BuildNewModel();
                     StateHasChanged();
                 }
 
@@ -91,6 +105,7 @@ namespace Socially.Website.Components
             try
             {
                 if (addModel.Text == null) return;
+                addCommentErrorMessage = null;
                 addCommentRequestId = await SignalRListener.AddCommentAsync(addModel);
                 isAddCommentLoading = true;
             }

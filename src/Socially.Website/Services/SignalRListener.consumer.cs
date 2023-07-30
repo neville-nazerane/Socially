@@ -34,10 +34,11 @@ namespace Socially.Website.Services
                 });
             });
 
-            _dataUpdateConn.On("ErrorOccurred", (string errorMessage) =>
+            _dataUpdateConn.On("ErrorOccurred", (Guid requestId, string errorMessage) =>
             {
                 OnError?.Invoke(this, new()
                 {
+                    RequestId = requestId,
                     ErrorMessage = errorMessage
                 });
             });
