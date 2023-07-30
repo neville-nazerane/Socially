@@ -58,8 +58,12 @@ namespace Socially.Website.Components
             try
             {
                 if (addCommentRequestId.Equals(e.RequestId))
+                {
                     isAddCommentLoading = false;
-                StateHasChanged();
+                    addModel = BuildNewModel();
+                    StateHasChanged();
+                }
+
             }
             finally
             {
