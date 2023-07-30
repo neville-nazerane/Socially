@@ -143,13 +143,13 @@ namespace {mappingNameSpace}
             => (await modelTask).To{srcLabel}();
 
         public static IEnumerable<{srcName}> To{srcLabel}(this IEnumerable<{destName}> model)
-            => model == null ? null : model.Select(m => m.To{srcLabel}()).ToList();
+            => model == null ? null : model.Select(m => m.To{srcLabel}()).ToArray();
 
-        public static async Task<List<{srcName}>> To{srcLabel}(this Task<ICollection<{destName}>> modelTask)
+        public static async Task<ICollection<{srcName}>> To{srcLabel}(this Task<ICollection<{destName}>> modelTask)
             => (await modelTask).To{srcLabel}();
 
-        public static List<{srcName}> To{srcLabel}(this ICollection<{destName}> model)
-            => model == null ? null : model.Select(m => m.To{srcLabel}()).ToList();
+        public static ICollection<{srcName}> To{srcLabel}(this ICollection<{destName}> model)
+            => model == null ? null : model.Select(m => m.To{srcLabel}()).ToArray();
 
         public static async Task<{srcName}> To{srcLabel}(this Task<{destName}> modelTask)
             => (await modelTask).To{srcLabel}();
@@ -167,13 +167,13 @@ namespace {mappingNameSpace}
             => (await modelTask).To{destLabel}();
 
         public static IEnumerable<{destName}> To{destLabel}(this IEnumerable<{srcName}> model)
-            => model == null ? null : model.Select(m => m.To{destLabel}()).ToList();   
+            => model == null ? null : model.Select(m => m.To{destLabel}()).ToArray();   
 
-        public static async Task<List<{destName}>> To{destLabel}(this Task<ICollection<{srcName}>> modelTask)
+        public static async Task<ICollection<{destName}>> To{destLabel}(this Task<ICollection<{srcName}>> modelTask)
             => (await modelTask).To{destLabel}();
 
-        public static List<{destName}> To{destLabel}(this ICollection<{srcName}> model)
-            => model == null ? null : model.Select(m => m.To{destLabel}()).ToList();   
+        public static ICollection<{destName}> To{destLabel}(this ICollection<{srcName}> model)
+            => model == null ? null : model.Select(m => m.To{destLabel}()).ToArray();   
 
         public static async Task<{destName}> To{destLabel}(this Task<{srcName}> modelTask)
             => (await modelTask).To{destLabel}();
