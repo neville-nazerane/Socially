@@ -30,7 +30,7 @@ namespace Socially.WebAPI.Hubs
 
         public async Task ListenToPosts(IEnumerable<int> postIds)
         {
-            await using var provider = CreateHubScope();
+            await using var provider = CreateHubScope(null);
             await provider.RealTimeManager.SubscribeForPostsAsync(Context.ConnectionId, postIds);
         }
 
@@ -74,7 +74,7 @@ namespace Socially.WebAPI.Hubs
                 await Clients.Clients(processingIds).SendAsync(methodName, data);
         }
 
-        HubScope CreateHubScope(Guid requestId) => new(_serviceProvider, this, requestId);
+        HubScope CreateHubScope(Guid? requestId) => new(_serviceProvider, this, requestId);
 
 
 
