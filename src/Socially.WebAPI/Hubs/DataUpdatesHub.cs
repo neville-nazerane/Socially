@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 using Socially.Models;
 using Socially.Server.DataAccess;
 using Socially.Server.Managers;
@@ -22,10 +23,12 @@ namespace Socially.WebAPI.Hubs
     {
 
         private readonly IServiceProvider _serviceProvider;
+        private readonly ILogger<DataUpdatesHub> _logger;
 
-        public DataUpdatesHub(IServiceProvider serviceProvider)
+        public DataUpdatesHub(IServiceProvider serviceProvider, ILogger<DataUpdatesHub> logger)
         {
             _serviceProvider = serviceProvider;
+            _logger = logger;
         }
 
         public async Task ListenToPosts(IEnumerable<int> postIds)
@@ -45,6 +48,7 @@ namespace Socially.WebAPI.Hubs
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Failed to add comment");
                 await scope.SendErrorAsync("Failed to add comment");
             }
         }
