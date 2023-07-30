@@ -4,10 +4,10 @@ using System;
 
 namespace Socially.WebAPI.Utils
 {
-    public class ScopableServiceProvider : IDisposable, IAsyncDisposable
+    public class ScopableServiceProvider : IAsyncDisposable
     {
         private readonly AsyncServiceScope _scope;
-        private bool _disposed;
+        protected bool _disposed;
 
         public ScopableServiceProvider(IServiceProvider serviceProvider)
         {
@@ -16,7 +16,7 @@ namespace Socially.WebAPI.Utils
 
         public TService GetService<TService>() => _scope.ServiceProvider.GetService<TService>();
 
-        protected virtual void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
         {
             if (!_disposed)
             {
@@ -28,13 +28,7 @@ namespace Socially.WebAPI.Utils
             }
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        public async ValueTask DisposeAsync()
+        public virtual async ValueTask DisposeAsync()
         {
             if (!_disposed)
             {

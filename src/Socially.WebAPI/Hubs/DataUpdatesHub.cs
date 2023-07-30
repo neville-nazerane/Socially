@@ -6,6 +6,7 @@ using Socially.Models;
 using Socially.Server.DataAccess;
 using Socially.Server.Managers;
 using Socially.Server.Managers.Utils;
+using Socially.WebAPI.Services;
 using Socially.WebAPI.Utils;
 using System;
 using System.Collections;
@@ -29,41 +30,40 @@ namespace Socially.WebAPI.Hubs
 
         public async Task ListenToPosts(IEnumerable<int> postIds)
         {
-            await using var provider = CreateScopeProvider();
+            await using var provider = CreateHubScope();
             await provider.RealTimeManager.SubscribeForPostsAsync(Context.ConnectionId, postIds);
         }
 
         public async Task AddComment(Guid requestId, AddCommentModel comment)
         {
-            await using var provider = CreateScopeProvider();
+            await using var scope = CreateHubScope(requestId);
             try
             {
-                var createdComment = await provider.PostManager.AddCommentAsync(comment);
-                var connectionIds = provider.RealTimeManager.GetPostConnectionIdsAsync(comment.PostId);
+                var createdComment = await scope.PostManager.AddCommentAsync(comment);
+                var connectionIds = scope.RealTimeManager.GetPostConnectionIdsAsync(comment.PostId);
                 await SendToAllAsync(connectionIds, "CommentAdded", createdComment);
             }
             catch (Exception ex)
             {
-                await SendErrorAsync(requestId, ex.Message);
+                await scope.SendErrorAsync("Failed to add comment");
             }
         }
 
-        private Task SendErrorAsync(Guid requestId, string errorMessage)
-            => Clients.Client(Context.ConnectionId)
-                      .SendAsync("ErrorOccurred", requestId, errorMessage);
-
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            await using var provider = CreateScopeProvider();
+            await using var provider = CreateHubScope(null);
             await provider.RealTimeManager.UnsubscribeForConnectionAsync(Context.ConnectionId);
         }
 
         private async Task SendToAllAsync(IAsyncEnumerable<string> connectionIds, string methodName, object data)
         {
+            // send to current first
+            var currentId = Context.ConnectionId;
+            await Clients.Client(currentId).SendAsync(methodName, data);
             var processingIds = new List<string>();
             await foreach (var id in connectionIds)
             {
-                processingIds.Add(id);
+                if (id != currentId) processingIds.Add(id);
                 if (processingIds.Count > 50)
                 {
                     await Clients.Clients(processingIds).SendAsync(methodName, data);
@@ -74,26 +74,9 @@ namespace Socially.WebAPI.Hubs
                 await Clients.Clients(processingIds).SendAsync(methodName, data);
         }
 
-        ManagersProvider CreateScopeProvider()
-        {
-            var res = new ManagersProvider(_serviceProvider);
-            var context = res.GetService<CurrentContext>();
-            Context.User.Populate(context);
-            return res;
-        }
+        HubScope CreateHubScope(Guid requestId) => new(_serviceProvider, this, requestId);
 
-        class ManagersProvider : ScopableServiceProvider
-        {
 
-            public IPostManager PostManager => GetService<IPostManager>();
-
-            public IRealTimeManager RealTimeManager => GetService<IRealTimeManager>();
-
-            public ManagersProvider(IServiceProvider serviceProvider) : base(serviceProvider)
-            {
-            }
-
-        }
 
 
     }
