@@ -9,7 +9,7 @@ namespace Socially.Apps.Consumer.Services
 {
     public interface IApiConsumer
     {
-        Task<int> AddCommentAsync(AddCommentModel model, CancellationToken cancellationToken = default);
+        Task<DisplayCommentModel> AddCommentAsync(AddCommentModel model, CancellationToken cancellationToken = default);
         Task<int> AddPostAsync(AddPostModel addPostModel, CancellationToken cancellationToken = default);
         Task<HttpResponseMessage> DeleteCommentAsync(int id, CancellationToken cancellationToken = default);
         Task<HttpResponseMessage> DeleteImageAsync(string fileName, CancellationToken cancellationToken = default);
