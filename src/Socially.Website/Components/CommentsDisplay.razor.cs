@@ -44,6 +44,7 @@ namespace Socially.Website.Components
         SemaphoreSlim locker = new(1, 1);
         bool isAddCommentLoading;
         Guid addCommentRequestId;
+        string addCommentError;
 
         protected override async Task OnInitializedAsync()
         {
