@@ -14,7 +14,7 @@ namespace Socially.Models
         public string Text { get; set; }
         public int CreatorId { get; set; }
         public DateTime? CreatedOn { get; set; }
-        public ICollection<DisplayCommentModel> Comments { get; set; }
+        public List<DisplayCommentModel> Comments { get; set; }
         public int LikeCount { get; set; }
         public bool IsLikedByCurrentUser { get; set; }
 

@@ -5,11 +5,12 @@ using Socially.Website.Services;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Socially.Website.Components
 {
-    public partial class CommentsDisplay
+    public partial class CommentsDisplay : IDisposable
     {
 
         bool isShowingLogo = false;
@@ -21,7 +22,7 @@ namespace Socially.Website.Components
         public int? ParentCommentId { get; set; }
 
         [Parameter]
-        public ICollection<DisplayCommentModel> Comments { get; set; }
+        public List<DisplayCommentModel> Comments { get; set; }
 
         [Inject]
         public CachedContext CachedContext { get; set; }
@@ -39,9 +40,15 @@ namespace Socially.Website.Components
 
         protected override async Task OnInitializedAsync()
         {
+            SignalRListener.CommentAdded += CommentAdded;
             currentUser = await CachedContext.GetCurrentProfileInfoAsync();
         }
 
+        private void CommentAdded(object sender, Socially.Models.RealtimeEventArgs.CommentAddedEventArgs e)
+        {
+            if (PostId == e.PostId && ParentCommentId == e.ParentCommentId)
+                Comments.Insert(0, e.Comment);
+        }
 
         protected override void OnParametersSet()
         {
@@ -94,5 +101,9 @@ namespace Socially.Website.Components
         void ShowLogo() => isShowingLogo = true;
         void HideLogo() => isShowingLogo = false;
 
+        public void Dispose()
+        {
+
+        }
     }
 }

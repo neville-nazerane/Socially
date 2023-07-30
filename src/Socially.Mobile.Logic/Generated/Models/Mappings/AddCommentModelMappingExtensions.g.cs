@@ -11,13 +11,13 @@ namespace Socially.Mobile.Logic.Models.Mappings
             => (await modelTask).ToModel();
 
         public static IEnumerable<Socially.Models.AddCommentModel> ToModel(this IEnumerable<Socially.Mobile.Logic.Models.AddCommentModel> model)
-            => model == null ? null : model.Select(m => m.ToModel()).ToArray();
+            => model == null ? null : model.Select(m => m.ToModel()).ToList();
 
-        public static async Task<ICollection<Socially.Models.AddCommentModel>> ToModel(this Task<ICollection<Socially.Mobile.Logic.Models.AddCommentModel>> modelTask)
+        public static async Task<List<Socially.Models.AddCommentModel>> ToModel(this Task<ICollection<Socially.Mobile.Logic.Models.AddCommentModel>> modelTask)
             => (await modelTask).ToModel();
 
-        public static ICollection<Socially.Models.AddCommentModel> ToModel(this ICollection<Socially.Mobile.Logic.Models.AddCommentModel> model)
-            => model == null ? null : model.Select(m => m.ToModel()).ToArray();
+        public static List<Socially.Models.AddCommentModel> ToModel(this ICollection<Socially.Mobile.Logic.Models.AddCommentModel> model)
+            => model == null ? null : model.Select(m => m.ToModel()).ToList();
 
         public static async Task<Socially.Models.AddCommentModel> ToModel(this Task<Socially.Mobile.Logic.Models.AddCommentModel> modelTask)
             => (await modelTask).ToModel();
@@ -51,13 +51,13 @@ namespace Socially.Mobile.Logic.Models.Mappings
             => (await modelTask).ToMobileModel();
 
         public static IEnumerable<Socially.Mobile.Logic.Models.AddCommentModel> ToMobileModel(this IEnumerable<Socially.Models.AddCommentModel> model)
-            => model == null ? null : model.Select(m => m.ToMobileModel()).ToArray();   
+            => model == null ? null : model.Select(m => m.ToMobileModel()).ToList();   
 
-        public static async Task<ICollection<Socially.Mobile.Logic.Models.AddCommentModel>> ToMobileModel(this Task<ICollection<Socially.Models.AddCommentModel>> modelTask)
+        public static async Task<List<Socially.Mobile.Logic.Models.AddCommentModel>> ToMobileModel(this Task<ICollection<Socially.Models.AddCommentModel>> modelTask)
             => (await modelTask).ToMobileModel();
 
-        public static ICollection<Socially.Mobile.Logic.Models.AddCommentModel> ToMobileModel(this ICollection<Socially.Models.AddCommentModel> model)
-            => model == null ? null : model.Select(m => m.ToMobileModel()).ToArray();   
+        public static List<Socially.Mobile.Logic.Models.AddCommentModel> ToMobileModel(this ICollection<Socially.Models.AddCommentModel> model)
+            => model == null ? null : model.Select(m => m.ToMobileModel()).ToList();   
 
         public static async Task<Socially.Mobile.Logic.Models.AddCommentModel> ToMobileModel(this Task<Socially.Models.AddCommentModel> modelTask)
             => (await modelTask).ToMobileModel();

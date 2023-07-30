@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using Socially.Models;
+using Socially.Models.RealtimeEventArgs;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,6 +9,21 @@ namespace Socially.Website.Services
 {
     public partial class SignalRListener
     {
+
+        public event EventHandler<CommentAddedEventArgs> CommentAdded;
+
+        public void ListenToAll()
+        {
+            _dataUpdateConn.On("CommentAdded", (int postId, int? parentCommentId, DisplayCommentModel comment) =>
+            {
+                CommentAdded?.Invoke(this, new CommentAddedEventArgs
+                {
+                    PostId = postId,
+                    ParentCommentId = parentCommentId,
+                    Comment = comment
+                });
+            });
+        }
 
         public Task ListenToPostsAsync(IEnumerable<int> postIds) 
             => _dataUpdateConn.InvokeAsync("ListenToPosts", postIds);
@@ -18,5 +34,6 @@ namespace Socially.Website.Services
             await _dataUpdateConn.InvokeAsync("AddComment", requestId, comment);
             return requestId;
         }
+
     }
 }

@@ -44,7 +44,7 @@ namespace Socially.WebAPI.Hubs
             {
                 var createdComment = await scope.PostManager.AddCommentAsync(comment);
                 var connectionIds = scope.RealTimeManager.GetPostConnectionIdsAsync(comment.PostId);
-                await SendToAllAsync(connectionIds, "CommentAdded", createdComment);
+                await SendToAllAsync(connectionIds, c => c.SendAsync("CommentAdded", comment.PostId, comment.ParentCommentId, createdComment));
             }
             catch (Exception ex)
             {
@@ -59,23 +59,23 @@ namespace Socially.WebAPI.Hubs
             await provider.RealTimeManager.UnsubscribeForConnectionAsync(Context.ConnectionId);
         }
 
-        private async Task SendToAllAsync(IAsyncEnumerable<string> connectionIds, string methodName, object data)
+        private async Task SendToAllAsync(IAsyncEnumerable<string> connectionIds, Func<IClientProxy, Task> sendFunc)
         {
             // send to current first
             var currentId = Context.ConnectionId;
-            await Clients.Client(currentId).SendAsync(methodName, data);
+            await sendFunc(Clients.Client(currentId));
             var processingIds = new List<string>();
             await foreach (var id in connectionIds)
             {
                 if (id != currentId) processingIds.Add(id);
                 if (processingIds.Count > 50)
                 {
-                    await Clients.Clients(processingIds).SendAsync(methodName, data);
+                    await sendFunc(Clients.Clients(processingIds));
                     processingIds.Clear();
                 }
             }
             if (processingIds.Any())
-                await Clients.Clients(processingIds).SendAsync(methodName, data);
+                await sendFunc(Clients.Clients(processingIds));
         }
 
         HubScope CreateHubScope(Guid? requestId) => new(_serviceProvider, this, requestId);

@@ -11,13 +11,13 @@ namespace Socially.Mobile.Logic.Models.Mappings
             => (await modelTask).ToModel();
 
         public static IEnumerable<Socially.Models.AddPostModel> ToModel(this IEnumerable<Socially.Mobile.Logic.Models.AddPostModel> model)
-            => model == null ? null : model.Select(m => m.ToModel()).ToArray();
+            => model == null ? null : model.Select(m => m.ToModel()).ToList();
 
-        public static async Task<ICollection<Socially.Models.AddPostModel>> ToModel(this Task<ICollection<Socially.Mobile.Logic.Models.AddPostModel>> modelTask)
+        public static async Task<List<Socially.Models.AddPostModel>> ToModel(this Task<ICollection<Socially.Mobile.Logic.Models.AddPostModel>> modelTask)
             => (await modelTask).ToModel();
 
-        public static ICollection<Socially.Models.AddPostModel> ToModel(this ICollection<Socially.Mobile.Logic.Models.AddPostModel> model)
-            => model == null ? null : model.Select(m => m.ToModel()).ToArray();
+        public static List<Socially.Models.AddPostModel> ToModel(this ICollection<Socially.Mobile.Logic.Models.AddPostModel> model)
+            => model == null ? null : model.Select(m => m.ToModel()).ToList();
 
         public static async Task<Socially.Models.AddPostModel> ToModel(this Task<Socially.Mobile.Logic.Models.AddPostModel> modelTask)
             => (await modelTask).ToModel();
@@ -45,13 +45,13 @@ namespace Socially.Mobile.Logic.Models.Mappings
             => (await modelTask).ToMobileModel();
 
         public static IEnumerable<Socially.Mobile.Logic.Models.AddPostModel> ToMobileModel(this IEnumerable<Socially.Models.AddPostModel> model)
-            => model == null ? null : model.Select(m => m.ToMobileModel()).ToArray();   
+            => model == null ? null : model.Select(m => m.ToMobileModel()).ToList();   
 
-        public static async Task<ICollection<Socially.Mobile.Logic.Models.AddPostModel>> ToMobileModel(this Task<ICollection<Socially.Models.AddPostModel>> modelTask)
+        public static async Task<List<Socially.Mobile.Logic.Models.AddPostModel>> ToMobileModel(this Task<ICollection<Socially.Models.AddPostModel>> modelTask)
             => (await modelTask).ToMobileModel();
 
-        public static ICollection<Socially.Mobile.Logic.Models.AddPostModel> ToMobileModel(this ICollection<Socially.Models.AddPostModel> model)
-            => model == null ? null : model.Select(m => m.ToMobileModel()).ToArray();   
+        public static List<Socially.Mobile.Logic.Models.AddPostModel> ToMobileModel(this ICollection<Socially.Models.AddPostModel> model)
+            => model == null ? null : model.Select(m => m.ToMobileModel()).ToList();   
 
         public static async Task<Socially.Mobile.Logic.Models.AddPostModel> ToMobileModel(this Task<Socially.Models.AddPostModel> modelTask)
             => (await modelTask).ToMobileModel();
