@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Socially.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Socially.Models.RealtimeEventArgs
+namespace Socially.Website.Models.RealtimeEventArgs
 {
     public class CommentAddedEventArgs : EventArgs
     {

@@ -63,7 +63,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Socially.Utils.GeneratorCom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Socially.MobileApp.Generator", "Socially.MobileApp.Generator\Socially.MobileApp.Generator.csproj", "{2701B078-8E46-44AE-B747-7B00AA68F212}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socially.ClientUtils", "Socially.ClientUtils\Socially.ClientUtils.csproj", "{FC4C20AC-ECF4-427B-BFD9-DA5E0958033E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Socially.ClientUtils", "Socially.ClientUtils\Socially.ClientUtils.csproj", "{FC4C20AC-ECF4-427B-BFD9-DA5E0958033E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

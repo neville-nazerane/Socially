@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Socially.Apps.Consumer.Services;
 using Socially.Models;
-using Socially.Models.RealtimeEventArgs;
+using Socially.Website.Models.RealtimeEventArgs;
 using Socially.Website.Services;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Socially.Website.Components
@@ -35,14 +36,35 @@ namespace Socially.Website.Components
         public SignalRListener SignalRListener { get; set; }
 
 
+
         AddCommentModel addModel = new();
 
         UserSummaryModel currentUser;
 
+        SemaphoreSlim locker = new(1, 1);
+        bool isAddCommentLoading;
+        Guid addCommentRequestId;
+
         protected override async Task OnInitializedAsync()
         {
-            SignalRListener.CommentAdded += CommentAdded;
+            SignalRListener.OnCommentAdded += CommentAdded;
+            SignalRListener.OnCompleted += OnCompleted;
             currentUser = await CachedContext.GetCurrentProfileInfoAsync();
+        }
+
+        private async void OnCompleted(object sender, CompletedEventArgs e)
+        {
+            await locker.WaitAsync();
+            try
+            {
+                if (addCommentRequestId.Equals(e.RequestId))
+                    isAddCommentLoading = false;
+                StateHasChanged();
+            }
+            finally
+            {
+                locker.Release();
+            }
         }
 
         private void CommentAdded(object sender, CommentAddedEventArgs e)
@@ -60,16 +82,17 @@ namespace Socially.Website.Components
 
         async Task AddCommentAsync()
         {
-            if (addModel.Text == null) return;
-            await SignalRListener.AddCommentAsync(addModel);
-            //int id = await Consumer.AddCommentAsync(addModel);
-            //Comments.Add(new DisplayCommentModel
-            //{
-            //    Text = addModel.Text,
-            //    Id = id,
-            //    CreatorId = currentUser.Id
-            //});
-            //addModel = BuildNewModel();
+            await locker.WaitAsync();
+            try
+            {
+                if (addModel.Text == null) return;
+                addCommentRequestId = await SignalRListener.AddCommentAsync(addModel);
+                isAddCommentLoading = true;
+            }
+            finally
+            {
+                locker.Release();
+            }
         }
 
         async Task DeleteAsync(DisplayCommentModel comment)
@@ -105,7 +128,7 @@ namespace Socially.Website.Components
 
         public void Dispose()
         {
-            SignalRListener.CommentAdded -= CommentAdded;
+            SignalRListener.OnCommentAdded -= CommentAdded;
         }
     }
 }

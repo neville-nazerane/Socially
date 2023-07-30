@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using Socially.Models;
-using Socially.Models.RealtimeEventArgs;
+using Socially.Website.Models.RealtimeEventArgs;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,17 +10,26 @@ namespace Socially.Website.Services
     public partial class SignalRListener
     {
 
-        public event EventHandler<CommentAddedEventArgs> CommentAdded;
+        public event EventHandler<CommentAddedEventArgs> OnCommentAdded;
+        public event EventHandler<CompletedEventArgs> OnCompleted;
 
         public void ListenToAll()
         {
             _dataUpdateConn.On("CommentAdded", (int postId, int? parentCommentId, DisplayCommentModel comment) =>
             {
-                CommentAdded?.Invoke(this, new CommentAddedEventArgs
+                OnCommentAdded?.Invoke(this, new()
                 {
                     PostId = postId,
                     ParentCommentId = parentCommentId,
                     Comment = comment
+                });
+            });
+
+            _dataUpdateConn.On("Completed", (Guid requestId) =>
+            {
+                OnCompleted?.Invoke(this, new()
+                {
+                    RequestId = requestId
                 });
             });
         }

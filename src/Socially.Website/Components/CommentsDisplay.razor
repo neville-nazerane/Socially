@@ -18,7 +18,14 @@
             @if (!string.IsNullOrEmpty(addModel?.Text))
             {
                 <div class="text-sm-end">
-                    <button type="submit" class="btn btn-success-soft">Add</button>
+                    @if (isAddCommentLoading)
+                    {
+                        <Loader />
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-success-soft">Add</button>
+                    }
                 </div>
             }
         </form>
