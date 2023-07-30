@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.SignalR;
 using Socially.Models;
 using Socially.Server.DataAccess;
 using Socially.Server.Managers;
+using Socially.Server.Managers.Utils;
 using Socially.WebAPI.Utils;
 using System;
 using System.Collections;
@@ -73,7 +74,13 @@ namespace Socially.WebAPI.Hubs
                 await Clients.Clients(processingIds).SendAsync(methodName, data);
         }
 
-        ManagersProvider CreateScopeProvider() => new(_serviceProvider);
+        ManagersProvider CreateScopeProvider()
+        {
+            var res = new ManagersProvider(_serviceProvider);
+            var context = res.GetService<CurrentContext>();
+            Context.User.Populate(context);
+            return res;
+        }
 
         class ManagersProvider : ScopableServiceProvider
         {

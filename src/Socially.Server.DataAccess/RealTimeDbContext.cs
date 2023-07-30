@@ -10,6 +10,9 @@ namespace Socially.Server.DataAccess
 {
     public class RealTimeDbContext : DbContext
     {
+        public RealTimeDbContext(DbContextOptions<RealTimeDbContext> options) : base(options)
+        {
+        }
 
         public DbSet<PostRealTime> Posts { get; set; }
 

@@ -77,6 +77,7 @@ namespace Socially.WebAPI.Utils
                             .AddTransient<IImageManager, ImageManager>()
                             .AddTransient<IPostManager, PostManager>()
                             .AddTransient<ISignalRStateManager, SignalRStateManager>()
+                            .AddTransient<IRealTimeManager, RealTimeManager>()
                             .AddTransient<IFriendManager, FriendManager>();
         }
 

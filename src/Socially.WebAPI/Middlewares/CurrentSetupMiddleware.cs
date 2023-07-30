@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Socially.Server.Managers.Utils;
+using Socially.WebAPI.Utils;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -14,14 +15,10 @@ namespace Socially.WebAPI.Middlewares
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext httpContext, CurrentContext context)
+        public Task InvokeAsync(HttpContext httpContext, CurrentContext context)
         {
-            if (httpContext.User.Identity.IsAuthenticated)
-            {
-                context.UserId = int.Parse(
-                                        httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
-            }
-            await _next(httpContext);
+            httpContext.User.Populate(context);
+            return _next(httpContext);
         }
 
     }

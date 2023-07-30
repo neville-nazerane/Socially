@@ -38,7 +38,7 @@ namespace Socially.Website.Pages
         {
             posts = (await Consumer.GetHomePostsAsync(20)).ToList();
             var postIds = posts.Select(p => p.Id).ToList();
-            await SignalR.ListenForPostsAsync(postIds);
+            await SignalR.ListenToPostsAsync(postIds);
         }
 
         Task RunAllAsync(params Func<Task>[] funcs) => Task.WhenAll(funcs.Select(f => f()));

@@ -87,8 +87,8 @@ namespace Socially.Website.Services
             _dataUpdateConn.On<PostDisplayModel>("PostUpdated", _cacheUpdater.UpdatePostAsync);
         }
 
-        public Task ListenForPostsAsync(IEnumerable<int> ids, CancellationToken cancellationToken = default)
-            => _dataUpdateConn.InvokeAsync("ListenForPosts2", ids, cancellationToken);
+        //public Task ListenForPostsAsync(IEnumerable<int> ids, CancellationToken cancellationToken = default)
+        //    => _dataUpdateConn.InvokeAsync("ListenForPosts2", ids, cancellationToken);
 
     }
 }
