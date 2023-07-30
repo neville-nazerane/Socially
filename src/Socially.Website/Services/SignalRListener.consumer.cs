@@ -12,6 +12,7 @@ namespace Socially.Website.Services
 
         public event EventHandler<CommentAddedEventArgs> OnCommentAdded;
         public event EventHandler<CompletedEventArgs> OnCompleted;
+        public event EventHandler<ErrorEventArgs> OnError;
 
         public void ListenToAll()
         {
@@ -30,6 +31,15 @@ namespace Socially.Website.Services
                 OnCompleted?.Invoke(this, new()
                 {
                     RequestId = requestId
+                });
+            });
+
+            _dataUpdateConn.On("ErrorOccurred", (Guid requestId, string errorMessage) =>
+            {
+                OnError?.Invoke(this, new()
+                {
+                    RequestId = requestId,
+                    ErrorMessage = errorMessage
                 });
             });
         }

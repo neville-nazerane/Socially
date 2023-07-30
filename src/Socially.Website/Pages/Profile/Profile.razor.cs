@@ -24,9 +24,10 @@ namespace Socially.Website.Pages.Profile
         [Inject]
         public CachedContext CachedContext { get; set; }
 
-        bool isPostsLoading;
+        [Inject]
+        public SignalRListener SignalRListener { get; set; }
 
-        AddPostModel addPostModel = new();
+        bool isPostsLoading;
 
         // data fields
         ICollection<PostDisplayModel> posts;
@@ -38,6 +39,8 @@ namespace Socially.Website.Pages.Profile
                 async () => posts = (await Consumer.GetCurrentUserPostsAsync(10)).ToList()
             );
             StateHasChanged();
+            var postIds = posts.Select(p => p.Id).ToList();
+            await SignalRListener.ListenToPostsAsync(postIds);
             var requiredUserIds = posts.GetAllCreatedIds();
             await CachedContext.UpdateUserProfilesIfNotExistAsync(requiredUserIds);
         }
