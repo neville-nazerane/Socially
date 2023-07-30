@@ -34,6 +34,7 @@ namespace Socially.Website.Services
         {
             // TODO event needs to be abstracted to IAuthAccess when service is used with MAUI
             ((AuthProvider)_authAccess).AuthenticationStateChanged += SignalRListener_AuthenticationStateChanged;
+            ListenToAll();
         }
 
         private async void SignalRListener_AuthenticationStateChanged(Task<AuthenticationState> task)

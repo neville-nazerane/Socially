@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Socially.Apps.Consumer.Services;
 using Socially.Models;
+using Socially.Models.RealtimeEventArgs;
 using Socially.Website.Services;
 using System;
 using System.Collections;
@@ -22,7 +23,7 @@ namespace Socially.Website.Components
         public int? ParentCommentId { get; set; }
 
         [Parameter]
-        public List<DisplayCommentModel> Comments { get; set; }
+        public ICollection<DisplayCommentModel> Comments { get; set; }
 
         [Inject]
         public CachedContext CachedContext { get; set; }
@@ -44,11 +45,13 @@ namespace Socially.Website.Components
             currentUser = await CachedContext.GetCurrentProfileInfoAsync();
         }
 
-        private void CommentAdded(object sender, Socially.Models.RealtimeEventArgs.CommentAddedEventArgs e)
+        private void CommentAdded(object sender, CommentAddedEventArgs e)
         {
             if (PostId == e.PostId && ParentCommentId == e.ParentCommentId)
-                Comments.Insert(0, e.Comment);
+                Comments.Add(e.Comment);
+            StateHasChanged();
         }
+
 
         protected override void OnParametersSet()
         {
@@ -67,7 +70,6 @@ namespace Socially.Website.Components
             //    CreatorId = currentUser.Id
             //});
             //addModel = BuildNewModel();
-            StateHasChanged();
         }
 
         async Task DeleteAsync(DisplayCommentModel comment)
@@ -103,7 +105,7 @@ namespace Socially.Website.Components
 
         public void Dispose()
         {
-
+            SignalRListener.CommentAdded -= CommentAdded;
         }
     }
 }
