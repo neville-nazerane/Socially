@@ -53,6 +53,22 @@ namespace Socially.WebAPI.Hubs
             }
         }
 
+        public async Task DeleteComment(Guid requestId, int commentId)
+        {
+            await using var scope = CreateHubScope(requestId);
+            try
+            {
+                var comment = await scope.PostManager.DeleteCommentAsync(commentId);
+                var connectionIds = scope.RealTimeManager.GetPostConnectionIdsAsync(comment.PostId.Value);
+                await SendToAllAsync(connectionIds, c => c.SendAsync("CommentDeleted", commentId));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to delete comment");
+                await scope.SendErrorAsync("Failed to delete comment");
+            }
+        }
+
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             await using var provider = CreateHubScope(null);

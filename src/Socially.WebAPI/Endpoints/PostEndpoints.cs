@@ -58,6 +58,7 @@ namespace Socially.WebAPI.Endpoints
                          CancellationToken cancellationToken = default)
             => manager.DeleteAsync(id, cancellationToken);
 
+        [Obsolete("Use signalr")]
         async Task<DisplayCommentModel> AddCommentAsync(IPostManager manager,
                                         ISignalRPublisher signalRPublisher,
                                         AddCommentModel model,
@@ -68,6 +69,7 @@ namespace Socially.WebAPI.Endpoints
             return res;
         }
 
+        [Obsolete("Use signalr")]
         async Task DeleteCommentAsync(IPostManager manager,
                                       ISignalRPublisher signalRPublisher,
                                       int id,
