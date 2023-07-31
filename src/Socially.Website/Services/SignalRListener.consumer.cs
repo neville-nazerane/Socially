@@ -66,7 +66,7 @@ namespace Socially.Website.Services
         public async Task<Guid> DeleteCommentAsync(int commentId)
         {
             var requestId = Guid.NewGuid();
-            await _dataUpdateConn.InvokeAsync("DeleteComment", commentId);
+            await _dataUpdateConn.InvokeAsync("DeleteComment", requestId, commentId);
             return requestId;
         }
 
