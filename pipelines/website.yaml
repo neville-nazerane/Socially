@@ -18,6 +18,7 @@ variables:
   projectPath: src/Socially.Website
   projectName: Socially.Website
   azCopyPath: src/Socially.Utils.SimpleAzCopy
+  destDirectory: /var/www/website
 
 stages:
 
@@ -28,31 +29,63 @@ stages:
 
           - script: |
               dotnet publish $(projectPath) -c release -o published
-              # mkdir publishes
-              # tar -czvf publishes/packed.tar.gz -C published .
+              mkdir publishes
+              tar -czvf publishes/packed.tar.gz -C published .
             displayName: building blazor
 
-          - publish: published
+          - publish: publishes
             artifact: packed
 
-  - stage: Deploy
+  - stage: DeployProd
+    variables:
+      - group: Socially-Prod
+    displayName: Deploy to Production
     jobs:
-      - job: Deploying
+      - deployment: ProdDeploy
+        displayName: Deploy to Production VM
+        environment:
+          name: SociallyAPI
+          resourceType: VirtualMachine
+          resourceName: socially-api
+        strategy:
+          runOnce:
+            deploy:
+              steps:
 
-        steps:
+                - script: |
 
-        - download: current
-          displayName: Download artifacts
+                    sudo rm -rf $(destDirectory)
+                    sudo mkdir $(destDirectory)
+                    
+                    sudo tar -xzvf packed.tar.gz -C $(destDirectory)
 
-        - script: 
-            dotnet run "$(webBlobConnString)" '$web' $(Pipeline.Workspace)/packed/wwwroot
-          displayName: Dotnet AZ Deploy
-          workingDirectory: $(azCopyPath)
+                    rm -rf *
+                  displayName: Copying website
+                  workingDirectory: $(Pipeline.Workspace)/packed
+                  failOnStderr: true
 
-        - task: AzureCLI@2
-          displayName: Purge CDN
-          inputs:
-            azureSubscription: socially
-            scriptType: pscore
-            scriptLocation: inlineScript
-            inlineScript: az cdn endpoint purge -g Socially -n sociallycdn --profile-name sociallywebsiteCDN --content-paths '/*'
+                - task: DeleteFiles@1
+                  displayName: Clean up
+          
+
+  # - stage: Deploy
+  #   jobs:
+  #     - job: Deploying
+
+  #       steps:
+
+  #       - download: current
+  #         displayName: Download artifacts
+
+  #       - script: 
+  #           dotnet run "$(webBlobConnString)" '$web' $(Pipeline.Workspace)/packed/wwwroot
+  #         displayName: Dotnet AZ Deploy
+  #         workingDirectory: $(azCopyPath)
+
+  #       - task: AzureCLI@2
+  #         displayName: Purge CDN
+  #         inputs:
+  #           azureSubscription: socially
+  #           scriptType: pscore
+  #           scriptLocation: inlineScript
+  #           inlineScript: az cdn endpoint purge -g Socially -n sociallycdn --profile-name sociallywebsiteCDN --content-paths '/*'
