@@ -87,7 +87,7 @@ namespace Socially.Server.Managers
             return entity.ToDisplayModel();
         }
 
-        public async Task<DisplayCommentModel> DeleteCommentAsync(int commentId,
+        public async Task<Comment> DeleteCommentAsync(int commentId,
                                                                   CancellationToken cancellationToken = default)
         {
             int userId = _currentContext.UserId;
@@ -100,7 +100,7 @@ namespace Socially.Server.Managers
             }
             _dbContext.Comments.Remove(comment);
             await _dbContext.SaveChangesAsync(CancellationToken.None);
-            return comment.ToDisplayModel();
+            return comment;
         }
 
         public async Task<bool> SwapLikeAsync(int postId,

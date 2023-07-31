@@ -44,12 +44,27 @@ namespace Socially.Website.Components
         Guid addCommentRequestId;
         string addCommentErrorMessage;
 
+        bool isDeleting;
+        Guid deletingRequestId;
+        string deleteErrorMessage;
+
         protected override async Task OnInitializedAsync()
         {
             SignalRListener.OnCommentAdded += CommentAdded;
             SignalRListener.OnCompleted += OnCompleted;
             SignalRListener.OnError += OnError;
+            SignalRListener.OnCommentDelete += OnDeleted;
             currentUser = await CachedContext.GetCurrentProfileInfoAsync();
+        }
+
+        private void OnDeleted(object sender, CommentDeletedEventArgs e)
+        {
+            var comment = Comments.SingleOrDefault(c => c.Id == e.CommentId);
+            if (comment is not null)
+            {
+                Comments.Remove(comment);
+                StateHasChanged();
+            }
         }
 
         private async void OnError(object sender, ErrorEventArgs e)
@@ -76,9 +91,15 @@ namespace Socially.Website.Components
                     isAddCommentLoading = false;
                     if (addCommentErrorMessage is null)
                         addModel = BuildNewModel();
-                    StateHasChanged();
                 }
+                else if (deletingRequestId.Equals(e.RequestId))
+                {
+                    isDeleting = false;
+                }
+                else
+                    return;
 
+                StateHasChanged();
             }
             finally
             {
@@ -117,9 +138,20 @@ namespace Socially.Website.Components
 
         async Task DeleteAsync(DisplayCommentModel comment)
         {
-            await Consumer.DeleteCommentAsync(comment.Id);
-            Comments.Remove(comment);
-            StateHasChanged();
+            await locker.WaitAsync();
+            try
+            {
+                deleteErrorMessage = null;
+                deletingRequestId = await SignalRListener.DeleteCommentAsync(comment.Id);
+                isDeleting = true;
+            }
+            finally
+            {
+                locker.Release();
+            }
+            //await Consumer.DeleteCommentAsync(comment.Id);
+            //Comments.Remove(comment);
+            //StateHasChanged();
         }
 
         async Task LikeAsync(DisplayCommentModel comment)
@@ -149,6 +181,9 @@ namespace Socially.Website.Components
         public void Dispose()
         {
             SignalRListener.OnCommentAdded -= CommentAdded;
+            SignalRListener.OnCompleted -= OnCompleted;
+            SignalRListener.OnError -= OnError;
+            SignalRListener.OnCommentDelete -= OnDeleted;
         }
     }
 }
