@@ -22,17 +22,18 @@ namespace Socially.Server.DataAccess
                                                  IEnumerable<int> postIds,
                                                  CancellationToken cancellationToken = default)
         {
-            var entities = postIds.Select(p => new PostRealTime
+            var entities = postIds.Select(p => new PostConnection
             {
                 PostId = p,
                 ConnectionId = connectionId
             }).ToList();
-            await _dbContext.Posts.AddRangeAsync(entities, cancellationToken);
+
+            await _dbContext.PostConnections.AddRangeAsync(entities, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public IAsyncEnumerable<string> GetPostConnectionIdsAsync(int postId) 
-            => _dbContext.Posts
+            => _dbContext.PostConnections
                           .Where(p => p.PostId == postId)
                           .Select(p => p.ConnectionId)
                           .AsAsyncEnumerable();
@@ -40,7 +41,7 @@ namespace Socially.Server.DataAccess
         public Task UnsubscribeForConnectionAsync(string connectionId,
                                                   CancellationToken cancellationToken = default)
         {
-            return _dbContext.Posts
+            return _dbContext.PostConnections
                                 .Where(p => p.ConnectionId == connectionId)
                                 .ExecuteDeleteAsync(cancellationToken);
         }
