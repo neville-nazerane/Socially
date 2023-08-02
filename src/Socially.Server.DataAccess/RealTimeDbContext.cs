@@ -14,7 +14,7 @@ namespace Socially.Server.DataAccess
         {
         }
 
-        public DbSet<PostRealTime> Posts { get; set; }
+        public DbSet<PostConnection> PostConnections { get; set; }
 
 
     }

@@ -1,12 +1,34 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Socially.Server.DataAccess;
 
-if (args.Length == 0)
+
+switch (args.Length)
 {
-    Console.Error.WriteLine("Pass connection string as first arg");
-    return;
+    case 0:
+        Console.Error.WriteLine("Pass connection string as first arg");
+        return;
+    case 1:
+        Console.Error.WriteLine("Pass realtime conn string as second arg");
+        break;
 }
 
-var builder = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlServer(args[0]);
-var dbContext = new ApplicationDbContext(builder.Options);
-await dbContext.Database.MigrateAsync();
+
+
+await MigrateDatabaseAsync<ApplicationDbContext>(args[0]);
+await MigrateDatabaseAsync<RealTimeDbContext>(args[1]);
+
+
+
+
+
+
+
+
+
+
+static async Task MigrateDatabaseAsync<T>(string connectionString) where T : DbContext
+{
+    var builder = new DbContextOptionsBuilder<T>().UseSqlServer(connectionString);
+    await using var dbContext = (T)Activator.CreateInstance(typeof(T), builder.Options);
+    await dbContext.Database.MigrateAsync();
+}

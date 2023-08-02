@@ -35,14 +35,13 @@ services.AddApplicationInsightsTelemetry(o => o.ConnectionString = configuration
 services.AddAzBlob(configuration["blobConnString"])
         .AddAzStorage(configuration["storageConnString"])
         .AddSqlServerDbContext(configuration.GetConnectionString("db"))
+        .AddSqlServerRealTimeDbContext(configuration.GetConnectionString("realtimeDb"))
         .AddSettings(configuration.GetSection("settings"))
         .AddAzSignalR(configuration["signalR"]);
-
 
 services.AddIdentity<User, UserRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders();
-services.AddDbContext<RealTimeDbContext>(o => o.UseInMemoryDatabase("realtime"));
 services.AddHealthChecks()
         .AddAzureBlobStorage(configuration["blobConnString"])
         .AddSendGrid(configuration["sendGridApiKey"])

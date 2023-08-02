@@ -41,6 +41,14 @@ namespace Socially.WebAPI.Utils
             return services;
         }
 
+        public static IServiceCollection AddSqlServerRealTimeDbContext(this IServiceCollection services,
+                                                                       string connString)
+        {
+            services.AddDbContext<RealTimeDbContext>(c => c.UseSqlServer(connString));
+
+            return services;
+        }
+
         public static IServiceCollection AddSettings(this IServiceCollection services,
                                                      IConfiguration configuration)
         {
