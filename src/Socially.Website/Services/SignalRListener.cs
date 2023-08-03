@@ -25,15 +25,15 @@ namespace Socially.Website.Services
             _dataUpdateConn = new HubConnectionBuilder().WithUrl($"{configuration["baseURL"]}/hubs/dataUpdates", o => o.AccessTokenProvider = GetToken)
                                                         .WithAutomaticReconnect()
                                                         .Build();
-            SetupListeners();
 
-            _dataUpdateConn.Reconnected += Reconnected;
+            StartListeners();
         }
 
         public void StartListeners()
         {
             // TODO event needs to be abstracted to IAuthAccess when service is used with MAUI
             ((AuthProvider)_authAccess).AuthenticationStateChanged += SignalRListener_AuthenticationStateChanged;
+            _dataUpdateConn.Reconnected += Reconnected;
             ListenToAll();
         }
 
@@ -81,11 +81,6 @@ namespace Socially.Website.Services
             {
                 Console.WriteLine("FAILED signalr");
             }
-        }
-
-        void SetupListeners()
-        {
-            _dataUpdateConn.On<PostDisplayModel>("PostUpdated", _cacheUpdater.UpdatePostAsync);
         }
 
         //public Task ListenForPostsAsync(IEnumerable<int> ids, CancellationToken cancellationToken = default)
