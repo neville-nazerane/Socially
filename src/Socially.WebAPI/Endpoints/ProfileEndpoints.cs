@@ -34,7 +34,7 @@ namespace Socially.WebAPI.Endpoints
         }
 
         static Task<ProfileUpdateModel> GetUpdatableProfileAsync(IUserService service,
-                                                         CancellationToken cancellationToken = default)
+                                                                 CancellationToken cancellationToken = default)
             => service.GetUpdatableProfileAsync(cancellationToken);
 
         static Task UpdateProfileAsync(IUserService service,

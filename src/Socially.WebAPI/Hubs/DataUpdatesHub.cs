@@ -31,6 +31,9 @@ namespace Socially.WebAPI.Hubs
             _logger = logger;
         }
 
+        #region Post
+
+
         public async Task ListenToPosts(IEnumerable<int> postIds)
         {
             await using var provider = CreateHubScope(null);
@@ -68,6 +71,26 @@ namespace Socially.WebAPI.Hubs
                 await scope.SendErrorAsync("Failed to delete comment");
             }
         }
+
+
+        #endregion
+
+        public async Task UpdateUser(Guid requestId, ProfileUpdateModel model)
+        {
+            await using var scope = CreateHubScope(requestId);
+            try
+            {
+                await scope.UserService.UpdateProfileAsync(model);
+                var user = await scope.UserProfileManager.GetSummaryAsync(Context.User.GetUserId());
+
+            }
+            catch (Exception ex)
+            {
+                await scope.SendErrorAsync("Failed to update user");
+            }
+        }
+
+
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {

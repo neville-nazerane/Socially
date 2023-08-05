@@ -19,6 +19,10 @@ namespace Socially.WebAPI.Services
 
         public IRealTimeManager RealTimeManager => GetService<IRealTimeManager>();
 
+        public IUserService UserService => GetService<IUserService>();
+
+        public IUserProfileManager UserProfileManager => GetService<IUserProfileManager>();
+
         public HubScope(IServiceProvider serviceProvider, Hub source, Guid? requestId) : base(serviceProvider)
         {
             var currentContext = GetService<CurrentContext>();
