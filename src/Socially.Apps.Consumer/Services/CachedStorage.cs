@@ -29,6 +29,8 @@ namespace Socially.Apps.Consumer.Services
         /// <returns>true if there was a lock</returns>
         public Task AwaitLockAsync() => _locker.WaitAsync();
 
+        public Task UpdateAsync(TValue updatedValue) => UpdateAsync(new[] { updatedValue });
+
         public async Task UpdateAsync(IEnumerable<TValue> updatedValues)
         {
             await _locker.WaitAsync();

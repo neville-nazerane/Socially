@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Socially.Apps.Consumer.Services;
 using Socially.Models;
+using Socially.Website.Services;
 using System;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
@@ -14,6 +15,14 @@ namespace Socially.Website.Pages.Account
 
         [Inject]
         public IConfiguration Config { get; set; }
+
+
+        [Inject]
+        public IApiConsumer ApiConsumer { get; set; }
+
+        [Inject]
+        public SignalRListener SignalRListener { get; set; }
+
 
         bool showImages = false;
 
@@ -44,28 +53,30 @@ namespace Socially.Website.Pages.Account
         }
 
         bool isAccountUpdating = false;
+        Guid? updatingRequestId = null;
         bool isPasswordResetting = false;
 
-        [Inject]
-        public IApiConsumer ApiConsumer { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
+            SignalRListener.OnCompleted += OnCompleted;
             model = await ApiConsumer.GetUpdateProfileAsync();
             await base.OnInitializedAsync();
+        }
+
+        private void OnCompleted(object sender, Models.RealtimeEventArgs.CompletedEventArgs e)
+        {
+            if (updatingRequestId == e.RequestId)
+            {
+                isAccountUpdating = false;
+                StateHasChanged();
+            }
         }
 
         async Task UpdateAsync()
         {
             isAccountUpdating = true;
-            try
-            {
-                await ApiConsumer.UpdateProfileAsync(model);
-            }
-            finally
-            {
-                isAccountUpdating = false;
-            }
+            updatingRequestId = await SignalRListener.UpdateUserAsync(model);
         }
 
         async Task ResetPasswordAsync()
