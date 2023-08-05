@@ -49,7 +49,7 @@ namespace Socially.Website.Services
             }
             catch
             {
-                System.Console.WriteLine("Failed to listen");
+                Console.WriteLine("Failed to listen");
             }
         }
 
