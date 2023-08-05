@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Socially.Server.DataAccess;
 
@@ -10,9 +11,11 @@ using Socially.Server.DataAccess;
 namespace Socially.Server.DataAccess.RealTimeMigrations
 {
     [DbContext(typeof(RealTimeDbContext))]
-    partial class RealTimeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230805082930_UserConn")]
+    partial class UserConn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

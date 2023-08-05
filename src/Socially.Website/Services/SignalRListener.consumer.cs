@@ -62,7 +62,7 @@ namespace Socially.Website.Services
                 OnUserUpdated?.Invoke(this, new()
                 {
                     User = user
-                })
+                });
             });
         
         }
