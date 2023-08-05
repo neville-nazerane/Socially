@@ -46,7 +46,9 @@ namespace Socially.Website.Pages
             posts = (await Consumer.GetHomePostsAsync(20)).ToList();
             var postIds = posts.Select(p => p.Id).ToList();
             await SignalR.ListenToPostsAsync(postIds);
-            var userIds = posts.Select(p => p.CreatorId).Distinct();
+            var userIds = posts.Select(p => p.CreatorId)
+                                .Union(posts.SelectMany(p => p.Comments).Select(c => c.CreatorId))
+                                .Distinct();
             await SignalR.ListenToUsersAsync(userIds);
         }
 
