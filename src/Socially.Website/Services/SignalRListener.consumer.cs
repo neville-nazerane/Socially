@@ -10,10 +10,15 @@ namespace Socially.Website.Services
     public partial class SignalRListener
     {
 
-        public event EventHandler<CommentAddedEventArgs> OnCommentAdded;
-        public event EventHandler<CommentDeletedEventArgs> OnCommentDelete;
         public event EventHandler<CompletedEventArgs> OnCompleted;
         public event EventHandler<ErrorEventArgs> OnError;
+
+
+        public event EventHandler<UserUpdatedEventArgs> OnUserUpdated;
+        
+        public event EventHandler<CommentAddedEventArgs> OnCommentAdded;
+        public event EventHandler<CommentDeletedEventArgs> OnCommentDelete;
+
 
         public void ListenToAll()
         {
@@ -51,6 +56,15 @@ namespace Socially.Website.Services
                     CommentId = commentId
                 });
             });
+
+            _dataUpdateConn.On("CommentDeleted", (UserSummaryModel user) =>
+            {
+                OnUserUpdated?.Invoke(this, new()
+                {
+                    User = user
+                });
+            });
+        
         }
 
         public Task ListenToPostsAsync(IEnumerable<int> postIds) 
@@ -67,6 +81,13 @@ namespace Socially.Website.Services
         {
             var requestId = Guid.NewGuid();
             await _dataUpdateConn.InvokeAsync("DeleteComment", requestId, commentId);
+            return requestId;
+        }
+
+        public async Task<Guid> UpdateUserAsync(ProfileUpdateModel model)
+        {
+            var requestId = Guid.NewGuid();
+            await _dataUpdateConn.InvokeAsync("UpdateUser", requestId, model);
             return requestId;
         }
 

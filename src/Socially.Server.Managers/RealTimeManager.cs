@@ -32,19 +32,43 @@ namespace Socially.Server.DataAccess
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public IAsyncEnumerable<string> GetPostConnectionIdsAsync(int postId) 
+        public IAsyncEnumerable<string> GetPostConnectionIdsAsync(int postId)
             => _dbContext.PostConnections
                           .Where(p => p.PostId == postId)
                           .Select(p => p.ConnectionId)
                           .AsAsyncEnumerable();
 
         public Task UnsubscribeForConnectionAsync(string connectionId,
-                                                  CancellationToken cancellationToken = default)
-        {
-            return _dbContext.PostConnections
+                                                  CancellationToken cancellationToken = default) 
+            => _dbContext.PostConnections
                                 .Where(p => p.ConnectionId == connectionId)
                                 .ExecuteDeleteAsync(cancellationToken);
+
+        public async Task SubscribeForUsersAsync(string connectionId,
+                                         IEnumerable<int> userIds,
+                                         CancellationToken cancellationToken = default)
+        {
+            var entities = userIds.Select(u => new UserConnection
+            {
+                UserId = u,
+                ConnectionId = connectionId
+            }).ToList();
+
+            await _dbContext.UserConnections.AddRangeAsync(entities, cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
+
+        public IAsyncEnumerable<string> GetUserConnectionIdsAsync(int userId)
+            => _dbContext.UserConnections
+                          .Where(u => u.UserId == userId)
+                          .Select(u => u.ConnectionId)
+                          .AsAsyncEnumerable();
+
+        public Task UnsubscribeForUserConnectionAsync(string connectionId,
+                                                      CancellationToken cancellationToken = default) 
+            => _dbContext.UserConnections
+                                .Where(u => u.ConnectionId == connectionId)
+                                .ExecuteDeleteAsync(cancellationToken);
 
     }
 }

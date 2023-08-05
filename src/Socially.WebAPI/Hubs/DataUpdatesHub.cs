@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Logging;
 using Socially.Models;
 using Socially.Server.DataAccess;
@@ -75,23 +76,35 @@ namespace Socially.WebAPI.Hubs
 
         #endregion
 
+        #region User
+
+        public async Task ListenToUsers(IEnumerable<int> userIds)
+        {
+            await using var provider = CreateHubScope(null);
+            await provider.RealTimeManager.SubscribeForUsersAsync(Context.ConnectionId, userIds);
+        }
+
         public async Task UpdateUser(Guid requestId, ProfileUpdateModel model)
         {
             await using var scope = CreateHubScope(requestId);
             try
             {
                 await scope.UserService.UpdateProfileAsync(model);
-                var user = await scope.UserProfileManager.GetSummaryAsync(Context.User.GetUserId());
-
+                int userId = Context.User.GetUserId();
+                var user = await scope.UserProfileManager.GetSummaryAsync(userId);
+                var userIds = scope.RealTimeManager.GetUserConnectionIdsAsync(userId);
+                await SendToAllAsync(userIds, c => c.SendAsync("UserUpdated", user));
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Failed to update user");
                 await scope.SendErrorAsync("Failed to update user");
             }
         }
 
 
 
+        #endregion
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             await using var provider = CreateHubScope(null);
