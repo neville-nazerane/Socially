@@ -76,7 +76,13 @@ namespace Socially.Website.Pages.Account
         async Task UpdateAsync()
         {
             isAccountUpdating = true;
-            updatingRequestId = await SignalRListener.UpdateUserAsync(model);
+            try
+            {
+                updatingRequestId = await SignalRListener.UpdateUserAsync(model);
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
         async Task ResetPasswordAsync()

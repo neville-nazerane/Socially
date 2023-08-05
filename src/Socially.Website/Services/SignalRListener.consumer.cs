@@ -57,7 +57,7 @@ namespace Socially.Website.Services
                 });
             });
 
-            _dataUpdateConn.On("CommentDeleted", (UserSummaryModel user) =>
+            _dataUpdateConn.On("UserUpdated", (UserSummaryModel user) =>
             {
                 OnUserUpdated?.Invoke(this, new()
                 {
@@ -69,6 +69,9 @@ namespace Socially.Website.Services
 
         public Task ListenToPostsAsync(IEnumerable<int> postIds) 
             => _dataUpdateConn.InvokeAsync("ListenToPosts", postIds);
+
+        public Task ListenToUsersAsync(IEnumerable<int> userIds)
+            => _dataUpdateConn.InvokeAsync("ListenToUsers", userIds);
 
         public async Task<Guid> AddCommentAsync(AddCommentModel comment)
         {
