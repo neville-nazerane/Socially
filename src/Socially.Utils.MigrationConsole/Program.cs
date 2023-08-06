@@ -22,7 +22,7 @@ switch (args.Length)
 
 
 await MigrateDatabaseAsync<ApplicationDbContext>(args[0]);
-await MigrateDatabaseAsync<RealTimeDbContext>(args[1]);
+await MigrateDatabaseAsync<RealTimeDbContext>(realtimeConnStr);
 
 
 
