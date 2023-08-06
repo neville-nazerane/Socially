@@ -17,7 +17,7 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.9" />
 		<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="7.0.9" />
 		<PackageReference Include="AspNetCore.HealthChecks.SendGrid" Version="7.0.0" />
-		<PackageReference Include="AspNetCore.HealthChecks.AzureStorage" Version="7.0.0" />
+		<PackageReference Include="AspNetCore.HealthChecks.AzureStorage" Version="6.1.2" />
 		
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 		<PackageReference Include="SendGrid.Extensions.DependencyInjection" Version="1.0.1" />
