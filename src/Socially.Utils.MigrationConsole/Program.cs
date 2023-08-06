@@ -30,9 +30,6 @@ await MigrateDatabaseAsync<RealTimeDbContext>(args[1]);
 
 
 
-
-
-
 static async Task MigrateDatabaseAsync<T>(string connectionString) where T : DbContext
 {
     var builder = new DbContextOptionsBuilder<T>().UseSqlServer(connectionString);
@@ -42,7 +39,7 @@ static async Task MigrateDatabaseAsync<T>(string connectionString) where T : DbC
 
 static string ChangeDatabaseInConnectionString(string originalConnectionString, string newDatabaseName)
 {
-    SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(originalConnectionString);
+    SqlConnectionStringBuilder builder = new(originalConnectionString);
 
     // Change the database in the connection string
     builder.InitialCatalog = newDatabaseName;
