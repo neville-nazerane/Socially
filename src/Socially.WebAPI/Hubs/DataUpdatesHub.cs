@@ -91,7 +91,7 @@ namespace Socially.WebAPI.Hubs
             {
                 await scope.UserService.UpdateProfileAsync(model);
                 int userId = Context.User.GetUserId();
-                var user = await scope.UserProfileManager.GetSummaryAsync(userId);
+                var user = await scope.UserProfileManager.GetUserAsync(userId);
                 var userIds = scope.RealTimeManager.GetUserConnectionIdsAsync(userId);
                 await SendToAllAsync(userIds, c => c.SendAsync("UserUpdated", user));
             }

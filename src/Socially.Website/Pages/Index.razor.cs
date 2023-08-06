@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.IdentityModel.Tokens;
 using Socially.Apps.Consumer.Services;
 using Socially.Models;
 using Socially.Website.Services;
@@ -27,6 +28,7 @@ namespace Socially.Website.Pages
 
         protected override Task OnInitializedAsync()
         {
+            SignalR.OnUserUpdated += OnUserUpdated;
             return RunAllAsync(
                 async () => friendRequests = await Consumer.GetFriendRequestsAsync(),
                 async () => currentUser = await CachedContext.GetCurrentProfileInfoAsync(),
@@ -34,11 +36,20 @@ namespace Socially.Website.Pages
             );
         }
 
+        private void OnUserUpdated(object sender, Models.RealtimeEventArgs.UserUpdatedEventArgs e)
+        {
+            StateHasChanged();
+        }
+
         async Task GetPostsAsync()
         {
             posts = (await Consumer.GetHomePostsAsync(20)).ToList();
             var postIds = posts.Select(p => p.Id).ToList();
             await SignalR.ListenToPostsAsync(postIds);
+            var userIds = posts.Select(p => p.CreatorId)
+                                .Union(posts.SelectMany(p => p.Comments).Select(c => c.CreatorId))
+                                .Distinct();
+            await SignalR.ListenToUsersAsync(userIds);
         }
 
         Task RunAllAsync(params Func<Task>[] funcs) => Task.WhenAll(funcs.Select(f => f()));

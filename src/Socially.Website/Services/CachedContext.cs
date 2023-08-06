@@ -16,6 +16,7 @@ namespace Socially.Website.Services
     public class CachedContext
     {
         private readonly IApiConsumer _consumer;
+        private readonly SignalRListener _signalRListener;
         private readonly ICachedStorage<int, UserSummaryModel> _userStorage;
         private readonly AuthenticationStateProvider _authProvider;
         UserSummaryModel _currentProfileInfo;
@@ -24,14 +25,23 @@ namespace Socially.Website.Services
 
 
         public CachedContext(IApiConsumer consumer,
+                             SignalRListener signalRListener,
                              ICachedStorage<int, UserSummaryModel> userStorage,
                              AuthenticationStateProvider authProvider)
         {
             _currentProfileLock = new();
             _authProvider = authProvider;
-            _authProvider.AuthenticationStateChanged += AuthProvider_AuthenticationStateChanged;
             _consumer = consumer;
+            _signalRListener = signalRListener;
             _userStorage = userStorage;
+            
+            _authProvider.AuthenticationStateChanged += AuthProvider_AuthenticationStateChanged;
+            _signalRListener.OnUserUpdated += OnUserUpdated;
+        }
+
+        private async void OnUserUpdated(object sender, Models.RealtimeEventArgs.UserUpdatedEventArgs e)
+        {
+            await _userStorage.UpdateAsync(e.User);
         }
 
         private void AuthProvider_AuthenticationStateChanged(Task<AuthenticationState> task)
