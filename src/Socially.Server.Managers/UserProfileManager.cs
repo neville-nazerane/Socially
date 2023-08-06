@@ -38,7 +38,7 @@ namespace Socially.Server.Managers
                           .Where(u => u.UserName == username)
                           .SingleOrDefaultAsync(cancellationToken);
 
-        public Task<ProfileSummary> GetSummaryAsync(int userId, CancellationToken cancellationToken = default)
+        public Task<ProfileSummary> GetProfileSummaryAsync(int userId, CancellationToken cancellationToken = default)
             => _dbContext.Users
                          .Where(u => u.Id == userId)
                          .Select(u => new ProfileSummary
@@ -48,6 +48,12 @@ namespace Socially.Server.Managers
                              FullName = $"{u.FirstName} {u.LastName}"
                          })
                          .SingleOrDefaultAsync(cancellationToken);
+        public Task<UserSummaryModel> GetUserAsync(int userId, CancellationToken cancellationToken = default)
+            => _dbContext.Users
+                        .Where(u => u.Id == userId)
+                        .AsNoTracking()
+                        .SelectAsSummaryModel()
+                        .SingleOrDefaultAsync(cancellationToken);
 
         public async Task UpdateAsync(int userId, ProfileUpdateModel model, CancellationToken cancellationToken = default)
         {
@@ -82,6 +88,7 @@ namespace Socially.Server.Managers
         public async Task<IEnumerable<UserSummaryModel>> GetUsersByIdsAsync(IEnumerable<int> userIds, CancellationToken cancellationToken = default)
             => await _dbContext.Users
                                .Where(u => userIds.Contains(u.Id))
+                               .AsNoTracking()
                                .SelectAsSummaryModel()
                                .ToListAsync(cancellationToken);
 
