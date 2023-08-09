@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Logging;
 using Socially.Models;
 using Socially.Server.DataAccess;
+using Socially.Server.Entities;
 using Socially.Server.Managers;
 using Socially.Server.Managers.Utils;
 using Socially.WebAPI.Services;
@@ -73,6 +74,21 @@ namespace Socially.WebAPI.Hubs
             }
         }
 
+        public async Task LikePostOrComment(Guid requestId, int postId, int? commentId)
+        {
+            await using var scope = CreateHubScope(requestId);
+            try
+            {
+                await scope.PostManager.SwapLikeAsync(postId, commentId);
+                var connectionIds = scope.RealTimeManager.GetPostConnectionIdsAsync(postId);
+                await SendToAllAsync(connectionIds, c => c.SendAsync("Liked", postId, commentId));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to like");
+                await scope.SendErrorAsync("Failed to like");
+            }
+        }
 
         #endregion
 
