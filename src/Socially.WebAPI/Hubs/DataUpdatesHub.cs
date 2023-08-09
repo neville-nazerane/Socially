@@ -79,9 +79,9 @@ namespace Socially.WebAPI.Hubs
             await using var scope = CreateHubScope(requestId);
             try
             {
-                await scope.PostManager.SwapLikeAsync(postId, commentId);
+                int likeCount = await scope.PostManager.SwapLikeAsync(postId, commentId);
                 var connectionIds = scope.RealTimeManager.GetPostConnectionIdsAsync(postId);
-                await SendToAllAsync(connectionIds, c => c.SendAsync("Liked", postId, commentId));
+                await SendToAllAsync(connectionIds, c => c.SendAsync("Liked", postId, commentId, likeCount));
             }
             catch (Exception ex)
             {

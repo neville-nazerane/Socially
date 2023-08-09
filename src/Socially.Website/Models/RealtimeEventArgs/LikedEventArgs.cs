@@ -8,6 +8,6 @@ namespace Socially.Website.Models.RealtimeEventArgs
         public int PostId { get; set; }
 
         public int? CommentId { get; set; }
-
+        public int LikeCount { get; set; }
     }
 }

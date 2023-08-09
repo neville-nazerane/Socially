@@ -67,12 +67,13 @@ namespace Socially.Website.Services
                 });
             });
 
-            _dataUpdateConn.On("Liked", (int postId, int? commentId) =>
+            _dataUpdateConn.On("Liked", (int postId, int? commentId, int likeCount) =>
             {
                 OnLiked?.Invoke(this, new()
                 {
                     PostId = postId,
-                    CommentId = commentId
+                    CommentId = commentId,
+                    LikeCount = likeCount
                 });
             });
         

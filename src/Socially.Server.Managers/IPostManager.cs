@@ -15,7 +15,7 @@ namespace Socially.Server.Managers
         Task<Comment> DeleteCommentAsync(int commentId, CancellationToken cancellationToken = default);
         Task<IEnumerable<PostDisplayModel>> GetHomePostsAsync(int pageSize, DateTime? since = null, CancellationToken cancellationToken = default);
         Task<IEnumerable<PostDisplayModel>> GetCurrentUserPostsAsync(int pageSize, DateTime? since = null, CancellationToken cancellationToken = default);
-        Task<bool> SwapLikeAsync(int postId, int? commentId, CancellationToken cancellationToken = default);
+        Task<int> SwapLikeAsync(int postId, int? commentId, CancellationToken cancellationToken = default);
         Task<IEnumerable<PostDisplayModel>> GetProfilePostsAsync(int userId, int pageSize, DateTime? since = null, CancellationToken cancellationToken = default);
         Task<PostDisplayModel> GetByIdAsync(int id, CancellationToken cancellationToken = default);
         Task<int?> GetPostIdForCommentAsync(int commentId, CancellationToken cancellationToken = default);

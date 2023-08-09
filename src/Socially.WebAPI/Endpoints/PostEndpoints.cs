@@ -83,7 +83,7 @@ namespace Socially.WebAPI.Endpoints
         }
 
         [Obsolete("Use signalr")]
-        Task<bool> SwapLikeAsync(IPostManager manager,
+        Task<int> SwapLikeAsync(IPostManager manager,
                                    int postId,
                                    int? commentId,
                                    CancellationToken cancellationToken = default)
