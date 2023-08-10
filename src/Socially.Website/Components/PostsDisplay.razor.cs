@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Socially.Website.Components
 {
-    public partial class PostsDisplay
+    public partial class PostsDisplay : IDisposable
     {
         [Parameter]
         public ICollection<PostDisplayModel> Posts { get; set; }
@@ -24,13 +24,43 @@ namespace Socially.Website.Components
         public CachedContext CachedContext { get; set; }
 
         [Inject]
+        public SignalRListener SignalRListener { get; set; }
+
+        [Inject]
         public ICachedStorage<int, PostDisplayModel> PostsCache { get; set; }
 
         UserSummaryModel currentUser;
 
-        //protected override async Task OnInitializedAsync()
-        //{
-        //}
+        Guid likeRequestId;
+        bool isLiking;
+
+
+        protected override void OnInitialized()
+        {
+            SignalRListener.OnLiked += OnLiked;
+            SignalRListener.OnCompleted += OnCompleted;
+        }
+
+        private void OnCompleted(object sender, Models.RealtimeEventArgs.CompletedEventArgs e)
+        {
+            if (e.RequestId == likeRequestId)
+            {
+                isLiking = false;
+            }
+        }
+
+        private void OnLiked(object sender, Models.RealtimeEventArgs.LikedEventArgs e)
+        {
+            if (e.CommentId is null)
+            {
+                var post = Posts.SingleOrDefault(p => p.Id == e.PostId);
+                if (post is not null)
+                {
+                    post.LikeCount = e.LikeCount;
+                    StateHasChanged(); 
+                }
+            }
+        }
 
         protected override async Task OnParametersSetAsync()
         {
@@ -52,13 +82,19 @@ namespace Socially.Website.Components
 
         async Task LikeAsync(PostDisplayModel post)
         {
-            await Consumer.SwapPostLikeAsync(post.Id);
-            if (post.IsLikedByCurrentUser)
-                post.LikeCount--;
-            else
-                post.LikeCount++;
-            post.IsLikedByCurrentUser = !post.IsLikedByCurrentUser;
+            isLiking = true;
+            likeRequestId = await SignalRListener.LikePostOrCommentAsync(post.Id, null);
+            //await Consumer.SwapPostLikeAsync(post.Id);
+            //if (post.IsLikedByCurrentUser)
+            //    post.LikeCount--;
+            //else
+            //    post.LikeCount++;
+            //post.IsLikedByCurrentUser = !post.IsLikedByCurrentUser;
         }
 
+        public void Dispose()
+        {
+            SignalRListener.OnLiked -= OnLiked;
+        }
     }
 }
