@@ -82,10 +82,11 @@ namespace Socially.WebAPI.Endpoints
                 signalRPublisher.EnqueuePost(postId.Value);
         }
 
-        Task<bool> SwapLikeAsync(IPostManager manager,
-                           int postId,
-                           int? commentId,
-                           CancellationToken cancellationToken = default)
+        [Obsolete("Use signalr")]
+        Task<int> SwapLikeAsync(IPostManager manager,
+                                   int postId,
+                                   int? commentId,
+                                   CancellationToken cancellationToken = default)
             => manager.SwapLikeAsync(postId, commentId, cancellationToken);
 
         Task<IEnumerable<PostDisplayModel>> GetCurrentUserPostsAsync(IPostManager manager,

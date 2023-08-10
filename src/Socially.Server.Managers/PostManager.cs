@@ -103,12 +103,13 @@ namespace Socially.Server.Managers
             return comment;
         }
 
-        public async Task<bool> SwapLikeAsync(int postId,
+        public async Task<int> SwapLikeAsync(int postId,
                                               int? commentId,
                                               CancellationToken cancellationToken = default)
         {
             int userId = _currentContext.UserId;
             bool removal = false;
+            int likeCount = 0;
             var existing = await _dbContext.PostLikes.SingleOrDefaultAsync(l => l.UserId == userId && l.PostId == postId && l.CommentId == commentId, cancellationToken);
             if (existing is not null)
             {
@@ -130,17 +131,19 @@ namespace Socially.Server.Managers
             {
                 var post = await _dbContext.Posts.SingleOrDefaultAsync(p => p.Id == postId, cancellationToken);
                 post.LikeCount = (post.LikeCount ?? 0) + (removal ? -1 : 1);
+                likeCount = post.LikeCount.GetValueOrDefault();
                 if (post.LikeCount < 1) post.LikeCount = null;
             }
             else
             {
                 var comment = await _dbContext.Comments.SingleOrDefaultAsync(p => p.Id == commentId, cancellationToken);
                 comment.LikeCount = (comment.LikeCount ?? 0) + (removal ? -1 : 1);
+                likeCount = comment.LikeCount.GetValueOrDefault();
                 if (comment.LikeCount < 1) comment.LikeCount = null;
             }
 
             await _dbContext.SaveChangesAsync(cancellationToken);
-            return !removal;
+            return likeCount;
         }
 
         public Task<IEnumerable<PostDisplayModel>> GetCurrentUserPostsAsync(int pageSize,

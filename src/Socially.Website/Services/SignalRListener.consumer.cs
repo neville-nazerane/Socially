@@ -19,6 +19,8 @@ namespace Socially.Website.Services
         public event EventHandler<CommentAddedEventArgs> OnCommentAdded;
         public event EventHandler<CommentDeletedEventArgs> OnCommentDelete;
 
+        public event EventHandler<LikedEventArgs> OnLiked;
+
 
         public void ListenToAll()
         {
@@ -64,6 +66,16 @@ namespace Socially.Website.Services
                     User = user
                 });
             });
+
+            _dataUpdateConn.On("Liked", (int postId, int? commentId, int likeCount) =>
+            {
+                OnLiked?.Invoke(this, new()
+                {
+                    PostId = postId,
+                    CommentId = commentId,
+                    LikeCount = likeCount
+                });
+            });
         
         }
 
@@ -91,6 +103,13 @@ namespace Socially.Website.Services
         {
             var requestId = Guid.NewGuid();
             await _dataUpdateConn.InvokeAsync("UpdateUser", requestId, model);
+            return requestId;
+        }
+
+        public async Task<Guid> LikePostOrCommentAsync(int postId, int? commentId)
+        {
+            var requestId = Guid.NewGuid();
+            await _dataUpdateConn.InvokeAsync("LikePostOrComment", postId, commentId);
             return requestId;
         }
 
