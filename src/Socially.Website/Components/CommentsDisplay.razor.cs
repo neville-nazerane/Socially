@@ -208,6 +208,7 @@ namespace Socially.Website.Components
             SignalRListener.OnCompleted -= OnCompleted;
             SignalRListener.OnError -= OnError;
             SignalRListener.OnCommentDelete -= OnDeleted;
+            SignalRListener.OnLiked += OnLiked;
         }
     }
 }
