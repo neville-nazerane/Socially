@@ -144,21 +144,21 @@ namespace Socially.Apps.Consumer.Services
                                                             CancellationToken cancellationToken = default)
             => _httpClient.DeleteAsync($"/post/comment/{id}", cancellationToken);
 
-        public async Task<bool> SwapPostLikeAsync(int postId,
+        public async Task<int> SwapPostLikeAsync(int postId,
                                                        CancellationToken cancellationToken = default)
         {
             var res = await _httpClient.PutAsync($"post/{postId}/like", null, cancellationToken);
             res.EnsureSuccessStatusCode();
-            return bool.Parse(await res.Content.ReadAsStringAsync(cancellationToken));
+            return int.Parse(await res.Content.ReadAsStringAsync(cancellationToken));
         }
 
-        public async Task<bool> SwapCommentLikeAsync(int postId,
-                                                              int commentId,
-                                                              CancellationToken cancellationToken = default)
+        public async Task<int> SwapCommentLikeAsync(int postId,
+                                                     int commentId,
+                                                     CancellationToken cancellationToken = default)
         {
             var res = await _httpClient.PutAsync($"post/{postId}/comment/{commentId}/like", null, cancellationToken);
             res.EnsureSuccessStatusCode();
-            return bool.Parse(await res.Content.ReadAsStringAsync(cancellationToken));
+            return int.Parse(await res.Content.ReadAsStringAsync(cancellationToken));
         }
 
         public Task<IEnumerable<PostDisplayModel>> GetCurrentUserPostsAsync(int pageSize,

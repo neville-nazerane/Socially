@@ -48,13 +48,27 @@ namespace Socially.Website.Components
         Guid deletingRequestId;
         string deleteErrorMessage;
 
+        Guid likeRequestId;
+        bool isLiking;
+
         protected override async Task OnInitializedAsync()
         {
             SignalRListener.OnCommentAdded += CommentAdded;
             SignalRListener.OnCompleted += OnCompleted;
             SignalRListener.OnError += OnError;
             SignalRListener.OnCommentDelete += OnDeleted;
+            SignalRListener.OnLiked += OnLiked;
             currentUser = await CachedContext.GetCurrentProfileInfoAsync();
+        }
+
+        private void OnLiked(object sender, LikedEventArgs e)
+        {
+            if (e.PostId == PostId)
+            {
+                var comment = Comments.SingleOrDefault(c => c.Id == e.CommentId);
+                if (comment is not null)
+                    comment.LikeCount = e.LikeCount;
+            }
         }
 
         private void OnDeleted(object sender, CommentDeletedEventArgs e)
@@ -95,6 +109,10 @@ namespace Socially.Website.Components
                 else if (deletingRequestId.Equals(e.RequestId))
                 {
                     isDeleting = false;
+                }
+                else if (likeRequestId == e.RequestId)
+                {
+                    isLiking = false;
                 }
                 else
                     return;
@@ -156,12 +174,15 @@ namespace Socially.Website.Components
 
         async Task LikeAsync(DisplayCommentModel comment)
         {
-            await Consumer.SwapCommentLikeAsync(PostId, comment.Id);
-            if (comment.IsLikedByCurrentUser.Value)
-                comment.LikeCount--;
-            else
-                comment.LikeCount++;
-            comment.IsLikedByCurrentUser = !comment.IsLikedByCurrentUser;
+            isLiking = true;
+            likeRequestId = await SignalRListener.LikePostOrCommentAsync(PostId, comment.Id);
+
+            //await Consumer.SwapCommentLikeAsync(PostId, comment.Id);
+            //if (comment.IsLikedByCurrentUser.Value)
+            //    comment.LikeCount--;
+            //else
+            //    comment.LikeCount++;
+            //comment.IsLikedByCurrentUser = !comment.IsLikedByCurrentUser;
         }
 
         AddCommentModel BuildNewModel() => new AddCommentModel

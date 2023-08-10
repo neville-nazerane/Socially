@@ -308,10 +308,10 @@ namespace Socially.WebAPI.IntegrationTests
             await dbContext.SaveChangesAsync();
 
             // ACT
-            bool liked = await consumer.SwapPostLikeAsync(2);
+            int liked = await consumer.SwapPostLikeAsync(2);
 
             // ASSERT
-            Assert.True(liked);
+            Assert.Equal(1, liked);
 
             var likes = await dbContext.PostLikes.ToListAsync();
 

@@ -33,8 +33,8 @@ namespace Socially.Apps.Consumer.Services
         Task<IEnumerable<SearchedUserModel>> SearchUserAsync(string q, CancellationToken cancellationToken = default);
         void SetJwt(string jwtHeader);
         Task SignupAsync(SignUpModel model, CancellationToken cancellationToken = default);
-        Task<bool> SwapCommentLikeAsync(int postId, int commentId, CancellationToken cancellationToken = default);
-        Task<bool> SwapPostLikeAsync(int postId, CancellationToken cancellationToken = default);
+        Task<int> SwapCommentLikeAsync(int postId, int commentId, CancellationToken cancellationToken = default);
+        Task<int> SwapPostLikeAsync(int postId, CancellationToken cancellationToken = default);
         Task<HttpResponseMessage> UpdateProfileAsync(ProfileUpdateModel model, CancellationToken cancellationToken = default);
         Task<HttpResponseMessage> UploadAsync(ImageUploadModel model, CancellationToken cancellationToken = default);
     }
