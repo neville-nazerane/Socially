@@ -67,7 +67,10 @@ namespace Socially.Website.Components
             {
                 var comment = Comments.SingleOrDefault(c => c.Id == e.CommentId);
                 if (comment is not null)
+                {
                     comment.LikeCount = e.LikeCount;
+                    StateHasChanged();
+                }
             }
         }
 

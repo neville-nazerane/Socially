@@ -109,7 +109,7 @@ namespace Socially.Website.Services
         public async Task<Guid> LikePostOrCommentAsync(int postId, int? commentId)
         {
             var requestId = Guid.NewGuid();
-            await _dataUpdateConn.InvokeAsync("LikePostOrComment", postId, commentId);
+            await _dataUpdateConn.InvokeAsync("LikePostOrComment", requestId, postId, commentId);
             return requestId;
         }
 
