@@ -42,6 +42,23 @@ namespace Socially.WebAPI.Hubs
             await provider.RealTimeManager.SubscribeForPostsAsync(Context.ConnectionId, postIds);
         }
 
+        public async Task DeletePost(Guid requestId, int postId)
+        {
+            await using var scope = CreateHubScope(requestId);
+            try
+            {
+                await scope.PostManager.DeleteAsync(postId);
+                var connectionIds = scope.RealTimeManager.GetPostConnectionIdsAsync(postId);
+                await SendToAllAsync(connectionIds, c => c.SendAsync("PostDeleted", postId));
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to delete post");
+                await scope.SendErrorAsync("Failed to delete post");
+            }
+        }
+
         public async Task AddComment(Guid requestId, AddCommentModel comment)
         {
             await using var scope = CreateHubScope(requestId);
