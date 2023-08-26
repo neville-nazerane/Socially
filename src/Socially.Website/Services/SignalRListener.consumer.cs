@@ -18,6 +18,7 @@ namespace Socially.Website.Services
         
         public event EventHandler<CommentAddedEventArgs> OnCommentAdded;
         public event EventHandler<CommentDeletedEventArgs> OnCommentDelete;
+        public event EventHandler<PostDeletedEventArgs> OnPostDeleted;
 
         public event EventHandler<LikedEventArgs> OnLiked;
 
@@ -48,6 +49,14 @@ namespace Socially.Website.Services
                 {
                     RequestId = requestId,
                     ErrorMessage = errorMessage
+                });
+            });
+
+            _dataUpdateConn.On("PostDeleted", (int postId) =>
+            {
+                OnPostDeleted?.Invoke(this, new()
+                {
+                    PostId = postId
                 });
             });
 
@@ -84,6 +93,13 @@ namespace Socially.Website.Services
 
         public Task ListenToUsersAsync(IEnumerable<int> userIds)
             => _dataUpdateConn.InvokeAsync("ListenToUsers", userIds);
+
+        public async Task<Guid> DeletePostAsync(int postId)
+        {
+            var requestId = Guid.NewGuid();
+            await _dataUpdateConn.InvokeAsync("DeletePost", requestId, postId);
+            return requestId;
+        }
 
         public async Task<Guid> AddCommentAsync(AddCommentModel comment)
         {

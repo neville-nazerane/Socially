@@ -53,6 +53,7 @@ namespace Socially.WebAPI.Endpoints
                                         CancellationToken cancellationToken = default)
             => manager.AddAsync(addPostModel, cancellationToken);
 
+        [Obsolete("Use signalr")]
         Task DeleteAsync(IPostManager manager,
                          int id,
                          CancellationToken cancellationToken = default)
