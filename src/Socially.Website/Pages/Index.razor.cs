@@ -60,5 +60,8 @@ namespace Socially.Website.Pages
             await Consumer.RespondToFriendRequestAsync(userId, isApproved);
             friendRequests = await Consumer.GetFriendRequestsAsync();
         }
+    
+        
+
     }
 }

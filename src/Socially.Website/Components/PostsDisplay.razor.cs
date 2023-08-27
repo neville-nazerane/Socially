@@ -31,8 +31,11 @@ namespace Socially.Website.Components
 
         UserSummaryModel currentUser;
 
-        Guid likeRequestId;
+        Guid? likeRequestId;
         bool isLiking;
+
+        Guid? deleteReqId;
+        bool isDeleting;
 
 
         protected override void OnInitialized()
@@ -46,6 +49,12 @@ namespace Socially.Website.Components
             if (e.RequestId == likeRequestId)
             {
                 isLiking = false;
+                likeRequestId = null;
+            }
+            else if (e.RequestId == deleteReqId)
+            {
+                deleteReqId = null;
+                isDeleting = false;
             }
         }
 
@@ -74,10 +83,8 @@ namespace Socially.Website.Components
 
         async Task DeleteAsync(int postId)
         {
-            var res = await Consumer.DeletePostAsync(postId);
-            res.EnsureSuccessStatusCode();
-            Posts = Posts.Where(p => p.Id != postId).ToList();
-            StateHasChanged();
+            isDeleting = true;
+            deleteReqId = await SignalRListener.DeletePostAsync(postId);
         }
 
         async Task LikeAsync(PostDisplayModel post)

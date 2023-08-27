@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace Socially.Website.Pages.Profile
 {
 
-    public partial class Profile
+    public partial class Profile : IDisposable
     {
 
         [Inject]
@@ -35,6 +35,8 @@ namespace Socially.Website.Pages.Profile
 
         protected override async Task OnInitializedAsync()
         {
+            SignalRListener.OnPostDeleted += OnPostDeleted;
+
             await RunAllAsync(
                 async () => posts = (await Consumer.GetCurrentUserPostsAsync(10)).ToList()
             );
@@ -45,11 +47,23 @@ namespace Socially.Website.Pages.Profile
             await CachedContext.UpdateUserProfilesIfNotExistAsync(requiredUserIds);
         }
 
+        private void OnPostDeleted(object sender, Models.RealtimeEventArgs.PostDeletedEventArgs e)
+        {
+            var deletedPost = posts.SingleOrDefault(p => p.Id == e.PostId);
+            if (deletedPost is not null)
+                posts.Remove(deletedPost);
+            StateHasChanged();
+        }
+
         static Task RunAllAsync(params Func<Task>[] tasks)
         {
             return Task.WhenAll(tasks.Select(t => t()));
         }
 
+        public void Dispose()
+        {
+            SignalRListener.OnPostDeleted -= OnPostDeleted;
+        }
     }
 
 }
