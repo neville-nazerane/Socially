@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Socially.Server.DataAccess;
 using Socially.Server.Entities;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Socially.Server.DataAccess
+namespace Socially.Server.Managers
 {
     public class RealTimeManager : IRealTimeManager
     {
@@ -39,7 +40,7 @@ namespace Socially.Server.DataAccess
                           .AsAsyncEnumerable();
 
         public Task UnsubscribeForConnectionAsync(string connectionId,
-                                                  CancellationToken cancellationToken = default) 
+                                                  CancellationToken cancellationToken = default)
             => _dbContext.PostConnections
                                 .Where(p => p.ConnectionId == connectionId)
                                 .ExecuteDeleteAsync(cancellationToken);
@@ -65,7 +66,7 @@ namespace Socially.Server.DataAccess
                           .AsAsyncEnumerable();
 
         public Task UnsubscribeForUserConnectionAsync(string connectionId,
-                                                      CancellationToken cancellationToken = default) 
+                                                      CancellationToken cancellationToken = default)
             => _dbContext.UserConnections
                                 .Where(u => u.ConnectionId == connectionId)
                                 .ExecuteDeleteAsync(cancellationToken);

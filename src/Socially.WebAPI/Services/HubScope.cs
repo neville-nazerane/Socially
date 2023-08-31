@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Socially.Server.DataAccess;
 using Socially.Server.Managers.Utils;
 using Socially.Server.Managers;
 using Socially.WebAPI.Utils;
