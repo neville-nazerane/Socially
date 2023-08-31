@@ -13,6 +13,7 @@ namespace Socially.Server.Managers.Tests
     {
 
         public ApplicationDbContext DbContext { get; }
+        public RealTimeDbContext RealTimeDbContext { get; }
 
         public CurrentContext CurrentContext { get; }
 
@@ -21,7 +22,12 @@ namespace Socially.Server.Managers.Tests
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                                                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                                                 .Options;
-            DbContext = new ApplicationDbContext(options);
+
+            var optionsReal = new DbContextOptionsBuilder<RealTimeDbContext>()
+                                    .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                                    .Options;
+            DbContext = new(options);
+            RealTimeDbContext = new(optionsReal);
             CurrentContext = new CurrentContext();
         }
 

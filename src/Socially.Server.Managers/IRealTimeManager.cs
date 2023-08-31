@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Socially.Server.DataAccess
+namespace Socially.Server.Managers
 {
     public interface IRealTimeManager
     {
