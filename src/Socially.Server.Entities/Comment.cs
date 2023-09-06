@@ -23,6 +23,8 @@ namespace Socially.Server.Entities
         [Required]
         public DateTime? CreatedOn { get; set; }
 
+        public DateTime? DeletedOn { get; set; }
+
         [Required]
         public int CreatorId { get; set; }
         public User Creator { get; set; }

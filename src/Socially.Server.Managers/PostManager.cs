@@ -209,12 +209,12 @@ namespace Socially.Server.Managers
                                           .Take(pageSize)
                                                     .Select(p => new
                                                     {
-                                                        Comments = p.Comments.ToArray(),
-                                                        CommentLikes = p.Comments.Select(c => new
-                                                        {
-                                                            c.Id,
-                                                            IsLikedByCurrentUser = c.Likes.Any(l => l.UserId == _currentContext.UserId)
-                                                        }),
+                                                        //Comments = p.Comments.ToArray(),
+                                                        //CommentLikes = p.Comments.Select(c => new
+                                                        //{
+                                                        //    c.Id,
+                                                        //    IsLikedByCurrentUser = c.Likes.Any(l => l.UserId == _currentContext.UserId)
+                                                        //}),
                                                         Post = new PostDisplayModel
                                                         {
                                                             Id = p.Id,
@@ -234,9 +234,18 @@ namespace Socially.Server.Managers
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 postResults.Add(item.Post);
-                allComments.AddRange(item.Comments);
-                foreach (var mapping in item.CommentLikes)
-                    likeMapping.Add(mapping.Id, mapping.IsLikedByCurrentUser);
+                //allComments.AddRange(item.Comments);
+                //foreach (var mapping in item.CommentLikes)
+                //    likeMapping.Add(mapping.Id, mapping.IsLikedByCurrentUser);
+            }
+
+            var postIds = postResults.Select(p => p.Id).ToArray();
+            var dbComments = _dbContext.Comments.Where(c => postIds.Contains(c.PostId.Value))
+                                                .AsAsyncEnumerable();
+
+            await foreach (var comment in dbComments)
+            {
+
             }
 
             foreach (var p in postResults)
