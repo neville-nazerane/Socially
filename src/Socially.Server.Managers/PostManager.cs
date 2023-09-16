@@ -245,7 +245,9 @@ namespace Socially.Server.Managers
 
             await foreach (var comment in dbComments)
             {
-
+                var post = postResults.Single(p => p.Id == comment.PostId);
+                post.Comments ??= new List<DisplayCommentModel>();
+                post.Comments.Add(comment.ToDisplayModel());
             }
 
             foreach (var p in postResults)
