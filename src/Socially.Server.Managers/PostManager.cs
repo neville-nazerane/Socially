@@ -87,19 +87,32 @@ namespace Socially.Server.Managers
             return entity.ToDisplayModel();
         }
 
-        public async Task<Comment> DeleteCommentAsync(int commentId,
+        public async Task<CommentDeletedModel> DeleteCommentAsync(int commentId,
                                                                   CancellationToken cancellationToken = default)
         {
+
             int userId = _currentContext.UserId;
-            var comment = await _dbContext.Comments.SingleOrDefaultAsync(s => s.CreatorId == userId && s.Id == commentId,
-                                                                        cancellationToken);
-            if (comment == null)
+
+            var comment = await _dbContext.Comments
+                                          .AsNoTracking()
+                                          .Where(c => c.Id == commentId)
+                                          .Select(c => new CommentDeletedModel
+                                          {
+                                              Id = c.Id,
+                                              PostId = c.PostId.GetValueOrDefault()
+                                          })
+                                          .SingleOrDefaultAsync(cancellationToken);
+
+            if (comment is null)
             {
                 _logger.LogWarning("Did not find comment {commentId} to delete with user {userId}", commentId, userId);
                 return null;
             }
-            _dbContext.Comments.Remove(comment);
-            await _dbContext.SaveChangesAsync(CancellationToken.None);
+
+            await _dbContext.Comments.Where(c => c.CreatorId == userId && c.Id == commentId)
+                                      .ExecuteUpdateAsync(c => c.SetProperty(i => i.DeletedOn, DateTime.UtcNow), 
+                                                          cancellationToken: cancellationToken);
+
             return comment;
         }
 
@@ -240,14 +253,20 @@ namespace Socially.Server.Managers
             }
 
             var postIds = postResults.Select(p => p.Id).ToArray();
-            var dbComments = _dbContext.Comments.Where(c => postIds.Contains(c.PostId.Value))
+            var dbComments = _dbContext.Comments.Where(c => postIds.Contains(c.PostId.Value) && c.DeletedOn == null)
+                                                .Select(c => new
+                                                {
+                                                    Comment = c,
+                                                    IsLikedByCurrentUser = c.Likes.Any(l => l.UserId == _currentContext.UserId)
+                                                })
                                                 .AsAsyncEnumerable();
 
-            await foreach (var comment in dbComments)
+            await foreach (var c in dbComments)
             {
-                var post = postResults.Single(p => p.Id == comment.PostId);
+                var post = postResults.Single(p => p.Id == c.Comment.PostId);
                 post.Comments ??= new List<DisplayCommentModel>();
-                post.Comments.Add(comment.ToDisplayModel());
+                post.Comments.Add(c.Comment.ToDisplayModel());
+                likeMapping[c.Comment.Id] = post.IsLikedByCurrentUser;
             }
 
             foreach (var p in postResults)

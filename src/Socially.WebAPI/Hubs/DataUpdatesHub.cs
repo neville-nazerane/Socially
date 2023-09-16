@@ -81,7 +81,7 @@ namespace Socially.WebAPI.Hubs
             try
             {
                 var comment = await scope.PostManager.DeleteCommentAsync(commentId);
-                var connectionIds = scope.RealTimeManager.GetPostConnectionIdsAsync(comment.PostId.Value);
+                var connectionIds = scope.RealTimeManager.GetPostConnectionIdsAsync(comment.PostId);
                 await SendToAllAsync(connectionIds, c => c.SendAsync("CommentDeleted", commentId));
             }
             catch (Exception ex)
