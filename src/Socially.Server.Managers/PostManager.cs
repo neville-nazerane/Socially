@@ -110,7 +110,7 @@ namespace Socially.Server.Managers
             }
 
             await _dbContext.Comments.Where(c => c.CreatorId == userId && c.Id == commentId)
-                                      .ExecuteUpdateAsync(c => c.SetProperty(i => i.DeletedOn, DateTime.UtcNow), 
+                                      .ExecuteUpdateAsync(c => c.SetProperty(i => i.DeletedOn, DateTime.UtcNow),
                                                           cancellationToken: cancellationToken);
 
             return comment;
@@ -261,20 +261,67 @@ namespace Socially.Server.Managers
                                                 })
                                                 .AsAsyncEnumerable();
 
+            var flatComments = new Dictionary<int, DisplayCommentModel>();
+            //var rootComments = new List<DisplayCommentModel>();
+
+            var childComments = new Dictionary<int, List<DisplayCommentModel>>();
+
             await foreach (var c in dbComments)
             {
                 var post = postResults.Single(p => p.Id == c.Comment.PostId);
-                post.Comments ??= new List<DisplayCommentModel>();
-                post.Comments.Add(c.Comment.ToDisplayModel());
+                var comment = c.Comment.ToDisplayModel();
+
+                flatComments[c.Comment.Id] = comment;
+
+                if (c.Comment.ParentCommentId is null)
+                {
+                    post.Comments ??= new List<DisplayCommentModel>();
+                    post.Comments.Add(comment);
+                    //rootComments.Add(comment);
+                }
+                else
+                {
+                    if (!childComments.TryGetValue(c.Comment.ParentCommentId.Value, out var list))
+                    {
+                        list = new();
+                        childComments[c.Comment.ParentCommentId.Value] = list;
+                    }
+                    list.Add(comment);
+                }
                 likeMapping[c.Comment.Id] = post.IsLikedByCurrentUser;
             }
 
-            foreach (var p in postResults)
-                p.Comments = MapComments(allComments.Where(c => c.PostId == p.Id).ToArray(), likeMapping).ToList();
+            foreach (var c in childComments)
+                flatComments[c.Key].Comments = c.Value;
+
+            //await foreach (var c in dbComments)
+            //{
+            //    var post = postResults.Single(p => p.Id == c.Comment.PostId);
+            //    var comment = c.Comment.ToDisplayModel();
+
+            //    if (c.Comment.ParentCommentId is null)
+            //    {
+            //        post.Comments ??= new List<DisplayCommentModel>();
+            //        post.Comments.Add(comment);
+
+            //    }
+            //    else
+            //    {
+
+            //    }
+
+
+            //    // TODO: does this do anything?
+            //    likeMapping[c.Comment.Id] = post.IsLikedByCurrentUser;
+            //}
+
+            //foreach (var p in postResults)
+            //    p.Comments = MapComments(allComments.Where(c => c.PostId == p.Id).ToArray(), likeMapping).ToList();
 
             return postResults;
         }
 
+        [Obsolete("Shouldn't be required with new mappings")]
         static IEnumerable<DisplayCommentModel> MapComments(IEnumerable<Comment> comments,
                                                             Dictionary<int, bool> likeMapping,
                                                             int? parentId = null)
