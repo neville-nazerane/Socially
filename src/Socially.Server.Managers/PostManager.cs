@@ -109,9 +109,12 @@ namespace Socially.Server.Managers
                 return null;
             }
 
-            await _dbContext.Comments.Where(c => c.CreatorId == userId && c.Id == commentId)
-                                      .ExecuteUpdateAsync(c => c.SetProperty(i => i.DeletedOn, DateTime.UtcNow),
-                                                          cancellationToken: cancellationToken);
+            await _dbContext
+                        .PrepareForAllDbs()
+                        .Comments
+                            .Where(c => c.CreatorId == userId && c.Id == commentId)
+                            .ExecuteUpdateForAnyDbAsync(c => c.SetProperty(i => i.DeletedOn, DateTime.UtcNow),
+                                                            cancellationToken: cancellationToken);
 
             return comment;
         }
