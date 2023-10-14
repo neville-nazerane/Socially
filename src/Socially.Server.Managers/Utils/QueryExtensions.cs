@@ -21,14 +21,6 @@ namespace Socially.Server.Managers.Utils
     public static class QueryExtensions
     {
 
-        private static readonly ConcurrentBag<DbContext> _dbContexts = new();
-
-        public static TDbContext PrepareForAllDbs<TDbContext>(this TDbContext dbContext)
-            where TDbContext : DbContext
-        {
-            _dbContexts.Add(dbContext);
-            return dbContext;
-        }
 
         public static async Task<int> ExecuteUpdateForAnyDbAsync<TSource>(this IQueryable<TSource> source,
                                                                           Expression<Func<SetPropertyCalls<TSource>, SetPropertyCalls<TSource>>> setPropertyCalls,
@@ -40,37 +32,9 @@ namespace Socially.Server.Managers.Utils
             }
             catch (InvalidOperationException)
             {
-
-                //foreach (var context in _dbContexts)
-                //{
-                //    var properties = context.GetType()
-                //                                .GetProperties()
-                //                                .Where(p => p.PropertyType.FullName.Contains("Microsoft.EntityFrameworkCore.DbSet"))
-                //                                .ToArray();
-                //    foreach (var property in properties)
-                //    {
-                //        var val = property.GetValue(context);
-
-                //        var ps = val.GetType().GetProperties();
-                //        var queryableProperty = val.GetType()
-                //                                   .GetProperties()
-                //                                   .SingleOrDefault(p => p.PropertyType.Name == "EntityQueryable");
-                //        if (queryableProperty is not null)
-                //        {
-                //            var q = queryableProperty.GetValue(val);
-                //        }
-
-                //        if (source == val)
-                //        {
-
-                //        }
-                //    }
-                //}
                 var items = await source.ToListAsync(cancellationToken);
-                // List to store all the method calls
                 List<MethodCallExpression> methodCalls = new();
 
-                // Extract method calls from the expression
                 ExtractMethodCalls(setPropertyCalls.Body, methodCalls);
 
                 foreach (var methodCall in methodCalls)
@@ -184,22 +148,5 @@ namespace Socially.Server.Managers.Utils
             // Handle other expression types as needed
         }
 
-        static Expression<Func<SetPropertyCalls<TSource>, SetPropertyCalls<TSource>>> CombineSetters<TSource>(
-            IEnumerable<Expression<Func<SetPropertyCalls<TSource>, SetPropertyCalls<TSource>>>> setters
-)
-        {
-            Expression<Func<SetPropertyCalls<TSource>, SetPropertyCalls<TSource>>> expr = sett => sett;
-
-            foreach (var expr2 in setters)
-            {
-                var call = (MethodCallExpression)expr2.Body;
-                expr = Expression.Lambda<Func<SetPropertyCalls<TSource>, SetPropertyCalls<TSource>>>(
-                    Expression.Call(expr.Body, call.Method, call.Arguments),
-                    expr2.Parameters
-                );
-            }
-
-            return expr;
-        }
     }
 }

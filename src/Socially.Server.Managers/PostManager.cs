@@ -95,7 +95,7 @@ namespace Socially.Server.Managers
 
             var comment = await _dbContext.Comments
                                           .AsNoTracking()
-                                          .Where(c => c.Id == commentId)
+                                          .Where(c => c.CreatorId == userId && c.Id == commentId && c.DeletedOn == null)
                                           .Select(c => new CommentDeletedModel
                                           {
                                               Id = c.Id,
@@ -110,9 +110,8 @@ namespace Socially.Server.Managers
             }
 
             await _dbContext
-                        .PrepareForAllDbs()
                         .Comments
-                            .Where(c => c.CreatorId == userId && c.Id == commentId)
+                            .Where(c => c.CreatorId == userId && c.Id == commentId && c.DeletedOn == null)
                             .ExecuteUpdateForAnyDbAsync(c => c.SetProperty(i => i.DeletedOn, DateTime.UtcNow),
                                                             cancellationToken: cancellationToken);
 
