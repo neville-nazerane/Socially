@@ -6,6 +6,7 @@ using Moq;
 using Socially.Models;
 using Socially.Server.DataAccess;
 using Socially.Server.Entities;
+using Socially.Server.Managers.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -244,12 +245,14 @@ namespace Socially.Server.Managers.Tests
             await DbContext.Comments.AddAsync(comment);
             await DbContext.SaveChangesAsync();
             int commentId = comment.Id;
-
+            
             // ACT
             await manager.DeleteCommentAsync(commentId, CancellationToken.None);
 
             // ASSERT
-            var comments = await DbContext.Comments.ToListAsync();
+            var comments = await DbContext.Comments
+                                          .Where(c => c.DeletedOn == null)
+                                          .ToListAsync();
             Assert.Empty(comments);
 
         }

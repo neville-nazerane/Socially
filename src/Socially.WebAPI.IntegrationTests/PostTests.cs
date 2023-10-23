@@ -264,7 +264,9 @@ namespace Socially.WebAPI.IntegrationTests
             await consumer.DeleteCommentAsync(2);
 
             // ASSERT
-            var comments = await dbContext.Comments.ToListAsync();
+            var comments = await dbContext.Comments
+                                          .Where(c => c.DeletedOn == null)
+                                          .ToListAsync();
 
             Assert.NotNull(comments);
             Assert.Single(comments);
