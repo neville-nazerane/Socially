@@ -1,21 +1,15 @@
+schedules:
+- cron: "0 0 * * 0"
+  displayName: Weekly Sunday Midnight Renewal
+  branches:
+    include:
+    - main
 
 pool:
   vmImage: 'ubuntu-latest'
 
 
 jobs:
-- deployment: RenewDev
-  displayName: Renew SSL on dev
-  environment: 
-    name: Development
-    resourceType: VirtualMachine
-    resourceName: websites
-  strategy:
-    runOnce:
-      deploy:
-        steps:
-        - script: sudo certbot renew
-
 
 - deployment: RenewProd
   displayName: Renew SSL on VM
