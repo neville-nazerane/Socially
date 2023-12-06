@@ -43,7 +43,7 @@ namespace Socially.Server.DataAccess.RealTimeMigrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("PostConnections");
+                    b.ToTable("PostConnections", (string)null);
                 });
 
             modelBuilder.Entity("Socially.Server.Entities.UserConnection", b =>
@@ -68,7 +68,7 @@ namespace Socially.Server.DataAccess.RealTimeMigrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserConnections");
+                    b.ToTable("UserConnections", (string)null);
                 });
 #pragma warning restore 612, 618
         }
