@@ -20,6 +20,8 @@ using System.Threading.Tasks;
 using Socially.WebAPI.Hubs;
 using Socially.Server.Managers;
 using System;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.DependencyCollector;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +31,12 @@ var services = builder.Services;
 var configuration = builder.Configuration;
 
 services.AddCors();
-services.AddApplicationInsightsTelemetry(o => o.ConnectionString = configuration["appinsights"]);
+services.AddApplicationInsightsTelemetry(o =>
+{
+    o.ConnectionString = configuration["appinsights"];
+});
+
+services.ConfigureTelemetryModule<DependencyTrackingTelemetryModule>((module, o) => module.EnableSqlCommandTextInstrumentation = true);
 
 
 services.AddAzBlob(configuration["blobConnString"])
