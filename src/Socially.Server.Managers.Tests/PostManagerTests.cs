@@ -265,8 +265,7 @@ namespace Socially.Server.Managers.Tests
             CurrentContext.UserId = 10;
             await DbContext.Posts.AddRangeAsync(new Post[]
             {
-                new Post
-                {
+                new() {
                     Text = "first post",
                     CreatedOn = DateTime.UtcNow,
                     CreatorId = 10,
@@ -301,14 +300,12 @@ namespace Socially.Server.Managers.Tests
                         }
                     }
                 },
-                new Post
-                {
+                new() {
                     Text = "second post",
                     CreatorId = 11,
                     CreatedOn = DateTime.UtcNow
                 },
-                new Post
-                {
+                new() {
                     Text = "third post",
                     CreatorId = 10,
                     CreatedOn = DateTime.UtcNow
@@ -334,6 +331,11 @@ namespace Socially.Server.Managers.Tests
             Assert.Single(comment2.Comments);
             Assert.NotEmpty(comment2.Comments.First().Comments);
             Assert.Single(comment2.Comments.First().Comments);
+
+            var noCommentPost = res.SingleOrDefault(p => p.Text == "third post");
+            Assert.NotNull(noCommentPost);
+            Assert.NotNull(noCommentPost.Comments);
+            Assert.Empty(noCommentPost.Comments);
 
         }
 

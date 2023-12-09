@@ -296,6 +296,10 @@ namespace Socially.Server.Managers
             foreach (var c in childComments)
                 flatComments[c.Key].Comments = c.Value;
 
+            // fill up null post's comments
+            foreach (var p in postResults)
+                p.Comments ??= new List<DisplayCommentModel>();
+
             //await foreach (var c in dbComments)
             //{
             //    var post = postResults.Single(p => p.Id == c.Comment.PostId);
