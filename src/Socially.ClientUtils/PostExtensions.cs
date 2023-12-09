@@ -11,7 +11,7 @@ namespace Socially.ClientUtils
 
         public static IEnumerable<int> GetAllCreatedIds(this IEnumerable<PostDisplayModel> posts)
             => posts.Select(p => p.CreatorId)
-                    .Union(posts.Where(p => p.Comments is not null).SelectMany(p => p.Comments.Select(p => p.CreatorId)))
+                    .Union(posts.SelectMany(p => p.Comments.Select(p => p.CreatorId)))
                     .Distinct()
                     .ToArray();
 
