@@ -294,7 +294,8 @@ namespace Socially.Server.Managers
             }
 
             foreach (var c in childComments)
-                flatComments[c.Key].Comments = c.Value;
+                if (flatComments.TryGetValue(c.Key, out DisplayCommentModel value)) // accounting for deleted parents
+                    value.Comments = c.Value;
 
             // fill up null post's comments
             foreach (var p in postResults)
