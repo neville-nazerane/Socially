@@ -1,9 +1,6 @@
 schedules:
 - cron: "0 0 * * 0"
   displayName: Weekly Sunday Midnight Renewal
-  branches:
-    include:
-    - main
 
 pool:
   vmImage: 'ubuntu-latest'
