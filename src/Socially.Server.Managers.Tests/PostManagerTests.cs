@@ -289,8 +289,14 @@ namespace Socially.Server.Managers.Tests
                             ParentCommentId = 2,
                             Text = "fore-ty",
                             CreatedOn = DateTime.UtcNow
-                        }
-                        ,
+                        }, 
+                        new Comment
+                        {
+                            Id = 5,
+                            CreatedOn = DateTime.UtcNow.AddMinutes(-3),
+                            DeletedOn = DateTime.UtcNow,
+                            Text = "Deleted comment"
+                        },
                         new Comment
                         {
                             Id = 4,
@@ -338,6 +344,102 @@ namespace Socially.Server.Managers.Tests
             Assert.Empty(noCommentPost.Comments);
 
         }
+
+        [Fact]
+        public async Task GetProfilePosts_DeletedCommentWithChildren_GetsNonDeleted()
+        {
+            // ARRANGE
+            await SetupManagerAsync();
+            CurrentContext.UserId = 10;
+            await DbContext.Posts.AddRangeAsync(new Post[]
+            {
+                new() {
+                    Text = "first post",
+                    CreatedOn = DateTime.UtcNow,
+                    CreatorId = 10,
+                    Comments = new Comment[]
+                    {
+                        new Comment
+                        {
+                            Id = 1,
+                            CreatedOn = DateTime.UtcNow,
+                            Text = "first comment"
+                        },
+                        new Comment
+                        {
+                            Id = 2,
+                            CreatedOn = DateTime.UtcNow,
+                            Text = "Second comment",
+                        },
+                        new Comment
+                        {
+                            Id = 3,
+                            ParentCommentId = 2,
+                            Text = "fore-ty",
+                            CreatedOn = DateTime.UtcNow
+                        },
+                        new Comment
+                        {
+                            Id = 5,
+                            CreatedOn = DateTime.UtcNow.AddMinutes(-3),
+                            DeletedOn = DateTime.UtcNow,
+                            Text = "Deleted comment"
+                        },
+                        new Comment
+                        {
+                            Id = 6,
+                            CreatedOn = DateTime.UtcNow.AddMinutes(-3),
+                            Text = "Parent deleted",
+                            ParentCommentId = 5
+                        },
+                        new Comment
+                        {
+                            Id = 4,
+                            ParentCommentId = 3,
+                            Text = "inner inner comment",
+                            CreatedOn = DateTime.UtcNow
+                        }
+                    }
+                },
+                new() {
+                    Text = "second post",
+                    CreatorId = 11,
+                    CreatedOn = DateTime.UtcNow
+                },
+                new() {
+                    Text = "third post",
+                    CreatorId = 10,
+                    CreatedOn = DateTime.UtcNow
+                }
+            });
+            await DbContext.SaveChangesAsync();
+
+
+            // ACT
+            var res = await manager.GetCurrentUserPostsAsync(10);
+
+
+            // ASSERT
+
+            Assert.NotNull(res);
+            Assert.NotEmpty(res);
+            Assert.Equal(2, res.Count());
+
+            var comment2 = res.SingleOrDefault(p => p.Text == "first post")?.Comments?.SingleOrDefault(c => c.Id == 2);
+            Assert.NotNull(comment2);
+            Assert.Equal("Second comment", comment2.Text);
+            Assert.NotEmpty(comment2.Comments);
+            Assert.Single(comment2.Comments);
+            Assert.NotEmpty(comment2.Comments.First().Comments);
+            Assert.Single(comment2.Comments.First().Comments);
+
+            var noCommentPost = res.SingleOrDefault(p => p.Text == "third post");
+            Assert.NotNull(noCommentPost);
+            Assert.NotNull(noCommentPost.Comments);
+            Assert.Empty(noCommentPost.Comments);
+
+        }
+
 
         [Fact]
         public async Task GetProfilePosts_ValidUserMultiplePages_GetEachPage()
